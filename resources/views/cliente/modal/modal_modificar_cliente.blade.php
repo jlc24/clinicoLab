@@ -1,8 +1,8 @@
-<div class="modal fade" id="modal_crear_cliente" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal_crear_clienteLabel" aria-hidden="true">
+<div class="modal fade" id="modal_update_cliente" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal_update_clienteLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #32C861; color: #fff">
-                <h1 class="modal-title fs-5" id="modal_crear_clienteLabel"><strong>{{ __('Agregar Paciente') }}</strong></h1>
+                <h1 class="modal-title fs-5" id="modal_update_clienteLabel"><strong>{{ __('Modificar datos del Paciente') }}</strong></h1>
                 <button type="button" id="btnCloseAddClient" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -19,9 +19,10 @@
                         </button>
                     </div>
                 @endif
-
-                <form action="{{ url('clientes') }}" method="POST" class="form-horizontal" id="formulario_crear_cliente">
+                {{-- dd($request->all()); --}}
+                <form action="{{ url('clientes') }}" method="POST" class="form-horizontal" id="formulario_modificar_cliente">
                     @csrf
+                    @method('PUT')
                     <div class="row">
                         <div class="col-xl-4 col-sm-4">
                             <div class="form-group row">
@@ -30,7 +31,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Nombres" id="cli_nombre" name="cli_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" required>
+                                    <input type="text" value="" placeholder="Nombres" id="cli_nombre" name="cli_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" required>
                                     {{-- <small><span style="color: red;" id="error_cli_nombre">(Se requiere Nombre)</span></small> --}}
                                 </div>
                             </div>
@@ -99,7 +100,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="cli_cod">{{ __('Cod') }}: </label>
                                 <div class="col-md-9">
-                                    <input type="text" value="PA{{ $countpac+1 }}" id="cli_cod" name="cli_cod" class="form-control form-control-sm" autocomplete="off" readonly>
+                                    <input type="text"  id="cli_cod" name="cli_cod" class="form-control form-control-sm" autocomplete="off" readonly>
                                     {{-- <small><span style="color: red;" id="error_cli_edad">(Se requiere Nº C.I.)</span></small> --}}
                                 </div>
                             </div>

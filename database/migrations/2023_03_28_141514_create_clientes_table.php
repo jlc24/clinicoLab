@@ -24,10 +24,14 @@ return new class extends Migration
             $table->string('cli_correo')->nullable();
             $table->string('cli_direccion')->nullable();
             $table->string('cli_celular', 15)->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->string('cli_usuario', 10);
+            $table->string('cli_password');
             $table->unsignedBigInteger('dep_id');
             $table->unsignedBigInteger('mun_id');
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('dep_id')->references('id')->on('departamentos');
             $table->foreign('mun_id')->references('id')->on('municipios');
         });

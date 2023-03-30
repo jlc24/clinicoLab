@@ -33,13 +33,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('cliente') }}" class="nav-link {{ Request::is('cliente') ? 'active' : '' }}">
+                            <a href="{{ route('cliente') }}" class="nav-link {{ Request::is('clientes') ? 'active' : '' }}">
                                 <i class=" nav-icon fa-solid fa-user"></i>
                                 <p>Pacientes</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('medico') }}" class="nav-link {{ Request::is('medico') ? 'active' : '' }}">
+                            <a href="{{ route('medico') }}" class="nav-link {{ Request::is('medicos') ? 'active' : '' }}">
                                 <i class="nav-icon fa-solid fa-user-doctor"></i>
                                 <p>Medicos</p>
                             </a>

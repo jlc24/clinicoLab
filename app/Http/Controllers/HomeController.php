@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cliente;
-use Illuminate\Support\Str;
+use App\Models\Medico;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -26,7 +27,8 @@ class HomeController extends Controller
     public function index()
     {
         $contcli = Cliente::count();
-        $password = Str::random(3);
-        return view('home', ['contcli' => $contcli, 'password' => $password]);
+        $contmed = Medico::count();
+        $contUser = User::count();
+        return view('home', ['contcli' => $contcli, 'contmed' => $contmed, 'contUser' => $contUser]);
     }
 }

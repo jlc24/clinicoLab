@@ -31,9 +31,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/clientes', [ClienteController::class, 'index'])->name('cliente');
     Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente');
+    Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit'])->name('cliente.edit');
     Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
 
     Route::get('/medicos', [MedicoController::class, 'index'])->name('medico');
+    Route::post('/medicos', [MedicoController::class, 'store'])->name('medico');
     
 });
 
