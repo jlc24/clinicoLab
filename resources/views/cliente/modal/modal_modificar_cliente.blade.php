@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal_update_cliente" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal_update_clienteLabel" aria-hidden="true">
+<div class="modal fade" id="modal_update_cliente_{{ $cliente->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal_update_clienteLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #32C861; color: #fff">
@@ -20,7 +20,7 @@
                     </div>
                 @endif
                 {{-- dd($request->all()); --}}
-                <form action="{{ url('clientes') }}" method="POST" class="form-horizontal" id="formulario_modificar_cliente">
+                <form action="{{ url('clientes.update', $cliente->id) }}" method="POST" class="form-horizontal" id="formulario_modificar_cliente">
                     @csrf
                     @method('PUT')
                     <div class="row">
@@ -31,7 +31,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
-                                    <input type="text" value="" placeholder="Nombres" id="cli_nombre" name="cli_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" required>
+                                    <input type="text" value="{{ $cliente->cli_nombre }}" placeholder="Nombres" id="cli_nombre" name="cli_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" required>
                                     {{-- <small><span style="color: red;" id="error_cli_nombre">(Se requiere Nombre)</span></small> --}}
                                 </div>
                             </div>
@@ -43,7 +43,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Apellido Paterno" id="cli_apellido_pat" name="cli_apellido_pat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" required>
+                                    <input type="text" value="{{ $cliente->cli_apellido_pat }}" placeholder="Apellido Paterno" id="cli_apellido_pat" name="cli_apellido_pat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" required>
                                     {{-- <small><span style="color: red;" id="error_cli_apellido">(Se requiere Apellido)</span></small> --}}
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Apellido Materno" id="cli_apellido_mat" name="cli_apellido_mat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" >
+                                    <input type="text" value="{{ $cliente->cli_apellido_mat }}" placeholder="Apellido Materno" id="cli_apellido_mat" name="cli_apellido_mat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" >
                                     {{-- <small><span style="color: red;" id="error_cli_apellido">(Se requiere Apellido)</span></small> --}}
                                 </div>
                             </div>
@@ -64,22 +64,23 @@
                     <div class="row">
                         <div class="col-xl-4 col-sm-4" >
                             <div class="form-group row">
-                                <label class="col-md-2 col-form-label" for="cli_ci_nit">C.I.: </label>
-                                <div class="col-md-10">
-                                    <input type="number" min="0" id="cli_ci_nit" name="cli_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onchange="Password()" required>
+                                <label class="col-md-3 col-form-label" for="cli_ci_nit">C.I.: </label>
+                                <div class="col-md-9">
+                                    <input type="number" min="0" value="{{ $cliente->cli_ci_nit }}" id="cli_ci_nit" name="cli_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onchange="Password()" required>
                                     {{-- <small><span style="color: red;" id="error_cli_ci_nit">(Se requiere Nº C.I.)</span></small> --}}
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-4 col-sm-4">
                             <div class="form-group row">
-                                <label class="col-md-2 col-form-label" for="cli_ci_nit_exp">Exp.:</label>
-                                <div class="col-md-10">
+                                <label class="col-md-3 col-form-label" for="cli_ci_nit_exp">Exp.:</label>
+                                <div class="col-md-9">
                                     <select class="custom-select custom-select-sm" id="cli_ci_nit_exp" name="cli_ci_nit_exp" required>
-                                        <option value="" selected="" disabled>SELECCIONAR...</option>
+                                        
                                         @foreach ($departamentos as $departamento)
                                             <option value="{{ $departamento->nombre }}">{{ $departamento->nombre }}</option>
                                         @endforeach
+                                        <option value="{{ $cliente->cli_exp_ci }}" selected>{{ $cliente->cli_exp_ci }}</option>
                                     </select>
                                     {{-- <small><span style="color: red;" id="error_cli_ci_nit">(Elija una opcion)</span></small> --}}
                                 </div>
@@ -89,37 +90,37 @@
                             <div class="form-group row">
                                 <label class="col-md-5 col-form-label" for="cli_fec_nac">{{ __('Fecha Nac.') }}: </label>
                                 <div class="col-md-7">
-                                    <input type="date" id="cli_fec_nac" name="cli_fec_nac" class="form-control form-control-sm" autocomplete="off" onchange="CalcularEdad()" required>
+                                    <input type="date" value="{{ $cliente->cli_fec_nac }}" id="cli_fec_nac" name="cli_fec_nac" class="form-control form-control-sm" autocomplete="off" onchange="CalcularEdad()" required>
                                     {{-- <small><span style="color: red;" id="error_cli_fec_nac">(Se requiere Nº C.I.)</span></small> --}}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xl-2 col-sm-2">
+                        <div class="col-xl-3 col-sm-3">
                             <div class="form-group row">
-                                <label class="col-md-3 col-form-label" for="cli_cod">{{ __('Cod') }}: </label>
-                                <div class="col-md-9">
-                                    <input type="text"  id="cli_cod" name="cli_cod" class="form-control form-control-sm" autocomplete="off" readonly>
+                                <label class="col-md-4 col-form-label" for="cli_cod">{{ __('Cod') }}: </label>
+                                <div class="col-md-8">
+                                    <input type="text" value="{{ $cliente->cli_cod }}" id="cli_cod" name="cli_cod" class="form-control form-control-sm" autocomplete="off" readonly>
                                     {{-- <small><span style="color: red;" id="error_cli_edad">(Se requiere Nº C.I.)</span></small> --}}
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-sm-3">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="cli_celular">{{ __('Celular') }}: </label>
+                                <label class="col-md-4 p-0 col-form-label" for="cli_celular">{{ __('Celular') }}: </label>
                                 <div class="col-md-8">
-                                    <input type="number" min="0" id="cli_celular" name="cli_celular" class="form-control form-control-sm" autocomplete="off" placeholder="Celular" required>
+                                    <input type="number" min="0" value="{{ $cliente->cli_celular }}" id="cli_celular" name="cli_celular" class="form-control form-control-sm" autocomplete="off" placeholder="Celular" required>
                                     <small><span style="color: red; display: none" id="error_cli_celular">(Celular no valido)</span></small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-sm-3">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="cli_genero">{{ __('Género') }}: </label>
+                                <label class="col-md-4 p-0 col-form-label" for="cli_genero">{{ __('Género') }}: </label>
                                 <div class="col-md-8">
                                     <select class="custom-select custom-select-sm" id="cli_genero" name="cli_genero" required>
-                                        <option value="" selected="" disabled>SELECCIONAR...</option>
+                                        <option value="{{ $cliente->cli_genero }}" selected >{{ $cliente->cli_genero }}</option>
                                         <option value="MASCULINO">MASCULINO</option>
                                         <option value="FEMENINO">FEMENINO</option>
                                         <option value="OTRO">OTRO</option>
@@ -128,11 +129,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-sm-4">
+                        <div class="col-xl-3 col-sm-3">
                             <div class="form-group row">
-                                <label class="col-md-2 col-form-label" for="cli_edad">{{ __('Edad') }}: </label>
-                                <div class="col-md-10">
-                                    <input type="text" value="" id="cli_edad" name="cli_edad" class="form-control form-control-sm" autocomplete="off"  readonly>
+                                <label class="col-md-4 col-form-label" for="cli_edad">{{ __('Edad') }}: </label>
+                                <div class="col-md-8">
+                                    <input type="text"  id="cli_edad" name="cli_edad" class="form-control form-control-sm" autocomplete="off"  readonly>
                                     {{-- <small><span style="color: red;" id="error_cli_edad">(Se requiere Nº C.I.)</span></small> --}}
                                 </div>
                             </div>
@@ -143,7 +144,7 @@
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="cli_direccion">{{ __('Dirección') }}:</label>
                                 <div class="col-md-12">
-                                    <input type="text" placeholder="Direccion" class="form-control form-control-sm" id="cli_direccion" name="cli_direccion" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                    <input type="text" value="{{ $cliente->cli_direccion }}" placeholder="Direccion" class="form-control form-control-sm" id="cli_direccion" name="cli_direccion" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
                                     {{-- <small><span style="color: red;" id="error_cli_direccion" hidden>(Elija una opcion)</span></small> --}}
                                 </div>
                             </div>
@@ -154,7 +155,6 @@
                                 <label class="col-md-12 col-form-label" for="cli_departamento">{{ __('Departamento') }}:</label>
                                 <div class="col-md-12">
                                     <select class="custom-select custom-select-sm" id="cli_departamento" name="cli_departamento" >
-                                        <option value="" selected="" disabled>SELECCIONAR...</option>
                                         @foreach ($departamentos as $departamento)
                                             <option value="{{ $departamento->id }}">{{ $departamento->nombre }}</option>
                                         @endforeach

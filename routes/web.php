@@ -1,11 +1,18 @@
 <?php
 
+use App\Http\Controllers\BacteriaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CultivoController;
+use App\Http\Controllers\EstudioController;
+use App\Http\Controllers\IndicationController;
 use App\Http\Controllers\MedicoController;
+use App\Http\Controllers\MuestraController;
+use App\Http\Controllers\RecepcionController;
+use App\Http\Controllers\RecipienteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,11 +38,28 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/clientes', [ClienteController::class, 'index'])->name('cliente');
     Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente');
-    Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit'])->name('cliente.edit');
+    Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit']);
     Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
 
     Route::get('/medicos', [MedicoController::class, 'index'])->name('medico');
     Route::post('/medicos', [MedicoController::class, 'store'])->name('medico');
+
+    Route::get('/recepcion', [RecepcionController::class, 'index'])->name('recepcion');
+
+    Route::get('/estudios', [EstudioController::class, 'index'])->name('estudio');
+
+    Route::get('/cultivos', [CultivoController::class, 'index'])->name('cultivo');
+
+    Route::get('/bacterias', [BacteriaController::class, 'index'])->name('bacteria');
+
+    Route::get('/indications', [IndicationController::class, 'index'])->name('indication');
+    Route::post('/indications', [IndicationController::class, 'store'])->name('indication');
+
+    Route::get('/recipientes', [RecipienteController::class, 'index'])->name('recipiente');
+    Route::post('/recipientes', [RecipienteController::class, 'store'])->name('recipiente');
+
+    Route::get('/muestras', [MuestraController::class, 'index'])->name('muestra');
+    Route::post('/muestras', [MuestraController::class, 'store'])->name('muestra');
     
 });
 

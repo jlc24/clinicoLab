@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'ClinicLab | Perfil')
+
 @section('contenido')
 
     <div class="content-header">

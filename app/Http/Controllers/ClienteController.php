@@ -109,13 +109,15 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        $registros = Cliente::find($id);
-        dd($registros);
-        return view('cliente.modal.modal_modificar_cliente', [
-            'registros' => $registros,
-            'departamentos' => Departamento::all(),
-            'municipios' => Municipio::all()
-        ]);
+        // $clientes = Cliente::find($id);
+        // $departamentos = Departamento::all();
+        // $municipios = Municipio::all();
+        // //return $datos;
+        // return view('cliente.modal.modal_modificar_cliente', [
+        //     'clientes' => $clientes,
+        //     'departamentos' => $departamentos,
+        //     'municipios' => $municipios
+        // ]);
         // $clientes = Cliente::where('id', $id)->get();
         // return response()->json($clientes);
     }

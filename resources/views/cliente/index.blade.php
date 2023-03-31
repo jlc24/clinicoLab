@@ -58,7 +58,8 @@
                                             <td>{{ $cliente->cli_password }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Button group">
-                                                    <a href="{{ route('cliente.edit', $cliente->id) }}" data-toggle="modal" data-target="#modal_update_cliente" class="btn btn-sm btn-outline-warning" title="Editar Paciente"><i class="fas fa-user-edit"></i></a>
+                                                    <a href="#" data-toggle="modal" data-target="#modal_update_cliente_{{ $cliente->id }}" class="btn btn-sm btn-outline-warning" title="Editar Paciente"><i class="fas fa-user-edit"></i></a>
+                                                    @include('cliente.modal.modal_modificar_cliente')
                                                     <a href="javascript:void(0);" id="btnVerCliente" class="btn btn-sm btn-outline-info" title="Mostrar Informacion del Paciente"><i class="fas fa-info-circle"></i></a>
                                                     <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-danger" title="Generar Resultado"><i class="fas fa-shop"></i></a>
                                                     <a href="javascript:void(0);" id="btnVerResultados" class="btn btn-sm btn-outline-success" title="Ver resultados"><i class="fas fa-eye"></i></a>
@@ -78,6 +79,8 @@
     
     @include('cliente.modal.modal_crear_cliente')
     
-    @include('cliente.modal.modal_modificar_cliente')
+    
     
 @endsection
+
+

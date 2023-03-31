@@ -28,7 +28,7 @@ class HomeController extends Controller
     {
         $contcli = Cliente::count();
         $contmed = Medico::count();
-        $contUser = User::count();
+        $contUser = User::whereIn('rol', ['admin', 'user'])->count();
         return view('home', ['contcli' => $contcli, 'contmed' => $contmed, 'contUser' => $contUser]);
     }
 }
