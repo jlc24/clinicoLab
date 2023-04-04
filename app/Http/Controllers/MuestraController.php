@@ -61,16 +61,28 @@ class MuestraController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Muestra $muestra)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'muestra_nombre' => 'required|max:20',
+            'muestra_descripcion' => 'required|max:255',
+        ]);
+
+        $muestra = Muestra::find($id);
+        $muestra->nombre = $request->input('muestra_nombre');
+        $muestra->descripcion = $request->input('muestra_descripcion');
+        $muestra->save();
+        
+        return redirect()->route('muestra')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Muestra $muestra)
+    public function destroy($id)
     {
-        //
+        $muestra = Muestra::find($id);
+        $muestra->delete();
+        return response()->json(['success', 'El registro se ha eliminado con éxito']);
     }
 }

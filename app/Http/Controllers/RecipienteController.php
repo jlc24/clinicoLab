@@ -60,16 +60,28 @@ class RecipienteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Recipiente $recipiente)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'reci_nombre' => 'required|max:20',
+            'reci_descripcion' => 'required|max:255',
+        ]);
+
+        $recipiente = Recipiente::find($id);
+        $recipiente->nombre = $request->input('reci_nombre');
+        $recipiente->descripcion = $request->input('reci_descripcion');
+        $recipiente->save();
+        
+        return redirect()->route('recipiente')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Recipiente $recipiente)
+    public function destroy($id)
     {
-        //
+        $recipiente = Recipiente::find($id);
+        $recipiente->delete();
+        return response()->json(['success', 'El registro se ha eliminado con éxito']);
     }
 }

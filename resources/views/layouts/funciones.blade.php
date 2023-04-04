@@ -164,6 +164,7 @@
             }
         });
         
+        
         // function generateRandomString(length) {
         //     let result = '';
         //     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -188,6 +189,16 @@
         //     $("#med_password").val(outputStr);
         // }
     });
+
+    $(document).ready(function(){
+        $('#modal_crear_empresa').on('shown.bs.modal', function () {
+            $('#emp_nit').trigger('focus');
+        });
+        $("#btnCloseAddEmp").on('click', function(){
+            $("#formulario_crear_empresa").trigger('reset');
+        });
+    });
+
     function UsuarioMed() {
         const nombre = $("#med_nombre").val().substring(0, 1);
         const ap = $("#med_apellido_pat").val().substring(0, 1);
@@ -255,8 +266,154 @@
         //     }
         // });
 
-    
+    //para eliminar datos solo colocar el nombre de la ruta correspondiente   
+    $(document).on('click', '.btn-delete', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        var route = $(this).data('route');
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¡No podrás revertir esto!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, borrarlo!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: route.replace(':id', id),
+                    type: 'DELETE',
+                    data: {
+                        "_token": "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: '¡Eliminado!',
+                            text: response.success,
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result)=>{
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            }
+        })
+    });
 
+    //para buscar y autocompletar para empresa, medico y paciente---------------------------------------------
+    $(document).ready(function() {
+        $('#rec_medico_clave').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: '/buscar_medico_id/?q=' + request.term,
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
+            minLength: 1,
+            select: function(event, ui) {
+                event.preventDefault();
+                $('#rec_medico_id').val(ui.item.id);
+                $('#rec_medico_clave').val(ui.item.med_cod);
+                $('#rec_medico_nombre').val(ui.item.med_nombre+' '+ui.item.med_apellido_pat+' '+ui.item.med_apellido_mat);
+                $('#rec_especialidad').val(ui.item.med_especialidad);
+                return false;
+            }
+        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li class='each'></li>" )
+            .data( "item.autocomplete", item )
+            .append("<div class='acItem'><span class='name'>"+item.med_cod+"</span>"+"&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.med_nombre+"</span><span class='name'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.med_apellido_pat+"</span><span class='name'>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" + item.med_apellido_mat+"</span></div>")
+            .appendTo( ul );
+        };
+        $('#rec_medico_nombre').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: '/buscar_medico_nombre/?q=' + request.term,
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
+            minLength: 1,
+            select: function(event, ui) {
+                event.preventDefault();
+                $('#rec_medico_id').val(ui.item.id);
+                $('#rec_medico_clave').val(ui.item.med_cod);
+                $('#rec_medico_nombre').val(ui.item.med_nombre+' '+ui.item.med_apellido_pat+' '+ui.item.med_apellido_mat);
+                $('#rec_especialidad').val(ui.item.med_especialidad);
+                return false;
+            }
+        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li class='each'></li>" )
+            .data( "item.autocomplete", item )
+            .append("<div class='acItem'><span class='name'>"+item.med_cod+"</span>"+"&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.med_nombre+"</span><span class='name'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.med_apellido_pat+"</span><span class='name'>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" + item.med_apellido_mat+"</span></div>")
+            .appendTo( ul );
+        };
+
+        $('#rec_paciente_clave').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: '/buscar_paciente_id/?q=' + request.term,
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
+            minLength: 1,
+            select: function(event, ui) {
+                event.preventDefault();
+                $('#rec_paciente_id').val(ui.item.id);
+                $('#rec_paciente_clave').val(ui.item.cli_cod);
+                $('#rec_paciente_nombre').val(ui.item.cli_nombre+' '+ui.item.cli_apellido_pat+' '+ui.item.cli_apellido_mat);
+                $('#rec_genero').val(ui.item.cli_genero);
+                $('#rec_edad').val(ui.item.edad+' años');
+                return false;
+            }
+        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li class='each'></li>" )
+            .data( "item.autocomplete", item )
+            .append("<div class='acItem'><span class='name'>"+item.cli_cod+"</span>"+"&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.cli_nombre+"</span><span class='name'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.cli_apellido_pat+"</span><span class='name'>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" + item.cli_apellido_mat+"</span></div>")
+            .appendTo( ul );
+        };
+        $('#rec_paciente_nombre').autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: '/buscar_paciente_nombre/?q=' + request.term,
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
+            minLength: 1,
+            select: function(event, ui) {
+                event.preventDefault();
+                $('#rec_paciente_id').val(ui.item.id);
+                $('#rec_paciente_clave').val(ui.item.cli_cod);
+                $('#rec_paciente_nombre').val(ui.item.cli_nombre+' '+ui.item.cli_apellido_pat+' '+ui.item.cli_apellido_mat);
+                $('#rec_genero').val(ui.item.cli_genero);
+                $('#rec_edad').val(ui.item.edad+' años');
+                return false;
+            }
+        }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li class='each'></li>" )
+            .data( "item.autocomplete", item )
+            .append("<div class='acItem'><span class='name'>"+item.cli_cod+"</span>"+"&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.cli_nombre+"</span><span class='name'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.cli_apellido_pat+"</span><span class='name'>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" + item.cli_apellido_mat+"</span></div>")
+            .appendTo( ul );
+        };
+    });
     
 
     @if(session('success'))

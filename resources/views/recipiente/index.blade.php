@@ -45,8 +45,16 @@
                                             <td>{{ $recipiente->nombre }}</td>
                                             <td>{{ $recipiente->descripcion }}</td>
                                             <td>
-                                                <a href="" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
-                                                <a href="" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></a>
+                                                <div class="btn-group" role="group" aria-label="Button group">
+                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_recipiente_{{ $recipiente->id }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
+                                                    @include('recipiente.modal.modal_actualizar_recipiente')
+                                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="{{ $recipiente->id }}" data-route="{{ route('recipiente.destroy', $recipiente->id) }}"><i class="fas fa-trash-alt"></i></button>
+                                                    {{-- <form action="{{ url('recipientes/'.$recipiente->id) }}" method="post">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button href="#" type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
+                                                    </form> --}}
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

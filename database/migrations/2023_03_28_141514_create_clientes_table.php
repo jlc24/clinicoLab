@@ -29,11 +29,13 @@ return new class extends Migration
             $table->string('cli_password');
             $table->unsignedBigInteger('dep_id');
             $table->unsignedBigInteger('mun_id');
+            $table->unsignedBigInteger('emp_id')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('dep_id')->references('id')->on('departamentos');
             $table->foreign('mun_id')->references('id')->on('municipios');
+            $table->foreign('emp_id')->references('id')->on('empresas');
         });
     }
 

@@ -34,8 +34,9 @@
 <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
 <!-- summernote -->
 <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
-
+<!-- sweetalert2 -->
 <link href="{{ asset('sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet">
-
+<!-- JQuery -->
+<link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
 
 @vite(['resources/sass/app.scss', 'resources/js/app.js'])

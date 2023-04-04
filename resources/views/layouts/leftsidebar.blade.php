@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 @php
-                    $activeRoutesAdmin = [ 'cliente','usuario','medico' ];
+                    $activeRoutesAdmin = [ 'cliente','usuario','medico','empresa' ];
                 @endphp
                 <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesAdmin) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesAdmin) ? 'active' : '' }}">
@@ -42,6 +42,12 @@
                             <a href="{{ route('medico') }}" class="nav-link {{ Request::is('medicos') ? 'active' : '' }}">
                                 <i class="nav-icon fa-solid fa-user-doctor"></i>
                                 <p>Medicos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item px-4">
+                            <a href="{{ route('empresa') }}" class="nav-link {{ Request::is('empresas') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-building"></i>
+                                <p>Empresas</p>
                             </a>
                         </li>
                     </ul>

@@ -13,39 +13,35 @@
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 
 </head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
-    <div class="col-10 py-5">
-        <div class="text-center">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            
-                        </div>
+<body>
+    <div class="content-wrapper" style="background-image: url('dist/img/img-404.gif'); background-size: cover; background-position: center center;">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        
                     </div>
-                </div><!-- /.container-fluid -->
-            </section>
-            <section class="content">
-                <div class="error-page">
-                    <h2 class="headline text-warning"> 404</h2>
-          
-                    <div class="error-content">
-                        <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Página no encontrada.</h3>
-                        <p>
-                            No pudimos encontrar la página que estabas buscando.
-                            <a href="{{ route('home') }}">Regresar al inicio</a>
-                        </p>
-                    </div>
-                  <!-- /.error-content -->
                 </div>
-                <!-- /.error-page -->
-            </section>
-        </div>
-    
+            </div><!-- /.container-fluid -->
+        </section>
+        <section class="content ">
+            <div class="error-page text-center">
+                
+                <h1 class="headline text-warning"> 404</h1>
+                
+                <div class="error-content">
+                    <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Página no encontrada.</h3>
+                    <p>
+                        No pudimos encontrar la página que estabas buscando.
+                        <a href="{{ route('home') }}">Regresar al inicio</a>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- /.error-page -->
+        </section>
+            
     </div>
-</div>
-    
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->

@@ -18,4 +18,9 @@ class Municipio extends Model
     {
         return $this->hasMany(Cliente::class);
     }
+
+    public function empresa()
+    {
+        return $this->hasMany(Empresa::class);
+    }
 }

@@ -45,8 +45,11 @@
                                             <td>{{ $muestra->nombre }}</td>
                                             <td>{{ $muestra->descripcion }}</td>
                                             <td>
-                                                <a href="" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
-                                                <a href="" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></a>
+                                                <div class="btn-group" role="group" aria-label="Button group">
+                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_muestra_{{ $muestra->id }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
+                                                    @include('muestra.modal.modal_actualizar_muestra')
+                                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="{{ $muestra->id }}" data-route="{{ route('muestra.destroy', $muestra->id) }}"><i class="fas fa-trash-alt"></i></button>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

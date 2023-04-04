@@ -5,13 +5,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Recepción</h1>
+                    <h1 class="m-0">{{ __('Recepción') }}</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Inicio</a></li>
-                        <li class="breadcrumb-item"><a href="#">Captura</a></li>
-                        <li class="breadcrumb-item active">Recepción</li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Inicio') }}</a></li>
+                        <li class="breadcrumb-item"><a href="#">{{ __('Captura') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('Recepción') }}</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -24,7 +24,7 @@
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
-                                DATOS DE RECEPCION
+                                {{ __('DATOS DE RECEPCION') }}
                             </h4>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -43,32 +43,28 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
                                                 </div>
-                                                <input type="text" placeholder="Clave Paciente" id="rec_paciente_clave" name="rec_paciente_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
-                                                {{-- <small><span style="color: red;" id="error_rec_paciente_clave">(Se requiere Nombre)</span></small> --}}
+                                                <input type="hidden" name="rec_paciente_id" id="rec_paciente_id">
+                                                <input type="text" placeholder="Clave Paciente" id="rec_paciente_clave" name="rec_paciente_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-sm-5">
                                         <div class="form-group row">
-                                            {{-- <label class="col-md-12 col-form-label" for="med_apellido_pat">{{ __('Apellido Paterno') }}:</label> --}}
                                             <div class="col-md-12 " style="display: inline-flex;">
                                                 <div class="input-group-prepend" >
                                                     <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-user"></i></div>
                                                 </div>
                                                 <input type="text" placeholder="Nombre del Paciente" id="rec_paciente_nombre" name="rec_paciente_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                                 <div class="input-group-prepend">
-                                                    <div class="input-group-text" style=" border-radius: 0px 5px 5px 0px; height: 31px; "><a href=""><i class="fas fa-user-plus"></i></a> </div>
+                                                    <div class="input-group-text" style=" border-radius: 0px 5px 5px 0px; height: 31px; "><a href="#" data-toggle="modal" data-target="#modal_crear_cliente" title="Nuevo paciente" style="color: #000"><i class="fas fa-user">+</i></a> </div>
                                                 </div>
-                                                {{-- <small><span style="color: red;" id="error_med_apellido">(Se requiere Apellido)</span></small> --}}
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-2 col-sm-2">
                                         <div class="form-group row">
-                                            {{-- <label class="col-md-12 col-form-label" for="med_apellido_mat">{{ __('Apellido Materno') }}:</label> --}}
                                             <div class="col-md-12">
                                                 <input type="text" placeholder="Genero" id="rec_genero" name="rec_genero" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
-                                                {{-- <small><span style="color: red;" id="error_med_apellido">(Se requiere Apellido)</span></small> --}}
                                             </div>
                                             
                                         </div>
@@ -77,7 +73,6 @@
                                         <div class="form-group row">
                                             <div class="col-md-12">
                                                 <input type="text" placeholder="Edad" id="rec_edad" name="rec_edad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
-                                                {{-- <small><span style="color: red;" id="error_med_apellido">(Se requiere Apellido)</span></small> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -92,25 +87,26 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
                                                 </div>
+                                                <input type="hidden" name="rec_empresa_id" id="rec_empresa_id">
                                                 <input type="text" placeholder="Clave Empresa" id="rec_empresa_clave" name="rec_empresa_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
-                                                {{-- <small><span style="color: red;" id="error_rec_Empresa_clave">(Se requiere Nombre)</span></small> --}}
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-5 col-sm-5">
                                         <div class="form-group row">
-                                            {{-- <label class="col-md-12 col-form-label" for="med_apellido_pat">{{ __('Apellido Paterno') }}:</label> --}}
                                             <div class="col-md-12 " style="display: inline-flex;">
                                                 <div class="input-group-prepend" >
                                                     <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-building"></i></div>
                                                 </div>
                                                 <input type="text" placeholder="Nombre de la Empresa" id="rec_empresa_nombre" name="rec_empresa_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text" style=" border-radius: 0px 5px 5px 0px; height: 31px; "><a href="#" data-toggle="modal" data-target="#modal_crear_empresa" title="Nueva Empresa" style="color: #000"><i class="fas fa-building">+</i></a> </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-sm-4">
                                         <div class="form-group row">
-                                            {{-- <label class="col-md-12 col-form-label" for="med_apellido_mat">{{ __('Apellido Materno') }}:</label> --}}
                                             <div class="col-md-12">
                                                 <select class="custom-select custom-select-sm" id="med_ci_nit_exp" name="med_ci_nit_exp" required>
                                                     <option value="" selected="" disabled>TIPO DE CONVENIO...</option>
@@ -130,7 +126,8 @@
                                                 <div class="input-group-prepend">
                                                     <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
                                                 </div>
-                                                <input type="text" placeholder="Clave Medico" id="rec_medico_clave" name="rec_medico_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                                <input type="hidden" name="rec_medico_id" id="rec_medico_id">
+                                                <input type="text" placeholder="Clave Medico" id="rec_medico_clave" name="rec_medico_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                             </div>
                                         </div>
                                     </div>
@@ -142,7 +139,7 @@
                                                 </div>
                                                 <input type="text" placeholder="Nombre del Medico" id="rec_medico_nombre" name="rec_medico_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                                 <div class="input-group-prepend">
-                                                    <div class="input-group-text" style=" border-radius: 0px 5px 5px 0px; height: 31px; "><a href=""><i class="fa-solid fa-user-doctor"></i></a> </div>
+                                                    <div class="input-group-text" style=" border-radius: 0px 5px 5px 0px; height: 31px; color: "><a href="#" data-toggle="modal" data-target="#modal_crear_medico" title="Nuevo Medico" style="color: #000"><i class="fa-solid fa-user-doctor">+</i></a></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +152,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mt-3">
                                     <div class="col-xl-5 col-sm-5">
                                         <div class="form-group row">
                                             <div class="col-md-12" style="display: inline-flex">
@@ -184,13 +181,13 @@
                             </form>
                         </div>
                     </div>
-                    <div class="card card-fuchsia collapsed-card">
-                        <div class="card-header" style="background-color: #29A689; padding-top: 15px;">
+                    <div class="card card-success">
+                        <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
                                 DATOS DEL ESTUDIO
                             </h4>
                             <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                                 </button>
                             </div>
                         </div>
@@ -350,4 +347,7 @@
             </div>
         </div>
     </section>
+    @include('cliente.modal.modal_crear_cliente')
+    @include('medico.modal.modal_crear_medico')
+    @include('empresa.modal.modal_crear_empresa')
 @endsection

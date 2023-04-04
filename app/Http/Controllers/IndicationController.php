@@ -61,16 +61,29 @@ class IndicationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Indication $indication)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'indi_nombre' => 'required|max:20',
+            'indi_descripcion' => 'required|max:255',
+        ]);
+
+        $indication = Indication::find($id);
+        $indication->nombre = $request->input('indi_nombre');
+        $indication->descripcion = $request->input('indi_descripcion');
+        $indication->save();
+
+        return redirect()->route('indication')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Indication $indication)
+    public function destroy($id)
     {
-        //
+        $indication = Indication::find($id);
+        $indication->delete();
+
+        return response()->json(['success' => 'El registro se ha eliminado con éxito']);
     }
 }
