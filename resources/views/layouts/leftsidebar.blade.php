@@ -26,25 +26,25 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="#" class="nav-link">
                                 <i class=" nav-icon fa-solid fa-user-plus"></i>
                                 <p>Usuarios del Sistema</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('cliente') }}" class="nav-link {{ Request::is('clientes') ? 'active' : '' }}">
                                 <i class=" nav-icon fa-solid fa-user"></i>
                                 <p>Pacientes</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('medico') }}" class="nav-link {{ Request::is('medicos') ? 'active' : '' }}">
                                 <i class="nav-icon fa-solid fa-user-doctor"></i>
                                 <p>Medicos</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('empresa') }}" class="nav-link {{ Request::is('empresas') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-building"></i>
                                 <p>Empresas</p>
@@ -64,55 +64,55 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview" >
-                        <li class="nav-item px-4" hidden>
+                        <li class="nav-item px-2" hidden>
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-microscope"></i>
                                 <p>Antibiogramas</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('bacteria') }}" class="nav-link {{ Request::is('bacterias') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-bacteria"></i>
                                 <p>Bacterias</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('cultivo') }}" class="nav-link {{ Request::is('cultivos') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-vial"></i>
                                 <p>Cultivos</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('estudio') }}" class="nav-link {{ Request::is('estudios') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-clipboard-list"></i>
                                 <p>Estudios</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4" hidden>
+                        <li class="nav-item px-2" hidden>
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-capsules"></i>
                                 <p>Medicamentos</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4" hidden>
+                        <li class="nav-item px-2" hidden>
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-clinic-medical"></i>
                                 <p>Laboratorio</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('muestra') }}" class="nav-link {{ Request::is('muestras') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-prescription-bottle"></i>
                                 <p>Tipos de Muestras</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('indication') }}" class="nav-link {{ Request::is('indications') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-file-contract"></i>
                                 <p>Indicaciones</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('recipiente') }}" class="nav-link {{ Request::is('recipientes') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-prescription-bottle-alt"></i>
                                 <p>Recipientes</p>
@@ -121,7 +121,7 @@
                     </ul>
                 </li>
                 @php
-                    $activeRoutesCaptura = [ 'recepcion' ];
+                    $activeRoutesCaptura = [ 'recepcion', 'result' ];
                 @endphp
                 <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesCaptura) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesCaptura) ? 'active' : '' }}">
@@ -132,14 +132,14 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item px-4">
+                        <li class="nav-item px-2">
                             <a href="{{ route('recepcion') }}" class="nav-link {{ Request::is('recepcion') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-keyboard"></i>
                                 <p>Recepción</p>
                             </a>
                         </li>
-                        <li class="nav-item px-4">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item px-2">
+                            <a href="{{ route('result') }}" class="nav-link {{ Request::is('results') ? 'active' : '' }}">
                                 <i class="nav-icon fa-solid fas fa-poll-h"></i>
                                 <p>Resultados</p>
                             </a>
@@ -158,22 +158,40 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
+                        <li class="nav-item px-2">
                             <a href="#" class="nav-link">
-                                <i class=" nav-icon fa-solid fa-user-plus"></i>
-                                <p>Clientes</p>
+                                <i class=" nav-icon fas fa-box"></i>
+                                <p>Caja</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item px-2">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa-solid fa-user-doctor"></i>
-                                <p>Medicos</p>
+                                <p>Corte de Caja</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item px-2">
                             <a href="#" class="nav-link">
                                 <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                <p>Productos</p>
+                                <p>Fórmulas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item px-2">
+                            <a href="#" class="nav-link">
+                                <i class="fa-solid fa-cart-plus nav-icon"></i>
+                                <p>Lista de Precios</p>
+                            </a>
+                        </li>
+                        <li class="nav-item px-2">
+                            <a href="#" class="nav-link">
+                                <i class="fa-solid fa-cart-plus nav-icon"></i>
+                                <p>Control de Resultados</p>
+                            </a>
+                        </li>
+                        <li class="nav-item px-2">
+                            <a href="#" class="nav-link">
+                                <i class="fa-solid fa-cart-plus nav-icon"></i>
+                                <p>Convenios</p>
                             </a>
                         </li>
                     </ul>

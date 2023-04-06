@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\CultivoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EstudioController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\RecepcionController;
 use App\Http\Controllers\RecipienteController;
+use App\Http\Controllers\ResultController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +39,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
 
+    Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configuration');
+
     Route::get('/clientes', [ClienteController::class, 'index'])->name('cliente');
     Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente');
     Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit']);
@@ -51,6 +55,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/medicos', [MedicoController::class, 'store'])->name('medico');
 
     Route::get('/recepcion', [RecepcionController::class, 'index'])->name('recepcion');
+
+    Route::get('/results', [ResultController::class, 'index'])->name('result');
     
     Route::get('/buscar_medico_id', [RecepcionController::class, 'buscarMedicoId']);
     Route::get('/buscar_medico_nombre', [RecepcionController::class, 'buscarMedicoNombre']);

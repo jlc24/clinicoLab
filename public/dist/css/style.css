@@ -2,9 +2,9 @@ a:link, a:visited, a:active {
     text-decoration:none;
 }
 .each{
-    border-bottom: 3px solid #32C861;
+    
     padding: 1px 0;
-    background-color: #F1F8E9;
+    background-color: #fff;
 }
 .acItem .name{
     font-size: 12px;

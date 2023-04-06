@@ -355,7 +355,7 @@
         }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
             return $( "<li class='each'></li>" )
             .data( "item.autocomplete", item )
-            .append("<div class='acItem'><span class='name'>"+item.med_cod+"</span>"+"&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.med_nombre+"</span><span class='name'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.med_apellido_pat+"</span><span class='name'>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" + item.med_apellido_mat+"</span></div>")
+            .append("<div class='acItem'><span class='name'>"+item.med_cod+"</span>"+" "+"<span class='name'>"+item.med_nombre+"</span><span class='name'>"+"&nbsp;&nbsp;&nbsp;&nbsp;"+"<span class='name'>"+item.med_apellido_pat+"</span><span class='name'>"+ "&nbsp;&nbsp;&nbsp;&nbsp;" + item.med_apellido_mat+"</span></div>")
             .appendTo( ul );
         };
 
@@ -415,7 +415,29 @@
         };
     });
     
+    //Funciones para Resultados
+    $(document).ready(function(){
+    });
+    const select = document.getElementById('buscar_resultado');
+    const form1 = document.getElementById('form_buscar_paciente');
+    const form2 = document.getElementById('form_buscar_estudio');
+    const form3 = document.getElementById('form_buscar_fechas');
+    function buscarPor() {
+        // Ocultamos todos los formularios
+        form1.style.display = 'none';
+        form2.style.display = 'none';
+        form3.style.display = 'none';
 
+        // Mostramos el formulario correspondiente a la opción seleccionada
+        const opcionSeleccionada = select.value;
+        if (opcionSeleccionada === 'paciente') {
+            form1.style.display = 'block';
+        } else if (opcionSeleccionada === 'estudio') {
+            form2.style.display = 'block';
+        } else if (opcionSeleccionada === 'fecha') {
+            form3.style.display = 'block';
+        }
+    }
     @if(session('success'))
         Swal.fire({
             title: 'Registrado',
