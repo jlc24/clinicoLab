@@ -64,7 +64,6 @@
     </section>
 
     @include('estudio.modal.modal_crear_estudio')
-    @include('estudio.modal.modal_modificar_estudio')
 @endsection
 
 @section('funciones')
