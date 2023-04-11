@@ -76,3 +76,7 @@
     </section>
     @include('medico.modal.modal_crear_medico')
 @endsection
+
+@section('funciones')
+    @include('medico.funciones.funciones_medico')
+@endsection

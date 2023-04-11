@@ -182,3 +182,7 @@
         </div>
     </section>
 @endsection
+
+@section('funciones')
+    @include('resultado.funciones.funciones_resultado')
+@endsection

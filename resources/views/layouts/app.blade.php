@@ -30,6 +30,8 @@
     @include('layouts.librerias')
     
     @include('layouts.funciones')
+    
+    @yield('funciones')
 
 </body>
 </html>

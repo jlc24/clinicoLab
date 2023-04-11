@@ -31,4 +31,8 @@ class Medico extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function recepcions()
+    {
+        return $this->hasMany(Recepcion::class);
+    }
 }

@@ -31,7 +31,7 @@ class RecipienteController extends Controller
     {
         $request->validate([
             'reci_nombre' => 'required|max:20',
-            'reci_descripcion' => 'required|max:255',
+            'reci_descripcion' => 'max:255',
         ]);
 
         Recipiente::create([
@@ -64,7 +64,7 @@ class RecipienteController extends Controller
     {
         $request->validate([
             'reci_nombre' => 'required|max:20',
-            'reci_descripcion' => 'required|max:255',
+            'reci_descripcion' => 'max:255',
         ]);
 
         $recipiente = Recipiente::find($id);

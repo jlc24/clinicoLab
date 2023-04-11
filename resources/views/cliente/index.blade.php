@@ -80,8 +80,8 @@
     
     @include('cliente.modal.modal_crear_cliente')
     
-    
-    
 @endsection
 
-
+@section('funciones')
+    @include('cliente.funciones.funciones_cliente')
+@endsection

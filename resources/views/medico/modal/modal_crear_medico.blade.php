@@ -29,7 +29,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user-doctor"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Nombres" id="med_nombre" name="med_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed()" required>
+                                    <input type="text" placeholder="Nombres" id="med_nombre" name="med_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" required>
                                     {{-- <small><span style="color: red;" id="error_med_nombre">(Se requiere Nombre)</span></small> --}}
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user-doctor"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Apellido Paterno" id="med_apellido_pat" name="med_apellido_pat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed()" required>
+                                    <input type="text" placeholder="Apellido Paterno" id="med_apellido_pat" name="med_apellido_pat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" required>
                                     {{-- <small><span style="color: red;" id="error_med_apellido">(Se requiere Apellido)</span></small> --}}
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user-doctor"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Apellido Materno" id="med_apellido_mat" name="med_apellido_mat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed()" >
+                                    <input type="text" placeholder="Apellido Materno" id="med_apellido_mat" name="med_apellido_mat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" >
                                     {{-- <small><span style="color: red;" id="error_med_apellido">(Se requiere Apellido)</span></small> --}}
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label" for="med_ci_nit">C.I.: </label>
                                 <div class="col-md-10">
-                                    <input type="number" min="0" id="med_ci_nit" name="med_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onchange="PasswordMed()" required>
+                                    <input type="number" min="0" id="med_ci_nit" name="med_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onkeyup="PasswordMed()" required>
                                     {{-- <small><span style="color: red;" id="error_med_ci_nit">(Se requiere Nº C.I.)</span></small> --}}
                                 </div>
                             </div>

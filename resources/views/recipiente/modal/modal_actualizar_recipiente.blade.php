@@ -19,7 +19,7 @@
                     </div>
                 @endif
 
-                <form action="{{ url('recipientes/'.$recipiente->id) }}" method="POST" class="form-horizontal" id="formulario_crear_recipiente">
+                <form action="{{ url('recipientes/'.$recipiente->id) }}" method="POST" class="form-horizontal" id="formulario_modificar_recipiente">
                     @method('PUT')
                     @csrf
                     <div class="row">

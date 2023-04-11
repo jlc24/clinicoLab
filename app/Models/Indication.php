@@ -13,4 +13,9 @@ class Indication extends Model
         'nombre', 
         'descripcion',
     ];
+
+    public function detalles()
+    {
+        return $this->hasMany(Detalle::class);
+    }
 }

@@ -27,4 +27,9 @@ class Empresa extends Model
     {
         return $this->belongsTo(Municipio::class);
     }
+
+    public function recepcions()
+    {
+        return $this->hasMany(Recepcion::class);
+    }
 }

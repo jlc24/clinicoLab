@@ -30,7 +30,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Nombres" id="cli_nombre" name="cli_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" required>
+                                    <input type="text" placeholder="Nombres" id="cli_nombre" name="cli_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario(); Password()" required>
                                     {{-- <small><span style="color: red;" id="error_cli_nombre">(Se requiere Nombre)</span></small> --}}
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Apellido Paterno" id="cli_apellido_pat" name="cli_apellido_pat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" required>
+                                    <input type="text" placeholder="Apellido Paterno" id="cli_apellido_pat" name="cli_apellido_pat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario(); Password()" required>
                                     {{-- <small><span style="color: red;" id="error_cli_apellido">(Se requiere Apellido)</span></small> --}}
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Apellido Materno" id="cli_apellido_mat" name="cli_apellido_mat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario()" >
+                                    <input type="text" placeholder="Apellido Materno" id="cli_apellido_mat" name="cli_apellido_mat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario(); Password()">
                                     {{-- <small><span style="color: red;" id="error_cli_apellido">(Se requiere Apellido)</span></small> --}}
                                 </div>
                             </div>
@@ -65,7 +65,7 @@
                             <div class="form-group row">
                                 <label class="col-md-2 col-form-label" for="cli_ci_nit">C.I.: </label>
                                 <div class="col-md-10">
-                                    <input type="number" min="0" id="cli_ci_nit" name="cli_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onchange="Password()" required>
+                                    <input type="number" min="0" id="cli_ci_nit" name="cli_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I." onkeyup="Password()" required>
                                     {{-- <small><span style="color: red;" id="error_cli_ci_nit">(Se requiere Nº C.I.)</span></small> --}}
                                 </div>
                             </div>

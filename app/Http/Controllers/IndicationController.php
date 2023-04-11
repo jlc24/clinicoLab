@@ -31,7 +31,7 @@ class IndicationController extends Controller
     {
         $request->validate([
             'indi_nombre' => 'required|max:20',
-            'indi_descripcion' => 'required|max:255',
+            'indi_descripcion' => 'max:255',
         ]);
 
         Indication::create([
@@ -65,7 +65,7 @@ class IndicationController extends Controller
     {
         $request->validate([
             'indi_nombre' => 'required|max:20',
-            'indi_descripcion' => 'required|max:255',
+            'indi_descripcion' => 'max:255',
         ]);
 
         $indication = Indication::find($id);

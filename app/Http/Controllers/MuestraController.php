@@ -31,7 +31,7 @@ class MuestraController extends Controller
     {
         $request->validate([
             'muestra_nombre' => 'required|max:20',
-            'muestra_descripcion' => 'required|max:255',
+            'muestra_descripcion' => 'max:255',
         ]);
 
         Muestra::create([
@@ -65,7 +65,7 @@ class MuestraController extends Controller
     {
         $request->validate([
             'muestra_nombre' => 'required|max:20',
-            'muestra_descripcion' => 'required|max:255',
+            'muestra_descripcion' => 'max:255',
         ]);
 
         $muestra = Muestra::find($id);

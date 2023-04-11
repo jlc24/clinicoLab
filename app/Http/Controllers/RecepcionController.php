@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Cliente;
 use App\Models\Empresa;
+use App\Models\Estudio;
 use App\Models\Municipio;
 use App\Models\Medico;
+use App\Models\Recepcion;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 
 class RecepcionController extends Controller
 {
@@ -25,20 +28,25 @@ class RecepcionController extends Controller
             'countmed' => Medico::count(),
             'countemp' => Empresa::count(),
             'medicos' => Medico::all(),
+            'recepciones' => Recepcion::all(),
         ]);
     }
+    // public function tablaRecepcion()
+    // {
+    //     return view('recepcion.tablas.tabla_recepcion', [
+    //         'recepciones' => Recepcion::all(),
+    //     ]);
+    // }
 
     public function buscarMedicoId(Request $request)
     {
         $term = $request->input('q');
-
         $medicos = Medico::where('med_cod', 'LIKE', '%'.$term.'%')->get();
         return response()->json($medicos);
     }
     public function buscarMedicoNombre(Request $request)
     {
         $term = $request->input('q');
-
         $medicos = Medico::where('med_nombre', 'LIKE', '%'.$term.'%')
                         ->orWhere('med_apellido_pat', 'LIKE', '%'.$term.'%')
                         ->orWhere('med_apellido_mat', 'LIKE', '%'.$term.'%')
@@ -78,6 +86,37 @@ class RecepcionController extends Controller
         return response()->json($pacientes);
     }
 
+    public function buscarEmpId(Request $request)
+    {
+        $term = $request->input('q');
+        $empresas = Empresa::where('emp_cod', 'LIKE', '%'.$term.'%')->get();
+        return response()->json($empresas);
+    }
+
+    public function buscarEmpNombre(Request $request)
+    {
+        $term = $request->input('q');
+        $empresas = Empresa::where('emp_nombre', 'LIKE', '%'.$term.'%')->get();
+        return response()->json($empresas);
+    }
+
+    public function buscarEstudioId(Request $request)
+    {
+        $term = $request->input('q');
+        $estudios = Estudio::where('est_cod', 'LIKE', '%'.$term.'%')->get();
+        return response()->json($estudios);
+    }
+
+    public function buscarEstudioNombre(Request $request)
+    {
+        $term = $request->input('q');
+        $estudios = DB::table('detalles')
+                        ->join('estudios', 'detalles.estudio_id', '=', 'estudios.id')
+                        ->select('detalles.id', 'est_cod', 'est_nombre', 'est_precio')
+                        ->where('est_nombre', 'LIKE', '%'.$term.'%')->get();
+        return response()->json($estudios);
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -92,7 +131,29 @@ class RecepcionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'rec_est_id' => 'required|integer',
+            'rec_paciente_id' => 'required|integer',
+            'rec_medico_id' => 'nullable|integer',
+            'rec_empresa_id' => 'nullable|integer',
+            'rec_estado'=> 'required',
+            'rec_observacion' => 'nullable|string|max:255',
+            'rec_referencia' => 'nullable|string|max:255',
+        ]);
+
+        // dd($request->all());
+
+        $datos = $request->all();
+
+        Recepcion::create([
+            'est_id' => $datos['rec_est_id'],
+            'cli_id' => $datos['rec_paciente_id'],
+            'med_id' => $datos['rec_medico_id'],
+            'emp_id' => $datos['rec_empresa_id'],
+            'estado' => $datos['rec_estado'],
+            'observacion' => $datos['rec_observacion'],
+            'referencia' => $datos['rec_referencia'],
+        ]);
     }
 
     /**

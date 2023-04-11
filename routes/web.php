@@ -55,6 +55,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/medicos', [MedicoController::class, 'store'])->name('medico');
 
     Route::get('/recepcion', [RecepcionController::class, 'index'])->name('recepcion');
+    Route::post('/recepcion', [RecepcionController::class, 'store'])->name('recepcion');
+    // Route::get('/tabla-recepcion', [RecepcionController::class, 'tablaRecepcion'])->name('recepcion.tabla');
 
     Route::get('/results', [ResultController::class, 'index'])->name('result');
     
@@ -62,8 +64,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/buscar_medico_nombre', [RecepcionController::class, 'buscarMedicoNombre']);
     Route::get('/buscar_paciente_id', [RecepcionController::class, 'buscarPacienteId']);
     Route::get('/buscar_paciente_nombre', [RecepcionController::class, 'buscarPacienteNombre']);
+    Route::get('/buscar_emp_id', [RecepcionController::class, 'buscarEmpId']);
+    Route::get('/buscar_emp_nombre', [RecepcionController::class, 'buscarEmpNombre']);
+    Route::get('/buscar_estudio_id', [RecepcionController::class, 'buscarEstudioId']);
+    Route::get('/buscar_estudio_nombre', [RecepcionController::class, 'buscarEstudioNombre']);
 
     Route::get('/estudios', [EstudioController::class, 'index'])->name('estudio');
+    Route::post('/estudios', [EstudioController::class, 'store'])->name('estudio');
+    Route::put('/estudios/{id}', [EstudioController::class, 'update']);
 
     Route::get('/cultivos', [CultivoController::class, 'index'])->name('cultivo');
 

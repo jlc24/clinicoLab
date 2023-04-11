@@ -38,6 +38,23 @@
                                     <th>Nombre</th>
                                     <th>Op</th>
                                 </thead>
+                                <tbody>
+                                    @foreach ($detalles as $detalle)
+                                        <tr>
+                                            <td>{{ $detalle->estudio->id }}</td>
+                                            <td>{{ $detalle->estudio->est_cod }}</td>
+                                            <td>{{ $detalle->estudio->est_nombre }}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="#" data-toggle="modal" data-target="#modal_editar_estudio_{{ $detalle->estudio->id }}" class="btn btn-sm btn-outline-warning" title="Editar Estudio"><i class="fas fa-user-edit"></i></a>
+                                                    @include('estudio.modal.modal_modificar_estudio')
+                                                    <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-info" title="Configurar"><i class="fas fa-cog"></i></a>
+                                                    <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-danger" title="Elimnar estudio"><i class="fas fa-trash-alt"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -47,4 +64,9 @@
     </section>
 
     @include('estudio.modal.modal_crear_estudio')
+    @include('estudio.modal.modal_modificar_estudio')
+@endsection
+
+@section('funciones')
+    @include('estudio.funciones.funciones_estudio')
 @endsection
