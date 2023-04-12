@@ -64,3 +64,7 @@
 
     @include('indication.modal.modal_crear_indications')
 @endsection
+
+@section('funciones')
+    @include('indication.funciones.funcion_indicacion')
+@endsection

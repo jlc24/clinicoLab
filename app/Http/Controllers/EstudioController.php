@@ -94,14 +94,14 @@ class EstudioController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'est_cod' => 'required|max:10|unique:estudios,est_cod,'.$id,
-            'est_nombre' => 'required|max:255',
-            'est_descripcion' => 'max:255',
-            'est_muestra' => 'required',
-            'est_recipiente' => 'required',
-            'est_indicaciones' => 'required',
-            'est_precio' => 'required|decimal:2',
-            'est_moneda' => 'required'
+            'est_cod_update' => 'required|max:10|unique:estudios,est_cod,'.$id,
+            'est_nombre_update' => 'required|max:255',
+            'est_descripcion_update' => 'max:255',
+            'est_muestra_update' => 'required',
+            'est_recipiente_update' => 'required',
+            'est_indicaciones_update' => 'required',
+            'est_precio_update' => 'required|decimal:2',
+            'est_moneda_update' => 'required'
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
@@ -109,19 +109,19 @@ class EstudioController extends Controller
 
         $estudio = Estudio::find($id);
         $estudio->update([
-            'est_cod' => $request->input('est_cod'),
-            'est_nombre' => $request->input('est_nombre'),
-            'est_descripcion' => $request->input('est_descripcion'),
-            'est_precio' => $request->input('est_precio'),
-            'est_moneda' => $request->input('est_moneda')
+            'est_cod' => $request->input('est_cod_update'),
+            'est_nombre' => $request->input('est_nombre_update'),
+            'est_descripcion' => $request->input('est_descripcion_update'),
+            'est_precio' => $request->input('est_precio_update'),
+            'est_moneda' => $request->input('est_moneda_update')
         ]);
 
         $detalle = Detalle::where('estudio_id', '=', $id)->first();
         $detalle->update([
             'estudio_id' => $estudio->id,
-            'muestra_id' => $request->input('est_muestra'),
-            'recipiente_id' => $request->input('est_recipiente'),
-            'indicacion_id' => $request->input('est_indicaciones'),
+            'muestra_id' => $request->input('est_muestra_update'),
+            'recipiente_id' => $request->input('est_recipiente_update'),
+            'indicacion_id' => $request->input('est_indicaciones_update'),
         ]);
 
         return redirect()->route('estudio')->with('success', 'El registro se ha actualizado con éxito');

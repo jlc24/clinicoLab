@@ -25,17 +25,17 @@
                     <div class="row">
                         <div class="col-xl-12 col-sm-12" >
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label text-right" for="muestra_nombre">{{ __('Nombre Muestra') }}: </label>
+                                <label class="col-md-4 col-form-label text-right" for="muestra_nombre_update">{{ __('Nombre Muestra') }}: </label>
                                 <div class="col-md-8">
-                                    <input type="text" value="{{ $muestra->nombre }}" id="muestra_nombre" name="muestra_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Muestra" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
+                                    <input type="text" value="{{ $muestra->nombre }}" id="muestra_nombre_update" name="muestra_nombre_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label text-right" for="muestra_descripcion">{{ __('Descripcion') }}:</label>
+                                <label class="col-md-4 col-form-label text-right" for="muestra_descripcion_update">{{ __('Descripcion') }}:</label>
                                 <div class="col-md-8">
-                                    <textarea class="form-control form-control-sm" name="muestra_descripcion" id="muestra_descripcion" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); ">{{ $muestra->descripcion }}</textarea>
+                                    <textarea class="form-control form-control-sm" name="muestra_descripcion_update" id="muestra_descripcion_update" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); ">{{ $muestra->descripcion }}</textarea>
                                 </div>
                             </div>
                         </div>

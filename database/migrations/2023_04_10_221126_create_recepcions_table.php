@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('recepcions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('est_id');
+            $table->unsignedBigInteger('det_id');
             $table->unsignedBigInteger('cli_id');
             $table->unsignedBigInteger('med_id')->nullable();
             $table->unsignedBigInteger('emp_id')->nullable();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('referencia', 255)->nullable();
             $table->timestamps();
 
-            $table->foreign('est_id')->references('id')->on('estudios');
+            $table->foreign('det_id')->references('id')->on('detalles');
             $table->foreign('cli_id')->references('id')->on('clientes');
             $table->foreign('med_id')->references('id')->on('medicos');
             $table->foreign('emp_id')->references('id')->on('empresas');

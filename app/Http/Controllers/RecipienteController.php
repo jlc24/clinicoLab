@@ -63,13 +63,13 @@ class RecipienteController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'reci_nombre' => 'required|max:20',
-            'reci_descripcion' => 'max:255',
+            'reci_nombre_update' => 'required|max:20',
+            'reci_descripcion_update' => 'max:255',
         ]);
 
         $recipiente = Recipiente::find($id);
-        $recipiente->nombre = $request->input('reci_nombre');
-        $recipiente->descripcion = $request->input('reci_descripcion');
+        $recipiente->nombre = $request->input('reci_nombre_update');
+        $recipiente->descripcion = $request->input('reci_descripcion_update');
         $recipiente->save();
         
         return redirect()->route('recipiente')->with('success', 'El registro se ha modificado con éxito');

@@ -22,9 +22,5 @@ class Estudio extends Model
         return $this->hasMany(Detalle::class);
     }
 
-    public function recepcions()
-    {
-        return $this->hasMany(Recepcion::class);
-    }
     
 }

@@ -20,155 +20,17 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-12 col-sm-12">
+                <div class="col-xl-4 col-sm-4">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
                                 {{ __('DATOS DE RECEPCION') }}
                             </h4>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                </button>
-                            </div>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-xl-12 col-sm-12">
-                                    <label class="col-md-12 col-form-label" >{{ __('Datos del Paciente a recepcionar') }}:</label>
-                                </div>
-                                <div class="col-xl-3 col-sm-3">
-                                    <div class="form-group row">
-                                        <div class="col-md-12" style="display: inline-flex">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
-                                            </div>
-                                            
-                                            <input type="text" placeholder="Clave Paciente" id="rec_paciente_clave" name="rec_paciente_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-5 col-sm-5">
-                                    <div class="form-group row">
-                                        <div class="col-md-12 " style="display: inline-flex;">
-                                            <div class="input-group-prepend" >
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-user"></i></div>
-                                            </div>
-                                            <input type="text" placeholder="Nombre del Paciente" id="rec_paciente_nombre" name="rec_paciente_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text" style=" border-radius: 0px 5px 5px 0px; height: 31px; "><a href="#" data-toggle="modal" data-target="#modal_crear_cliente" title="Nuevo paciente" style="color: #000"><i class="fas fa-user">+</i></a> </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-sm-2">
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="Genero" id="rec_genero" name="rec_genero" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-sm-2">
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="Edad" id="rec_edad" name="rec_edad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xl-12 col-sm-12">
-                                    <label class="col-md-12 col-form-label" >{{ __('Datos de la Empresa a recepcionar') }}: (Opcional)</label>
-                                </div>
-                                <div class="col-xl-3 col-sm-3">
-                                    <div class="form-group row">
-                                        <div class="col-md-12" style="display: inline-flex">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
-                                            </div>
-                                            
-                                            <input type="text" placeholder="Clave Empresa" id="rec_empresa_clave" name="rec_empresa_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-5 col-sm-5">
-                                    <div class="form-group row">
-                                        <div class="col-md-12 " style="display: inline-flex;">
-                                            <div class="input-group-prepend" >
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-building"></i></div>
-                                            </div>
-                                            <input type="text" placeholder="Nombre de la Empresa" id="rec_empresa_nombre" name="rec_empresa_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text" style=" border-radius: 0px 5px 5px 0px; height: 31px; "><a href="#" data-toggle="modal" data-target="#modal_crear_empresa" title="Nueva Empresa" style="color: #000"><i class="fas fa-building">+</i></a> </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="col-xl-7 col-sm-7"></div>
                                 <div class="col-xl-4 col-sm-4">
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <select class="custom-select custom-select-sm" id="med_ci_nit_exp" name="med_ci_nit_exp" required>
-                                                <option value="" selected="" disabled>TIPO DE CONVENIO...</option>
-                                                    <option value=""></option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xl-12 col-sm-12">
-                                    <label class="col-md-12 col-form-label" >{{ __('Datos del Medico a recepcionar') }}:</label>
-                                </div>
-                                <div class="col-xl-3 col-sm-3">
-                                    <div class="form-group row">
-                                        <div class="col-md-12" style="display: inline-flex">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
-                                            </div>
-                                            
-                                            <input type="text" placeholder="Clave Medico" id="rec_medico_clave" name="rec_medico_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-5 col-sm-5">
-                                    <div class="form-group row">
-                                        <div class="col-md-12 " style="display: inline-flex;">
-                                            <div class="input-group-prepend" >
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fa-solid fa-user-doctor"></i></div>
-                                            </div>
-                                            <input type="text" placeholder="Nombre del Medico" id="rec_medico_nombre" name="rec_medico_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text" style=" border-radius: 0px 5px 5px 0px; height: 31px; color: "><a href="#" data-toggle="modal" data-target="#modal_crear_medico" title="Nuevo Medico" style="color: #000"><i class="fa-solid fa-user-doctor">+</i></a></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-sm-4">
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <input type="text" placeholder="Especialidad" id="rec_especialidad" name="rec_especialidad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <form id="buscar_estudio">
-                                @csrf
-                            <div class="row mt-3">
-                                <div class="col-xl-5 col-sm-5">
-                                    <div class="form-group row">
-                                        <div class="col-md-12" style="display: inline-flex">
-                                            <input type="text" placeholder="Observaciones" id="rec_observacion" name="rec_observacion" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-4 col-sm-4">
-                                    <div class="form-group row">
-                                        <div class="col-md-12" style="display: inline-flex">
-                                            <input type="text" placeholder="Referencias" id="rec_referencia" name="rec_referencia" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
                                             <div class="input-group-prepend">
@@ -179,8 +41,129 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <label class="col-md-12 col-form-label" ><i class="fas fa-user"></i> {{ __('Datos del Paciente a recepcionar') }}:</label>
+                                </div>
+                                <div class="col-xl-3 col-sm-3">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="display: inline-flex">
+                                            <input type="text" placeholder="Clave" id="rec_paciente_clave" name="rec_paciente_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 col-sm-9">
+                                    <div class="form-group row">
+                                        <div class="col-md-12 " style="display: inline-flex;">
+                                            <input type="text" placeholder="Nombre Paciente" id="rec_paciente_nombre" name="rec_paciente_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" style="padding-left: 5px; border-radius: 0px 5px 5px 0px; height: 31px; width: 40px"><a href="#" data-toggle="modal" data-target="#modal_crear_cliente" title="Nuevo paciente" style="color: #000"><i class="fas fa-user">+</i></a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" hidden>
+                                <div class="col-xl-6 col-sm-6">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Genero" id="rec_genero" name="rec_genero" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-sm-6">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Edad" id="rec_edad" name="rec_edad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <label class="col-md-12 col-form-label" ><i class="fas fa-building"></i> {{ __('Datos de la Empresa a recepcionar') }}: (Opcional)</label>
+                                </div>
+                                <div class="col-xl-3 col-sm-3">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="display: inline-flex">
+                                            <input type="text" placeholder="Clave" id="rec_empresa_clave" name="rec_empresa_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 col-sm-9">
+                                    <div class="form-group row">
+                                        <div class="col-md-12 " style="display: inline-flex;">
+                                            <input type="text" placeholder="Nombre de la Empresa" id="rec_empresa_nombre" name="rec_empresa_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" style="padding-left: 5px; border-radius: 0px 5px 5px 0px; height: 31px; width: 40px"><a href="#" data-toggle="modal" data-target="#modal_crear_empresa" title="Nueva Empresa" style="color: #000"><i class="fas fa-building">+</i></a> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" hidden>
+                                <div class="col-xl-6 col-sm-6">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Convenio" id="rec_emp_convenio" name="rec_emp_convenio" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <label class="col-md-12 col-form-label" ><i class="fa-solid fa-user-doctor"></i> {{ __('Datos del Medico a recepcionar') }}:</label>
+                                </div>
+                                <div class="col-xl-3 col-sm-3">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="display: inline-flex">
+                                            <input type="text" placeholder="Clave" id="rec_medico_clave" name="rec_medico_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 col-sm-9">
+                                    <div class="form-group row">
+                                        <div class="col-md-12 " style="display: inline-flex;">
+                                            <input type="text" placeholder="Nombre del Medico" id="rec_medico_nombre" name="rec_medico_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" style="padding-left: 5px; border-radius: 0px 5px 5px 0px; height: 31px; width: 40px"><a href="#" data-toggle="modal" data-target="#modal_crear_medico" title="Nuevo Medico" style="color: #000"><i class="fa-solid fa-user-doctor">+</i></a></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" hidden>
+                                <div class="col-xl-8 col-sm-8">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Especialidad" id="rec_especialidad" name="rec_especialidad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form id="buscar_estudio">
+                                @csrf
+                            <hr><div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="display: inline-flex">
+                                            <input type="text" placeholder="Observaciones" id="rec_observacion" name="rec_observacion" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 col-sm-12">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="display: inline-flex">
+                                            <input type="text" placeholder="Referencias" id="rec_referencia" name="rec_referencia" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-xl-8 col-sm-8">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">

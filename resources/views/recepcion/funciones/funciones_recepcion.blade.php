@@ -217,54 +217,60 @@
             .appendTo( ul );
         };
 
+        // $("#buscar_estudio").validate(function(){
+        //     rules: {
+        //         rec_est_id: {
+        //             required: true,
+        //             minLength: 1
+        //         }
+        //     },
+        //     messages: {
+        //         rec_est_id: {
+        //             required: "Este campo es obligatorio",
+        //             minLength: "No debe estar vacio"
+        //         }
+        //     }
+        // })
         //----Capturar datos del formulario recepcion
         $("#btnAddRecepcion").on('click', function() {
-            // var datos = new FormData();
-            // datos.append("estudio_id", $("#rec_est_id").val());
-            // datos.append("cliente_id", $("#rec_paciente_id").val());
-            // datos.append("medico_id", $("#rec_medico_id").val());
-            // datos.append("empresa_id", $("#rec_empresa_id").val());
-            // datos.append("estado", $("#rec_estado").val());
-            // datos.append("observacion", $("#rec_observacion").val());
-            // datos.append("referencia", $("#rec_referencia").val());
-            var data = $("#buscar_estudio").serialize();
-            //alert(data); return false;
+            var datos = new FormData();
+            datos.append("det_id", $("#rec_est_id").val());
+            datos.append("cli_id", $("#rec_paciente_id").val());
+            datos.append("med_id", $("#rec_medico_id").val());
+            datos.append("emp_id", $("#rec_empresa_id").val());
+            datos.append("estado", $("#rec_estado").val());
+            datos.append("observacion", $("#rec_observacion").val());
+            datos.append("referencia", $("#rec_referencia").val());
+            for (var campo of datos.values()) {
+                console.log(campo);
+            }
             $.ajax({
                 url:"{{ route('recepcion') }}",
                 method:"POST",
-                data: data,
-                dataType: 'JSON',
+                data: datos,
+                contentType: false,
+                processData: false,
                 headers: {
-                    // 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    "_token": "{{ csrf_token() }}"
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success:function(response){
-                    console.log(response)
-                    if(response){
-                        Swal.fire({
-                            type: 'success',
-                            title: 'Registro de Evento Exitoso',
-                            showConfirmButton: false,
-                            timer: 2000
-                        })
-                        //$('#RecepcionTabla').load('tabla_recepcion.php');
-                        $('#rec_est_id').val("");
-                        $('#rec_est_clave').val("");
-                        $('#rec_est_nombre').val("");
-                        $('#rec_est_precio').val("");
-                    }else{
-                        Swal.fire({
-                            type: 'error',
-                            title: 'Se ha Producido un Error.',
-                            showConfirmButton: false,
-                            timer: 2000//1500
-                        })
-                    }
-                },
-                error:function(xhr, textStatus, errorThrown){
-                    console.log(textStatus);
-                }
             })
+            .done(function(response){
+                console.log('La solicitud ha sido completada con éxito.');
+                Swal.fire({
+                    title: 'Registrado',
+                    text: 'Registro de Evento Exitoso',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+                $("#rec_est_id").val("");
+                $("#rec_est_clave").val("");
+                $("#rec_est_nombre").val("");
+                $("#rec_est_precio").val("");
+            })
+            .fail(function(xhr, textStatus, errorThrown){
+                console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+            });
         });
 
     });

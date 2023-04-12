@@ -69,3 +69,7 @@
 
     @include('recipiente.modal.modal_crear_recipiente')
 @endsection
+
+@section('funciones')
+    @include('recipiente.funciones.funcion_recipiente')
+@endsection

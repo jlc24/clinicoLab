@@ -30,13 +30,13 @@ class IndicationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'indi_nombre' => 'required|max:20',
-            'indi_descripcion' => 'max:255',
+            'indi_nombre_update' => 'required|max:20',
+            'indi_descripcion_update' => 'max:255',
         ]);
 
         Indication::create([
-            'nombre' => $request->input('indi_nombre'),
-            'descripcion' => $request->input('indi_descripcion'),
+            'nombre' => $request->input('indi_nombre_update'),
+            'descripcion' => $request->input('indi_descripcion_update'),
         ]);
 
         return redirect()->route('indication')->with('success', 'El registro se ha creado con éxito');
@@ -64,13 +64,13 @@ class IndicationController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'indi_nombre' => 'required|max:20',
-            'indi_descripcion' => 'max:255',
+            'indi_nombre_update' => 'required|max:20',
+            'indi_descripcion_update' => 'max:255',
         ]);
 
         $indication = Indication::find($id);
-        $indication->nombre = $request->input('indi_nombre');
-        $indication->descripcion = $request->input('indi_descripcion');
+        $indication->nombre = $request->input('indi_nombre_update');
+        $indication->descripcion = $request->input('indi_descripcion_update');
         $indication->save();
 
         return redirect()->route('indication')->with('success', 'El registro se ha modificado con éxito');

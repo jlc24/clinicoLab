@@ -11,6 +11,7 @@
         </thead>
         <tbody>
             @foreach ($recepciones as $recepcion)
+            
                 <tr>
                     @if($recepcion->estudio != null)
                         <td>{{ $recepcion->estudio->id}}</td>

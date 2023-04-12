@@ -19,23 +19,23 @@
                     </div>
                 @endif
 
-                <form action="{{ url('recipientes/'.$recipiente->id) }}" method="POST" class="form-horizontal" id="formulario_modificar_recipiente">
+                <form action="{{ url('recipientes/'.$recipiente->id) }}" method="POST" class="form-horizontal" id="formulario_actualizar_recipiente">
                     @method('PUT')
                     @csrf
                     <div class="row">
                         <div class="col-xl-12 col-sm-12" >
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label text-right" for="reci_nombre">{{ __('Nombre Recipiente') }}: </label>
+                                <label class="col-md-4 col-form-label" for="reci_nombre_update">{{ __('Nombre Recipiente') }}: </label>
                                 <div class="col-md-8">
-                                    <input type="text" value="{{ $recipiente->nombre }}" id="reci_nombre" name="reci_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Recipiente" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
+                                    <input type="text" value="{{ $recipiente->nombre }}" id="reci_nombre_update" name="reci_nombre_update" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Recipiente" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label text-right" for="reci_descripcion">{{ __('Descripcion') }}:</label>
+                                <label class="col-md-4 col-form-label" for="reci_descripcion_update">{{ __('Descripcion') }}:</label>
                                 <div class="col-md-8">
-                                    <textarea class="form-control form-control-sm" name="reci_descripcion" id="reci_descripcion" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); ">{{ $recipiente->descripcion }}</textarea>
+                                    <textarea class="form-control form-control-sm" name="reci_descripcion_update" id="reci_descripcion_update" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); ">{{ $recipiente->descripcion }}</textarea>
                                 </div>
                             </div>
                         </div>

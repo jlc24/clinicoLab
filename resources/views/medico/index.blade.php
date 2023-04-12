@@ -58,7 +58,8 @@
                                             <td>{{ $medico->med_password }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Button group">
-                                                    <button class="btn btn-sm btn-outline-warning"><i class="fas fa-user-edit"></i></button>
+                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-warning" ><i class="fas fa-user-edit"></i></a>
+                                                    @include('medico.modal.modal_actualizar_medico')
                                                     <button class="btn btn-sm btn-outline-info"><i class="fas fa-info-circle"></i></button>
                                                     <button class="btn btn-sm btn-outline-success"><i class="fas fa-eye"></i></button>
                                                     <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file"></i></button>

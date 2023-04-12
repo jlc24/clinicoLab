@@ -64,3 +64,7 @@
 
     @include('muestra.modal.modal_crear_muestra')
 @endsection
+
+@section('funciones')
+    @include('muestra.funciones.funcion_muestra')
+@endsection

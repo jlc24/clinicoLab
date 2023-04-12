@@ -10,7 +10,7 @@ class Recepcion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'est_id',
+        'det_id',
         'cli_id',
         'med_id',
         'emp_id',
@@ -19,9 +19,9 @@ class Recepcion extends Model
         'referencia',
     ];
 
-    public function estudio()
+    public function detalle()
     {
-        return $this->belongsTo(Estudio::class);
+        return $this->belongsTo(Detalle::class);
     }
 
     public function cliente()

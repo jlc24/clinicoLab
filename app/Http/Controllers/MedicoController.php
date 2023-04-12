@@ -103,9 +103,53 @@ class MedicoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Medico $medico)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            
+            'med_nombre_update' => 'required|max:20',
+            'med_apellido_pat_update' => 'required|max:50',
+            'med_apellido_mat_update' => 'max:50',
+            'med_ci_nit_update' => 'required',
+            'med_ci_nit_exp_update' => 'max:10',
+            'med_genero_update' => 'required|max:10', 
+            'med_email_update' => 'required|email|max:255',
+            'med_direccion_update' => 'max:255',
+            'med_celular_update' => 'required|max:15',
+            'med_especialidad_update' => 'required|max:50',
+            'med_usuario_update' => 'required|max:10',
+            'med_password_update' => 'required',
+        ]);
+
+        // dd($request->all());
+
+        $user = User::find($id);
+        $user->update([
+            'user' => $request->input('med_usuario_update'),
+            'email' => $request->input('med_email_update'),
+            'password' => Hash::make($request->input('med_password_update')),
+            'estado' => $request->input('med_estado_update'),
+            'rol' => $request->input('med_rol_update')
+        ]);
+        $medico = Medico::where('user_id', '=', $id)->first();
+        $medico->update([
+            'med_cod' => $request->input('med_cod_update'),
+            'med_nombre' => $request->input('med_nombre_update'),
+            'med_apellido_pat' => $request->input('med_apellido_pat_update'),
+            'med_apellido_mat' => $request->input('med_apellido_mat_update'),
+            'med_ci_nit' => $request->input('med_ci_nit_update'),
+            'med_exp_ci' => $request->input('med_ci_nit_exp_update'),
+            'med_genero' => $request->input('med_genero_update'),
+            'med_correo' => $request->input('med_email_update'),
+            'med_celular' => $request->input('med_celular_update'),
+            'med_direccion' => $request->input('med_direccion_update'),
+            'med_especialidad' => $request->input('med_especialidad_update'),
+            'med_usuario' => $request->input('med_usuario_update'),
+            'med_password' => $request->input('med_password_update'),
+            'user_id' => $user->id
+        ]);
+        
+        return redirect()->route('medico')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**

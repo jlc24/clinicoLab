@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Municipio;
 use App\Models\User;
+use DateTime;
 use Illuminate\Support\Facades\Hash;
 
 class ClienteController extends Controller
@@ -16,12 +17,25 @@ class ClienteController extends Controller
      */
     public function index()
     {
+        $clientes = Cliente::all();
         return view('cliente.index', [
             'departamentos' => Departamento::all(), 
-            'clientes' => Cliente::all(),
+            'clientes' => $clientes,
             'countpac' => Cliente::count(),
             'municipios' => Municipio::all(),
         ]);
+    }
+
+    public function clientes($id)
+    {
+        $clientes = Cliente::where('id', $id)->get();
+        foreach ($clientes as $cliente) {
+            $fec_nac = new DateTime($cliente->cli_fec_nac);
+            $hoy = new DateTime();
+            $edad = $hoy->diff($fec_nac)->y;
+            $cliente->cli_edad = $edad;
+        }
+        return response()->json($clientes);
     }
 
     public function datos($id)
@@ -110,17 +124,7 @@ class ClienteController extends Controller
      */
     public function edit($id)
     {
-        $clientes = Cliente::find($id);
-        $departamentos = Departamento::all();
-        $municipios = Municipio::all();
-        //return $datos;
-        return view('cliente.modal.modal_modificar_cliente', [
-            'clientes' => $clientes,
-            'departamentos' => $departamentos,
-            'municipios' => $municipios
-        ]);
-        $clientes = Cliente::where('id', $id)->get();
-        return response()->json($clientes);
+        //
     }
 
     /**
@@ -130,53 +134,53 @@ class ClienteController extends Controller
     {
         $request->validate([
             
-            'cli_nombre' => 'required|max:10',
-            'cli_apellido_pat' => 'required|max:20',
-            'cli_apellido_mat' => 'max:20',
-            'cli_ci_nit' => 'required',
-            'cli_ci_nit_exp' => 'required|max:10',
-            'cli_fec_nac' => 'required|date',
-            'cli_genero' => 'required|max:10',
-            'cli_email' => 'required|email|max:255',
-            'cli_direccion' => 'max:255',
-            'cli_celular' => 'required|max:15',
-            'cli_departamento' => 'required',
-            'cli_municipio' => 'required',
-            'cli_usuario' => 'required|max:10',
-            'cli_password' => 'required',
-            'cli_estado' => 'required',
-            'cli_rol' => 'required'
+            'cli_nombre_update' => 'required|max:10',
+            'cli_apellido_pat_update' => 'required|max:20',
+            'cli_apellido_mat_update' => 'max:20',
+            'cli_ci_nit_update' => 'required',
+            'cli_ci_nit_exp_update' => 'required|max:10',
+            'cli_fec_nac_update' => 'required|date',
+            'cli_genero_update' => 'required|max:10',
+            'cli_email_update' => 'required|email|max:255',
+            'cli_direccion_update' => 'max:255',
+            'cli_celular_update' => 'required|max:15',
+            'cli_departamento_update' => 'required',
+            'cli_municipio_update' => 'required',
+            'cli_usuario_update' => 'required|max:10',
+            'cli_password_update' => 'required',
+            'cli_estado_update' => 'required',
+            'cli_rol_update' => 'required'
         ]);
         // dd($request->all());
 
         $model = User::find($id); // asumiendo que tienes el id del registro a actualizar
 
         $model->update([
-            'user' => $request->input('cli_usuario'),
-            'email' => $request->input('cli_email'),
-            'password' => Hash::make($request->input('cli_password')),
-            'estado' => $request->input('cli_estado'),
-            'rol' => $request->input('cli_rol')
+            'user' => $request->input('cli_usuario_update'),
+            'email' => $request->input('cli_email_update'),
+            'password' => Hash::make($request->input('cli_password_update')),
+            'estado' => $request->input('cli_estado_update'),
+            'rol' => $request->input('cli_rol_update')
         ]);
 
         // Actualizar el registro correspondiente en la tabla Cliente
         $cliente = Cliente::where('user_id', '=', $id)->first();
         $cliente->update([
-            'cli_cod' => $request->input('cli_cod'),
-            'cli_nombre' => $request->input('cli_nombre'),
-            'cli_apellido_pat' => $request->input('cli_apellido_pat'),
-            'cli_apellido_mat' => $request->input('cli_apellido_mat'),
-            'cli_ci_nit' => $request->input('cli_ci_nit'),
-            'cli_exp_ci' => $request->input('cli_ci_nit_exp'),
-            'cli_fec_nac' => $request->input('cli_fec_nac'),
-            'cli_genero' => $request->input('cli_genero'),
-            'cli_correo' => $request->input('cli_email'),
-            'cli_direccion' => $request->input('cli_direccion'),
-            'cli_celular' => $request->input('cli_celular'),
-            'cli_usuario' => $request->input('cli_usuario'),
-            'cli_password' => $request->input('cli_password'),
-            'dep_id' => $request->input('cli_departamento'),
-            'mun_id' => $request->input('cli_municipio')
+            'cli_cod' => $request->input('cli_cod_update'),
+            'cli_nombre' => $request->input('cli_nombre_update'),
+            'cli_apellido_pat' => $request->input('cli_apellido_pat_update'),
+            'cli_apellido_mat' => $request->input('cli_apellido_mat_update'),
+            'cli_ci_nit' => $request->input('cli_ci_nit_update'),
+            'cli_exp_ci' => $request->input('cli_ci_nit_exp_update'),
+            'cli_fec_nac' => $request->input('cli_fec_nac_update'),
+            'cli_genero' => $request->input('cli_genero_update'),
+            'cli_correo' => $request->input('cli_email_update'),
+            'cli_direccion' => $request->input('cli_direccion_update'),
+            'cli_celular' => $request->input('cli_celular_update'),
+            'cli_usuario' => $request->input('cli_usuario_update'),
+            'cli_password' => $request->input('cli_password_update'),
+            'dep_id' => $request->input('cli_departamento_update'),
+            'mun_id' => $request->input('cli_municipio_update')
         ]);
 
         return redirect()->route('cliente')->with('success', 'El registro se ha actualizado con éxito');

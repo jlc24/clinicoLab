@@ -35,4 +35,9 @@ class Detalle extends Model
     {
         return $this->belongsTo(Indication::class);
     }
+    
+    public function recepcions()
+    {
+        return $this->hasMany(Recepcion::class);
+    }
 }

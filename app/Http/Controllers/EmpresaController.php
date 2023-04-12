@@ -47,8 +47,8 @@ class EmpresaController extends Controller
             'emp_nombre' => $request->input('emp_nombre'),
             'emp_nit' => $request->input('emp_nit'),
             'emp_direccion' => $request->input('emp_direccion'),
-            'dep_id' => $request->input('cli_departamento'),
-            'mun_id' => $request->input('cli_municipio'),
+            'dep_id' => $request->input('emp_departamento'),
+            'mun_id' => $request->input('emp_municipio'),
         ]);
 
         return redirect()->route('empresa')->with('success', 'El registro se ha creado con éxito');
@@ -73,9 +73,25 @@ class EmpresaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Empresa $empresa)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'emp_cod_update' => 'required|max:10|unique:empresas,emp_cod,'.$id,
+            'emp_nombre_update' => 'required|max:50',
+            'emp_nit_update' => 'max:20',
+            'emp_direccion_update' => 'required|max:255',
+        ]);
+
+        $empresa = Empresa::find($id);
+        $empresa->emp_cod = $request->input('emp_cod_update');
+        $empresa->emp_nombre = $request->input('emp_nombre_update');
+        $empresa->emp_nit = $request->input('emp_nit_update');
+        $empresa->emp_direccion = $request->input('emp_direccion_update');
+        $empresa->dep_id = $request->input('cli_departamento_update');
+        $empresa->mun_id = $request->input('cli_municipio_update');
+        $empresa->save();
+
+        return redirect()->route('empresa')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**

@@ -46,13 +46,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit']);
     Route::put('/clientes/{id}', [ClienteController::class, 'update']);
     //Route::resource('/clientes', ClienteController::class);
+    Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
     Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
 
     Route::get('/empresas', [EmpresaController::class, 'index'])->name('empresa');
     Route::post('/empresas', [EmpresaController::class, 'store'])->name('empresa');
+    Route::put('/empresas/{id}', [EmpresaController::class, 'update']);
 
     Route::get('/medicos', [MedicoController::class, 'index'])->name('medico');
     Route::post('/medicos', [MedicoController::class, 'store'])->name('medico');
+    Route::put('/medicos/{id}', [MedicoController::class, 'update']);
 
     Route::get('/recepcion', [RecepcionController::class, 'index'])->name('recepcion');
     Route::post('/recepcion', [RecepcionController::class, 'store'])->name('recepcion');

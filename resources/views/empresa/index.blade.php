@@ -52,8 +52,8 @@
                                             <td>{{ $empresa->emp_direccion }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Button group">
-                                                    <a href="#" data-toggle="modal" data-target="#modal_update_empresa_{{ $empresa->id }}" class="btn btn-sm btn-outline-warning" title="Editar Empresa"><i class="fas fa-user-edit"></i></a>
-                                                    {{-- @include('empresa.modal.modal_modificar_empresa') --}}
+                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_empresa_{{ $empresa->id }}" class="btn btn-sm btn-outline-warning" title="Editar Empresa"><i class="fas fa-user-edit"></i></a>
+                                                    @include('empresa.modal.modal_actualizar_empresa')
                                                     <a href="#" data-toggle="modal" data-target="#modal_ver_empresa_{{ $empresa->id }}" class="btn btn-sm btn-outline-info" title="Mostrar Informacion de la Empresa"><i class="fas fa-info-circle"></i></a>
                                                     {{-- @include('empresa.modal.modal_modificar_empresa') --}}
                                                     <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-danger" title="Generar Resultado"><i class="fas fa-shop"></i></a>
@@ -73,4 +73,8 @@
     </section>
     
     @include('empresa.modal.modal_crear_empresa')
+@endsection
+
+@section('funciones')
+    @include('empresa.funciones.funciones_empresa')
 @endsection

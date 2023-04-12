@@ -103,7 +103,10 @@ class RecepcionController extends Controller
     public function buscarEstudioId(Request $request)
     {
         $term = $request->input('q');
-        $estudios = Estudio::where('est_cod', 'LIKE', '%'.$term.'%')->get();
+        $estudios = DB::table('detalles')
+                        ->join('estudios', 'detalles.estudio_id', '=', 'estudios.id')
+                        ->select('detalles.id', 'est_cod', 'est_nombre', 'est_precio')
+                        ->where('est_cod', 'LIKE', '%'.$term.'%')->get();
         return response()->json($estudios);
     }
 
@@ -132,28 +135,30 @@ class RecepcionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'rec_est_id' => 'required|integer',
-            'rec_paciente_id' => 'required|integer',
-            'rec_medico_id' => 'nullable|integer',
-            'rec_empresa_id' => 'nullable|integer',
-            'rec_estado'=> 'required',
-            'rec_observacion' => 'nullable|string|max:255',
-            'rec_referencia' => 'nullable|string|max:255',
+            'det_id' => 'required|integer',
+            'cli_id' => 'required|integer',
+            'med_id' => 'nullable|integer',
+            'emp_id' => 'nullable|integer',
+            'estado'=> 'required',
+            'observacion' => 'nullable|string|max:255',
+            'referencia' => 'nullable|string|max:255',
         ]);
 
-        // dd($request->all());
+        //dd($request->all());
 
         $datos = $request->all();
 
         Recepcion::create([
-            'est_id' => $datos['rec_est_id'],
-            'cli_id' => $datos['rec_paciente_id'],
-            'med_id' => $datos['rec_medico_id'],
-            'emp_id' => $datos['rec_empresa_id'],
-            'estado' => $datos['rec_estado'],
-            'observacion' => $datos['rec_observacion'],
-            'referencia' => $datos['rec_referencia'],
+            'det_id' => $datos['det_id'],
+            'cli_id' => $datos['cli_id'],
+            'med_id' => $datos['med_id'],
+            'emp_id' => $datos['emp_id'],
+            'estado' => $datos['estado'],
+            'observacion' => $datos['observacion'],
+            'referencia' => $datos['referencia'],
         ]);
+
+        
     }
 
     /**

@@ -64,13 +64,13 @@ class MuestraController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'muestra_nombre' => 'required|max:20',
-            'muestra_descripcion' => 'max:255',
+            'muestra_nombre_update' => 'required|max:20',
+            'muestra_descripcion_update' => 'max:255',
         ]);
 
         $muestra = Muestra::find($id);
-        $muestra->nombre = $request->input('muestra_nombre');
-        $muestra->descripcion = $request->input('muestra_descripcion');
+        $muestra->nombre = $request->input('muestra_nombre_update');
+        $muestra->descripcion = $request->input('muestra_descripcion_update');
         $muestra->save();
         
         return redirect()->route('muestra')->with('success', 'El registro se ha modificado con éxito');
