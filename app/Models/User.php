@@ -53,4 +53,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Medico::class);
     }
+
+    public function cajas()
+    {
+        return $this->hasMany(Caja::class);
+    }
+
+    public function facturas()
+    {
+        return $this->hasMany(Factura::class);
+    }
 }

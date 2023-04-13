@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Cliente;
+use App\Models\Detalle;
 use App\Models\Empresa;
 use App\Models\Estudio;
+use App\Models\Indication;
 use App\Models\Municipio;
 use App\Models\Medico;
+use App\Models\Muestra;
 use App\Models\Recepcion;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +32,10 @@ class RecepcionController extends Controller
             'countemp' => Empresa::count(),
             'medicos' => Medico::all(),
             'recepciones' => Recepcion::all(),
+            'detalles' => Detalle::all(),
+            'estudios' => Estudio::all(),
+            'muestras' => Muestra::all(),
+            'indicacions' => Indication::all(),
         ]);
     }
     // public function tablaRecepcion()
@@ -105,7 +112,7 @@ class RecepcionController extends Controller
         $term = $request->input('q');
         $estudios = DB::table('detalles')
                         ->join('estudios', 'detalles.estudio_id', '=', 'estudios.id')
-                        ->select('detalles.id', 'est_cod', 'est_nombre', 'est_precio')
+                        ->select('detalles.id', 'est_cod', 'est_nombre', 'est_precio', 'est_moneda')
                         ->where('est_cod', 'LIKE', '%'.$term.'%')->get();
         return response()->json($estudios);
     }
@@ -115,11 +122,26 @@ class RecepcionController extends Controller
         $term = $request->input('q');
         $estudios = DB::table('detalles')
                         ->join('estudios', 'detalles.estudio_id', '=', 'estudios.id')
-                        ->select('detalles.id', 'est_cod', 'est_nombre', 'est_precio')
+                        ->select('detalles.id', 'est_cod', 'est_nombre', 'est_precio', 'est_moneda')
                         ->where('est_nombre', 'LIKE', '%'.$term.'%')->get();
         return response()->json($estudios);
     }
 
+    public function tabla_recepcion($id)
+    {
+        $hoy = new DateTime();
+        $estudios = DB::table('recepcions')
+                        ->join('clientes', 'recepcions.cli_id', '=', 'clientes.id')
+                        ->join('detalles', 'recepcions.det_id', '=', 'detalles.id')
+                        ->join('estudios', 'detalles.estudio_id', '=', 'estudios.id')
+                        ->join('muestras', 'detalles.muestra_id', '=', 'muestras.id')
+                        ->join('indications', 'detalles.indicacion_id', '=', 'indications.id')
+                        ->select('estudios.est_cod', 'estudios.est_nombre', 'estudios.est_precio', 'muestras.nombre as muestra', 'indications.nombre as indicacion')
+                        ->where('recepcions.cli_id', $id)
+                        ->whereDate('recepcions.created_at', $hoy)
+                        ->get();
+        return response()->json($estudios);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -145,7 +167,7 @@ class RecepcionController extends Controller
         ]);
 
         //dd($request->all());
-
+        
         $datos = $request->all();
 
         Recepcion::create([
@@ -158,7 +180,6 @@ class RecepcionController extends Controller
             'referencia' => $datos['referencia'],
         ]);
 
-        
     }
 
     /**

@@ -1,7 +1,6 @@
 <div class="col-xl-12 col-sm-12">
-    <table class="table table-bordered table-responsive-lg">
+    <table class="table table-bordered table-responsive-lg" id="tabla-estudios">
         <thead>
-            <th>#</th>
             <th>Clave</th>
             <th>Estudio</th>
             <th>Costo</th>
@@ -10,16 +9,15 @@
             <th>Op</th>
         </thead>
         <tbody>
-            @foreach ($recepciones as $recepcion)
-            
+            {{-- @foreach ($recepciones as $recepcion)
                 <tr>
-                    @if($recepcion->estudio != null)
-                        <td>{{ $recepcion->estudio->id}}</td>
-                        <td>{{ $recepcion->estudio->est_cod }}</td>
-                        <td>{{ $recepcion->estudio->est_nombre }}</td>
-                        <td>{{ $recepcion->estudio->est_precio }}</td>
-                        <td>{{ $recepcion->estudio->detalle->muestra->nombre }}</td>
-                        <td>{{ $recepcion->estudio->detalle->indicacion->nombre }}</td>
+                    @if($recepcion->detalle != null)
+                        <td>{{ $recepcion->detalle->estudio->id}}</td>
+                        <td>{{ $recepcion->detalle->estudio->est_cod }}</td>
+                        <td>{{ $recepcion->detalle->estudio->est_nombre }}</td>
+                        <td>{{ $recepcion->detalle->estudio->est_precio }}</td>
+                        <td>{{ $recepcion->detalle->muestra->nombre }}</td>
+                        <td>{{ $recepcion->detalle->indicacion->nombre }}</td>
                         <td>
                             <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
                         </td>
@@ -28,7 +26,7 @@
                     @endif
                     
                 </tr>
-            @endforeach
+            @endforeach --}}
             
         </tbody>
     </table>

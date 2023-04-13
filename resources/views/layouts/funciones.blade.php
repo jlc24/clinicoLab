@@ -46,6 +46,15 @@
             timer: 2000
         });
     @endif
+    @if(session('info'))
+        Swal.fire({
+            title: 'Oops...!',
+            text: '{{ session('info') }}',
+            icon: 'info',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    @endif
 
     //----------------------------------------------------------------------------------------
 </script>

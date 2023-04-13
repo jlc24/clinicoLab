@@ -147,10 +147,10 @@
                     </ul>
                 </li>
                 @php
-                    $activeRoutesTools = [ ];
+                    $activeRoutesTools = [ 'caja' ];
                 @endphp
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesTools) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesTools) ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
                         <p>
                             Herramientas
@@ -159,7 +159,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item px-2">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('caja') }}" class="nav-link {{ Request::is('cajas') ? 'active' : '' }}">
                                 <i class=" nav-icon fas fa-box"></i>
                                 <p>Caja</p>
                             </a>

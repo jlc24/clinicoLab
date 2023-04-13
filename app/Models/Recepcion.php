@@ -10,8 +10,9 @@ class Recepcion extends Model
     use HasFactory;
 
     protected $fillable = [
-        'det_id',
+        'fac_id',
         'cli_id',
+        'det_id',
         'med_id',
         'emp_id',
         'estado',
@@ -23,12 +24,7 @@ class Recepcion extends Model
     {
         return $this->belongsTo(Detalle::class);
     }
-
-    public function cliente()
-    {
-        return $this->belongsTo(Cliente::class);
-    }
-
+    
     public function medico()
     {
         return $this->belongsTo(Medico::class);
@@ -38,4 +34,15 @@ class Recepcion extends Model
     {
         return $this->belongsTo(Empresa::class);
     }
+
+    public function caja()
+    {
+        return $this->belongsTo(Caja::class);
+    }
+
+    public function factura()
+    {
+        return $this->belongsTo(Factura::class);
+    }
+
 }

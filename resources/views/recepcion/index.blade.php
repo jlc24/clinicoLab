@@ -28,8 +28,10 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-xl-7 col-sm-7"></div>
+                            <div class="row justify-content-center">
+                                <div class="col-xl-5 col-sm-5">
+                                    <label class="col-md-12 col-form-label" >{{ __('Fecha Recepcion') }}:</label>
+                                </div>
                                 <div class="col-xl-4 col-sm-4">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
@@ -41,6 +43,8 @@
                                     </div>
                                 </div>
                             </div>
+                            <form id="buscar_estudio">
+                                @csrf
                             <div class="row">
                                 <div class="col-xl-12 col-sm-12">
                                     <label class="col-md-12 col-form-label" ><i class="fas fa-user"></i> {{ __('Datos del Paciente a recepcionar') }}:</label>
@@ -142,8 +146,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <form id="buscar_estudio">
-                                @csrf
+                            
                             <hr><div class="row">
                                 <div class="col-xl-12 col-sm-12">
                                     <div class="form-group row">
@@ -169,10 +172,6 @@
                             <h4 class="card-title">
                                 DATOS DEL ESTUDIO
                             </h4>
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                                </button>
-                            </div>
                         </div>
                         <div class="card-body">
                             
@@ -187,15 +186,15 @@
                                                     <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
                                                 </div>
                                                 <input type="hidden" id="rec_est_id" name="rec_est_id">
-                                                <input type="hidden" name="rec_paciente_id" id="rec_paciente_id">
+                                                <input type="" name="rec_paciente_id" id="rec_paciente_id">
                                                 <input type="hidden" name="rec_medico_id" id="rec_medico_id">
                                                 <input type="hidden" name="rec_empresa_id" id="rec_empresa_id">
                                                 <input type="hidden" name="rec_estado" id="rec_estado" value="Pendiente">
-                                                <input type="text" placeholder="Clave del estudio" id="rec_est_clave" name="rec_est_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                                <input type="text" placeholder="Clave estudio" id="rec_est_clave" name="rec_est_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-sm-4">
+                                    <div class="col-xl-5 col-sm-5">
                                         <div class="form-group row">
                                             <div class="col-md-12 " style="display: inline-flex;">
                                                 <div class="input-group-prepend" >
@@ -205,10 +204,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-sm-3">
+                                    <div class="col-xl-2 col-sm-2">
                                         <div class="form-group row">
                                             <div class="col-md-12">
-                                                <input type="text" placeholder="Precio del estudio" id="rec_est_precio" name="rec_est_precio" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                                <input type="text" placeholder="Precio" id="rec_est_precio" name="rec_est_precio" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -225,7 +224,7 @@
                                 @include('recepcion.tablas.tabla_recepcion')
                             </div>
                             <div class="row justify-content-center">
-                                <div class="col-xl-2 col-sm-2">
+                                <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
                                         <label class="col-md-12 col-form-label" for="est_fecha_entrega">{{ __('Fecha de entrega') }}:</label>
                                         <div class="col-md-12" style="display: inline-flex">
@@ -272,11 +271,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 col-sm-4">
+                                <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="margin-top: 35px">
                                             <a href="#" class="btn btn-success">Guardar</a>
-                                            <a href="#" class="btn btn-danger">Cancelar</a>
                                             <a href="#" class="btn btn-info">Imprimir</a>
                                         </div>
                                     </div>

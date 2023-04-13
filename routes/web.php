@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BacteriaController;
+use App\Http\Controllers\CajaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
@@ -57,12 +58,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/medicos', [MedicoController::class, 'store'])->name('medico');
     Route::put('/medicos/{id}', [MedicoController::class, 'update']);
 
-    Route::get('/recepcion', [RecepcionController::class, 'index'])->name('recepcion');
-    Route::post('/recepcion', [RecepcionController::class, 'store'])->name('recepcion');
-    // Route::get('/tabla-recepcion', [RecepcionController::class, 'tablaRecepcion'])->name('recepcion.tabla');
+    Route::get('/cajas', [CajaController::class, 'index'])->name('caja');
+    Route::post('/cajas', [CajaController::class, 'store'])->name('caja');
+    Route::put('/cajas/{id}', [CajaController::class, 'update']);
 
-    Route::get('/results', [ResultController::class, 'index'])->name('result');
+    Route::middleware(['verificarEstadoCaja'])->group(function () {
+        Route::get('/recepcion', [RecepcionController::class, 'index'])->name('recepcion');
+        Route::post('/recepcion', [RecepcionController::class, 'store'])->name('recepcion');
+    });
     
+    Route::get('/tabla_recepcion/{id}', [RecepcionController::class, 'tabla_recepcion'])->name('tabla_recepcion');
     Route::get('/buscar_medico_id', [RecepcionController::class, 'buscarMedicoId']);
     Route::get('/buscar_medico_nombre', [RecepcionController::class, 'buscarMedicoNombre']);
     Route::get('/buscar_paciente_id', [RecepcionController::class, 'buscarPacienteId']);
@@ -71,6 +76,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/buscar_emp_nombre', [RecepcionController::class, 'buscarEmpNombre']);
     Route::get('/buscar_estudio_id', [RecepcionController::class, 'buscarEstudioId']);
     Route::get('/buscar_estudio_nombre', [RecepcionController::class, 'buscarEstudioNombre']);
+    
+    Route::get('/results', [ResultController::class, 'index'])->name('result');
 
     Route::get('/estudios', [EstudioController::class, 'index'])->name('estudio');
     Route::post('/estudios', [EstudioController::class, 'store'])->name('estudio');
@@ -94,6 +101,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/muestras', [MuestraController::class, 'store'])->name('muestra');
     Route::put('/muestras/{id}', [MuestraController::class, 'update']);
     Route::delete('/muestras/{id}', [MuestraController::class, 'destroy'])->name('muestra.destroy');
+
+    
     
 });
 

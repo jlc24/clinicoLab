@@ -181,7 +181,7 @@
                 $('#rec_est_id').val(ui.item.id);
                 $('#rec_est_clave').val(ui.item.est_cod);
                 $('#rec_est_nombre').val(ui.item.est_nombre);
-                $('#rec_est_precio').val(ui.item.est_precio);
+                $('#rec_est_precio').val(ui.item.est_precio+" "+ui.item.est_moneda);
                 return false;
             }
         }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
@@ -207,7 +207,7 @@
                 $('#rec_est_id').val(ui.item.id);
                 $('#rec_est_clave').val(ui.item.est_cod);
                 $('#rec_est_nombre').val(ui.item.est_nombre);
-                $('#rec_est_precio').val(ui.item.est_precio);
+                $('#rec_est_precio').val(ui.item.est_precio+" "+ui.item.est_moneda);
                 return false;
             }
         }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
@@ -232,6 +232,32 @@
         //     }
         // })
         //----Capturar datos del formulario recepcion
+        $('#rec_paciente_id').on('change', function() {
+            var id = $(this).val();
+            if (id != '') {
+                $.ajax({
+                    url: '{{ route("tabla_recepcion", ":id") }}'.replace(':id', id),
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        $('#tabla-estudios tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('#tabla-estudios tbody').append(
+                                '<tr><td>' + value.est_cod + '</td>'+
+                                    '<td>' + value.est_nombre + '</td>'+
+                                    '<td>' + value.est_precio + '</td>'+
+                                    '<td>' + value.muestra + '</td>'+
+                                    '<td>' + value.indicacion + '</td>'+
+                                    '<td><a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a></td>'+
+                                '</tr>');
+                        });
+                    }
+                });
+            } else {
+                $('#tabla-estudios tbody').append('<td colspan="7" class="text-center">Detalle no disponible</td>');
+            }
+        });
         $("#btnAddRecepcion").on('click', function() {
             var datos = new FormData();
             datos.append("det_id", $("#rec_est_id").val());
@@ -267,6 +293,7 @@
                 $("#rec_est_clave").val("");
                 $("#rec_est_nombre").val("");
                 $("#rec_est_precio").val("");
+
             })
             .fail(function(xhr, textStatus, errorThrown){
                 console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
