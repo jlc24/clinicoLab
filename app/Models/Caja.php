@@ -23,21 +23,20 @@ class Caja extends Model
     {
         try {
             $user = Auth::user();
-            $caja = Caja::where('user_id', $user->id)->latest()->first();
+            $caja = Caja::where('user_id', $user->id)->latest()->firstOrFail();
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return 'no';
         }
         
         $hoy = now()->format('Y-m-d');
         if ($caja->caja_estado == 0) {
-            $disponible = 'no';
+            return 'no';
         } elseif ($caja->created_at->format('Y-m-d') != $hoy) {
-            $disponible = 'nofecha';
+            return 'nofecha';
         }else {
-            $disponible = 'si';
+            return 'si';
         }
         
-        return $disponible;
     }
 
     public function recepcions()
