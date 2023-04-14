@@ -39,9 +39,7 @@
                                         <th>Nombre</th>
                                         <th>Apellido Paterno</th>
                                         <th>Apellido Materno</th>
-                                        <th>Correo</th>
-                                        <th>Usuario</th>
-                                        <th>Contraseña</th>
+                                        <th>Contacto</th>
                                         <th>Op</th>
                                     </tr>
                                 </thead>
@@ -53,18 +51,17 @@
                                             <td>{{ $medico->med_nombre }}</td>
                                             <td>{{ $medico->med_apellido_pat }}</td>
                                             <td>{{ $medico->med_apellido_mat }}</td>
-                                            <td>{{ $medico->med_correo }}</td>
-                                            <td>{{ $medico->med_usuario }}</td>
-                                            <td>{{ $medico->med_password }}</td>
-                                            <td>
+                                            <td>{{ $medico->med_celular }}</td>
+                                            <td class="text-center">
                                                 <div class="btn-group" role="group" aria-label="Button group">
-                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-warning" ><i class="fas fa-user-edit"></i></a>
-                                                    @include('medico.modal.modal_actualizar_medico')
-                                                    <button class="btn btn-sm btn-outline-info"><i class="fas fa-info-circle"></i></button>
-                                                    <button class="btn btn-sm btn-outline-success"><i class="fas fa-eye"></i></button>
-                                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file"></i></button>
+                                                    <button data-toggle="modal" data-target="#modal_actualizar_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-warning" ><i class="fas fa-user-edit"></i></button>
+                                                    <button data-toggle="modal" data-target="#modal_ver_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-info"><i class="fas fa-info-circle"></i></button>
+                                                    {{-- <button class="btn btn-sm btn-outline-success"><i class="fas fa-eye"></i></button>
+                                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file"></i></button> --}}
                                                 </div>
                                             </td>
+                                            @include('medico.modal.modal_actualizar_medico')
+                                            @include('medico.modal.modal_ver_medico')
                                         </tr>
                                     @endforeach
                                 </tbody>

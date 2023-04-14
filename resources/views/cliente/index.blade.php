@@ -39,9 +39,7 @@
                                         <th>{{ __('Nombre') }}</th>
                                         <th>{{ __('Apellido Paterno') }}</th>
                                         <th>{{ __('Apellido Materno') }}</th>
-                                        <th>{{ __('Correo') }}</th>
-                                        <th>{{ __('Usuario') }}</th>
-                                        <th>{{ __('Contraseña') }}</th>
+                                        <th>{{ __('Celular') }}</th>
                                         <th>Op</th>
                                     </tr>
                                 </thead>
@@ -53,20 +51,18 @@
                                             <td>{{ $cliente->cli_nombre }}</td>
                                             <td>{{ $cliente->cli_apellido_pat }}</td>
                                             <td>{{ $cliente->cli_apellido_mat }}</td>
-                                            <td>{{ $cliente->cli_correo }}</td>
-                                            <td>{{ $cliente->cli_usuario }}</td>
-                                            <td>{{ $cliente->cli_password }}</td>
-                                            <td>
+                                            <td>{{ $cliente->cli_celular }}</td>
+                                            <td class="text-center">
                                                 <div class="btn-group" role="group" aria-label="Button group">
-                                                    <button data-id="{{ $cliente->id }}" class="btnEditarCliente btn btn-sm btn-outline-warning" title="Editar Paciente"><i class="fas fa-user-edit"></i></button>
-                                                    
+                                                    <button data-toggle="modal" data-target="#modal_actualizar_cliente_{{ $cliente->id }}" class="btnEditarCliente btn btn-sm btn-outline-warning" title="Editar Paciente"><i class="fas fa-user-edit"></i></button>
                                                     <a href="#" data-toggle="modal" data-target="#modal_ver_cliente_{{ $cliente->id }}" class="btn btn-sm btn-outline-info" title="Mostrar Informacion del Paciente"><i class="fas fa-info-circle"></i></a>
-                                                    
-                                                    <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-danger" title="Generar Resultado"><i class="fas fa-shop"></i></a>
+                                                    <a href="javascript:void(0);" id="btnAddRecepcion" class="btn btn-sm btn-outline-danger" title="Recepcionar Estudio"><i class="fas fa-keyboard"></i></a>
                                                     <a href="javascript:void(0);" id="btnVerResultados" class="btn btn-sm btn-outline-success" title="Ver resultados"><i class="fas fa-eye"></i></a>
-                                                    <a href="javascript:void(0);" id="btnVerReporte" class="btn btn-sm btn-outline-secondary" title="ver Reporte"><i class="fas fa-file"></i></a>
+                                                    {{-- <a href="javascript:void(0);" id="btnVerReporte" class="btn btn-sm btn-outline-secondary" title="ver Reporte"><i class="fas fa-file"></i></a> --}}
                                                 </div>
                                             </td>
+                                            @include('cliente.modal.modal_actualizar_cliente')
+                                            @include('cliente.modal.modal_ver_cliente')
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -79,7 +75,7 @@
     </section>
     
     @include('cliente.modal.modal_crear_cliente')
-    @include('cliente.modal.modal_actualizar_cliente')
+    
 @endsection
 
 @section('funciones')

@@ -54,11 +54,11 @@
                                                 <div class="btn-group" role="group" aria-label="Button group">
                                                     <a href="#" data-toggle="modal" data-target="#modal_actualizar_empresa_{{ $empresa->id }}" class="btn btn-sm btn-outline-warning" title="Editar Empresa"><i class="fas fa-user-edit"></i></a>
                                                     @include('empresa.modal.modal_actualizar_empresa')
-                                                    <a href="#" data-toggle="modal" data-target="#modal_ver_empresa_{{ $empresa->id }}" class="btn btn-sm btn-outline-info" title="Mostrar Informacion de la Empresa"><i class="fas fa-info-circle"></i></a>
+                                                    {{-- <a href="#" data-toggle="modal" data-target="#modal_ver_empresa_{{ $empresa->id }}" class="btn btn-sm btn-outline-info" title="Mostrar Informacion de la Empresa"><i class="fas fa-info-circle"></i></a> --}}
                                                     {{-- @include('empresa.modal.modal_modificar_empresa') --}}
-                                                    <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-danger" title="Generar Resultado"><i class="fas fa-shop"></i></a>
+                                                    {{-- <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-danger" title="Generar Resultado"><i class="fas fa-shop"></i></a>
                                                     <a href="javascript:void(0);" id="btnVerResultados" class="btn btn-sm btn-outline-success" title="Ver resultados"><i class="fas fa-eye"></i></a>
-                                                    <a href="javascript:void(0);" id="btnVerReporte" class="btn btn-sm btn-outline-secondary" title="ver Reporte"><i class="fas fa-file"></i></a>
+                                                    <a href="javascript:void(0);" id="btnVerReporte" class="btn btn-sm btn-outline-secondary" title="ver Reporte"><i class="fas fa-file"></i></a> --}}
                                                 </div>
                                             </td>
                                         </tr>

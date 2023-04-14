@@ -65,7 +65,7 @@
                                                         <button data-toggle="modal" data-target="#modal_actualizar_caja_{{ $caja->id }}" class="btnEditarCaja btn btn-sm btn-outline-warning" title="Cerrar Caja"><i class="fas fa-lock-open"></i></button>
                                                         @include('caja.modal.modal_actualizar_caja')
                                                     @else
-                                                        <button class="btn btn-sm btn-outline-danger" title="Cerrar Caja"><i class="fas fa-lock" disabled></i></button>
+                                                        <button class="btn btn-sm btn-danger" title="Caja Cerrada"><i class="fas fa-lock" disabled></i></button>
                                                     @endif
                                                     
                                                 </div>
@@ -82,4 +82,8 @@
     </section>
 
     @include('caja.modal.modal_crear_caja')
+@endsection
+
+@section('funciones')
+    @include('caja.funciones.funcion_caja')
 @endsection

@@ -76,23 +76,7 @@
         });
 
         //para modal de modificar
-        $('.btnEditarCliente').on('click', function() {
-            var id = $(this).data('id');
-            //console.log(id);
-            $.ajax({
-                url: '{{ route("clientes", ":id") }}'.replace(':id', id),
-                type: 'GET',
-                success: function(data) {
-                    console.log(data);
-                    $("#cli_id_update").val(data.id);
-                    $("#cli_nombre_update").val(data.cli_nombre);
-                    $("#cli_apellido_pat_update").val(data.cli_apellido_pat);
-                    $("#cli_apellido_mat_update").val(data.cli_apellido_mat);
-                    $("#modal_actualizar_cliente").modal('show');
-                    
-                }
-            });
-        });
+        
     });
     
     function Usuario() {

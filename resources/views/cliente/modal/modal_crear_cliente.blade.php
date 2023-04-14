@@ -31,7 +31,6 @@
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
                                     <input type="text" placeholder="Nombres" id="cli_nombre" name="cli_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario(); Password()" required>
-                                    {{-- <small><span style="color: red;" id="error_cli_nombre">(Se requiere Nombre)</span></small> --}}
                                 </div>
                             </div>
                         </div>

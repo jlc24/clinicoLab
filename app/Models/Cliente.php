@@ -30,16 +30,16 @@ class Cliente extends Model
 
     public function departamento()
     {
-        return $this->belongsTo(Departamento::class);
+        return $this->belongsTo(Departamento::class, 'dep_id');
     }
 
     public function municipio()
     {
-        return $this->belongsTo(Municipio::class);
+        return $this->belongsTo(Municipio::class, 'mun_id');
     }
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function facturas()

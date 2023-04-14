@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" style="background-color: #32C861; color: #fff">
                 <h1 class="modal-title fs-5" id="modal_crear_cajaLabel"><strong>{{ __('Apertura inicial de Caja') }}</strong></h1>
-                <button type="button" id="btnCloseAddClient" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="btnCloseAddcaja" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
@@ -61,7 +61,7 @@
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" id="btnCloseAddClient" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                    <button type="submit" id="btnRegisterCaja" class="btn btn-success">Registrar</button>
+                    <button id="btnRegisterCaja" class="btn btn-success" data-dismiss="modal">Registrar</button>
                 </div>
             </form>
         </div>

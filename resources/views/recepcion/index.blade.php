@@ -163,6 +163,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <button type="button" class="btn btn-info btn-block">RECEPCIONAR</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -186,7 +195,7 @@
                                                     <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
                                                 </div>
                                                 <input type="hidden" id="rec_est_id" name="rec_est_id">
-                                                <input type="" name="rec_paciente_id" id="rec_paciente_id">
+                                                <input type="hidden" name="rec_paciente_id" id="rec_paciente_id">
                                                 <input type="hidden" name="rec_medico_id" id="rec_medico_id">
                                                 <input type="hidden" name="rec_empresa_id" id="rec_empresa_id">
                                                 <input type="hidden" name="rec_estado" id="rec_estado" value="Pendiente">
@@ -223,7 +232,7 @@
                             <div class="row" id="RecepcionTable">
                                 @include('recepcion.tablas.tabla_recepcion')
                             </div>
-                            <div class="row justify-content-center">
+                            <div class="row justify-content-center" hidden>
                                 <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
                                         <label class="col-md-12 col-form-label" for="est_fecha_entrega">{{ __('Fecha de entrega') }}:</label>
@@ -275,7 +284,6 @@
                                     <div class="form-group row">
                                         <div class="col-md-12" style="margin-top: 35px">
                                             <a href="#" class="btn btn-success">Guardar</a>
-                                            <a href="#" class="btn btn-info">Imprimir</a>
                                         </div>
                                     </div>
                                 </div>

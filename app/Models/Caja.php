@@ -5,6 +5,7 @@ namespace App\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Caja extends Model
 {
@@ -21,7 +22,8 @@ class Caja extends Model
     public static function obtenerEstadoCaja()
     {
         try {
-            $caja = Caja::firstOrFail();
+            $user = Auth::user();
+            $caja = Caja::where('user_id', $user->id)->latest()->first();
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return 'no';
         }

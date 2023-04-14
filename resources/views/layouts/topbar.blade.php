@@ -45,8 +45,27 @@
                         {{ __('Configuración') }}
                     </a><hr>
                     <a class="dropdown-item" href="{{ route('logout') }}"
-                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
+                        onclick="event.preventDefault();
+                        $.ajax({
+                            url: '{{ route('getCajaStatus') }}',
+                            type: 'GET',
+                            success: function(data) {
+                                //console.log(data);
+                                if (data.caja_estado == 1) {
+                                    Swal.fire({
+                                        title: 'Caja Abierta',
+                                        text: 'Aun tiene caja abierta, debe cerrarla para cerrar sesion',
+                                        icon: 'error',
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                    }).then(function() {
+                                        window.location.href = '{{ route('caja') }}';
+                                    });
+                                }else{
+                                    $('#logout-form').submit();
+                                }
+                            }
+                        });">
                         {{ __('Cerrar Sesión') }}
                     </a>
 

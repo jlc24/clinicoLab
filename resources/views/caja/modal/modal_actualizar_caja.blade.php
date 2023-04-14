@@ -73,7 +73,7 @@
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" id="btnCloseAddClient" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                    <button type="submit" id="btnRegisterCaja" class="btn btn-success">Registrar</button>
+                    <button type="submit" id="btnUpdateCaja" class="btn btn-success">Cerrar Caja</button>
                 </div>
             </form>
         </div>

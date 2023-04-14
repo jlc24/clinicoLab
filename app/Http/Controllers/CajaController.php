@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caja;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CajaController extends Controller
@@ -22,6 +23,13 @@ class CajaController extends Controller
         return view('caja.index', [ 'cajas' => $cajas ]);
     }
 
+    public function getCajaStatus()
+    {
+        $user = auth()->user();
+        $caja = Caja::where('user_id', '=', $user->id)->whereDate('created_at', now()->format('Y-m-d'))->latest()->first();
+        return response()->json($caja);
+    }
+    
     /**
      * Show the form for creating a new resource.
      */

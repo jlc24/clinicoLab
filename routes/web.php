@@ -47,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit']);
     Route::put('/clientes/{id}', [ClienteController::class, 'update']);
     //Route::resource('/clientes', ClienteController::class);
+
     Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
     Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
 
@@ -61,6 +62,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cajas', [CajaController::class, 'index'])->name('caja');
     Route::post('/cajas', [CajaController::class, 'store'])->name('caja');
     Route::put('/cajas/{id}', [CajaController::class, 'update']);
+
+    Route::get('/getCajaStatus', [CajaController::class, 'getCajaStatus'])->name('getCajaStatus');
 
     Route::middleware(['verificarEstadoCaja'])->group(function () {
         Route::get('/recepcion', [RecepcionController::class, 'index'])->name('recepcion');

@@ -36,6 +36,9 @@
             }
         })
     });
+    $(document).ready(function() {
+        
+    });
     
     @if(session('success'))
         Swal.fire({

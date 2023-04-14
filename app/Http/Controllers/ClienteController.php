@@ -18,6 +18,12 @@ class ClienteController extends Controller
     public function index()
     {
         $clientes = Cliente::all();
+        foreach ($clientes as $cliente) {
+            $fec_nac = new DateTime($cliente->cli_fec_nac);
+            $hoy = new DateTime();
+            $edad = $hoy->diff($fec_nac)->y;
+            $cliente->cli_edad = $edad;
+        }
         return view('cliente.index', [
             'departamentos' => Departamento::all(), 
             'clientes' => $clientes,
@@ -43,6 +49,7 @@ class ClienteController extends Controller
         $datos = Municipio::where('dep_id', $id)->get();
         return response()->json($datos);
     }
+    
 
     /**
      * Show the form for creating a new resource.
