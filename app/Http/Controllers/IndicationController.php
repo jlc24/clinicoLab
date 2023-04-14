@@ -30,13 +30,13 @@ class IndicationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'indi_nombre_update' => 'required|max:20',
-            'indi_descripcion_update' => 'max:255',
+            'indi_nombre' => 'required|max:20',
+            'indi_descripcion' => 'max:255',
         ]);
 
         Indication::create([
-            'nombre' => $request->input('indi_nombre_update'),
-            'descripcion' => $request->input('indi_descripcion_update'),
+            'nombre' => $request->input('indi_nombre'),
+            'descripcion' => $request->input('indi_descripcion'),
         ]);
 
         return redirect()->route('indication')->with('success', 'El registro se ha creado con éxito');
