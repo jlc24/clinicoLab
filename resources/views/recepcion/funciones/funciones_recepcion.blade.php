@@ -2,9 +2,12 @@
 
 @include('medico.funciones.funciones_medico')
 
-<script type="text/javascript">
-    $(document).ready(function() {
+@include('empresa.funciones.funciones_empresa')
 
+<script type="text/javascript">
+    
+    $(document).ready(function() {
+        
         $('#rec_medico_clave').autocomplete({
             source: function(request, response) {
                 $.ajax({
@@ -260,6 +263,8 @@
         });
         $("#btnAddRecepcion").on('click', function() {
             var datos = new FormData();
+            datos.append("caja_id", $("#rec_caja").val());
+            datos.append("fac_id", $("#rec_factura").val());
             datos.append("det_id", $("#rec_est_id").val());
             datos.append("cli_id", $("#rec_paciente_id").val());
             datos.append("med_id", $("#rec_medico_id").val());

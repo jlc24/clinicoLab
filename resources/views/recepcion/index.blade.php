@@ -28,11 +28,21 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <div class="row justify-content-center">
+                            <div class="row">
                                 <div class="col-xl-5 col-sm-5">
-                                    <label class="col-md-12 col-form-label" >{{ __('Fecha Recepcion') }}:</label>
+                                    <label class="col-md-12 col-form-label" for="rec_factura" >{{ __('Factura') }}:</label>
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="display: inline-flex;">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px; height: 31px; width: 35px;"><strong>Nº</strong></div>
+                                            </div>
+                                            <input type="text" value="{{ $countfac+1 }}" id="rec_factura" name="rec_factura" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                            <input type="hidden" value="{{ $countcaja->id }}" name="rec_caja" id="rec_caja">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-xl-4 col-sm-4">
+                                <div class="col-xl-6 col-sm-6">
+                                    <label class="col-md-12 col-form-label" >{{ __('Fecha Recepcion') }}:</label>
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
                                             <div class="input-group-prepend">

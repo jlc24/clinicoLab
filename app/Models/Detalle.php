@@ -18,22 +18,22 @@ class Detalle extends Model
 
     public function estudio()
     {
-        return $this->belongsTo(Estudio::class);
+        return $this->belongsTo(Estudio::class, 'estudio_id');
     }
 
     public function muestra()
     {
-        return $this->belongsTo(Muestra::class);
+        return $this->belongsTo(Muestra::class, 'muestra_id');
     }
 
     public function recipiente()
     {
-        return $this->belongsTo(Recipiente::class);
+        return $this->belongsTo(Recipiente::class, 'recipiente_id');
     }
 
     public function indicacion()
     {
-        return $this->belongsTo(Indication::class);
+        return $this->belongsTo(Indication::class, 'indicacion_id');
     }
     
     public function recepcions()

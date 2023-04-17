@@ -1,6 +1,6 @@
 <script type="text/javascript">
     //para ESTUDIOS---------------------------------------
-    console.log('estas en estudios.funciones_estudios')
+    //console.log('estas en estudios.funciones_estudios')
     $(document).ready(function(){
         $('#modal_crear_estudio').on('shown.bs.modal', function () {
             $('#est_nombre').trigger('focus');
@@ -15,10 +15,9 @@
                         clave += palabras[i].charAt(0);
                     }
                 }
-                document.getElementById('est_clave').value = clave;
-                console.log(clave);
+                document.getElementById('est_cod').value = clave;
             } else {
-                document.getElementById('est_clave').value = '';
+                document.getElementById('est_cod').value = '';
             }
         });
     });

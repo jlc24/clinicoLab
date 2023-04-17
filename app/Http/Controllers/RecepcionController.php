@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Caja;
 use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Cliente;
 use App\Models\Detalle;
 use App\Models\Empresa;
 use App\Models\Estudio;
+use App\Models\Factura;
 use App\Models\Indication;
 use App\Models\Municipio;
 use App\Models\Medico;
@@ -36,6 +38,8 @@ class RecepcionController extends Controller
             'estudios' => Estudio::all(),
             'muestras' => Muestra::all(),
             'indicacions' => Indication::all(),
+            'countfac' => Factura::latest()->first(),
+            'countcaja' => Caja::latest()->first(),
         ]);
     }
     // public function tablaRecepcion()
@@ -157,6 +161,8 @@ class RecepcionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'fac_id' => 'required|integer',
+            'caja_id' => 'required|integer',
             'det_id' => 'required|integer',
             'cli_id' => 'required|integer',
             'med_id' => 'nullable|integer',
@@ -171,6 +177,8 @@ class RecepcionController extends Controller
         $datos = $request->all();
 
         Recepcion::create([
+            'fac_id' => $datos['fac_id'],
+            'caja_id' => $datos['caja_id'],
             'det_id' => $datos['det_id'],
             'cli_id' => $datos['cli_id'],
             'med_id' => $datos['med_id'],

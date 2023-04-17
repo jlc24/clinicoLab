@@ -22,17 +22,17 @@ class Factura extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function cliente()
     {
-        return $this->belongsTo(Cliente::class);
+        return $this->belongsTo(Cliente::class, 'cli_id');
     }
 
     public function configuration()
     {
-        return $this->belongsTo(Configuration::class);
+        return $this->belongsTo(Configuration::class, 'config_id');
     }
 
     public function recepcions()

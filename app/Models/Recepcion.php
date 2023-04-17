@@ -11,6 +11,7 @@ class Recepcion extends Model
 
     protected $fillable = [
         'fac_id',
+        'caja_id',
         'cli_id',
         'det_id',
         'med_id',
@@ -22,17 +23,17 @@ class Recepcion extends Model
 
     public function detalle()
     {
-        return $this->belongsTo(Detalle::class);
+        return $this->belongsTo(Detalle::class, 'det_id');
     }
     
     public function medico()
     {
-        return $this->belongsTo(Medico::class);
+        return $this->belongsTo(Medico::class, 'med_id');
     }
 
     public function empresa()
     {
-        return $this->belongsTo(Empresa::class);
+        return $this->belongsTo(Empresa::class, 'emp_id');
     }
 
     public function caja()

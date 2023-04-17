@@ -20,12 +20,12 @@ class Empresa extends Model
 
     public function departamento()
     {
-        return $this->belongsTo(Departamento::class);
+        return $this->belongsTo(Departamento::class, 'dep_id');
     }
 
     public function municipio()
     {
-        return $this->belongsTo(Municipio::class);
+        return $this->belongsTo(Municipio::class, 'mun_id');
     }
 
     public function recepcions()
