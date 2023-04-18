@@ -28,8 +28,8 @@ class Empresa extends Model
         return $this->belongsTo(Municipio::class, 'mun_id');
     }
 
-    public function recepcions()
+    public function facturas()
     {
-        return $this->hasMany(Recepcion::class);
+        return $this->hasMany(Factura::class);
     }
 }

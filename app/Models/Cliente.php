@@ -47,8 +47,8 @@ class Cliente extends Model
         return $this->hasMany(Factura::class);
     }
 
-    public function recepcions()
-    {
-        return $this->hasMany(Recepcion::class);
-    }
+    // public function recepcions()
+    // {
+    //     return $this->hasMany(Recepcion::class);
+    // }
 }

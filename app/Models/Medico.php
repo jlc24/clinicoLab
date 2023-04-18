@@ -31,8 +31,8 @@ class Medico extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function recepcions()
+    public function facturas()
     {
-        return $this->hasMany(Recepcion::class);
+        return $this->hasMany(Factura::class);
     }
 }

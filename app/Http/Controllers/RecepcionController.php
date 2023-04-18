@@ -38,16 +38,9 @@ class RecepcionController extends Controller
             'estudios' => Estudio::all(),
             'muestras' => Muestra::all(),
             'indicacions' => Indication::all(),
-            'countfac' => Factura::latest()->first(),
-            'countcaja' => Caja::latest()->first(),
+            'caja' => Caja::latest()->first(),
         ]);
     }
-    // public function tablaRecepcion()
-    // {
-    //     return view('recepcion.tablas.tabla_recepcion', [
-    //         'recepciones' => Recepcion::all(),
-    //     ]);
-    // }
 
     public function buscarMedicoId(Request $request)
     {
@@ -131,18 +124,31 @@ class RecepcionController extends Controller
         return response()->json($estudios);
     }
 
+    public function validarFactura()
+    {
+        $facturapendiente = DB::table('facturas')->where('fac_estado', '=', 0)->latest()->first();
+
+        return response()->json($facturapendiente);
+    }
+
     public function tabla_recepcion($id)
     {
-        $hoy = new DateTime();
         $estudios = DB::table('recepcions')
-                        ->join('clientes', 'recepcions.cli_id', '=', 'clientes.id')
+                        ->join('facturas', 'recepcions.fac_id', '=', 'facturas.id')
+                        ->join('cajas', 'recepcions.caja_id', '=', 'cajas.id')
                         ->join('detalles', 'recepcions.det_id', '=', 'detalles.id')
                         ->join('estudios', 'detalles.estudio_id', '=', 'estudios.id')
                         ->join('muestras', 'detalles.muestra_id', '=', 'muestras.id')
                         ->join('indications', 'detalles.indicacion_id', '=', 'indications.id')
-                        ->select('estudios.est_cod', 'estudios.est_nombre', 'estudios.est_precio', 'muestras.nombre as muestra', 'indications.nombre as indicacion')
-                        ->where('recepcions.cli_id', $id)
-                        ->whereDate('recepcions.created_at', $hoy)
+                        ->select('recepcions.id as rec_id',
+                                'recepcions.caja_id',
+                                'recepcions.fac_id',
+                                'estudios.est_cod', 
+                                'estudios.est_nombre', 
+                                'estudios.est_precio', 
+                                'muestras.nombre as muestra', 
+                                'indications.nombre as indicacion')
+                        ->where('recepcions.fac_id', $id)
                         ->get();
         return response()->json($estudios);
     }
@@ -161,31 +167,17 @@ class RecepcionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'fac_id' => 'required|integer',
             'caja_id' => 'required|integer',
+            'fac_id' => 'required|integer',
             'det_id' => 'required|integer',
-            'cli_id' => 'required|integer',
-            'med_id' => 'nullable|integer',
-            'emp_id' => 'nullable|integer',
             'estado'=> 'required',
-            'observacion' => 'nullable|string|max:255',
-            'referencia' => 'nullable|string|max:255',
         ]);
 
-        //dd($request->all());
-        
-        $datos = $request->all();
-
         Recepcion::create([
-            'fac_id' => $datos['fac_id'],
-            'caja_id' => $datos['caja_id'],
-            'det_id' => $datos['det_id'],
-            'cli_id' => $datos['cli_id'],
-            'med_id' => $datos['med_id'],
-            'emp_id' => $datos['emp_id'],
-            'estado' => $datos['estado'],
-            'observacion' => $datos['observacion'],
-            'referencia' => $datos['referencia'],
+            'caja_id' => $request->input('caja_id'),
+            'fac_id' => $request->input('fac_id'),
+            'det_id' => $request->input('det_id'),
+            'estado' => 'Pendiente',
         ]);
 
     }
@@ -217,8 +209,10 @@ class RecepcionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $recepcion = Recepcion::find($id);
+        $recepcion->delete();
+        return response()->json(['success', 'El registro se ha eliminado con éxito']);
     }
 }

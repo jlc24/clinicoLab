@@ -17,10 +17,11 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
-    <section class="content">
+    <section class="content" id="RecepcionEstudio">
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-xl-4 col-sm-4">
+                    <form id="form_recepcion_factura">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
@@ -29,19 +30,19 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-xl-5 col-sm-5">
+                                <div class="col-xl-4 col-sm-4">
                                     <label class="col-md-12 col-form-label" for="rec_factura" >{{ __('Factura') }}:</label>
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex;">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px; height: 31px; width: 35px;"><strong>Nº</strong></div>
                                             </div>
-                                            <input type="text" value="{{ $countfac+1 }}" id="rec_factura" name="rec_factura" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
-                                            <input type="hidden" value="{{ $countcaja->id }}" name="rec_caja" id="rec_caja">
+                                            <input type="text"  id="rec_factura" name="rec_factura" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                            <input type="hidden" value="{{ $caja->id }}" name="rec_caja" id="rec_caja">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-6 col-sm-6">
+                                <div class="col-xl-5 col-sm-5">
                                     <label class="col-md-12 col-form-label" >{{ __('Fecha Recepcion') }}:</label>
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
@@ -52,10 +53,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <form id="buscar_estudio">
-                                @csrf
-                            <div class="row">
+                            </div>                            
+                            <div class="row" id="datosPaciente">
                                 <div class="col-xl-12 col-sm-12">
                                     <label class="col-md-12 col-form-label" ><i class="fas fa-user"></i> {{ __('Datos del Paciente a recepcionar') }}:</label>
                                 </div>
@@ -173,15 +172,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-xl-12 col-sm-12">
-                                    <div class="form-group row">
-                                        <div class="col-md-12">
-                                            <button type="button" class="btn btn-info btn-block">RECEPCIONAR</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -191,58 +182,117 @@
                             <h4 class="card-title">
                                 DATOS DEL ESTUDIO
                             </h4>
+                            <div class="card-tools">
+                                <button type="button" id="CargarRecepcion" class="btn btn-tool" title="Cargar tabla">
+                                  <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
-                            
-                                <div class="row">
-                                    <div class="col-xl-12 col-sm-12">
-                                        <label class="col-md-12 col-form-label" >{{ __('Datos del Estudio') }}:</label>
-                                    </div>
-                                    <div class="col-xl-3 col-sm-3">
-                                        <div class="form-group row">
-                                            <div class="col-md-12" style="display: inline-flex">
-                                                <div class="input-group-prepend">
-                                                    <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
+                            <div class="row">
+                                <div class="col-xl-3 col-sm-3">
+                                    <label class="col-md-12 col-form-label" >{{ __('Recepcionar datos') }}:</label>
+                                </div>
+                                <div class="col-xl-3 col-sm-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <input type="radio" id="radio_perfil">
                                                 </div>
-                                                <input type="hidden" id="rec_est_id" name="rec_est_id">
-                                                <input type="hidden" name="rec_paciente_id" id="rec_paciente_id">
-                                                <input type="hidden" name="rec_medico_id" id="rec_medico_id">
-                                                <input type="hidden" name="rec_empresa_id" id="rec_empresa_id">
-                                                <input type="hidden" name="rec_estado" id="rec_estado" value="Pendiente">
-                                                <input type="text" placeholder="Clave estudio" id="rec_est_clave" name="rec_est_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-5 col-sm-5">
-                                        <div class="form-group row">
-                                            <div class="col-md-12 " style="display: inline-flex;">
-                                                <div class="input-group-prepend" >
-                                                    <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-notes-medical"></i></div>
-                                                </div>
-                                                <input type="text" placeholder="Nombre del Estudio" id="rec_est_nombre" name="rec_est_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-2 col-sm-2">
-                                        <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <input type="text" placeholder="Precio" id="rec_est_precio" name="rec_est_precio" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-2 col-sm-2">
-                                        <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <a href="javascript:void(0);" id="btnAddRecepcion" class="btn btn-success">Agregar</a>
-                                            </div>
+                                            <button class="btn btn-outline-secondary">Perfiles o Grupos</button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                            <div class="row" id="RecepcionTable">
-                                @include('recepcion.tablas.tabla_recepcion')
+                                <div class="col-xl-3 col-sm-3">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text">
+                                                    <input type="radio" id="radio_estudio" checked>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-secondary" disabled>Estudios</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="row justify-content-center" hidden>
+                            <div class="row" id="RecepcionPerfil" style="display: none;">
+                                <div class="col-xl-3 col-sm-3">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="display: inline-flex">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
+                                            </div>
+                                            <input type="text" placeholder="Clave Perfil" id="rec_perfil_clave" name="rec_perfil_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-5 col-sm-5">
+                                    <div class="form-group row">
+                                        <div class="col-md-12 " style="display: inline-flex;">
+                                            <div class="input-group-prepend" >
+                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-notes-medical"></i></div>
+                                            </div>
+                                            <input type="text" placeholder="Nombre del Perfil" id="rec_perfil_nombre" name="rec_perfil_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-sm-2">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Precio" id="rec_perfil_precio" name="rec_perfil_precio" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-sm-2">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input type="hidden" name="rec_estado" id="rec_estado" value="Pendiente">
+                                            <a href="javascript:void(0);" id="btnAddPerfil" class="btn btn-success">Agregar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="RecepcionarEstudio">
+                                <div class="col-xl-3 col-sm-3">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="display: inline-flex">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
+                                            </div>
+                                            <input type="text" placeholder="Clave estudio" id="rec_est_clave" name="rec_est_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-5 col-sm-5">
+                                    <div class="form-group row">
+                                        <div class="col-md-12 " style="display: inline-flex;">
+                                            <div class="input-group-prepend" >
+                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-notes-medical"></i></div>
+                                            </div>
+                                            <input type="text" placeholder="Nombre del Estudio" id="rec_est_nombre" name="rec_est_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-sm-2">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Precio" id="rec_est_precio" name="rec_est_precio" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-sm-2">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input type="hidden" name="rec_estado" id="rec_estado" value="Pendiente">
+                                            <a href="javascript:void(0);" id="btnAddRecepcion" class="btn btn-success">Agregar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
                                 <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
                                         <label class="col-md-12 col-form-label" for="est_fecha_entrega">{{ __('Fecha de entrega') }}:</label>
@@ -261,8 +311,7 @@
                                             <div class="input-group-prepend" >
                                                 <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-percent"></i></div>
                                             </div>
-                                            <input type="number" maxlength="3" size="3" placeholder="Desc(%)" id="est_descuento_porc" name="est_descuento_porc" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                            
+                                            <input type="number" maxlength="3" size="3" id="est_descuento_porc" name="est_descuento_porc" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                         </div>
                                     </div>
                                 </div>
@@ -273,30 +322,41 @@
                                             <div class="input-group-prepend" >
                                                 <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="far fa-dollar-sign"></i></div>
                                             </div>
-                                            <input type="number" maxlength="3" size="3" placeholder="Desc($)" id="est_descuento_dinero" name="est_descuento_dinero" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-sm-2">
-                                    <div class="form-group row">
-                                        <label class="col-md-12 col-form-label" for="est_costo_total">{{ __('Costo Total') }}:</label>
-                                        <div class="col-md-12 " style="display: inline-flex;">
-                                            <div class="input-group-prepend" >
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-sack-dollar"></i></div>
-                                            </div>
-                                            <input type="number" placeholder="Costo Total" id="est_costo_total" name="est_costo_total" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 0px 0px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
-                                            
+                                            <input type="number" maxlength="3" size="3" id="est_descuento_dinero" name="est_descuento_dinero" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
-                                        <div class="col-md-12" style="margin-top: 35px">
-                                            <a href="#" class="btn btn-success">Guardar</a>
+                                        <label class="col-md-12 col-form-label" for="est_precio_total">{{ __('Precio Total') }}:</label>
+                                        <div class="col-md-12 " style="display: inline-flex;">
+                                            <div class="input-group-prepend" >
+                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-sack-dollar"></i></div>
+                                            </div>
+                                            <input type="number" placeholder="Total" id="est_precio_total" name="est_precio_total" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-xl-2 col-sm-2">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="margin-top: 35px">
+                                            <input type="hidden" id="rec_est_id" name="rec_est_id">
+                                            <input type="hidden" name="rec_paciente_id" id="rec_paciente_id">
+                                            <input type="hidden" name="rec_medico_id" id="rec_medico_id">
+                                            <input type="hidden" name="rec_empresa_id" id="rec_empresa_id">
+                                            <input type="hidden" name="fac_estado" id="fac_estado" value="0">
+                                            <a href="javascript:void(0);" id="btnUpdateRec" class="btn btn-outline-info">Recepcionar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row" id="RecepcionTable">
+                                @include('recepcion.tablas.tabla_recepcion')
                             </div>
                         </div>
                     </div>
@@ -307,6 +367,7 @@
     @include('cliente.modal.modal_crear_cliente')
     @include('medico.modal.modal_crear_medico')
     @include('empresa.modal.modal_crear_empresa')
+    @include('recepcion.modal.modal_recepcion_factura')
 @endsection
 
 @section('funciones')

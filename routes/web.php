@@ -11,6 +11,7 @@ use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\CultivoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EstudioController;
+use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\IndicationController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\MuestraController;
@@ -46,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente');
     Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit']);
     Route::put('/clientes/{id}', [ClienteController::class, 'update']);
-    //Route::resource('/clientes', ClienteController::class);
 
     Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
     Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
@@ -68,17 +68,24 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['verificarEstadoCaja'])->group(function () {
         Route::get('/recepcion', [RecepcionController::class, 'index'])->name('recepcion');
         Route::post('/recepcion', [RecepcionController::class, 'store'])->name('recepcion');
+        Route::delete('/recepcion/{id}', [RecepcionController::class, 'destroy'])->name('recepcion.destroy');
+
+        Route::get('/tabla_recepcion/{id}', [RecepcionController::class, 'tabla_recepcion'])->name('tabla_recepcion');
+        Route::get('/buscar_medico_id', [RecepcionController::class, 'buscarMedicoId']);
+        Route::get('/buscar_medico_nombre', [RecepcionController::class, 'buscarMedicoNombre']);
+        Route::get('/buscar_paciente_id', [RecepcionController::class, 'buscarPacienteId']);
+        Route::get('/buscar_paciente_nombre', [RecepcionController::class, 'buscarPacienteNombre']);
+        Route::get('/buscar_emp_id', [RecepcionController::class, 'buscarEmpId']);
+        Route::get('/buscar_emp_nombre', [RecepcionController::class, 'buscarEmpNombre']);
+        Route::get('/buscar_estudio_id', [RecepcionController::class, 'buscarEstudioId']);
+        Route::get('/buscar_estudio_nombre', [RecepcionController::class, 'buscarEstudioNombre']);
+
+        Route::get('/validarFactura', [RecepcionController::class, 'validarFactura']);
+
+        Route::post('/facturas', [FacturaController::class, 'store'])->name('factura');
+        Route::put('/facturas/{id}', [FacturaController::class, 'update'])->name('factura.update');
     });
     
-    Route::get('/tabla_recepcion/{id}', [RecepcionController::class, 'tabla_recepcion'])->name('tabla_recepcion');
-    Route::get('/buscar_medico_id', [RecepcionController::class, 'buscarMedicoId']);
-    Route::get('/buscar_medico_nombre', [RecepcionController::class, 'buscarMedicoNombre']);
-    Route::get('/buscar_paciente_id', [RecepcionController::class, 'buscarPacienteId']);
-    Route::get('/buscar_paciente_nombre', [RecepcionController::class, 'buscarPacienteNombre']);
-    Route::get('/buscar_emp_id', [RecepcionController::class, 'buscarEmpId']);
-    Route::get('/buscar_emp_nombre', [RecepcionController::class, 'buscarEmpNombre']);
-    Route::get('/buscar_estudio_id', [RecepcionController::class, 'buscarEstudioId']);
-    Route::get('/buscar_estudio_nombre', [RecepcionController::class, 'buscarEstudioNombre']);
     
     Route::get('/results', [ResultController::class, 'index'])->name('result');
 

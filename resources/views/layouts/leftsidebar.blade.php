@@ -172,13 +172,13 @@
                         </li>
                         <li class="nav-item px-2">
                             <a href="#" class="nav-link">
-                                <i class="fa-solid fa-cart-plus nav-icon"></i>
+                                <i class="fas fa-square-root-alt nav-icon"></i>
                                 <p>Fórmulas</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="#" class="nav-link">
-                                <i class="fa-solid fa-cart-plus nav-icon"></i>
+                                <i class="fas fa-clipboard nav-icon"></i>
                                 <p>Lista de Precios</p>
                             </a>
                         </li>
