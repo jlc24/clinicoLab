@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Caja;
+use App\Models\Factura;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -19,14 +20,18 @@ class CajaController extends Controller
         } elseif ($usuario->rol == 'recepcion') {
             $cajas = Caja::where('user_id', '=', $usuario->id)->get();
         }
+        $totalFactura = Factura::sum('fac_total');
         
-        return view('caja.index', [ 'cajas' => $cajas ]);
+        return view('caja.index', [ 
+            'cajas' => $cajas,
+            'totalFacturas' => $totalFactura
+        ]);
     }
 
     public function getCajaStatus()
     {
         $user = auth()->user();
-        $caja = Caja::where('user_id', '=', $user->id)->whereDate('created_at', now()->format('Y-m-d'))->latest()->first();
+        $caja = Caja::where('user_id', '=', $user->id)->latest()->first();
         return response()->json($caja);
     }
     

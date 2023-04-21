@@ -8,6 +8,8 @@
     
     $(document).ready(function() {
         function EstadoFactura() {
+            var fac_estado = new FormData();
+            fac_estado.append('fac_estado', 0);
             $.ajax({
                 url: '/validarFactura',
                 type: 'GET',
@@ -53,8 +55,6 @@
             });
         }
         if ($("#rec_factura").val() == "") {
-            var fac_estado = new FormData();
-            fac_estado.append('fac_estado', 0);
             Swal.fire({
                 title: 'Espere...',
                 text: 'Asignando factura y cargando tabla',
@@ -445,6 +445,48 @@
                 }
             })
         });
+        $("#checkMedico").on('change', function () {
+            if (this.checked) {
+                $("#rec_medico_clave").prop("disabled", false);
+                $("#rec_medico_nombre").prop("disabled", false);
+                $("#rec_medico_add").css({"pointer-events": "", "opacity": ""});
+                $("#rec_medico_clave").focus();
+            }else{
+                $("#rec_medico_clave").prop("disabled", true);
+                $("#rec_medico_clave").val("");
+                $("#rec_medico_nombre").prop("disabled", true);
+                $("#rec_medico_nombre").val("");
+                $("#rec_medico_add").css({"pointer-events": "none", "opacity": "0.5"});
+            }
+        })
+        $("#checkEmpresa").on('change', function () {
+            if (this.checked) {
+                $("#rec_empresa_clave").prop("disabled", false);
+                $("#rec_empresa_nombre").prop("disabled", false);
+                $("#rec_empresa_add").css({"pointer-events": "", "opacity": ""});
+                $("#rec_empresa_clave").focus();
+            }else{
+                $("#rec_empresa_clave").prop("disabled", true);
+                $("#rec_empresa_clave").val("");
+                $("#rec_empresa_nombre").prop("disabled", true);
+                $("#rec_empresa_nombre").val("");
+                $("#rec_empresa_add").css({"pointer-events": "none", "opacity": "0.5"});
+            }
+        })
+
+        $('#modal_crear_factura').on('shown.bs.modal', function () {
+            $('#fac_importe').trigger('focus');
+        });
+
+        $('#modal_enviar_cotizacion').on('shown.bs.modal', function () {
+            $('#enviar_numero').trigger('focus');
+        });
+
+        $("#btnCloseSendCot").on('click', function() {
+            $("#enviar_numero").val("");
+            $("#enviar_texto").val("");
+        })
+
         function cargarTablaDetalleFactura(){
             var id = $("#rec_factura").val();
             $.ajax({
@@ -460,6 +502,7 @@
                                 '<tr><td>' + value.est_cod + '</td>'+
                                     '<td>' + value.est_nombre + '</td>'+
                                     '<td>' + value.est_precio + '</td>'+
+                                    '<td>' + value.est_moneda + '</td>'+
                                 '</tr>');
                         });
                         var sumPrecios = 0;
@@ -477,6 +520,82 @@
                 }
             });
         }
+        $("#btnEnviarCotizacion").on('click', function() {
+            if($("#est_precio_total").val() == "" || $("#est_precio_total").val() == "0.00"){
+                $(this).attr('data-toggle', '');
+                $(this).attr('data-target', '');
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Debe registrar al menos un estudio o grupo de estudios',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                setTimeout(function(){
+                    $("#rec_est_clave").trigger('focus');
+                    $(this).attr('data-toggle', 'modal');
+                    $(this).attr('data-target', '#modal_enviar_cotizacion');
+                }, 2000);
+            }else{
+                $(this).attr('data-toggle', 'modal');
+                $(this).attr('data-target', '#modal_enviar_cotizacion');
+                var saludo = 'Hola Buenos días,';
+                var medio = 'Por este medio te enviamos la información solicitada.';
+                var tiempo = '*RESULTADOS SE ENTREGAN EL MISMO DIA*';
+                var fin = 'Quedamos a tus órdenes para cualquier consulta.';
+                var empresa = '{{ $empresa->nombre }}';
+                var direccion = '{{ $empresa->direccion }}';
+                var num_empresa = '*{{ $empresa->telefono }}*';
+                var total = $("#est_precio_total").val();
+
+                var datosArray = [];
+                $("#tabla-estudios tbody tr").each(function (row, tr) {
+                    var datosRow = {
+                        estudio: $(tr).find('td:eq(1)').text(),
+                        indicaciones: $(tr).find('td:eq(4)').text(),
+                        precio: $(tr).find('td:eq(2)').text(),
+                    };
+                    datosArray.push(datosRow);
+                })
+                var contenido = '';
+                for (let i = 0; i < datosArray.length; i++) {
+                    const datosRow = datosArray[i];
+                    contenido += 'Estudio: *' + datosRow.estudio + '*\n';
+                    contenido += 'Indicaciones: *' + datosRow.indicaciones + '*\n';
+                    contenido += 'Precio: *' + datosRow.precio + ' Bs*\n\n';
+                }
+                var mensaje =  saludo + '\n'+
+                            medio + '\n\n' +
+                            contenido + 'Total: *' + total + ' Bs*\n\n' +
+                            tiempo + '\n\n' +
+                            empresa + ", " + direccion + "." + '\n\n' +
+                            "Whatsapp: " + num_empresa + ".";
+                console.log(mensaje);
+
+                $("#enviar_texto").val(mensaje);
+            }
+        });
+        $("#btnEnviarMensaje").on('click', function() {
+            if ($("#enviar_numero").val() == "") {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Debe ingresar un numero valido de Whatsapp',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                $("#enviar_numero").focus();
+            }else{
+                var codigo = $("#enviar_numero_codigo").val();
+                var numero = $("#enviar_numero").val();
+                var mensaje = $("#enviar_texto").val().replace(/\n/g, "%0A").replace(/_/g, '__').replace(/([*])(\s)/g, '$2$1').replace(/~/g, '_~').replace(/# /g, '%23%20').replace(/#/g, '%23');
+    
+                var link = 'https://api.whatsapp.com/send?phone=' + codigo + numero + '&text=' + mensaje;
+                window.open(link);
+            }
+
+        })
+
         $("#btnUpdateRec").on('click' , function() {
             if ($("#rec_paciente_clave").val() == "" || $("#rec_paciente_nombre").val() == "") {
                 Swal.fire({
@@ -493,6 +612,8 @@
                 }, 2000);
                 
             }else if($("#est_precio_total").val() == "" || $("#est_precio_total").val() == "0.00"){
+                $('#btnUpdateRec').attr('data-toggle', '');
+                $('#btnUpdateRec').attr('data-target', '');
                 Swal.fire({
                     title: 'Oops...',
                     text: 'Debe registrar al menos un estudio o grupo de estudios',
@@ -509,8 +630,28 @@
             }else{
                 $('#btnUpdateRec').attr('data-toggle', 'modal');
                 $('#btnUpdateRec').attr('data-target', '#modal_crear_factura');
-                $("#fac_factura").val($("#rec_factura").val());
-                $("#fac_paciente_nombre").val($("#rec_paciente_nombre").val())
+                $("#fac_factura_id").val($("#rec_factura").val());
+                $("#fac_paciente_id").val($("#rec_paciente_id").val());
+                $("#fac_paciente_nombre").text($("#rec_paciente_nombre").val());
+                $("#fac_paciente_edad").text($("#rec_edad").val());
+                $("#fac_observacion").val($("#rec_observacion").val());
+                $("#fac_referencia").val($("#rec_referencia").val());
+                if ($("#rec_empresa_nombre").val() != "" || $("#rec_empresa_clave").val() != "") {
+                    $("#block_empresa").css("display", "");
+                    $("#fac_empresa_id").val($("#rec_empresa_id").val());
+                    $("#fac_empresa_nombre").text($("#rec_empresa_nombre").val());
+                }else{
+                    $("#block_empresa").css("display", "none");
+                    $("#fac_empresa_id").val("");
+                }
+                if ($("#rec_medico_nombre").val() != "" || $("#rec_medico_clave").val() != "") {
+                    $("#block_medico").css("display", "");
+                    $("#fac_medico_id").val($("#rec_medico_id").val());
+                    $("#fac_medico_nombre").text($("#rec_medico_nombre").val());
+                }else{
+                    $("#block_medico").css("display", "none");
+                    $("#fac_medico_id").val("");
+                }
                 cargarTablaDetalleFactura()
             }
         })
@@ -521,143 +662,40 @@
             document.getElementById("fac_cambio").value = cambio;
         });
 
-        function UpdateFactura(estado) {
-            event.preventDefault();
-            var datos_fact = new FormData();
-            var factura = $("#rec_factura").val();
-            datos_fact.append('cli_id', $("#rec_paciente_id").val());
-            datos_fact.append('med_id', $("#rec_medico_id").val());
-            datos_fact.append('emp_id', $("#rec_empresa_id").val());
-            datos_fact.append('fac_total', $("#est_precio_total").val());
-            datos_fact.append('fac_estado', 1);
-            datos_fact.append('fac_observacion', $("#rec_observacion").val());
-            datos_fact.append('fac_referencia', $("#rec_referencia").val());
-            datos_fact.append('fac_importe', $("#fac_importe").val());
-            datos_fact.append('fac_cambio', $("#fac_cambio").val());
-            for (var campo of datos_fact.values()) {
-                console.log(campo);
-            }
-            $.ajax({
-                url: '{{ route("factura.update", ":id") }}'.replace(':id', factura),
-                method: "PUT",
-                data: datos_fact,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (response) {
-                    Swal.fire({
-                        title: '¡Exito!',
-                        text: 'Se genero la factura exitosamente',
-                        icon: 'success',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ver factura',
-                        cancelButtonText: 'Continuar'
-                    }).then((result) => {
-                        if (result.dismiss === Swal.DismissReason.cancel) {
-                            var fac_estado = new FormData();
-                            $("#form_recepcion_factura")[0].reset();
-                            $("#form_crear_factura")[0].reset();
-                            fac_estado.append('fac_estado', 0);
-                            Swal.fire({
-                                title: 'Espere...',
-                                text: 'Asignando factura y cargando tabla',
-                                icon: 'info',
-                                showConfirmButton: false,
-                                timer: 2000
-                            });
-                            setTimeout(function() {
-                                Swal.fire({
-                                    title: '¡Éxito!',
-                                    text: 'Factura Asignada',
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                });
-                                EstadoFactura();
-                                
-                            }, 1000)
-                            setTimeout(function(){
-                                cargarTablaRecepcion();
-                            }, 3000);
-                        }else if (result.isConfirmed) {
-                            $("#form_recepcion_factura")[0].reset();
-                            $("#form_crear_factura")[0].reset();
-                            var fac_estado = new FormData();
-                            fac_estado.append('fac_estado', 0);
-                            Swal.fire({
-                                title: 'Espere...',
-                                text: 'Asignando factura y cargando tabla',
-                                icon: 'info',
-                                showConfirmButton: false,
-                                timer: 2000
-                            });
-                            setTimeout(function() {
-                                Swal.fire({
-                                    title: '¡Éxito!',
-                                    text: 'Factura Asignada',
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                });
-                                EstadoFactura();
-                                
-                            }, 1000)
-                            setTimeout(function(){
-                                cargarTablaRecepcion();
-                            }, 3000);
-                        }
-                    });
-                },
-                error: function(xhr, status, error){
-                    console.error('Error en la solicitud: ', status, ', detalles: ', error);
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'Se ha producido un error, ' + 'Error en la solicitud: ' + status + ', detalles: ' + error,
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-            });
-        }
-
-        $("#btnRegisterFactura").on('click', function () {
-            if($("#fac_tipo_pago").val() == 'EFECTIVO'){
-                if (parseFloat($('#fac_importe').val()) < parseFloat($('#fac_precio_total').val())) {
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'Ingrese Monto de Pago Correcto',
-                        icon: 'info',
-                        showConfirmButton: false,
-                        timer: 2000,
-                    })
-                    setTimeout(function(){
-                        $("#fac_importe").trigger('focus');
-                    }, 2000);
-                    return false;
-                }else{
-                    Swal.fire({
-                        title: '¿Está seguro?',
-                        text: 'Revisar los datos antes de continuar',
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Si, continuar',
-                        cancelButtonText: 'No'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            UpdateFactura(1);
-                        }
-                    });
-                    
-                }
-
-            }
-        })
     });
+    function UpdateFactura() {
+        event.preventDefault();
+        if($('#fac_tipo_pago').val() == 'EFECTIVO'){
+            if (parseFloat($('#fac_importe').val()) < parseFloat($('#fac_precio_total').val())) {
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Ingrese Monto de Pago Correcto',
+                    icon: 'info',
+                    showConfirmButton: false,
+                    timer: 2000,
+                })
+                setTimeout(function(){
+                    $('#fac_importe').trigger('focus');
+                }, 2000);
+                return false;
+            }else{
+                Swal.fire({
+                    title: '¿Está seguro?',
+                    text: 'Revisar los datos antes de continuar',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#40CC6C',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, continuar',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#form_crear_factura').attr('action', '/facturas/' + $("#fac_factura_id").val());
+                        $('#form_crear_factura').submit();
+                        event.preventDefault();
+                    }
+                });
+            }
+        }
+    }
 </script>

@@ -21,5 +21,8 @@
                 }
             });
         });
+        $('#modal_crear_caja').on('shown.bs.modal', function () {
+            $('#caja_monto_apertura').trigger('focus');
+        });
     })
 </script>

@@ -49,7 +49,7 @@
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-calendar-alt"></i></div>
                                             </div>
-                                            <input type="date" value="{{ date('Y-m-d') }}" placeholder="Fecha" id="rec_fecha" name="rec_fecha" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                            <input type="date" value="{{ date('Y-m-d') }}" placeholder="Fecha" id="rec_fecha" name="rec_fecha" class="form-control form-control-sm" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -94,22 +94,25 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xl-12 col-sm-12">
-                                    <label class="col-md-12 col-form-label" ><i class="fas fa-building"></i> {{ __('Datos de la Empresa a recepcionar') }}: (Opcional)</label>
+                                <div class="col-xl-12 col-sm-12 mb-2">
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input" name="checkEmpresa" id="checkEmpresa" title="Habilitar Empresa">
+                                        <label class="form-check-label" for="checkEmpresa"><i class="fas fa-building"></i><strong>{{ __(' Datos de la Empresa a recepcionar') }}: (Opcional)</strong></label>
+                                    </div>
                                 </div>
                                 <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
-                                            <input type="text" placeholder="Clave" id="rec_empresa_clave" name="rec_empresa_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                            <input type="text" placeholder="Clave" id="rec_empresa_clave" name="rec_empresa_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 5px 5px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" disabled>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-9 col-sm-9">
                                     <div class="form-group row">
                                         <div class="col-md-12 " style="display: inline-flex;">
-                                            <input type="text" placeholder="Nombre de la Empresa" id="rec_empresa_nombre" name="rec_empresa_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                            <input type="text" placeholder="Nombre de la Empresa" id="rec_empresa_nombre" name="rec_empresa_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" disabled>
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text" style="padding-left: 5px; border-radius: 0px 5px 5px 0px; height: 31px; width: 40px"><a href="#" data-toggle="modal" data-target="#modal_crear_empresa" title="Nueva Empresa" style="color: #000"><i class="fas fa-building">+</i></a> </div>
+                                                <div class="input-group-text" style="padding-left: 5px; border-radius: 0px 5px 5px 0px; height: 31px; width: 40px"><a href="#" data-toggle="modal" data-target="#modal_crear_empresa" title="Nueva Empresa" id="rec_empresa_add" style="color: #000; pointer-events: none; opacity: 0.5;"><i class="fas fa-building">+</i></a> </div>
                                             </div>
                                         </div>
                                     </div>
@@ -119,28 +122,31 @@
                                 <div class="col-xl-6 col-sm-6">
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input type="text" placeholder="Convenio" id="rec_emp_convenio" name="rec_emp_convenio" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input type="text" placeholder="Convenio" id="rec_emp_convenio" name="rec_emp_convenio" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 5px 5px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xl-12 col-sm-12">
-                                    <label class="col-md-12 col-form-label" ><i class="fa-solid fa-user-doctor"></i> {{ __('Datos del Medico a recepcionar') }}:</label>
+                                <div class="col-xl-12 col-sm-12 mb-2">
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input" name="checkMedico" id="checkMedico" title="Habilitar Medico">
+                                        <label class="form-check-label" for="checkMedico"><i class="fa-solid fa-user-doctor"></i><strong>{{ __(' Datos del Medico a recepcionar') }}: (Opcional)</strong></label>
+                                    </div>
                                 </div>
                                 <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
-                                            <input type="text" placeholder="Clave" id="rec_medico_clave" name="rec_medico_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input type="text" placeholder="Clave" id="rec_medico_clave" name="rec_medico_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 5px 5px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" disabled>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-9 col-sm-9">
                                     <div class="form-group row">
                                         <div class="col-md-12 " style="display: inline-flex;">
-                                            <input type="text" placeholder="Nombre del Medico" id="rec_medico_nombre" name="rec_medico_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                            <input type="text" placeholder="Nombre del Medico" id="rec_medico_nombre" name="rec_medico_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" disabled>
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text" style="padding-left: 5px; border-radius: 0px 5px 5px 0px; height: 31px; width: 40px"><a href="#" data-toggle="modal" data-target="#modal_crear_medico" title="Nuevo Medico" style="color: #000"><i class="fa-solid fa-user-doctor">+</i></a></div>
+                                                <div class="input-group-text" style="padding-left: 5px; border-radius: 0px 5px 5px 0px; height: 31px; width: 40px"><a href="#" data-toggle="modal" data-target="#modal_crear_medico" title="Nuevo Medico" id="rec_medico_add" style="color: #000; pointer-events: none; opacity: 0.5;"><i class="fa-solid fa-user-doctor">+</i></a></div>
                                             </div>
                                         </div>
                                     </div>
@@ -304,28 +310,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-2 col-sm-2">
-                                    <div class="form-group row">
-                                        <label class="col-md-12 col-form-label" for="est_descuento_porc">{{ __('Descuento') }}(%):</label>
-                                        <div class="col-md-12 " style="display: inline-flex;">
-                                            <div class="input-group-prepend" >
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-percent"></i></div>
-                                            </div>
-                                            <input type="number" maxlength="3" size="3" id="est_descuento_porc" name="est_descuento_porc" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-2 col-sm-2">
-                                    <div class="form-group row">
-                                        <label class="col-md-12 col-form-label" for="est_descuento_dinero">{{ __('Descuento') }}($):</label>
-                                        <div class="col-md-12 " style="display: inline-flex;">
-                                            <div class="input-group-prepend" >
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="far fa-dollar-sign"></i></div>
-                                            </div>
-                                            <input type="number" maxlength="3" size="3" id="est_descuento_dinero" name="est_descuento_dinero" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
                                         <label class="col-md-12 col-form-label" for="est_precio_total">{{ __('Precio Total') }}:</label>
@@ -344,8 +329,14 @@
                                             <input type="hidden" name="rec_paciente_id" id="rec_paciente_id">
                                             <input type="hidden" name="rec_medico_id" id="rec_medico_id">
                                             <input type="hidden" name="rec_empresa_id" id="rec_empresa_id">
-                                            <input type="hidden" name="fac_estado" id="fac_estado" value="0">
                                             <a href="javascript:void(0);" id="btnUpdateRec" class="btn btn-outline-info">Recepcionar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-sm-4 text-right">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="margin-top: 35px">
+                                            <a href="javascript:void(0)" id="btnEnviarCotizacion" class="btn btn-outline-success" title="Enviar Cotizacion"><i class="fab fa-whatsapp fa-2x"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -355,7 +346,7 @@
                     </form>
                     <div class="card">
                         <div class="card-body">
-                            <div class="row" id="RecepcionTable">
+                            <div class="row">
                                 @include('recepcion.tablas.tabla_recepcion')
                             </div>
                         </div>
@@ -364,10 +355,14 @@
             </div>
         </div>
     </section>
+    @if (isset($mensaje))
+        <div class="alert alert-success">{{ $mensaje }}</div>
+    @endif
     @include('cliente.modal.modal_crear_cliente')
     @include('medico.modal.modal_crear_medico')
     @include('empresa.modal.modal_crear_empresa')
     @include('recepcion.modal.modal_recepcion_factura')
+    @include('recepcion.modal.modal_enviar_cotizacion')
 @endsection
 
 @section('funciones')

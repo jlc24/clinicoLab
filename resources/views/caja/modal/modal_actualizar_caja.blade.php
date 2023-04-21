@@ -50,7 +50,7 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="caja_monto_cierre">{{ __('Monto cierre') }}:</label>
                                 <div class="col-md-8" style="display: inline-flex">
-                                    <input type="number" step="0.01" value="" id="caja_monto_cierre" name="caja_monto_cierre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                    <input type="number" step="0.01" value="{{ $totalFacturas }}" id="caja_monto_cierre" name="caja_monto_cierre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
                                     <div class="input-group-prepend" >
                                         <div class="input-group-text" style=" border-radius: 0px 5px 5px 0px; height: 31px;"><i class="fas fa-dollar-sign"></i></div>
                                     </div>

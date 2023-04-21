@@ -71,21 +71,25 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/recepcion/{id}', [RecepcionController::class, 'destroy'])->name('recepcion.destroy');
 
         Route::get('/tabla_recepcion/{id}', [RecepcionController::class, 'tabla_recepcion'])->name('tabla_recepcion');
-        Route::get('/buscar_medico_id', [RecepcionController::class, 'buscarMedicoId']);
-        Route::get('/buscar_medico_nombre', [RecepcionController::class, 'buscarMedicoNombre']);
-        Route::get('/buscar_paciente_id', [RecepcionController::class, 'buscarPacienteId']);
-        Route::get('/buscar_paciente_nombre', [RecepcionController::class, 'buscarPacienteNombre']);
+
         Route::get('/buscar_emp_id', [RecepcionController::class, 'buscarEmpId']);
         Route::get('/buscar_emp_nombre', [RecepcionController::class, 'buscarEmpNombre']);
-        Route::get('/buscar_estudio_id', [RecepcionController::class, 'buscarEstudioId']);
-        Route::get('/buscar_estudio_nombre', [RecepcionController::class, 'buscarEstudioNombre']);
-
+    
         Route::get('/validarFactura', [RecepcionController::class, 'validarFactura']);
 
         Route::post('/facturas', [FacturaController::class, 'store'])->name('factura');
-        Route::put('/facturas/{id}', [FacturaController::class, 'update'])->name('factura.update');
+        Route::put('/facturas/{id}', [FacturaController::class, 'update']);
     });
-    
+    Route::get('/buscar_paciente_id', [RecepcionController::class, 'buscarPacienteId']);
+    Route::get('/buscar_paciente_nombre', [RecepcionController::class, 'buscarPacienteNombre']);
+    Route::get('/buscar_estudio_id', [RecepcionController::class, 'buscarEstudioId']);
+    Route::get('/buscar_estudio_nombre', [RecepcionController::class, 'buscarEstudioNombre']);
+    Route::get('/buscar_medico_id', [RecepcionController::class, 'buscarMedicoId']);
+    Route::get('/buscar_medico_nombre', [RecepcionController::class, 'buscarMedicoNombre']);
+
+    Route::get('/buscar_recepcion_paciente', [ResultController::class, 'buscarRecepcionPaciente']);
+    Route::get('/buscar_recepcion_estudio', [ResultController::class, 'buscarRecepcionEstudio']);
+    Route::get('/buscar_recepcion_fechas', [ResultController::class, 'buscarRecepcionFechas']);
     
     Route::get('/results', [ResultController::class, 'index'])->name('result');
 

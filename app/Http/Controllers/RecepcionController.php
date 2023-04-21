@@ -6,6 +6,7 @@ use App\Models\Caja;
 use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Cliente;
+use App\Models\Configuration;
 use App\Models\Detalle;
 use App\Models\Empresa;
 use App\Models\Estudio;
@@ -39,6 +40,8 @@ class RecepcionController extends Controller
             'muestras' => Muestra::all(),
             'indicacions' => Indication::all(),
             'caja' => Caja::latest()->first(),
+            'factura' => DB::table('facturas')->latest()->first(),
+            'empresa' => Configuration::latest()->first(),
         ]);
     }
 
@@ -147,7 +150,8 @@ class RecepcionController extends Controller
                                 'estudios.est_nombre', 
                                 'estudios.est_precio', 
                                 'muestras.nombre as muestra', 
-                                'indications.nombre as indicacion')
+                                'indications.nombre as indicacion',
+                                'estudios.est_moneda')
                         ->where('recepcions.fac_id', $id)
                         ->get();
         return response()->json($estudios);

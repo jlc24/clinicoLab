@@ -36,9 +36,6 @@
             }
         })
     });
-    $(document).ready(function() {
-        
-    });
     
     @if(session('success'))
         Swal.fire({
@@ -47,6 +44,18 @@
             icon: 'success',
             showConfirmButton: false,
             timer: 2000
+        });
+    @endif
+    @if(session('factura'))
+        Swal.fire({
+            title: '¡Exito!',
+            text: '{{ session('factura') }}',
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Ver factura',
+            cancelButtonText: 'Continuar'
         });
     @endif
     @if(session('info'))

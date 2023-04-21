@@ -67,37 +67,33 @@ class FacturaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'cli_id' => 'integer',
-            'med_id' => 'integer',
-            'emp_id' => 'integer',
-            'fac_total' => 'decimal:2',
+            'fac_precio_total' => 'decimal:2',
             'fac_estado' => 'required|integer',
-            'fac_pago' => 'max:50',
-            'fac_descuento' => 'integer',
-            'fac_observacion'=> 'max:255',
-            'fac_referencia' => 'max:255',
+            'fac_tipo_pago' => 'max:50',
+            //'fac_descuento' => 'integer',
             'fac_importe' => 'decimal:2',
             'fac_cambio' => 'decimal:2',
         ]);
         $user_id = auth()->user()->id;
         $config_id = Configuration::latest()->first();
-        
         $factura = Factura::find($id);
         $factura->update([
-            'cli_id' => $request->input('cli_id'),
-            'med_id' => $request->input('med_id'),
-            'emp_id' => $request->input('emp_id'),
+            'cli_id' => $request->input('fac_paciente_id'),
+            'med_id' => $request->input('fac_medico_id'),
+            'emp_id' => $request->input('fac_empresa_id'),
             'user_id' => $user_id,
             'config_id' => $config_id->id,
-            'fac_total' => $request->input('fac_total'),
-            'fac_estado' => '1',
-            'fac_pago' => $request->input('fac_pago'),
-            'fac_descuento' => $request->input('fac_descuento'),
+            'fac_total' => $request->input('fac_precio_total'),
+            'fac_estado' => $request->input('fac_estado'),
+            'fac_pago' => $request->input('fac_tipo_pago'),
+            //'fac_descuento' => $request->input('fac_descuento'),
             'fac_observacion' => $request->input('fac_observacion'),
             'fac_referencia' => $request->input('fac_referencia'),
             'fac_importe' => $request->input('fac_importe'),
             'fac_cambio' => $request->input('fac_cambio')
         ]);
+
+        return redirect()->route('recepcion')->with('success', 'Se generó la factura correctamente');
     }
 
     /**
