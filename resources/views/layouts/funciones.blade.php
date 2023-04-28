@@ -15,7 +15,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: route.replace(':id', id),
+                    url: route.replace(":id", id),
                     type: 'DELETE',
                     data: {
                         "_token": "{{ csrf_token() }}"
@@ -30,6 +30,15 @@
                             if (result.isConfirmed) {
                                 location.reload();
                             }
+                        });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'No se pudo realizar la operación.',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000
                         });
                     }
                 });

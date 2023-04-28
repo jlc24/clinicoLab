@@ -53,7 +53,7 @@
                     </ul>
                 </li>
                 @php
-                    $activeRoutesCatalog = [ 'antibiograma', 'bacteria', 'cultivo', 'estudio', 'medicamento', 'laboratorio', 'muestra', 'indication', 'recipiente'];
+                    $activeRoutesCatalog = [ 'antibiograma', 'bacteria', 'cultivo', 'estudio', 'medicamento', 'laboratorio', 'muestra', 'indication', 'recipiente', 'metodologia', 'umedida', 'componente'];
                 @endphp
                 <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesCatalog) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesCatalog) ? 'active' : '' }}">
@@ -116,6 +116,24 @@
                             <a href="{{ route('recipiente') }}" class="nav-link {{ Request::is('recipientes') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-prescription-bottle-alt"></i>
                                 <p>Recipientes</p>
+                            </a>
+                        </li>
+                        <li class="nav-item px-2">
+                            <a href="{{ route('metodologia') }}" class="nav-link {{ Request::is('metodologias') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-procedures"></i>
+                                <p>Metodologías</p>
+                            </a>
+                        </li>
+                        <li class="nav-item px-2">
+                            <a href="{{ route('umedida') }}" class="nav-link {{ Request::is('umedidas') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-ruler-horizontal"></i>
+                                <p>Unidades de Medida</p>
+                            </a>
+                        </li>
+                        <li class="nav-item px-2">
+                            <a href="{{ route('componente') }}" class="nav-link {{ Request::is('componentes') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-table-cells"></i>
+                                <p>Componente</p>
                             </a>
                         </li>
                     </ul>

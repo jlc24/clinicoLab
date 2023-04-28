@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('estudio_id');
             $table->unsignedBigInteger('muestra_id');
-            $table->unsignedBigInteger('recipiente_id');
-            $table->unsignedBigInteger('indicacion_id');
+            $table->unsignedBigInteger('recipiente_id')->nullable();
+            $table->unsignedBigInteger('indicacion_id')->nullable();
+            $table->string('tipo', 20)->nullable();
             $table->timestamps();
 
             $table->foreign('estudio_id')->references('id')->on('estudios')->onDelete('cascade');

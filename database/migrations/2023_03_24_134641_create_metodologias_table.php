@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('estudios', function (Blueprint $table) {
+        Schema::create('metodologias', function (Blueprint $table) {
             $table->id();
-            $table->string('est_cod', 10);
-            $table->string('est_nombre', 255);
-            $table->string('est_descripcion', 255)->nullable();
-            $table->decimal('est_precio')->nullable();
-            $table->string('est_moneda', 5)->nullable();
+            $table->string('nombre', 100);
+            $table->string('descripcion', 255)->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('estudios');
+        Schema::dropIfExists('metodologias');
     }
 };

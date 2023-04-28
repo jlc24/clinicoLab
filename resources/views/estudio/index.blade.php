@@ -20,7 +20,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-12 col-sm-12">
+                <div class="col-xl-10 col-sm-10">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
@@ -31,25 +31,42 @@
                         </div>
                         <div class="card-body">
                             <h3>Lista de Estudios o Análisis registrados en el Sistema</h3><hr>
-                            <table class="table table-bordered table-responsive-lg">
+                            <table class="table table-bordered table-responsive-lg table_estudios" id="tabla_estudios">
                                 <thead>
                                     <th>#</th>
                                     <th>Clave</th>
                                     <th>Nombre</th>
+                                    <th>Tipo Estudio</th>
                                     <th>Op</th>
                                 </thead>
                                 <tbody>
                                     @foreach ($detalles as $detalle)
                                         <tr>
-                                            <td>{{ $detalle->estudio->id }}</td>
+                                            <td>{{ $detalle->id }}</td>
                                             <td>{{ $detalle->estudio->est_cod }}</td>
                                             <td>{{ $detalle->estudio->est_nombre }}</td>
+                                            <td class="text-center">
+                                                @if($detalle->tipo == null || $detalle->tipo == 'null')
+                                                    <a href="#" class="badge badge-danger btn-tipo-estudio" title="Tipo Estudio" style="font-size: 15px">Habilitar</a>
+                                                @elseif ($detalle->tipo == 'INDIVIDUAL')
+                                                    <a href="#" class="badge badge-success btn-tipo-individual" title="Tipo Estudio" style="font-size: 15px">Individual</a>
+                                                @elseif ($detalle->tipo == 'COMPONENTE')
+                                                    <a href="#" class="badge badge-info btn-tipo-componente" title="Tipo Estudio" style="font-size: 15px">Componente</a>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="#" data-toggle="modal" data-target="#modal_editar_estudio_{{ $detalle->estudio->id }}" class="btn btn-sm btn-outline-warning" title="Editar Estudio"><i class="fas fa-user-edit"></i></a>
+                                                    <button data-toggle="modal" data-target="#modal_editar_estudio_{{ $detalle->id }}" class="btn btn-sm btn-outline-warning" title="Editar Estudio"><i class="fas fa-user-edit"></i></button>
                                                     @include('estudio.modal.modal_modificar_estudio')
-                                                    <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-info" title="Configurar"><i class="fas fa-cog"></i></a>
-                                                    <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-danger" title="Elimnar estudio"><i class="fas fa-trash-alt"></i></a>
+                                                    @if ($detalle->tipo == 'INDIVIDUAL')
+                                                        <button data-id="{{ $detalle->id }}" data-nombre="{{ $detalle->estudio->est_nombre }}" data-toggle="modal" data-target="#modal_configurar_estudio_individual_{{ $detalle->id }}" class="btn btn-sm btn-outline-info btn-detalle-indi-id" title="Configurar Estudio Individual"><i class="fas fa-cog"></i></button>
+                                                        @include('estudio.modal.modal_config_estudio_individual')
+                                                        <button href="javascript:void(0);" class="btn btn-sm btn-outline-danger btn-delete-estudio" title="Elimnar estudio"><i class="fas fa-trash-alt"></i></button>
+                                                    @elseif ($detalle->tipo == 'COMPONENTE')
+                                                        <button data-id="{{ $detalle->id }}" data-nombre="{{ $detalle->estudio->est_nombre }}" data-toggle="modal" data-target="#modal_configurar_estudio_componente_{{ $detalle->id }}" class="btn btn-sm btn-outline-info btn-detalle-comp-id" title="Configurar Estudio Componente"><i class="fas fa-cog"></i></button>
+                                                        @include('estudio.modal.modal_config_estudio_componente')
+                                                        <button href="javascript:void(0);" class="btn btn-sm btn-outline-danger btn-delete-estudio" title="Elimnar estudio"><i class="fas fa-trash-alt"></i></button>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -64,6 +81,8 @@
     </section>
 
     @include('estudio.modal.modal_crear_estudio')
+    @include('procedimiento.modal.modal_crear_procedimiento')
+    @include('estudio.modal.modal_config_parametro')
 @endsection
 
 @section('funciones')

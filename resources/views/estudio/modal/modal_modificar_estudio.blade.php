@@ -1,9 +1,9 @@
-<div class="modal fade" id="modal_editar_estudio_{{ $detalle->estudio->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal_editar_estudio_{{ $detalle->estudio->id }}Label" aria-hidden="true">
+<div class="modal fade" id="modal_editar_estudio_{{ $detalle->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal_editar_estudio_{{ $detalle->id }}Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #32C861; color: #fff">
-                <h1 class="modal-title fs-5" id="modal_editar_estudio_{{ $detalle->estudio->id }}Label"><strong>{{ __('Modificar Estudio o Análisis') }}</strong></h1>
-                <button type="button" id="btnCloseAddMedic" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="modal_editar_estudio_{{ $detalle->id }}Label"><strong>{{ __('Modificar Estudio o Análisis') }}</strong></h1>
+                <button type="button" id="btnCloseUpEstudio" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 @if ($errors->any())
@@ -19,7 +19,7 @@
                     </div>
                 @endif
 
-                <form action="{{ url('estudios/'.$detalle->estudio->id) }}" method="POST" class="form-horizontal" id="formulario_crear_estudio">
+                <form action="{{ url('estudios/'.$detalle->estudio->id) }}" method="POST" class="form-horizontal" id="formulario_actualizar_estudio">
                     @method('PUT')
                     @csrf
                     <div class="row">
@@ -78,8 +78,8 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_recipiente_update">{{ __('Recipiente') }}: </label>
                                 <div class="col-md-8">
-                                    <select class="custom-select custom-select-sm" id="est_recipiente_update" name="est_recipiente_update" required>
-                                        <option value="" selected="" disabled>SELECCIONAR...</option>
+                                    <select class="custom-select custom-select-sm" id="est_recipiente_update" name="est_recipiente_update">
+                                        <option value="" selected="">SELECCIONAR...</option>
                                         @foreach ($recipientes as $recipiente)
                                             <option value="{{ $recipiente->id }}"
                                                 @if($recipiente->id == $detalle->recipiente_id)
@@ -95,8 +95,8 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_indicaciones_update">{{ __('Indicaciones') }}: </label>
                                 <div class="col-md-8">
-                                    <select class="custom-select custom-select-sm" id="est_indicaciones_update" name="est_indicaciones_update" required>
-                                        <option value="" selected="" disabled>SELECCIONAR...</option>
+                                    <select class="custom-select custom-select-sm" id="est_indicaciones_update" name="est_indicaciones_update">
+                                        <option value="" selected="">SELECCIONAR...</option>
                                         @foreach ($indicaciones as $indicacion)
                                             <option value="{{ $indicacion->id }}"
                                                 @if($indicacion->id == $detalle->indicacion_id)

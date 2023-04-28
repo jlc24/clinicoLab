@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" style="background-color: #32C861; color: #fff">
                 <h1 class="modal-title fs-5" id="modal_crear_estudioLabel"><strong>{{ __('Agregar Estudio o Análisis') }}</strong></h1>
-                <button type="button" id="btnCloseAddMedic" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="btnCloseAddEstudio" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 @if ($errors->any())
@@ -84,8 +84,8 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_recipiente">{{ __('Recipiente') }}: </label>
                                 <div class="col-md-8">
-                                    <select class="custom-select custom-select-sm" id="est_recipiente" name="est_recipiente" required>
-                                        <option value="" selected="" disabled>SELECCIONAR...</option>
+                                    <select class="custom-select custom-select-sm" id="est_recipiente" name="est_recipiente" >
+                                        <option value="" selected="">SELECCIONAR...</option>
                                         @foreach ($recipientes as $recipiente)
                                             <option value="{{ $recipiente->id }}">{{ $recipiente->nombre }}</option>
                                         @endforeach
@@ -97,8 +97,8 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_indicaciones">{{ __('Indicaciones') }}: </label>
                                 <div class="col-md-8">
-                                    <select class="custom-select custom-select-sm" id="est_indicaciones" name="est_indicaciones" required>
-                                        <option value="" selected="" disabled>SELECCIONAR...</option>
+                                    <select class="custom-select custom-select-sm" id="est_indicaciones" name="est_indicaciones" >
+                                        <option value="" selected="">SELECCIONAR...</option>
                                         @foreach ($indicaciones as $indicacion)
                                             <option value="{{ $indicacion->id }}">{{ $indicacion->nombre }}</option>
                                         @endforeach

@@ -14,6 +14,7 @@ class Detalle extends Model
         'muestra_id',
         'recipiente_id',
         'indicacion_id',
+        'tipo'
     ];
 
     public function estudio()
@@ -39,5 +40,10 @@ class Detalle extends Model
     public function recepcions()
     {
         return $this->hasMany(Recepcion::class);
+    }
+
+    public function detalleprocedimientos()
+    {
+        return $this->hasMany(DetalleProcedimiento::class);
     }
 }

@@ -7,17 +7,25 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ComponenteController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\CultivoController;
+use App\Http\Controllers\DetalleController;
+use App\Http\Controllers\DetalleProcedimientoController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EstudioController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\IndicationController;
 use App\Http\Controllers\MedicoController;
+use App\Http\Controllers\MetodologiaController;
 use App\Http\Controllers\MuestraController;
+use App\Http\Controllers\ProcedimientoController;
 use App\Http\Controllers\RecepcionController;
 use App\Http\Controllers\RecipienteController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\UMedidaController;
+use App\Models\Componente;
+use App\Models\DetalleComponente;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,9 +101,17 @@ Route::middleware(['auth'])->group(function () {
     
     Route::get('/results', [ResultController::class, 'index'])->name('result');
 
+    Route::put('/detalles/{id}', [DetalleController::class, 'update'])->name('detalle.update');
+
+    Route::put('/detalleprocedimientos/{id}', [DetalleProcedimientoController::class, 'update'])->name('detalleprocedimiento.update');
+
     Route::get('/estudios', [EstudioController::class, 'index'])->name('estudio');
     Route::post('/estudios', [EstudioController::class, 'store'])->name('estudio');
     Route::put('/estudios/{id}', [EstudioController::class, 'update']);
+
+    Route::get('/getDetalle/{id}', [EstudioController::class, 'getDetalle'])->name('getDetalle');
+
+    Route::get('/tabla_procedimiento/{id}', [EstudioController::class, 'tabla_procedimiento'])->name('tabla_procedimiento');
 
     Route::get('/cultivos', [CultivoController::class, 'index'])->name('cultivo');
 
@@ -116,7 +132,36 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/muestras/{id}', [MuestraController::class, 'update']);
     Route::delete('/muestras/{id}', [MuestraController::class, 'destroy'])->name('muestra.destroy');
 
+    Route::get('/metodologias', [MetodologiaController::class, 'index'])->name('metodologia');
+    Route::post('/metodologias', [MetodologiaController::class, 'store'])->name('metodologia');
+    Route::put('/metodologias/{id}', [MetodologiaController::class, 'update']);
+    Route::delete('/metodologias/{id}', [MetodologiaController::class, 'destroy'])->name('metodologia.destroy');
+
+    Route::get('/procedimientos', [ProcedimientoController::class, 'index'])->name('procedimiento');
+    Route::post('/procedimientos', [ProcedimientoController::class, 'store'])->name('procedimiento');
+
+    Route::post('/storeDetalleProc', [ProcedimientoController::class, 'storeDetalleProc'])->name('storeDetalleProc');
+    Route::delete('/destroyDetalleProc/{id}', [ProcedimientoController::class, 'destroyDetalleProc'])->name('destroyDetalleProc');
+
+    Route::put('/procedimiento/{id}', [ProcedimientoController::class, 'update'])->name('procedimiento.update');
+    Route::delete('/procedimientos/{id}', [ProcedimientoController::class, 'destroy'])->name('procedimiento.destroy');
+
+    Route::get('/getLastProcedimiento', [ProcedimientoController::class, 'getLastProcedimiento'])->name('getLastProcedimiento');
+    Route::get('/getAllProcedimiento', [ProcedimientoController::class, 'getAllProcedimiento'])->name('getAllProcedimiento');
+
+    Route::get('/getCompProcedimientoEstudio', [DetalleProcedimientoController::class, 'getCompProcedimientoEstudio'])->name('getCompProcedimientoEstudio');
+    Route::get('/getProcedimientoEstudio/{id}', [DetalleProcedimientoController::class, 'getProcedimientoEstudio'])->name('getProcedimientoEstudio');
     
-    
+    Route::get('/umedidas', [UMedidaController::class, 'index'])->name('umedida');
+    Route::post('/umedidas', [UMedidaController::class, 'store'])->name('umedida');
+    Route::put('/umedidas/{id}', [UMedidaController::class, 'update']);
+    Route::delete('/umedidas/{id}', [UMedidaController::class, 'destroy'])->name('umedida.destroy');
+
+    Route::get('/componentes', [ComponenteController::class, 'index'])->name('componente');
+    Route::post('/componentes', [ComponenteController::class, 'store'])->name('componente');
+    Route::put('/componentes/{id}', [ComponenteController::class, 'update']);
+    Route::delete('/componentes/{id}', [ComponenteController::class, 'destroy'])->name('componente.destroy');
+
+    Route::delete('/destroyDetComp/{id}', [ComponenteController::class, 'destroyDetComp'])->name('destroyDetComp.destroy');
 });
 

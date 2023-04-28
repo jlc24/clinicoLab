@@ -83,6 +83,7 @@ class MuestraController extends Controller
     {
         $muestra = Muestra::find($id);
         $muestra->delete();
-        return response()->json(['success', 'El registro se ha eliminado con éxito']);
+
+        return redirect()->route('muestra')->with('success', 'El registro se ha eliminado con éxito');
     }
 }
