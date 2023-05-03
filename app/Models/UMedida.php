@@ -13,8 +13,13 @@ class UMedida extends Model
         'unidad', 
     ];
 
-    public function detallecomponentes()
+    public function componenteaspectos()
     {
-        return $this->hasMany(DetalleComponente::class);
+        return $this->hasMany(ComponenteAspecto::class);
+    }
+
+    public function parametros()
+    {
+        return $this->hasMany(Parametro::class);
     }
 }

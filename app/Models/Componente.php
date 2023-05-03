@@ -13,8 +13,8 @@ class Componente extends Model
         'nombre', 
     ];
 
-    public function detallecomponentes()
+    public function detalleprocedimientos()
     {
-        return $this->hasMany(DetalleComponente::class);
+        return $this->hasMany(DetalleProcedimiento::class);
     }
 }

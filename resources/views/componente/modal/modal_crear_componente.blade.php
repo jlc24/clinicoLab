@@ -18,22 +18,44 @@
                         </button>
                     </div>
                 @endif
-
-                <form action="{{ route('componente') }}" method="POST" class="form-horizontal" id="formulario_crear_componentes">
-                    @csrf
+                <div class="row lista_componentes" style="border: 1px solid #C6C8CA; border-radius: 5px; display: none;">
+                    <div class="col-xl-12 col-sm-12">
+                            <label class="col-form-label" for="proc_nombre">{{ __('Lista de Componentes') }}: </label>
+                            <input type="hidden" name="det_proc_id" id="det_proc_id" class="det_proc_id">
+                            <input type="hidden" name="nombre_estudio" id="nombre_estudio" class="nombre_estudio">
+                    </div>
+                    <div class="col-xl-12 col-sm-12">
+                        <table class="table table-sm table-bordered table-responsive-lg tabla_componentes" id="tabla_componentes">
+                            <thead class="text-center">
+                                <th >#</th>
+                                <th>{{ __('Nombre') }}</th>
+                                <th>Op</th>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <form class="form-horizontal" id="formulario_crear_componentes">
+                    
+                    <div class="row">
+                        <label class="col-form-label">{{ __('Crear Componente') }}</label>
+                    </div>
                     <div class="row">
                         <div class="col-xl-12 col-sm-12" >
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="comp_nombre">{{ __('Nombre del Componente') }}: </label>
+                                <label class="col-md-4 col-form-label" for="comp_nombre">{{ __('Componente') }}: </label>
                                 <div class="col-md-8">
-                                    <input type="text" id="comp_nombre" name="comp_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Componente" required>
+                                    <input type="text" id="comp_nombre" name="comp_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Componente" pattern="[a-zA-Z ]+" required>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" id="btnRegisterComp" class="btn btn-success">{{ __('Registrar') }}</button>
+                    <button id="btnRegisterComp" class="btn btn-success">{{ __('Agregar') }}</button>
                 </div>
             </form>
         </div>

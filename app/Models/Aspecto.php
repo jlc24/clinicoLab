@@ -5,15 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cualitativo extends Model
+class Aspecto extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'nombre', 
     ];
 
-    public function detallecomponentes()
+    public function componenteaspectos()
     {
-        return $this->hasMany(DetalleComponente::class);
+        return $this->hasMany(ComponenteAspecto::class);
     }
 }

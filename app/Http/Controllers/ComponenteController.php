@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Componente;
 use App\Models\DetalleComponente;
+use App\Models\DetalleProcedimiento;
 use Illuminate\Http\Request;
 
 class ComponenteController extends Controller
@@ -16,6 +17,12 @@ class ComponenteController extends Controller
         return view('componente.index', [
             'componentes' => Componente::all(),
         ]);
+    }
+
+    public function getAllComponente()
+    {
+        $componente = Componente::all();
+        return response()->json($componente);
     }
 
     /**
@@ -35,11 +42,12 @@ class ComponenteController extends Controller
             'comp_nombre'=> 'required|max:100'
         ]);
 
-        Componente::create([
+        $componente = Componente::create([
             'nombre' => $request->input('comp_nombre'),
         ]);
 
-        return redirect()->route('componente')->with('success', 'El registro se ha creado con éxito');
+        
+        //return redirect()->route('componente')->with('success', 'El registro se ha creado con éxito');
     }
 
     /**

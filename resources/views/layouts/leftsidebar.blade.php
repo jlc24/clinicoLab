@@ -131,7 +131,7 @@
                             </a>
                         </li>
                         <li class="nav-item px-2">
-                            <a href="{{ route('componente') }}" class="nav-link {{ Request::is('componentes') ? 'active' : '' }}">
+                            <a href="#" class="nav-link {{ Request::is('componentes') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-table-cells"></i>
                                 <p>Componente</p>
                             </a>

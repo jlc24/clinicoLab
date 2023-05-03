@@ -77,21 +77,16 @@
             var est_nombre = $(this).closest('tr').find('td:eq(2)').text();
             Swal.fire({
                 title: est_nombre,
-                text: 'Configurar Tipo de Estudio',
-                icon: 'info',
+                text: '¿Habilitar estudio?',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#4CAF50',
-                cancelButtonColor: '#2196F3',
-                confirmButtonText: 'Estudio Individual',
-                cancelButtonText: 'Estudio por Componente'
+                cancelButtonColor: '#D33',
+                confirmButtonText: 'Si, Habilitar',
+                cancelButtonText: 'No'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var tipo = 'INDIVIDUAL';
-                    var datos = new FormData();
-                    datos.append('tipo', tipo);
-                    updateTipoEstudio(det_est_id, datos);
-                }else if(result.dismiss === Swal.DismissReason.cancel){
-                    var tipo = 'COMPONENTE';
+                    var tipo = 'HABILITADO';
                     var datos = new FormData();
                     datos.append('tipo', tipo);
                     updateTipoEstudio(det_est_id, datos);
@@ -103,48 +98,17 @@
             var det_est_id = $(this).closest('tr').find('td:eq(0)').text();
             var est_nombre = $(this).closest('tr').find('td:eq(2)').text();
             Swal.fire({
-                title: est_nombre,
-                text: 'Configurar Tipo de Estudio',
-                icon: 'info',
+                title: '¿Esta seguro?',
+                text: 'Si lo deshabilita no podrá usar el estudio para configura ni recepcionar.',
+                icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#2196F3',
-                cancelButtonColor: '#C82333',
-                confirmButtonText: 'Estudio por Componente',
-                cancelButtonText: 'Borrar tipo'
+                cancelButtonColor: '#D33',
+                confirmButtonText: 'Si, Deshabilitar',
+                cancelButtonText: 'No'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var tipo = 'COMPONENTE';
-                    var datos = new FormData();
-                    datos.append('tipo', tipo);
-                    updateTipoEstudio(det_est_id, datos);
-                }else if(result.dismiss === Swal.DismissReason.cancel){
-                    var tipo = 'null';
-                    var datos = new FormData();
-                    datos.append('tipo', tipo);
-                    updateTipoEstudio(det_est_id, datos);
-                }
-            });
-        });
-        $(document).on('click', '.btn-tipo-componente', function() {
-            var det_est_id = $(this).closest('tr').find('td:eq(0)').text();
-            var est_nombre = $(this).closest('tr').find('td:eq(2)').text();
-            Swal.fire({
-                title: est_nombre,
-                text: 'Configurar Tipo de Estudio',
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonColor: '#4CAF50',
-                cancelButtonColor: '#C82333',
-                confirmButtonText: 'Estudio Individual',
-                cancelButtonText: 'Borrar tipo'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var tipo = 'INDIVIDUAL';
-                    var datos = new FormData();
-                    datos.append('tipo', tipo);
-                    updateTipoEstudio(det_est_id, datos);
-                }else if(result.dismiss === Swal.DismissReason.cancel){
-                    var tipo = 'null';
+                    var tipo = 'DESHABILITADO';
                     var datos = new FormData();
                     datos.append('tipo', tipo);
                     updateTipoEstudio(det_est_id, datos);
@@ -152,14 +116,15 @@
             });
         });
 
-        function getDetalle(valor, successCallback) {
+        function getDetalle(valor, tipo_est) {
             var id = valor;
             $.ajax({
                 url: '{{ route("getDetalle", ":id") }}'.replace(':id', id),
                 type: "GET",
                 dataType: "json",
                 success: function(data) {
-                    successCallback(data.id);
+                    $("#det_id_proc").val(data.id);
+                    $("#proc_tipo_estudio").val(tipo_est);
                 }
             });
         }
@@ -195,29 +160,31 @@
                 }
             });
         }
-        
-        $(document).on('click', '.btn-detalle-comp-id', function() {
-            // var valor = $(this).data('id');
-            // $("#proc_est_id").val(valor);
-            // cargarTablaDetalleProcedimiento(valor);
-            var valor = $(this).closest('tr').find('td:eq(0)').text();
-            var nombre = $(this).closest('tr').find('td:eq(2)').text();
-            $(".proc_est_id").val(valor);
-            $(".proc_est_nombre").val(nombre);
-            cargarTablaDetalleProcedimiento(valor);
-            mostrarCargando();
-            getProcEstudio(valor, function(data) {
-                var proc_id = data;
-                cargarTablaProcComp(valor, proc_id);
-                cerrarCargando();
+
+        function getComponenteEstudio(det_id) {
+            $.ajax({
+                url: '{{ route("getComponenteEstudio", ":id") }}'.replace(":id", det_id),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.length != 0) {
+                        $(".dp_id").val(data[0].id);
+                        $(".datos_componentes").css('display', '');
+                    }else{
+                        $(".dp_id").val("");
+                        $(".datos_componentes").css('display', 'none');
+                    }
+                }
             });
-        });
+        }
 
         $(document).on('click', '.btn-detalle-indi-id', function() {
             var valor = $(this).closest('tr').find('td:eq(0)').text();
             var nombre = $(this).closest('tr').find('td:eq(2)').text();
             $(".proc_est_id").val(valor);
             $(".proc_est_nombre").val(nombre);
+            $(".proc_est_tipo_estudio").val('individual');
+            getComponenteEstudio(valor);
             cargarTablaDetalleProcedimiento(valor);
             mostrarCargando();
             getProcEstudio(valor, function(data) {
@@ -254,12 +221,15 @@
                 var datos = new FormData();
                 datos.append('estado', 1);
                 updateEstadoDetProc(det_proc_id, datos);
-                $(this).closest('tbody').find('.proc_checked:not(:checked)').prop('disabled', true);
+                dp_id = $(this).closest('tr').find('td:eq(0)').text();
+                $(".dp_id").val(dp_id);
+                $(".datos_componentes").css('display', '');
             }else{
                 var datos = new FormData();
                 datos.append('estado', 0);
                 updateEstadoDetProc(det_proc_id, datos);
-                $(this).closest('tbody').find('.proc_checked').prop('disabled', false);
+                $(".dp_id").val("");
+                $(".datos_componentes").css('display', 'none');
             }
         });
 
@@ -269,21 +239,32 @@
             var checkbox = $(this).closest('tr').find('input[type="checkbox"]');
             checkbox.prop('checked', !checkbox.prop('checked'));
             if (checkbox.is(':checked')) {
+                mostrarCargando();
                 var datos = new FormData();
                 datos.append('estado', 1);
                 updateEstadoDetProc(det_proc_id, datos);
+                dp_id = $(this).closest('tr').find('td:eq(0)').text();
+                $(".dp_id").val(dp_id);
+                $(".datos_componentes").css('display', '');
+                cerrarCargando();
             }else{
+                mostrarCargando()
                 var datos = new FormData();
                 datos.append('estado', 0);
                 updateEstadoDetProc(det_proc_id, datos);
+                $(".dp_id").val("");
+                $(".datos_componentes").css('display', 'none');
+                cerrarCargando();
             }
-        })
+        });
 
         $(document).on('click', '.btn-config', function() {
             var det_id = $(this).data('id');
-            getDetalle(det_id, function(data) {
-                $("#det_id_proc").val(data);
-            });
+            // getDetalle(det_id, function(data) {
+            //     $("#det_id_proc").val(data);
+            //     $(".proc_tipo_estudio").val('individual');
+            // });
+            getDetalle(det_id, 'individual');
         });
 
         function cargarTablaProcedimiento() {
@@ -320,14 +301,15 @@
                         $.each(data, function(index, value) {
                             $(".proc_id").val(value.proc_id);
                             $('#tabla_detalle_proc tbody').append(
-                                '<tr class="' + (value.estado == '0' ? '' : 'table-warning') + '"><td hidden>'+ value.id+'</td><td class="nombre" style="cursor: pointer;" title="Predeterminar">' + value.nombre + '</td><td hidden>'+ value.estado +'</td>'+
+                                '<tr><td >'+ value.id+'</td><td class="nombre text-right" title="Predeterminar"><a class="btn btn-sm ' + (value.estado == '1' ? 'btn-warning btn-deshabilitado' : 'btn-outline-warning btn-habilitado') + ' ">' + value.nombre + '</a></td><td hidden>'+ value.estado +'</td>'+
                                     '<td class="text-center"><a href="javascript:void(0);" data-id="'+ value.id+ '" data-route="{{ route("destroyDetalleProc", ":id") }} " class="btn btn-sm btn-outline-danger btn-delete-detproc" title="Eliminar procedimiento"><i class="fas fa-trash-alt"></i></a></td>'+
                                     '<td class="text-center"><div class="form-check"><input type="checkbox" class="form-check-input proc_checked" ' + (value.estado == '1' ? ' checked' : '') + ' name="proc_checked" id="proc_checked" title="Predeterminar"></div></td>'+
                                 '</tr>');
                         });
-                        $(".btn-config").css({"pointer-events": "none", "opacity": "0.5"});
+                        
                     }else {
-                        $(".btn-config").css({"pointer-events": "", "opacity": ""});
+                        $(".dp_id").val("");
+                        $(".datos_componentes").css('display', 'none');
                         $(".proc_id").val('0');
                         $('#tabla_detalle_proc tbody').empty().append('<td colspan="2" class="text-center">No hay datos recepcionados</td>');
                     }
@@ -335,51 +317,60 @@
             });
         }
 
+        $(document).on('click', '.btn-habilitado', function() {
+            //$(".datos_componentes").css('display', '');
+            dp_id = $(this).closest('tr').find('td:eq(0)').text();
+            $(".dp_id").val(dp_id);
+        });
+        $(document).on('click', '.btn-deshabilitado', function() {
+            //$(".datos_componentes").css('display', 'none');
+            $(".dp_id").val("");
+        });
+
         function cargarTablaProcComp(det_id, proc_id) {
             $.ajax({
                 url: '/getCompProcedimientoEstudio/?q=' + det_id + '&f=' + proc_id,
                 dataType: 'json',
                 success: function(data) {
-                    //console.log(data);
-                    if (data.length != 0) {
-                        $('#tabla_proc_comp tbody').empty();
-                        $.each(data, function(index, value) {
-                            var umedid = value.umed_id;
-                            var optionList = '';
-                            @foreach ($unidades as $unidad)
-                                var isSelected = {{ $unidad->id }} === umedid ? 'selected' : '' ;
-                                optionList += '<option value="{{ $unidad->id }}" '+ isSelected + '>{{ $unidad->unidad }}</option>';
-                            @endforeach
-                            $('#tabla_proc_comp tbody').append(
-                                '<tr>'+
-                                    '<td hidden>'+ value.id+'</td>'+
-                                    '<td hidden>' + value.comp_id + '</td>'+
-                                    '<td hidden>' + value.umed_id + '</td>'+
-                                    '<td>' + value.nombre + '</td>'+
-                                    '<td>'+
-                                        '<div class="form-group row">'+
-                                            '<div class="col-md-12">'+
-                                                '<select class="custom-select custom-select-sm proc_comp_unidad" name="proc_comp_unidad" id="proc_comp_unidad">'+
-                                                    '<option value="" >Seleccionar...</option>'+
-                                                    optionList +
-                                                '</select>'+
-                                            '</div>'+
-                                        '</div>'+
-                                    '</td>'+
-                                    '<td><a href="#" class="btn btn-sm btn-outline-warning btn-config-parametro" data-toggle="modal" data-target="#modal_config_parametro" title="Agregar Parámetros"><i class="fas fa-cogs"></i></a></td'+
-                                '</tr>'
-                            );
-                        });
-                    }else {
-                        $('#tabla_proc_comp tbody').empty().append('<td colspan="2" class="text-center">No hay datos recepcionados</td>');
-                    }
+                    console.log(data);
+                    // if (data.length != 0) {
+                    //     $('#tabla_proc_comp tbody').empty();
+                    //     $.each(data, function(index, value) {
+                    //         var umedid = value.umed_id;
+                    //         var optionList = '';
+                    //         @foreach ($unidades as $unidad)
+                    //             var isSelected = {{ $unidad->id }} === umedid ? 'selected' : '' ;
+                    //             optionList += '<option value="{{ $unidad->id }}" '+ isSelected + '>{{ $unidad->unidad }}</option>';
+                    //         @endforeach
+                    //         $('#tabla_proc_comp tbody').append(
+                    //             '<tr>'+
+                    //                 '<td hidden>'+ value.id+'</td>'+
+                    //                 '<td hidden>' + value.nombre + '</td>'+
+                    //                 '<td hidden>' + value.umed_id + '</td>'+
+                    //                 '<td>' + value.nombre + '</td>'+
+                    //                 '<td>'+
+                    //                     '<div class="form-group row">'+
+                    //                         '<div class="col-md-12">'+
+                    //                             '<select class="custom-select custom-select-sm proc_comp_unidad" name="proc_comp_unidad" id="proc_comp_unidad">'+
+                    //                                 '<option value="" >Seleccionar...</option>'+
+                    //                                 optionList +
+                    //                             '</select>'+
+                    //                         '</div>'+
+                    //                     '</div>'+
+                    //                 '</td>'+
+                    //                 '<td><a href="#" class="btn btn-sm btn-outline-warning btn-config-parametro" data-toggle="modal" data-target="#modal_config_parametro" title="Agregar Parámetros"><i class="fas fa-cogs"></i></a></td'+
+                    //             '</tr>'
+                    //         );
+                    //     });
+                    // }else {
+                    //     $('#tabla_proc_comp tbody').empty().append('<td colspan="2" class="text-center">No hay datos recepcionados</td>');
+                    // }
                 }
             });
         }
         $(document).on('click', '.btn-add-proc', function(e) {
             e.preventDefault();
             var proc_nombre = $(this).closest('tr').find('td:eq(1)').text();
-            var est_nombre = $("#proc_est_nombre").val();
             Swal.fire({
                 title: '¿Está seguro',
                 text: '¿Desea utilizar el procedimiento '+ proc_nombre+ '?',
@@ -394,6 +385,7 @@
                     $(this).attr('data-dismiss', 'modal');
                     var proc_id = $(this).closest('tr').find('td:eq(0)').text();
                     var det_id = $("#det_id_proc").val();
+                    var est_nombre = $("#proc_est_nombre").val();
                     var datos = new FormData();
                     datos.append('det_id', det_id);
                     datos.append('proc_id', proc_id);
@@ -508,7 +500,7 @@
             var route = $(this).data('route');
             var dc = $("#tabla_proc_comp tr:first td:eq(0)").text();
             var comp_id = $("#tabla_proc_comp tr:first td:eq(1)").text();
-            console.log(dc+" "+comp_id);
+            var tipo_estutio = $("#proc_est_tipo_estudio").val();
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: '¡No podrás revertir esto!',
@@ -526,41 +518,61 @@
                             "_token": "{{ csrf_token() }}"
                         },
                         success: function(response) {
-                            $.ajax({
-                                url: '{{ route("destroyDetComp.destroy", ":id") }}'.replace(":id", dc),
-                                type: 'DELETE',
-                                data: {
-                                    "_token": "{{ csrf_token() }}"
-                                },
-                                success: function(){
-                                    $.ajax({
-                                        url: '{{ route("componente.destroy", ":id") }}'.replace(":id", comp_id),
-                                        type: 'DELETE',
-                                        data: {
-                                            "_token": "{{ csrf_token() }}"
-                                        },
-                                        success: function() {
-                                            Swal.fire({
-                                            title: '¡Eliminado!',
-                                            text: response.success,
-                                            icon: 'success',
-                                            showConfirmButton: false,
-                                            timer: 2000
-                                        });
-                                        setTimeout(function(){
-                                            var valor = $(".proc_est_id").val();
-                                            cargarTablaDetalleProcedimiento(valor);
-                                            mostrarCargando();
-                                            getProcEstudio(valor, function(data) {
-                                                var proc_id = data;
-                                                cargarTablaProcComp(valor, proc_id);
-                                                cerrarCargando();
-                                            });
-                                        }, 2000);
-                                        }
+                            // if (tipo_estutio == 'individual') {
+                            //     $.ajax({
+                            //         url: '{{ route("destroyDetComp.destroy", ":id") }}'.replace(":id", dc),
+                            //         type: 'DELETE',
+                            //         data: {
+                            //             "_token": "{{ csrf_token() }}"
+                            //         },
+                            //         success: function(){
+                            //             $.ajax({
+                            //                 url: '{{ route("componente.destroy", ":id") }}'.replace(":id", comp_id),
+                            //                 type: 'DELETE',
+                            //                 data: {
+                            //                     "_token": "{{ csrf_token() }}"
+                            //                 },
+                            //                 success: function() {
+                            //                         Swal.fire({
+                            //                         title: '¡Eliminado!',
+                            //                         text: response.success,
+                            //                         icon: 'success',
+                            //                         showConfirmButton: false,
+                            //                         timer: 2000
+                            //                     });
+                            //                     setTimeout(function(){
+                            //                         var valor = $(".proc_est_id").val();
+                            //                         cargarTablaDetalleProcedimiento(valor);
+                            //                         mostrarCargando();
+                            //                         getProcEstudio(valor, function(data) {
+                            //                             var proc_id = data;
+                            //                             cargarTablaProcComp(valor, proc_id);
+                            //                             cerrarCargando();
+                            //                         });
+                            //                     }, 2000);
+                            //                 }
+                            //             });
+                            //         }
+                            //     });
+                            // }else{
+                                Swal.fire({
+                                    title: '¡Eliminado!',
+                                    text: response.success,
+                                    icon: 'success',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+                                setTimeout(function(){
+                                    var valor = $(".proc_est_id").val();
+                                    cargarTablaDetalleProcedimiento(valor);
+                                    mostrarCargando();
+                                    getProcEstudio(valor, function(data) {
+                                        var proc_id = data;
+                                        cargarTablaProcComp(valor, proc_id);
+                                        cerrarCargando();
                                     });
-                                }
-                            });
+                                }, 2000);
+                            //}
                         },
                         error: function() {
                             Swal.fire({
@@ -575,6 +587,39 @@
                 }
             });
         });
+
+        function getTablaComponente() {
+            $.ajax({
+                url: '{{ route("getAllComponente") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    if (data.length != 0) {
+                        $('.tabla_componentes tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('.tabla_componentes tbody').append(
+                                '<tr><td>' + value.id + '</td>'+
+                                    '<td>' + value.nombre + '</td>'+
+                                    '<td class="text-center"><a href="javascript:void(0);" data-id="'+ value.id+ '" data-route="{{ route("storeDetalleProc") }} " class="btn btn-sm btn-outline-success btn-add-proc" title="Usar Componente"><i class="fas fa-plus-circle fa-lg"></i></a></td>'+
+                                '</tr>');
+                        });
+                    }else {
+                        $('.tabla_componentes tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
+        function getEstadoDetalle(det_proc_id) {
+            
+        }
+
+        $(document).on('click', '.btn-add-comp', function() {
+            $('.lista_componentes').css('display', '');
+            $(".det_proc_id").val($(".dp_id").val());
+            $(".nombre_estudio").val($(".proc_est_nombre").val());
+            getTablaComponente();
+        })
 
         $(document).on('click', '.btn-config-parametro', function() {
             
@@ -658,6 +703,17 @@
                     '<td><button type="button" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></button></td>'+
                 '</tr>'
             );
-        })
+        });
+
+        $(document).on('click', '.btn-config-proc', function() {
+            var det_id = $(this).data('id');
+            // getDetalle(det_id, function(data) {
+            //     $("#det_id_proc").val(data);
+            //     $(".proc_tipo_estudio").val("componente");
+            // });
+            getDetalle(det_id, 'componente');
+        });
+
+
     });
 </script>

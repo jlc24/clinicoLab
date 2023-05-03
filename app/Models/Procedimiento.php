@@ -23,9 +23,4 @@ class Procedimiento extends Model
     {
         return $this->hasMany(DetalleProcedimiento::class);
     }
-
-    public function detallecomponentes()
-    {
-        return $this->hasMany(DetalleComponente::class);
-    }
 }

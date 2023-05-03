@@ -26,6 +26,7 @@ use App\Http\Controllers\ResultController;
 use App\Http\Controllers\UMedidaController;
 use App\Models\Componente;
 use App\Models\DetalleComponente;
+use App\Models\DetalleProcedimiento;
 
 /*
 |--------------------------------------------------------------------------
@@ -150,8 +151,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getAllProcedimiento', [ProcedimientoController::class, 'getAllProcedimiento'])->name('getAllProcedimiento');
 
     Route::get('/getCompProcedimientoEstudio', [DetalleProcedimientoController::class, 'getCompProcedimientoEstudio'])->name('getCompProcedimientoEstudio');
+    Route::get('/getComponenteEstudio/{id}', [DetalleProcedimientoController::class, 'getComponenteEstudio'])->name('getComponenteEstudio');
     Route::get('/getProcedimientoEstudio/{id}', [DetalleProcedimientoController::class, 'getProcedimientoEstudio'])->name('getProcedimientoEstudio');
-    
+    Route::post('/updateDetalleComponente/{id}', [DetalleProcedimientoController::class, 'updateDetalleComponente'])->name('updateDetalleComponente');
+
     Route::get('/umedidas', [UMedidaController::class, 'index'])->name('umedida');
     Route::post('/umedidas', [UMedidaController::class, 'store'])->name('umedida');
     Route::put('/umedidas/{id}', [UMedidaController::class, 'update']);
@@ -161,6 +164,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/componentes', [ComponenteController::class, 'store'])->name('componente');
     Route::put('/componentes/{id}', [ComponenteController::class, 'update']);
     Route::delete('/componentes/{id}', [ComponenteController::class, 'destroy'])->name('componente.destroy');
+
+    Route::get('/getAllComponente', [ComponenteController::class, 'getAllComponente'])->name('getAllComponente');
 
     Route::delete('/destroyDetComp/{id}', [ComponenteController::class, 'destroyDetComp'])->name('destroyDetComp.destroy');
 });

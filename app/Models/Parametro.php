@@ -5,22 +5,30 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sexoedade extends Model
+class Parametro extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'ca_id',
         'genero',
         'edad_inicial',
         'edad_final',
         'tiempo',
         'valor_inicial',
         'valor_final',
-        'referencia',
+        'umed_id',
+        'cualitativo',
+        'referencia'
     ];
 
-    public function detallecomponentes()
+    public function componenteaspecto()
     {
-        return $this->hasMany(DetalleComponente::class);
+        return $this->belongsTo(ComponenteAspecto::class, 'ca_id');
+    }
+
+    public function umedida()
+    {
+        return $this->belongsTo(UMedida::class, 'umed_id');
     }
 }

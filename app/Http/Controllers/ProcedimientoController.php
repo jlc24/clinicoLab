@@ -62,15 +62,6 @@ class ProcedimientoController extends Controller
             'proc_id'=> $procedimiento->id,
             'estado' => '0'
         ]);
-
-        $componente = Componente::create([
-            'nombre' => $request->input('nombre'),
-        ]);
-
-        DetalleComponente::create([
-            'proc_id' => $procedimiento->id,
-            'comp_id' => $componente->id
-        ]);
     }
 
     public function storeDetalleProc(Request $request)
@@ -86,16 +77,6 @@ class ProcedimientoController extends Controller
             'proc_id'=> $request->input('proc_id'),
             'estado' => '0'
         ]);
-
-        $componente = Componente::create([
-            'nombre' => $request->input('nombre'),
-        ]);
-
-        DetalleComponente::create([
-            'proc_id' => $request->input('proc_id'),
-            'comp_id' => $componente->id
-        ]);
-        
     }
 
     public function destroyDetalleProc($id)

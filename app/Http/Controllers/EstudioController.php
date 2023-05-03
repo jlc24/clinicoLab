@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Componente;
 use App\Models\Detalle;
 use App\Models\DetalleProcedimiento;
 use App\Models\Estudio;
@@ -30,6 +31,7 @@ class EstudioController extends Controller
             'metodos' => Metodologia::all(),
             'unidades' => UMedida::all(),
             'detalleprocedimientos' => DetalleProcedimiento::all(),
+            'componentes' => Componente::all()
         ]);
     }
 
@@ -89,6 +91,7 @@ class EstudioController extends Controller
             'muestra_id' => $request->input('est_muestra'),
             'recipiente_id' => $request->input('est_recipiente'),
             'indicacion_id' => $request->input('est_indicaciones'),
+            'tipo' => 'DESHABILITADO'
         ]);
 
         return redirect()->route('estudio')->with('success', 'El registro se ha creado con éxito');
