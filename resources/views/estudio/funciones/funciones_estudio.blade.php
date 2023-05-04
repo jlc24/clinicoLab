@@ -601,7 +601,7 @@
                             $('.tabla_componentes tbody').append(
                                 '<tr><td>' + value.id + '</td>'+
                                     '<td>' + value.nombre + '</td>'+
-                                    '<td class="text-center"><a href="javascript:void(0);" data-id="'+ value.id+ '" data-route="{{ route("storeDetalleProc") }} " class="btn btn-sm btn-outline-success btn-add-proc" title="Usar Componente"><i class="fas fa-plus-circle fa-lg"></i></a></td>'+
+                                    '<td class="text-center"><a href="javascript:void(0);" data-id="'+ value.id+ '" data-route="{{ route("storeDetalleProc") }} " class="btn btn-sm btn-outline-success btn-add-comp" title="Usar Componente"><i class="fas fa-plus-circle fa-lg"></i></a></td>'+
                                 '</tr>');
                         });
                     }else {
@@ -614,11 +614,51 @@
             
         }
 
+        $("#btnRegisterComp").on('click', function() {
+            event.preventDefault();
+                var datos = new FormData();
+                datos.append('det_id', $("#det_proc_id").val());
+                datos.append('comp_nombre', $("#comp_nombre").val());
+                datos.append('comp_id', 0);
+                $.ajax({
+                    url: "{{ route('updateDetalleComponente', ':id') }}".replace(":id", $("#det_proc_id").val()),
+                    method: "POST",
+                    data: datos,
+                    contentType: false,
+                    processData: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        //console.log('La solicitud ha sido completada con éxito.');
+                        Swal.fire({
+                            title: 'Registrado',
+                            text: 'Registro de Evento Exitoso',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+        });
+
         $(document).on('click', '.btn-add-comp', function() {
             $('.lista_componentes').css('display', '');
             $(".det_proc_id").val($(".dp_id").val());
             $(".nombre_estudio").val($(".proc_est_nombre").val());
             getTablaComponente();
+
         })
 
         $(document).on('click', '.btn-config-parametro', function() {

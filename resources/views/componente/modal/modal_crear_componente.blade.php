@@ -21,7 +21,7 @@
                 <div class="row lista_componentes" style="border: 1px solid #C6C8CA; border-radius: 5px; display: none;">
                     <div class="col-xl-12 col-sm-12">
                             <label class="col-form-label" for="proc_nombre">{{ __('Lista de Componentes') }}: </label>
-                            <input type="hidden" name="det_proc_id" id="det_proc_id" class="det_proc_id">
+                            <input type="" name="det_proc_id" id="det_proc_id" class="det_proc_id">
                             <input type="hidden" name="nombre_estudio" id="nombre_estudio" class="nombre_estudio">
                     </div>
                     <div class="col-xl-12 col-sm-12">
