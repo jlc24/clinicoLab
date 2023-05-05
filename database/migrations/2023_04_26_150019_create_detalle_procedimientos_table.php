@@ -15,13 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('det_id');
             $table->unsignedBigInteger('proc_id');
-            $table->unsignedBigInteger('comp_id')->nullable();
             $table->unsignedBigInteger('estado');
             $table->timestamps();
 
             $table->foreign('det_id')->references('id')->on('detalles');
             $table->foreign('proc_id')->references('id')->on('procedimientos');
-            $table->foreign('comp_id')->references('id')->on('componentes');
         });
     }
 

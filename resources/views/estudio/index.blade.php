@@ -29,44 +29,50 @@
                                 </a>Estudios
                             </h4>
                         </div>
-                        <div class="card-body">
-                            <h3>Lista de Estudios o Análisis registrados en el Sistema</h3><hr>
-                            <table class="table table-bordered table-responsive-lg table_estudios" id="tabla_estudios">
-                                <thead>
-                                    <th>#</th>
-                                    <th>Clave</th>
-                                    <th>Nombre</th>
-                                    <th>Estado</th>
-                                    <th>Op</th>
-                                </thead>
-                                <tbody>
-                                    @foreach ($detalles as $detalle)
-                                        <tr>
-                                            <td>{{ $detalle->id }}</td>
-                                            <td>{{ $detalle->estudio->est_cod }}</td>
-                                            <td>{{ $detalle->estudio->est_nombre }}</td>
-                                            <td class="text-center">
-                                                @if($detalle->tipo == null || $detalle->tipo == 'DESHABILITADO')
-                                                    <a href="#" class="badge badge-danger btn-tipo-estudio" title="Tipo Estudio" style="font-size: 15px">Deshabilitado</a>
-                                                @elseif ($detalle->tipo == 'HABILITADO')
-                                                    <a href="#" class="badge badge-success btn-tipo-individual" title="Tipo Estudio" style="font-size: 15px">Habilitado</a>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button data-toggle="modal" data-target="#modal_editar_estudio_{{ $detalle->id }}" class="btn btn-sm btn-outline-warning" title="Editar Estudio"><i class="fas fa-user-edit"></i></button>
-                                                    @include('estudio.modal.modal_modificar_estudio')
-                                                    @if ($detalle->tipo == 'HABILITADO')
-                                                        <button data-id="{{ $detalle->id }}" data-nombre="{{ $detalle->estudio->est_nombre }}" data-toggle="modal" data-target="#modal_configurar_estudio_individual_{{ $detalle->id }}" class="btn btn-sm btn-outline-info btn-detalle-indi-id" title="Configurar Estudio Individual"><i class="fas fa-cog"></i></button>
-                                                        @include('estudio.modal.modal_config_estudio_individual')
-                                                        <button href="javascript:void(0);" class="btn btn-sm btn-outline-danger btn-delete-estudio" title="Elimnar estudio"><i class="fas fa-trash-alt"></i></button>
+                        <div class="card-body ">
+                            <div class="row">
+                                <div class="col-xl-8 col-sm-8">
+                                    <h4>Lista de Estudios o Análisis registrados en el Sistema</h4>
+                                </div>
+                            </div>
+                            <div class="row table-responsive-lg">
+                                <table class="table table-bordered table-hover tabla_estudios" id="tabla_estudios">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>Clave</th>
+                                        <th>Nombre</th>
+                                        <th>Estado</th>
+                                        <th>Op</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($detalles as $detalle)
+                                            <tr>
+                                                <td>{{ $detalle->id }}</td>
+                                                <td>{{ $detalle->estudio->est_cod }}</td>
+                                                <td>{{ $detalle->estudio->est_nombre }}</td>
+                                                <td class="text-center">
+                                                    @if($detalle->tipo == null || $detalle->tipo == 'DESHABILITADO')
+                                                        <a href="#" class="badge badge-danger btn-tipo-estudio" title="Tipo Estudio" style="font-size: 15px">Deshabilitado</a>
+                                                    @elseif ($detalle->tipo == 'HABILITADO')
+                                                        <a href="#" class="badge badge-success btn-tipo-individual" title="Tipo Estudio" style="font-size: 15px">Habilitado</a>
                                                     @endif
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button data-toggle="modal" data-target="#modal_editar_estudio_{{ $detalle->id }}" class="btn btn-sm btn-outline-warning" title="Editar Estudio"><i class="fas fa-user-edit"></i></button>
+                                                        @include('estudio.modal.modal_modificar_estudio')
+                                                        @if ($detalle->tipo == 'HABILITADO')
+                                                            <button data-id="{{ $detalle->id }}" data-nombre="{{ $detalle->estudio->est_nombre }}" data-toggle="modal" data-target="#modal_configurar_estudio_individual_{{ $detalle->id }}" class="btn btn-sm btn-outline-info btn-detalle-indi-id" title="Configurar Estudio Individual"><i class="fas fa-cog"></i></button>
+                                                            @include('estudio.modal.modal_config_estudio_individual')
+                                                            <button href="javascript:void(0);" class="btn btn-sm btn-outline-danger btn-delete-estudio" title="Elimnar estudio"><i class="fas fa-trash-alt"></i></button>
+                                                        @endif
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -77,6 +83,7 @@
     @include('estudio.modal.modal_crear_estudio')
     @include('procedimiento.modal.modal_crear_procedimiento')
     @include('componente.modal.modal_crear_componente')
+    @include('aspecto.modal.modal_crear_aspecto')
     @include('estudio.modal.modal_config_parametro')
 @endsection
 

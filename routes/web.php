@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AspectoController;
 use App\Http\Controllers\BacteriaController;
 use App\Http\Controllers\CajaController;
 use Illuminate\Support\Facades\Route;
@@ -7,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\ComponenteAspectoController;
 use App\Http\Controllers\ComponenteController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\CultivoController;
@@ -19,6 +21,7 @@ use App\Http\Controllers\IndicationController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\MetodologiaController;
 use App\Http\Controllers\MuestraController;
+use App\Http\Controllers\ParametroController;
 use App\Http\Controllers\ProcedimientoController;
 use App\Http\Controllers\RecepcionController;
 use App\Http\Controllers\RecipienteController;
@@ -153,7 +156,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getCompProcedimientoEstudio', [DetalleProcedimientoController::class, 'getCompProcedimientoEstudio'])->name('getCompProcedimientoEstudio');
     Route::get('/getComponenteEstudio/{id}', [DetalleProcedimientoController::class, 'getComponenteEstudio'])->name('getComponenteEstudio');
     Route::get('/getProcedimientoEstudio/{id}', [DetalleProcedimientoController::class, 'getProcedimientoEstudio'])->name('getProcedimientoEstudio');
-    Route::post('/updateDetalleComponente/{id}', [DetalleProcedimientoController::class, 'updateDetalleComponente'])->name('updateDetalleComponente');
+    Route::get('/getComponenteDp/{id}', [DetalleProcedimientoController::class, 'getComponenteDp'])->name('getComponenteDp');
+    Route::post('/updateDetalleComponente', [DetalleProcedimientoController::class, 'updateDetalleComponente'])->name('updateDetalleComponente');
 
     Route::get('/umedidas', [UMedidaController::class, 'index'])->name('umedida');
     Route::post('/umedidas', [UMedidaController::class, 'store'])->name('umedida');
@@ -168,5 +172,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getAllComponente', [ComponenteController::class, 'getAllComponente'])->name('getAllComponente');
 
     Route::delete('/destroyDetComp/{id}', [ComponenteController::class, 'destroyDetComp'])->name('destroyDetComp.destroy');
+
+    Route::post('/aspectos', [AspectoController::class, 'store'])->name('aspecto');
+    Route::get('/getAspectos', [AspectoController::class, 'getAspectos'])->name('getAspectos');
+    Route::get('/getDPCAspecto/{id}', [AspectoController::class, 'getDPCAspecto'])->name('getDPCAspecto');
+
+    Route::post('/componente_aspectos/{id}', [ComponenteAspectoController::class, 'update'])-> name('componente_aspectos.update');
+    Route::delete('/componente_aspectos/{id}', [ComponenteAspectoController::class, 'destroy'])->name('componente_aspectos.destroy');
+
+    Route::get('/getParametro/{id}', [ParametroController::class, 'getParametro'])->name('getParametro');
+    Route::post('/parametros', [ParametroController::class, 'store'])->name('parametros');
+    Route::post('/parametros/{id}', [ParametroController::class, 'update'])->name('parametros.update');
+    Route::delete('/parametros/{id}', [ParametroController::class, 'destroy'])->name('parametros.destroy');
 });
 

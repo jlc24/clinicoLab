@@ -17,7 +17,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::all();
+        $clientes = Cliente::paginate(10);
         foreach ($clientes as $cliente) {
             $fec_nac = new DateTime($cliente->cli_fec_nac);
             $hoy = new DateTime();

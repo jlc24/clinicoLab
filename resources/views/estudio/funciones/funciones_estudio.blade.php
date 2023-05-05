@@ -2,8 +2,48 @@
     //para ESTUDIOS---------------------------------------
     //console.log('estas en estudios.funciones_estudios')
     $(document).ready(function(){
+        //filtroTabla('#search_estudio', '#tabla_estudios');
+        filtroTabla('#comp_nombre', '#tabla_componentes');
+        filtroTabla('#proc_nombre', '#tabla_procedimiento');
+        filtroTabla('#asp_nombre', '#tabla_aspectos');
+
+        $("#tabla_estudios").dataTable({
+            responsive: true,
+            columnDefs: [],
+            "lengthMenu": [10, 20, 30, 100],
+            /* Disable initial sort */
+            "aaSorting": [],
+            "language": {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Registros del _START_ al _END_ de un total de _TOTAL_ ",
+                "sInfoEmpty": "Registros del 0 al 0 de un total de 0 ",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero",
+                    "sLast": "Último",
+                    "sNext": "Siguiente",
+                    "sPrevious": "Anterior"
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            }
+        });
+
         $('#modal_crear_estudio').on('shown.bs.modal', function () {
             $('#est_nombre').trigger('focus');
+        });
+        $('#modal_crear_componente').on('shown.bs.modal', function () {
+            $('#comp_nombre').trigger('focus');
         });
         $("#modal_crear_procedimiento").on("shown.bs.modal", function() {
             cargarTablaProcedimiento();
@@ -11,6 +51,12 @@
         });
         $("#btnCloseAddEstudio").on('click', function() {
             $("#formulario_crear_estudio").trigger('reset');
+        });
+        $("#btnCloseAddProc").on('click', function() {
+            $("#formulario_crear_procedimiento").trigger('reset');
+        });
+        $("#btnCloseAddComponente").on('click', function() {
+            $("#formulario_crear_componentes").trigger('reset');
         });
         $("#generar_clave_est").on('change', function() {
             if ($(this).prop('checked')) {
@@ -160,6 +206,31 @@
                 }
             });
         }
+        
+        function getComponenteDp(valor) {
+            $.ajax({
+                url: '{{ route("getComponenteDp", ":id") }}'.replace(":id", valor),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.length != 0) {
+                        $('#tabla_proc_comp tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('#tabla_proc_comp tbody').append(
+                                '<tr><td hidden>' + value.id + '</td>'+
+                                    '<td>' + value.nombre + '</td>'+
+                                    '<td class="text-center">'+
+                                        '<a href="javascript:void(0);" data-toggle="modal" data-target="#modal_crear_aspecto" class="btn btn-sm btn-outline-info btn-add-asp" title="Agregar Aspectos"><i class="fas fa-cogs"></i></a>'+
+                                        '<a href="javascript:void(0);"  class="btn btn-sm btn-outline-danger btn-del-comp" title="Eliminar Componente"><i class="fas fa-trash-alt"></i></a>'+
+                                    '</td>'+
+                                '</tr>');
+                        });
+                    }else {
+                        $('#tabla_proc_comp tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
 
         function getComponenteEstudio(det_id) {
             $.ajax({
@@ -168,8 +239,10 @@
                 dataType: 'json',
                 success: function(data) {
                     if (data.length != 0) {
-                        $(".dp_id").val(data[0].id);
+                        var dp_id = data[0].id;
+                        $(".dp_id").val(dp_id);
                         $(".datos_componentes").css('display', '');
+                        getComponenteDp(dp_id);
                     }else{
                         $(".dp_id").val("");
                         $(".datos_componentes").css('display', 'none');
@@ -189,7 +262,7 @@
             mostrarCargando();
             getProcEstudio(valor, function(data) {
                 var proc_id = data;
-                cargarTablaProcComp(valor, proc_id);
+                //cargarTablaProcComp(valor, proc_id);
                 cerrarCargando();
             });
         });
@@ -218,18 +291,24 @@
         $(document).on('change', '.proc_checked', function() {
             var det_proc_id = $(this).closest('tr').find('td:eq(0)').text();
             if ($(this).is(':checked')) {
+                mostrarCargando();
                 var datos = new FormData();
                 datos.append('estado', 1);
                 updateEstadoDetProc(det_proc_id, datos);
                 dp_id = $(this).closest('tr').find('td:eq(0)').text();
                 $(".dp_id").val(dp_id);
                 $(".datos_componentes").css('display', '');
+                getComponenteDp(dp_id);
+                cerrarCargando();
             }else{
+                mostrarCargando();
                 var datos = new FormData();
                 datos.append('estado', 0);
                 updateEstadoDetProc(det_proc_id, datos);
                 $(".dp_id").val("");
                 $(".datos_componentes").css('display', 'none');
+                $('#tabla_proc_comp tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                cerrarCargando();
             }
         });
 
@@ -246,6 +325,7 @@
                 dp_id = $(this).closest('tr').find('td:eq(0)').text();
                 $(".dp_id").val(dp_id);
                 $(".datos_componentes").css('display', '');
+                getComponenteDp(dp_id);
                 cerrarCargando();
             }else{
                 mostrarCargando()
@@ -254,6 +334,7 @@
                 updateEstadoDetProc(det_proc_id, datos);
                 $(".dp_id").val("");
                 $(".datos_componentes").css('display', 'none');
+                $('#tabla_proc_comp tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
                 cerrarCargando();
             }
         });
@@ -279,7 +360,7 @@
                             $('#tabla_procedimiento tbody').append(
                                 '<tr><td hidden>' + value.id + '</td>'+
                                     '<td>' + value.nombre + '</td>'+
-                                    '<td class="text-center"><a href="javascript:void(0);" data-id="'+ value.id+ '" data-route="{{ route("storeDetalleProc") }} " class="btn btn-sm btn-outline-success btn-add-proc" title="Usar este procedimiento"><i class="fas fa-plus-circle fa-lg"></i></a></td>'+
+                                    '<td class="text-center"><a href="javascript:void(0);" class="btn btn-sm btn-outline-success btn-add-proc" title="Usar este procedimiento"><i class="fas fa-plus-circle fa-lg"></i></a></td>'+
                                 '</tr>');
                         });
                     }else {
@@ -301,7 +382,7 @@
                         $.each(data, function(index, value) {
                             $(".proc_id").val(value.proc_id);
                             $('#tabla_detalle_proc tbody').append(
-                                '<tr><td >'+ value.id+'</td><td class="nombre text-right" title="Predeterminar"><a class="btn btn-sm ' + (value.estado == '1' ? 'btn-warning btn-deshabilitado' : 'btn-outline-warning btn-habilitado') + ' ">' + value.nombre + '</a></td><td hidden>'+ value.estado +'</td>'+
+                                '<tr><td hidden>'+ value.id+'</td><td class="nombre text-right" title="Predeterminar"><a class="btn btn-sm ' + (value.estado == '1' ? 'btn-warning btn-deshabilitado' : 'btn-outline-warning btn-habilitado') + ' ">' + value.nombre + '</a></td><td hidden>'+ value.estado +'</td>'+
                                     '<td class="text-center"><a href="javascript:void(0);" data-id="'+ value.id+ '" data-route="{{ route("destroyDetalleProc", ":id") }} " class="btn btn-sm btn-outline-danger btn-delete-detproc" title="Eliminar procedimiento"><i class="fas fa-trash-alt"></i></a></td>'+
                                     '<td class="text-center"><div class="form-check"><input type="checkbox" class="form-check-input proc_checked" ' + (value.estado == '1' ? ' checked' : '') + ' name="proc_checked" id="proc_checked" title="Predeterminar"></div></td>'+
                                 '</tr>');
@@ -316,16 +397,6 @@
                 }
             });
         }
-
-        $(document).on('click', '.btn-habilitado', function() {
-            //$(".datos_componentes").css('display', '');
-            dp_id = $(this).closest('tr').find('td:eq(0)').text();
-            $(".dp_id").val(dp_id);
-        });
-        $(document).on('click', '.btn-deshabilitado', function() {
-            //$(".datos_componentes").css('display', 'none');
-            $(".dp_id").val("");
-        });
 
         function cargarTablaProcComp(det_id, proc_id) {
             $.ajax({
@@ -372,7 +443,7 @@
             e.preventDefault();
             var proc_nombre = $(this).closest('tr').find('td:eq(1)').text();
             Swal.fire({
-                title: '¿Está seguro',
+                title: '¿Está seguro?',
                 text: '¿Desea utilizar el procedimiento '+ proc_nombre+ '?',
                 icon: 'question',
                 showCancelButton: true,
@@ -410,12 +481,6 @@
                             });
                             var valor = $(".proc_est_id").val();
                             cargarTablaDetalleProcedimiento(valor);
-                            mostrarCargando();
-                            getProcEstudio(valor, function(data) {
-                                var proc_id = data;
-                                cargarTablaProcComp(valor, proc_id);
-                                cerrarCargando();
-                            });
                         },
                         error: function (xhr, textStatus, errorThrown) {
                             console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -464,12 +529,6 @@
                         });
                         var valor = $(".proc_est_id").val();
                         cargarTablaDetalleProcedimiento(valor);
-                        mostrarCargando();
-                        getProcEstudio(valor, function(data) {
-                            var proc_id = data;
-                            cargarTablaProcComp(valor, proc_id);
-                            cerrarCargando();
-                        });
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -543,12 +602,6 @@
                             //                     setTimeout(function(){
                             //                         var valor = $(".proc_est_id").val();
                             //                         cargarTablaDetalleProcedimiento(valor);
-                            //                         mostrarCargando();
-                            //                         getProcEstudio(valor, function(data) {
-                            //                             var proc_id = data;
-                            //                             cargarTablaProcComp(valor, proc_id);
-                            //                             cerrarCargando();
-                            //                         });
                             //                     }, 2000);
                             //                 }
                             //             });
@@ -565,12 +618,6 @@
                                 setTimeout(function(){
                                     var valor = $(".proc_est_id").val();
                                     cargarTablaDetalleProcedimiento(valor);
-                                    mostrarCargando();
-                                    getProcEstudio(valor, function(data) {
-                                        var proc_id = data;
-                                        cargarTablaProcComp(valor, proc_id);
-                                        cerrarCargando();
-                                    });
                                 }, 2000);
                             //}
                         },
@@ -594,14 +641,13 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
                     if (data.length != 0) {
                         $('.tabla_componentes tbody').empty();
                         $.each(data, function(index, value) {
                             $('.tabla_componentes tbody').append(
-                                '<tr><td>' + value.id + '</td>'+
+                                '<tr><td hidden>' + value.id + '</td>'+
                                     '<td>' + value.nombre + '</td>'+
-                                    '<td class="text-center"><a href="javascript:void(0);" data-id="'+ value.id+ '" data-route="{{ route("storeDetalleProc") }} " class="btn btn-sm btn-outline-success btn-add-comp" title="Usar Componente"><i class="fas fa-plus-circle fa-lg"></i></a></td>'+
+                                    '<td class="text-center"><a href="javascript:void(0);" class="btn btn-sm btn-outline-success btn-use-comp" title="Usar Componente"><i class="fas fa-plus-circle fa-lg"></i></a></td>'+
                                 '</tr>');
                         });
                     }else {
@@ -610,48 +656,6 @@
                 }
             });
         }
-        function getEstadoDetalle(det_proc_id) {
-            
-        }
-
-        $("#btnRegisterComp").on('click', function() {
-            event.preventDefault();
-                var datos = new FormData();
-                datos.append('det_id', $("#det_proc_id").val());
-                datos.append('comp_nombre', $("#comp_nombre").val());
-                datos.append('comp_id', 0);
-                $.ajax({
-                    url: "{{ route('updateDetalleComponente', ':id') }}".replace(":id", $("#det_proc_id").val()),
-                    method: "POST",
-                    data: datos,
-                    contentType: false,
-                    processData: false,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function (response) {
-                        //console.log('La solicitud ha sido completada con éxito.');
-                        Swal.fire({
-                            title: 'Registrado',
-                            text: 'Registro de Evento Exitoso',
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                        
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                        Swal.fire({
-                            title: 'Oops...',
-                            text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
-                            icon: 'error',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                    }
-                });
-        });
 
         $(document).on('click', '.btn-add-comp', function() {
             $('.lista_componentes').css('display', '');
@@ -661,99 +665,521 @@
 
         })
 
-        $(document).on('click', '.btn-config-parametro', function() {
-            
-        })
+        function addComponenteDP(det_id, comp_nombre, comp_id) {
+            var datos = new FormData();
+            datos.append('det_id', det_id);
+            datos.append('comp_nombre', comp_nombre);
+            datos.append('comp_id', comp_id);
+            $.ajax({
+                url: "{{ route('updateDetalleComponente') }}",
+                method: "POST",
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    Swal.fire({
+                        title: 'Registrado',
+                        text: 'Registro de Evento Exitoso',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    var dp_id = $(".dp_id").val();
+                    getComponenteDp(dp_id);
+                    $("#formulario_crear_componentes").trigger('reset');
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        }
 
-        $(document).on('change', '.parametro_proc_est', function() {
-            if ($(this).val() == 'tablas') {
-                $(".parametro_tabla").css('display', '');
-                $(".parametro_sexoedad").css('display', 'none');
-                $(".parametro_rango").css('display', 'none');
-                $(".parametro_cualitativo").css('display', 'none');
-                $(".parametro_texto").css('display', 'none');
-            }else if ($(this).val() == 'sexoedades') {
-                $(".parametro_tabla").css('display', 'none');
-                $(".parametro_sexoedad").css('display', '');
-                $(".parametro_rango").css('display', 'none');
-                $(".parametro_cualitativo").css('display', 'none');
-                $(".parametro_texto").css('display', 'none');
-            }else if ($(this).val() == 'rangos') {
-                $(".parametro_tabla").css('display', 'none');
-                $(".parametro_sexoedad").css('display', 'none');
-                $(".parametro_rango").css('display', '');
-                $(".parametro_cualitativo").css('display', 'none');
-                $(".parametro_texto").css('display', 'none');
-            }else if ($(this).val() == 'cualitativos') {
-                $(".parametro_tabla").css('display', 'none');
-                $(".parametro_sexoedad").css('display', 'none');
-                $(".parametro_rango").css('display', 'none');
-                $(".parametro_cualitativo").css('display', '');
-                $(".parametro_texto").css('display', 'none');
-            }else if ($(this).val() == 'textos') {
-                $(".parametro_tabla").css('display', 'none');
-                $(".parametro_sexoedad").css('display', 'none');
-                $(".parametro_rango").css('display', 'none');
-                $(".parametro_cualitativo").css('display', 'none');
-                $(".parametro_texto").css('display', '');
-            }else{
-                $(".parametro_tabla").css('display', 'none');
-                $(".parametro_sexoedad").css('display', 'none');
-                $(".parametro_rango").css('display', 'none');
-                $(".parametro_cualitativo").css('display', 'none');
-                $(".parametro_texto").css('display', 'none');
-            }
+        $("#btnRegisterComp").on('click', function() {
+            event.preventDefault();
+            var dp_id = $("#det_proc_id").val();
+            var com_nombre = $("#comp_nombre").val();
+            var com_id = '0';
+            addComponenteDP(dp_id, com_nombre, com_id);
         });
 
-        $(document).on('click', '.btnAddValoresSexo', function() {
-            $('#table_parametro_sexoedad tbody').append(
+        $(document).on('click', '.btn-use-comp', function() {
+            event.preventDefault();
+            var dp_id = $("#det_proc_id").val();
+            var com_nombre = $(this).closest('tr').find('td:eq(1)').text();
+            var com_id = $(this).closest('tr').find('td:eq(0)').text();
+            Swal.fire({
+                title: '¿Está seguro?',
+                text: '¿Desea utilizar el componente '+ com_nombre+ '?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#40CC6C',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, continuar',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    addComponenteDP(dp_id, 'asdq', com_id);
+                }
+            });
+        });
+
+        function tablaAspectos() {
+            $.ajax({
+                url: '{{ route("getAspectos") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    //console.log(data);
+                    if (data.length != 0) {
+                        $('.tabla_aspectos tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('.tabla_aspectos tbody').append(
+                                '<tr><td hidden>' + value.id + '</td>'+
+                                    '<td>' + value.nombre + '</td>'+
+                                    '<td class="text-center"><a href="javascript:void(0);" class="btn btn-sm btn-outline-info btn-use-asp" title="Usar Aspecto"><i class="fas fa-greater-than fa-sm"></i></a></td>'+
+                                '</tr>');
+                        });
+                    }else {
+                        $('.tabla_aspectos tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
+
+        function tablaAspectoParametro(valor) {
+            $.ajax({
+                url: '{{ route("getDPCAspecto",":id") }}'.replace(":id", valor),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.length != 0) {
+                        $('.tabla_dpc_parametro tbody').empty();
+                        $.each(data, function(index, value) {
+                            var umedid = value.umed_id;
+                            var optionList = '';
+                            @foreach ($unidades as $unidad)
+                                var isSelected = {{ $unidad->id }} === umedid ? 'selected' : '' ;
+                                optionList += '<option value="{{ $unidad->id }}" '+ isSelected + '>{{ $unidad->unidad }}</option>';
+                            @endforeach
+                            $('.tabla_dpc_parametro tbody').append(
+                                '<tr><td hidden>' + value.id + '</td>'+
+                                    '<td width="50px"><a class="btn btn-sm btn-outline-danger btn-delete-asp" title="Quitar"><i class="fas fa-minus-circle"></i></a></td>'+
+                                    '<td width="180px">' + value.nombre + '</td>'+
+                                    '<td width="100px">'+
+                                        '<select class="custom-select custom-select-sm aspecto_unidad" name="aspecto_unidad" id="aspecto_unidad">'+
+                                            '<option value="" >Seleccionar...</option>'+
+                                            optionList +
+                                        '</select>'+
+                                    '</td>'+
+                                    '<td class="text-center"><a data-toggle="modal" data-target="#modal_config_parametro" class="btn btn-sm btn-outline-warning btn-conf-parametro" title="Agregar Parametro"><i class="fas fa-star-of-life"></i></a></td>'+
+                                '</tr>');
+                        });
+                    }else {
+                        $('.tabla_dpc_parametro tbody').empty().append('<td colspan="4" class="text-center">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', '.btn-add-asp', function() {
+            var dp_comp_id = $(this).closest('tr').find('td:eq(0)').text();
+            var comp_nombre = $(this).closest('tr').find('td:eq(1)').text();
+            $('.dp_comp_id').val(dp_comp_id);
+            $('.lblComponente').text('Componente: ' + comp_nombre);
+            tablaAspectos();
+            tablaAspectoParametro(dp_comp_id);
+        });
+
+        function addAspecto(dp_comp_id, asp_nombre, asp_id) {
+            var datos = new FormData();
+            datos.append('dp_comp_id', dp_comp_id);
+            datos.append('asp_nombre', asp_nombre);
+            datos.append('asp_id', asp_id);
+            $.ajax({
+                url: '{{ route("aspecto") }}',
+                type: 'POST',
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Registrado',
+                        text: 'Registro de Evento Exitoso',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    tablaAspectos();
+                    tablaAspectoParametro(dp_comp_id);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        }
+
+        $("#btnRegisterAsp").on('click', function() {
+            event.preventDefault();
+            var dp_comp_id = $('.dp_comp_id').val();
+            var asp_nombre = $(".asp_nombre").val();
+            var asp_id = '0';
+            addAspecto(dp_comp_id, asp_nombre, asp_id);
+            $("#formulario_crear_aspectos").trigger('reset');
+            $("#asp_nombre").focus();
+        });
+
+        $(document).on('click', '.btn-use-asp', function() {
+            event.preventDefault();
+            var dp_comp_id = $('.dp_comp_id').val();
+            var asp_nombre = $(this).closest('tr').find('td:eq(1)').text();
+            var asp_id = $(this).closest('tr').find('td:eq(0)').text();
+            Swal.fire({
+                title: '¿Está seguro?',
+                text: '¿Desea utilizar el componente '+ asp_nombre+ '?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#40CC6C',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, continuar',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    addAspecto(dp_comp_id, 'aspqd', asp_id);
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-delete-asp', function() {
+            var id = $(this).closest('tr').find('td:eq(0)').text();
+            $.ajax({
+                url: '{{ route("componente_aspectos.destroy", ":id") }}'.replace(":id", id),
+                type: 'DELETE',
+                data: {
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function (data) {
+                    Swal.fire({
+                        title: 'Hecho',
+                        text: 'Dato eliminado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                    var dp_comp_id = $('.dp_comp_id').val();
+                    tablaAspectoParametro(dp_comp_id);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        });
+
+        $(document).on('change', '.aspecto_unidad', function() {
+            var id = $(this).closest('tr').find('td:eq(0)').text();
+            var umed_id = $(this).val();
+            var datos = new FormData();
+            datos.append('umed_id', umed_id);
+            $.ajax({
+                url: '{{ route("componente_aspectos.update", ":id") }}'.replace(":id", id),
+                type: 'POST',
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Hecho',
+                        text: 'Dato registrado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                    var dp_comp_id = $('.dp_comp_id').val();
+                    tablaAspectoParametro(dp_comp_id);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        });
+
+        function getParametro(id) {
+            $.ajax({
+                url: '{{ route("getParametro", ":id") }}'.replace(":id", id),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.length != 0) {
+                        $('.table_parametro tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('.table_parametro tbody').append(
+                                '<tr>'+
+                                    '<td hidden>'+value.id+'</td>'+
+                                    '<td>'+
+                                        '<select class="custom-select custom-select-sm parametro_genero" name="parametro_genero" id="parametro_genero">'+
+                                            '<option value="" >Genero...</option>'+
+                                            '<option value="MASCULINO" ' + (value.genero === 'MASCULINO' ? 'selected' : '') + '>MASCULINO</option>'+
+                                            '<option value="FENEMINO" ' + (value.genero === 'FENEMINO' ? 'selected' : '') + '>FENEMINO</option>'+
+                                            '<option value="AMBOS" ' + (value.genero === 'AMBOS' ? 'selected' : '') + '>AMBOS</option>'+
+                                        '</select>'+
+                                    '</td>'+
+                                    '<td width="50px"><input type="number" value="' + (value.edad_inicial === null ? '0' : value.edad_inicial ) + '" class="form-control form-control-sm parametro_edad_inicial"></td>'+
+                                    '<td width="50px"><input type="number" value="' + (value.edad_final === null ? '0' : value.edad_final ) + '" class="form-control form-control-sm parametro_edad_final"></td>'+
+                                    '<td>'+
+                                        '<select class="custom-select custom-select-sm parametro_tiempo" name="parametro_tiempo" id="parametro_tiempo">'+
+                                            '<option value="" >Tiempo...</option>'+
+                                            '<option value="AÑOS" ' + (value.genero === 'AÑOS' ? 'selected' : '') + '>AÑOS</option>'+
+                                            '<option value="MESES" ' + (value.genero === 'MESES' ? 'selected' : '') + '>MESES</option>'+
+                                            '<option value="DIAS" ' + (value.genero === 'DIAS' ? 'selected' : '') + '>DIAS</option>'+
+                                        '</select>'+
+                                    '</td>'+
+                                    '<td width="50px"><input type="number" value="' + (value.valor_inicial === null ? '0' : value.valor_inicial ) + '" class="form-control form-control-sm parametro_valor_inicial" name="parametro_valor_inicial" id="parametro_valor_inicial"></td>'+
+                                    '<td width="50px"><input type="number" value="' + (value.valor_final === null ? '0' : value.valor_final ) + '"" class="form-control form-control-sm parametro_valor_final" name="parametro_valor_final" id="parametro_valor_final"></td>'+
+                                    '<td><input type="text" value="' + value.referencia + '"" class="form-control form-control-sm parametro_interpretacion" name="parametro_interpretacion" id="parametro_interpretacion"></td>'+
+                                    '<td>'+
+                                        '<div class="btn-group">'+
+                                            '<button type="button" class="btn btn-sm btn-outline-warning btn-edit-parametro"><i class="fas fa-edit"></i></button>'+
+                                            '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-parametro-id"><i class="fas fa-trash-alt"></i></button>'+
+                                        '</div>'+
+                                    '</td>'+
+                                '</tr>'
+                            );
+                        });
+                    }else {
+                        $('.table_parametro tbody').empty().append('<td colspan="9" class="text-center fila_vacia">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', '.btn-conf-parametro', function() {
+            var id = $(this).closest('tr').find('td:eq(0)').text();
+            var aspecto_nombre = $(this).closest('tr').find('td:eq(2)').text();
+            var medida = $(this).closest('tr').find('td:eq(3) select option:selected').text();
+            if (medida == 'Seleccionar...') {
+                unidad =  "";
+            }else{
+                unidad = " - " + medida;
+            }
+            $('.aspecto_nombre_parametro').text('Configurar Aspecto: ' + aspecto_nombre + ' ' + unidad);
+            $('.aspecto_id_parametro').val(id);
+            getParametro(id);
+        });
+
+        $(document).on('click', '.btnAddValores', function() {
+            $('.fila_vacia').remove();
+            $('#table_parametro tbody').append(
                 '<tr>'+
+                    '<td hidden></td>'+
                     '<td>'+
-                        '<select class="custom-select custom-select-sm parametro_sexo_genero" name="parametro_sexo_genero" id="parametro_sexo_genero">'+
+                        '<select class="custom-select custom-select-sm parametro_genero" name="parametro_genero" id="parametro_genero">'+
                             '<option value="" >Genero...</option>'+
                             '<option value="MASCULINO">MASCULINO</option>'+
                             '<option value="FENEMINO">FENEMINO</option>'+
                             '<option value="AMBOS">AMBOS</option>'+
                         '</select>'+
                     '</td>'+
-                    '<td><input type="number" class="form-control form-control-sm parametro_sexo_edad_inicial"></td>'+
-                    '<td><input type="number" class="form-control form-control-sm parametro_sexo_edad_final"></td>'+
+                    '<td width="50px"><input type="number" class="form-control form-control-sm parametro_edad_inicial"></td>'+
+                    '<td width="50px"><input type="number" class="form-control form-control-sm parametro_edad_final"></td>'+
                     '<td>'+
-                        '<select class="custom-select custom-select-sm parametro_sexo_tiempo" name="parametro_sexo_tiempo" id="parametro_sexo_tiempo">'+
+                        '<select class="custom-select custom-select-sm parametro_tiempo" name="parametro_tiempo" id="parametro_tiempo">'+
                             '<option value="" >Tiempo...</option>'+
                             '<option value="AÑOS">AÑOS</option>'+
                             '<option value="MESES">MESES</option>'+
                             '<option value="DIAS">DIAS</option>'+
                         '</select>'+
                     '</td>'+
-                    '<td><input type="number" class="form-control form-control-sm parametro_sexo_valor_inicial" name="parametro_sexo_valor_inicial" id="parametro_sexo_valor_inicial"></td>'+
-                    '<td><input type="number" class="form-control form-control-sm parametro_sexo_valor_final" name="parametro_sexo_valor_final" id="parametro_sexo_valor_final"></td>'+
-                    '<td><input type="text" class="form-control form-control-sm parametro_sexo_interpretacion" name="parametro_sexo_interpretacion" id="parametro_sexo_interpretacion"></td>'+
-                    '<td><button type="button" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></button></td>'+
+                    '<td width="50px"><input type="number" class="form-control form-control-sm parametro_valor_inicial" name="parametro_valor_inicial" id="parametro_valor_inicial"></td>'+
+                    '<td width="50px"><input type="number" class="form-control form-control-sm parametro_valor_final" name="parametro_valor_final" id="parametro_valor_final"></td>'+
+                    '<td><input type="text" class="form-control form-control-sm parametro_interpretacion" name="parametro_interpretacion" id="parametro_interpretacion"></td>'+
+                    '<td>'+
+                        '<div class="btn-group">'+
+                            '<button type="button" class="btn btn-sm btn-outline-success btn-save-parametro"><i class="fas fa-save"></i></button>'+
+                            '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-parametro"><i class="fas fa-trash-alt"></i></button>'+
+                        '</div>'+
+                    '</td>'+
                 '</tr>'
             );
         });
 
-        $(document).on('click', '.btnAddValoresRango', function() {
-            $('#table_parametro_rango tbody').append(
-                '<tr>'+
-                    '<td><input type="number" class="form-control form-control-sm parametro_rango_valor_inicial" name="parametro_rango_valor_inicial" id="parametro_rango_valor_inicial"></td>'+
-                    '<td><input type="number" class="form-control form-control-sm parametro_rango_valor_final" name="parametro_rango_valor_final" id="parametro_rango_valor_final"></td>'+
-                    '<td><input type="text" class="form-control form-control-sm parametro_rango_interpretacion" name="parametro_rango_interpretacion" id="parametro_rango_interpretacion"></td>'+
-                    '<td><button type="button" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></button></td>'+
-                '</tr>'
-            );
+        $(document).on('click', '.btn-delete-parametro', function() {
+            $(this).closest('tr').remove();
         });
 
-        $(document).on('click', '.btn-config-proc', function() {
-            var det_id = $(this).data('id');
-            // getDetalle(det_id, function(data) {
-            //     $("#det_id_proc").val(data);
-            //     $(".proc_tipo_estudio").val("componente");
-            // });
-            getDetalle(det_id, 'componente');
+        $(document).on('click', '.btn-save-parametro', function() {
+            var ca_id = $(".aspecto_id_parametro").val();
+            var genero = $(this).closest('tr').find('td:eq(1) select').val();
+            var edad_inicial = $(this).closest('tr').find('td:eq(2) input').val();
+            var edad_final = $(this).closest('tr').find('td:eq(3) input').val();
+            var tiempo = $(this).closest('tr').find('td:eq(4) select').val();
+            var valor_inicial = $(this).closest('tr').find('td:eq(5) input').val();
+            var valor_final = $(this).closest('tr').find('td:eq(6) input').val();
+            var interpretacion = $(this).closest('tr').find('td:eq(7) input').val();
+
+            var datos = new FormData();
+            datos.append('ca_id', ca_id);
+            datos.append('genero', genero);
+            datos.append('edad_inicial', edad_inicial);
+            datos.append('edad_final', edad_final);
+            datos.append('tiempo', tiempo);
+            datos.append('valor_inicial', valor_inicial);
+            datos.append('valor_final', valor_final);
+            datos.append('referencia', interpretacion);
+
+            $.ajax({
+                url: '{{ route("parametros") }}',
+                type: 'POST',
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    Swal.fire({
+                        title: 'Hecho',
+                        text: 'Parámetro registrado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                    var id = $('.aspecto_id_parametro').val();
+                    getParametro(id);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
         });
 
+        $(document).on('click', '.btn-edit-parametro', function() {
+            var ca_id = $(".aspecto_id_parametro").val();
+            var id = $(this).closest('tr').find('td:eq(0)').text();
+            var genero = $(this).closest('tr').find('td:eq(1) select').val();
+            var edad_inicial = $(this).closest('tr').find('td:eq(2) input').val();
+            var edad_final = $(this).closest('tr').find('td:eq(3) input').val();
+            var tiempo = $(this).closest('tr').find('td:eq(4) select').val();
+            var valor_inicial = $(this).closest('tr').find('td:eq(5) input').val();
+            var valor_final = $(this).closest('tr').find('td:eq(6) input').val();
+            var interpretacion = $(this).closest('tr').find('td:eq(7) input').val();
 
+            var datos = new FormData();
+            datos.append('ca_id', ca_id);
+            datos.append('genero', genero);
+            datos.append('edad_inicial', edad_inicial);
+            datos.append('edad_final', edad_final);
+            datos.append('tiempo', tiempo);
+            datos.append('valor_inicial', valor_inicial);
+            datos.append('valor_final', valor_final);
+            datos.append('referencia', interpretacion);
+
+            $.ajax({
+                url: '{{ route("parametros.update", ":id") }}'.replace(":id", id),
+                type: 'POST',
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    Swal.fire({
+                        title: 'Hecho',
+                        text: 'Parámetros modificados',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                    var id = $('.aspecto_id_parametro').val();
+                    getParametro(id);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-delete-parametro-id', function() {
+            var id= $(this).closest('tr').find('td:eq(0)').text();
+            console.log(id);
+            $.ajax({
+                url: '{{ route("parametros.destroy", ":id") }}'.replace(":id", id),
+                type: 'DELETE',
+                data: {
+                    "_token": "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    Swal.fire({
+                        title: 'Hecho',
+                        text: 'Parámetro eliminado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                    var id = $('.aspecto_id_parametro').val();
+                    getParametro(id);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        });
     });
 </script>

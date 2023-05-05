@@ -17,9 +17,4 @@ class UMedida extends Model
     {
         return $this->hasMany(ComponenteAspecto::class);
     }
-
-    public function parametros()
-    {
-        return $this->hasMany(Parametro::class);
-    }
 }

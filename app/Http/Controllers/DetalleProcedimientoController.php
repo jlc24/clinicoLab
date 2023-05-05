@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Componente;
 use App\Models\DetalleProcedimiento;
+use App\Models\DpComponente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -59,18 +60,25 @@ class DetalleProcedimientoController extends Controller
                     ->where('d.id', '=', $id)
                     ->where('estado', '=', '1')
                     ->get();
-                    // SELECT d.id, dp.id, dp.estado, dp.comp_id
-                    // FROM detalle_procedimientos as dp
-                    // INNER JOIN detalles as d ON dp.det_id = d.id
-                    // WHERE d.id = 1 AND dp.estado = 1;
         return response()->json($comp_est);
     }
 
-    public function updateDetalleComponente(Request $request, $id)
+    public function getComponenteDp($id)
+    {
+        $dp_comp = DB::table('dp_componentes as dpc')
+                    ->join('componentes as c', 'dpc.comp_id', '=', 'c.id')
+                    ->select('dpc.id', 'c.nombre')
+                    ->where('dpc.dp_id', '=', $id)
+                    ->get();
+        return response()->json($dp_comp);
+    }
+
+    public function updateDetalleComponente(Request $request)
     {
         $request->validate([
+            'det_id' => 'integer',
             'comp_id' => 'integer',
-            'comp_nombre' => [
+            'comp_nombre' => [ 'max:100',
                             Rule::unique('componentes', 'nombre'),
                             'regex:/^[a-zA-Z\s]+$/'
                         ],
@@ -81,13 +89,15 @@ class DetalleProcedimientoController extends Controller
                 'nombre' => $request->input('comp_nombre')
             ]);
 
-            $det_comp = DetalleProcedimiento::find($id);
-            $det_comp->comp_id = $componente->id;
-            $det_comp->save();
+            DpComponente::create([
+                'dp_id' => $request->input('det_id'),
+                'comp_id' => $componente->id
+            ]);
         }else{
-            $det_comp = DetalleProcedimiento::find($id);
-            $det_comp->comp_id = $request->input('comp_id');
-            $det_comp->save();
+            DpComponente::create([
+                'dp_id' => $request->input('det_id'),
+                'comp_id' => $request->input('comp_id')
+            ]);
         }
     }
 }

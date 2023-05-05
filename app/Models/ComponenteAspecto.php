@@ -10,14 +10,14 @@ class ComponenteAspecto extends Model
     use HasFactory;
 
     protected $fillable = [
-        'dp_id',
+        'dpcomp_id',
         'asp_id',
         'umed_id'
     ];
 
-    public function detalleprocedimiento()
+    public function dpcomponente()
     {
-        return $this->belongsTo(DetalleProcedimiento::class, 'dp_id');
+        return $this->belongsTo(DpComponente::class, 'dp_id');
     }
 
     public function aspecto()

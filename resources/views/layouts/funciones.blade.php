@@ -45,6 +45,43 @@
             }
         })
     });
+    function filtroTabla(campoInput, Tabla) {
+        const $filtro = document.querySelector(campoInput);
+        const $tabla = document.querySelector(Tabla +' tbody');
+        let filaNoData;
+        function filtrarTabla(event) {
+            const texto = event.target.value.toLowerCase(); 
+            const filas = $tabla.querySelectorAll('tr'); 
+            let hayCoincidencias = false;
+            filas.forEach((fila) => {
+                const contenidoFila = fila.textContent.toLowerCase(); 
+                if (contenidoFila.includes(texto)) {
+                    fila.style.display = '';
+                    hayCoincidencias = true;
+                } else {
+                    fila.style.display = 'none';
+                }
+            });
+            if (!hayCoincidencias) {
+                if (!filaNoData) {
+                    filaNoData = $tabla.insertRow();
+                    filaNoData.setAttribute("id", "no-data-row");
+                    const nuevaFila = filaNoData.insertCell();
+                    //const nuevaCelda = nuevaFila.insertCell();
+                    nuevaCelda.style.textAlign = 'center';
+                    nuevaCelda.colSpan = filas[0].children.length;
+                    nuevaCelda.textContent = 'No se encontraron datos';
+                }else{
+                    filaNoData.style.display = '';
+                }
+            }else{
+                if (filaNoData) {
+                    filaNoData.style.display = 'none'
+                }
+            }
+        }
+        $filtro.addEventListener('input', filtrarTabla);
+    }
     
     @if(session('success'))
         Swal.fire({

@@ -29,9 +29,9 @@
                                 </a> {{ __('Nuevo Paciente') }}
                             </h4>
                         </div>
-                        <div class="card-body" id="tabla_cliente">
+                        <div class="card-body">
                             <h3>{{ __('Lista de Pacientes registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-bordered table-responsive-lg">
+                            <table class="table table-bordered table-responsive-lg" id="tabla_clientes" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead style="text-align: center;">
                                     <tr class="table-info">
                                         <th>#</th>
@@ -67,6 +67,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $clientes->links() }}
                         </div>
                     </div>
                 </div>

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ComponenteAspecto;
-use App\Models\Parametro;
+use App\Models\DpComponente;
 use Illuminate\Http\Request;
 
-class ComponenteAspectoController extends Controller
+class DpComponenteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +34,7 @@ class ComponenteAspectoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ComponenteAspecto $componenteAspecto)
+    public function show(DpComponente $dpComponente)
     {
         //
     }
@@ -43,7 +42,7 @@ class ComponenteAspectoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ComponenteAspecto $componenteAspecto)
+    public function edit(DpComponente $dpComponente)
     {
         //
     }
@@ -51,25 +50,16 @@ class ComponenteAspectoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, DpComponente $dpComponente)
     {
-        $comp_asp = ComponenteAspecto::find($id);
-        $comp_asp->umed_id = $request->input('umed_id');
-        $comp_asp->save();
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(DpComponente $dpComponente)
     {
-        $parametros = Parametro::where('ca_id', '=', $id)->get();
-        if ($parametros !== null) {
-            foreach ($parametros as $parametro) {
-                $parametro->delete();
-            }
-        }
-        $comp_asp = ComponenteAspecto::find($id);
-        $comp_asp->delete();
+        //
     }
 }

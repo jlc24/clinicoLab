@@ -15,6 +15,12 @@ class ParametroController extends Controller
         //
     }
 
+    public function getParametro($id)
+    {
+        $parametro = Parametro::where('ca_id', '=', $id)->get();
+        return response()->json($parametro);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -28,7 +34,20 @@ class ParametroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'ca_id' => 'integer'
+        ]);
+
+        Parametro::create([
+            'ca_id' => $request->input('ca_id'),
+            'genero' => $request->input('genero'),
+            'edad_inicial' => $request->input('edad_inicial'),
+            'edad_final' => $request->input('edad_final'),
+            'tiempo' => $request->input('tiempo'),
+            'valor_inicial' => $request->input('valor_inicial'),
+            'valor_final' => $request->input('valor_final'),
+            'referencia' => $request->input('referencia'),
+        ]);
     }
 
     /**
@@ -50,16 +69,30 @@ class ParametroController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Parametro $parametro)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'ca_id' => 'integer'
+        ]);
+        $parametro = Parametro::find($id);
+        $parametro->update([
+            'ca_id' => $request->input('ca_id'),
+            'genero' => $request->input('genero'),
+            'edad_inicial' => $request->input('edad_inicial'),
+            'edad_final' => $request->input('edad_final'),
+            'tiempo' => $request->input('tiempo'),
+            'valor_inicial' => $request->input('valor_inicial'),
+            'valor_final' => $request->input('valor_final'),
+            'referencia' => $request->input('referencia'),
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Parametro $parametro)
+    public function destroy($id)
     {
-        //
+        $parametro = Parametro::find($id);
+        $parametro->delete();
     }
 }

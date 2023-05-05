@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('componente_aspectos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('dp_id');
+            $table->unsignedBigInteger('dpcomp_id');
             $table->unsignedBigInteger('asp_id');
-            $table->unsignedBigInteger('umed_id');
+            $table->unsignedBigInteger('umed_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('dp_id')->references('id')->on('detalle_procedimientos');
+            $table->foreign('dpcomp_id')->references('id')->on('dp_componentes');
             $table->foreign('asp_id')->references('id')->on('aspectos');
             $table->foreign('umed_id')->references('id')->on('u_medidas');
         });

@@ -12,7 +12,6 @@ class DetalleProcedimiento extends Model
     protected $fillable = [
         'det_id',
         'proc_id',
-        'comp_id',
         'estado'
     ];
 
@@ -26,13 +25,8 @@ class DetalleProcedimiento extends Model
         return $this->belongsTo(Procedimiento::class, 'proc_id');
     }
 
-    public function componente()
+    public function dpcomponentes()
     {
-        return $this->belongsTo(Componente::class, 'comp_id');
-    }
-
-    public function componenteaspectos()
-    {
-        return $this->hasMany(ComponenteAspecto::class);
+        return $this->hasMany(DpComponente::class);
     }
 }

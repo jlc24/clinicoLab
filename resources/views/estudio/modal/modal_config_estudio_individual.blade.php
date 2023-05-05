@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal_configurar_estudio_individual_{{ $detalle->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal_configurar_estudio_individual_{{ $detalle->id }}Label" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #7EE2F0; color: #000">
                 <h1 class="modal-title fs-5" id="modal_configurar_estudio_individual_{{ $detalle->id }}Label"><strong>{{ __('Configuración') }}:</strong> {{ $detalle->estudio->est_nombre }}</h1>
@@ -11,33 +11,32 @@
             </div>
             <div class="modal-body">
                 <div class="row justify-content-center">
-                    <div class="col-xl-1 col-sm-1">
-                        <a href="#" data-id="{{ $detalle->id }}" data-toggle="modal" data-target="#modal_crear_procedimiento" class="btn btn-sm btn-outline-success btn-config" title="Agregar procedimiento">
-                            <i class="fas fa-plus-circle fa-lg"></i>
-                        </a>
+                    <div class="col-xl-12 col-sm-12 pt-1" style="background-color: #28A745;">
+                        <label class="col-md-12 col-form-label" style="color: #fff">
+                            <a href="#" data-id="{{ $detalle->id }}" data-toggle="modal" data-target="#modal_crear_procedimiento" class="btn-config" title="Agregar procedimiento" style="color: #fff">
+                                <i class="fas fa-plus-circle fa-lg"></i>
+                            </a>{{ __(' Procedimientos') }}:
+                        </label>
                     </div>
-                    <div class="col-xl-2 col-sm-2 text-right">
-                        <div class="form-group row">
-                            <label class="col-md-12 col-form-label">{{ __(' Procedimientos') }}:</label>
-                        </div>
-                    </div>
-                    <div class="col-xl-8 col-sm-8">
-                        <table class="table table-sm table-responsive-lg table-borderless" id="tabla_detalle_proc">
+                    <div class="col-xl-12 col-sm-12 table-responsive-lg">
+                        <table class="table table-sm table-borderless" id="tabla_detalle_proc">
                             <tbody>
 
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="row justify-content-center datos_componentes" style="display: none">
-                    <div class="col-xl-8 col-sm-8">
-                        <a href="#" data-id="{{ $detalle->id }}" data-toggle="modal" data-target="#modal_crear_componente" class=" btn-add-comp" title="Agregar componente">
-                            <i class="fas fa-plus-circle fa-lg"></i>
-                        </a>{{ __('Componentes') }}:
+                <div class="row justify-content-center datos_componentes" style="display: none;">
+                    <div class="col-xl-12 col-sm-12 pt-1" style="background-color: #7EE2F0;">
+                        <label class="col-md-12 col-form-label">
+                            <a href="#" data-id="{{ $detalle->id }}" data-toggle="modal" data-target="#modal_crear_componente" class=" btn-add-comp" title="Agregar componente">
+                                <i class="fas fa-plus-circle fa-lg"></i>
+                            </a>{{ __('Componentes') }}:
+                        </label>
                         <input type="hidden" name="dp_id" id="dp_id" class="dp_id">
                     </div>
-                    <div class="col-xl-7 col-sm-7">
-                        <table class="table table-borderless table-sm table-responsive-lg text-center tabla_proc_comp" id="tabla_proc_comp">
+                    <div class="col-xl-12 col-sm-12 table-responsive-lg"><br>
+                        <table class="table table-striped table-sm text-center tabla_proc_comp" id="tabla_proc_comp">
                             <tbody>
                                 
                             </tbody>

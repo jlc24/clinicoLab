@@ -26,9 +26,4 @@ class Parametro extends Model
     {
         return $this->belongsTo(ComponenteAspecto::class, 'ca_id');
     }
-
-    public function umedida()
-    {
-        return $this->belongsTo(UMedida::class, 'umed_id');
-    }
 }

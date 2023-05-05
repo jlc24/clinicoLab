@@ -20,13 +20,10 @@ return new class extends Migration
             $table->string('tiempo', 10)->nullable();
             $table->unsignedBigInteger('valor_inicial')->nullable();
             $table->unsignedBigInteger('valor_final')->nullable();
-            $table->unsignedBigInteger('umed_id')->nullable();
-            $table->string('cualitativo', 100)->nullable();
             $table->string('referencia')->nullable();
             $table->timestamps();
 
             $table->foreign('ca_id')->references('id')->on('componente_aspectos');
-            $table->foreign('umed_id')->references('id')->on('u_medidas');
         });
     }
 
