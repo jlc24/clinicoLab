@@ -16,6 +16,7 @@ class Empresa extends Model
         'emp_direccion', 
         'dep_id',
         'mun_id',
+        'emp_convenio'
     ];
 
     public function departamento()
@@ -28,8 +29,18 @@ class Empresa extends Model
         return $this->belongsTo(Municipio::class, 'mun_id');
     }
 
+    public function clientes()
+    {
+        return $this->hasMany(Cliente::class);
+    }
+
     public function facturas()
     {
         return $this->hasMany(Factura::class);
+    }
+
+    public function providers()
+    {
+        return $this->hasMany(Provider::class);
     }
 }

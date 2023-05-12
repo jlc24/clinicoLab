@@ -82,6 +82,22 @@
         }
         $filtro.addEventListener('input', filtrarTabla);
     }
+    function calcularPrecioCantidad(stock, precioCompra, precioUnitario) {
+        var cantidad = $(stock).val();
+        var precio_comp = $(precioCompra).val();
+        var precioUni = parseFloat(precio_comp / cantidad).toFixed(2);
+        $(precioUnitario).val(precioUni);
+    }
+    
+    function VerImagen(inputImagenLoad, showImagen) {
+        const inputImagen = document.getElementsByClassName(inputImagenLoad)[0];
+        const imgMaterial = document.getElementsByClassName(showImagen)[0];
+        if (inputImagen.files.length === 0) {
+            imgMaterial.src = '{{ asset("dist/img/default.png") }}';
+        }else{
+            imgMaterial.src = URL.createObjectURL(inputImagen.files[0]);
+        }
+    }
     
     @if(session('success'))
         Swal.fire({

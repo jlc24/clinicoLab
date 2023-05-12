@@ -6,7 +6,7 @@ $(function () {
       '<i class="mdi mdi-arrow-left-bold"></i> Atrás'),
     ($.fn.stepy.defaults.nextLabel =
       'Siguiente <i class="mdi mdi-arrow-right-bold"></i>'),
-    $("#formulario_crear_hoja").stepy(),
+    $("#formulario_materiales").stepy(),
     $("#wizard-clickable").stepy({ titleClick: !0 }),
     $("#wizard-callbacks").stepy({
       next: function (t) {
@@ -21,7 +21,7 @@ $(function () {
     }),
     $(".stepy-navigator")
       .find(".button-next")
-      .addClass("btn btn-purple waves-effect waves-light"),
+      .addClass("btn btn-info waves-effect waves-light"),
     $(".stepy-step")
       .find(".button-back")
       .addClass("btn btn-secondary waves-effect float-left");

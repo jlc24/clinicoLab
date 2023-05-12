@@ -23,14 +23,6 @@
                     @method('PUT')
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-sm-12" >
-                            <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="reci_nombre_update">{{ __('Nombre Recipiente') }}: </label>
-                                <div class="col-md-8">
-                                    <input type="text" value="{{ $recipiente->nombre }}" id="reci_nombre_update" name="reci_nombre_update" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Recipiente" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="reci_descripcion_update">{{ __('Descripcion') }}:</label>

@@ -24,6 +24,8 @@ class Medico extends Model
         'user_id',
         'med_usuario',
         'med_password',
+        'dep_id',
+        'mun_id',
     ];
 
     public function user()
@@ -31,8 +33,24 @@ class Medico extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'dep_id');
+    }
+
+    public function municipio()
+    {
+        return $this->belongsTo(Municipio::class, 'mun_id');
+    }
+
+    public function clientes()
+    {
+        return $this->hasMany(Cliente::class);
+    }
+
     public function facturas()
     {
         return $this->hasMany(Factura::class);
     }
+
 }

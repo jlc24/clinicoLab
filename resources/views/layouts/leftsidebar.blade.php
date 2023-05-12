@@ -10,7 +10,7 @@
                     <a href="{{ route('home') }}" class="nav-link {{ Route::currentRouteName() === 'home' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                        Panel de Control
+                        {{ __('Panel de Control') }}
                         </p>
                     </a>
                 </li>
@@ -21,7 +21,7 @@
                     <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesAdmin) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>
-                            Administración
+                            {{ __('Administración') }}
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -29,37 +29,52 @@
                         <li class="nav-item px-2">
                             <a href="#" class="nav-link">
                                 <i class=" nav-icon fa-solid fa-user-plus"></i>
-                                <p>Usuarios del Sistema</p>
+                                <p>{{ __('Usuarios del Sistema') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('cliente') }}" class="nav-link {{ Request::is('clientes') ? 'active' : '' }}">
                                 <i class=" nav-icon fa-solid fa-user"></i>
-                                <p>Pacientes</p>
+                                <p>{{ __('Pacientes') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('medico') }}" class="nav-link {{ Request::is('medicos') ? 'active' : '' }}">
                                 <i class="nav-icon fa-solid fa-user-doctor"></i>
-                                <p>Medicos</p>
+                                <p>{{ __('Medicos') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('empresa') }}" class="nav-link {{ Request::is('empresas') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-building"></i>
-                                <p>Empresas</p>
+                                <p>{{ __('Empresas') }}</p>
                             </a>
                         </li>
                     </ul>
                 </li>
                 @php
-                    $activeRoutesCatalog = [ 'antibiograma', 'bacteria', 'cultivo', 'estudio', 'medicamento', 'laboratorio', 'muestra', 'indication', 'recipiente', 'metodologia', 'umedida', 'componente'];
+                    $activeRoutesCatalog = [ 
+                        'antibiograma', 
+                        'bacteria', 
+                        'cultivo', 
+                        'estudio', 
+                        'medicamento', 
+                        'laboratorio', 
+                        'muestra', 
+                        'indication', 
+                        'recipiente', 
+                        'metodologia', 
+                        'umedida', 
+                        'categoria', 
+                        'material',
+                        'provider'
+                    ];
                 @endphp
                 <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesCatalog) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesCatalog) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-book-medical"></i>
                         <p>
-                            Catalogos
+                            {{ __('Catálogos') }}
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -67,73 +82,85 @@
                         <li class="nav-item px-2" hidden>
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-microscope"></i>
-                                <p>Antibiogramas</p>
+                                <p>{{ __('Antibiogramas') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('bacteria') }}" class="nav-link {{ Request::is('bacterias') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-bacteria"></i>
-                                <p>Bacterias</p>
+                                <p>{{ __('Bacterias') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('cultivo') }}" class="nav-link {{ Request::is('cultivos') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-vial"></i>
-                                <p>Cultivos</p>
+                                <p>{{ __('Cultivos') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('estudio') }}" class="nav-link {{ Request::is('estudios') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-clipboard-list"></i>
-                                <p>Estudios</p>
+                                <p>{{ __('Estudios') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2" hidden>
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-capsules"></i>
-                                <p>Medicamentos</p>
+                                <p>{{ __('Medicamentos') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2" hidden>
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-clinic-medical"></i>
-                                <p>Laboratorio</p>
+                                <p>{{ __('Laboratorio') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('muestra') }}" class="nav-link {{ Request::is('muestras') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-prescription-bottle"></i>
-                                <p>Tipos de Muestras</p>
+                                <p>{{ __('Tipos de Muestras') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('indication') }}" class="nav-link {{ Request::is('indications') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-file-contract"></i>
-                                <p>Indicaciones</p>
+                                <p>{{ __('Indicaciones') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('recipiente') }}" class="nav-link {{ Request::is('recipientes') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-prescription-bottle-alt"></i>
-                                <p>Recipientes</p>
+                                <p>{{ __('Recipientes') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('metodologia') }}" class="nav-link {{ Request::is('metodologias') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-procedures"></i>
-                                <p>Metodologías</p>
+                                <p>{{ __('Metodologías') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('umedida') }}" class="nav-link {{ Request::is('umedidas') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-ruler-horizontal"></i>
-                                <p>Unidades de Medida</p>
+                                <p>{{ __('Unidades de Medida') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
-                            <a href="#" class="nav-link {{ Request::is('componentes') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-table-cells"></i>
-                                <p>Componente</p>
+                            <a href="{{ route('categoria') }}" class="nav-link {{ Request::is('categorias') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-folder"></i>
+                                <p>{{ __('Categoría') }}</p>
+                            </a>
+                        </li>
+                        <li class="nav-item px-2">
+                            <a href="{{ route('material') }}" class="nav-link {{ Request::is('materials') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-toolbox"></i>
+                                <p>{{ __('Materiales') }}</p>
+                            </a>
+                        </li>
+                        <li class="nav-item px-2">
+                            <a href="{{ route('provider') }}" class="nav-link {{ Request::is('providers') ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-users-rectangle"></i>
+                                <p>{{ __('Proveedores') }}</p>
                             </a>
                         </li>
                     </ul>
@@ -145,7 +172,7 @@
                     <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesCaptura) ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-square-poll-vertical"></i>
                         <p>
-                            Capturas
+                            {{ __('Capturas') }}
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -153,13 +180,13 @@
                         <li class="nav-item px-2">
                             <a href="{{ route('recepcion') }}" class="nav-link {{ Request::is('recepcion') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-keyboard"></i>
-                                <p>Recepción</p>
+                                <p>{{ __('Recepción') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="{{ route('result') }}" class="nav-link {{ Request::is('results') ? 'active' : '' }}">
                                 <i class="nav-icon fa-solid fas fa-poll-h"></i>
-                                <p>Resultados</p>
+                                <p>{{ __('Resultados') }}</p>
                             </a>
                         </li>
                     </ul>
@@ -171,7 +198,7 @@
                     <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesTools) ? 'active' : '' }}">
                         <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
                         <p>
-                            Herramientas
+                            {{ __('Herramientas') }}
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -179,37 +206,37 @@
                         <li class="nav-item px-2">
                             <a href="{{ route('caja') }}" class="nav-link {{ Request::is('cajas') ? 'active' : '' }}">
                                 <i class=" nav-icon fas fa-box"></i>
-                                <p>Caja</p>
+                                <p>{{ __('Caja') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa-solid fa-user-doctor"></i>
-                                <p>Corte de Caja</p>
+                                <p>{{ __('Corte de Caja') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="#" class="nav-link">
                                 <i class="fas fa-square-root-alt nav-icon"></i>
-                                <p>Fórmulas</p>
+                                <p>{{ __('Fórmulas') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="#" class="nav-link">
                                 <i class="fas fa-clipboard nav-icon"></i>
-                                <p>Lista de Precios</p>
+                                <p>{{ __('Lista de Precios') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="#" class="nav-link">
                                 <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                <p>Control de Resultados</p>
+                                <p>{{ __('Control de Resultados') }}</p>
                             </a>
                         </li>
                         <li class="nav-item px-2">
                             <a href="#" class="nav-link">
                                 <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                <p>Convenios</p>
+                                <p>{{ __('Convenios') }}</p>
                             </a>
                         </li>
                     </ul>
@@ -221,7 +248,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-print"></i>
                         <p>
-                            Reimpresiones
+                            {{ __('Reimpresiones') }}
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -229,19 +256,19 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class=" nav-icon fa-solid fa-user-plus"></i>
-                                <p>Clientes</p>
+                                <p>{{ __('Clientes') }}</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa-solid fa-user-doctor"></i>
-                                <p>Medicos</p>
+                                <p>{{ __('Medicos') }}</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                <p>Productos</p>
+                                <p>{{ __('Productos') }}</p>
                             </a>
                         </li>
                     </ul>
@@ -253,7 +280,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-file-lines"></i>
                         <p>
-                            Reportes
+                            {{ __('Reportes') }}
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -261,19 +288,19 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class=" nav-icon fa-solid fa-user-plus"></i>
-                                <p>Clientes</p>
+                                <p>{{ __('Clientes') }}</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa-solid fa-user-doctor"></i>
-                                <p>Medicos</p>
+                                <p>{{ __('Medicos') }}</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                <p>Productos</p>
+                                <p>{{ __('Productos') }}</p>
                             </a>
                         </li>
                     </ul>

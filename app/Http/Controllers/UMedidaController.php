@@ -48,6 +48,12 @@ class UMedidaController extends Controller
     {
         //
     }
+    
+    public function getUmedUnidad($id)
+    {
+        $unidad = UMedida::find($id)->unidad;
+        return response()->json($unidad);
+    }
 
     /**
      * Show the form for editing the specified resource.

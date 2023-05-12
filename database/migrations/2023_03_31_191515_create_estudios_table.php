@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('est_nombre', 255);
             $table->string('est_descripcion', 255)->nullable();
             $table->decimal('est_precio')->nullable();
-            $table->string('est_moneda', 5)->nullable();
+            $table->unsignedBigInteger('umed_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('umed_id')->references('id')->on('u_medidas');
         });
     }
 

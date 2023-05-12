@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-body" id="tabla_medico">
                             <h3>Lista de Medicos registrados en el Sistema</h3><hr>
-                            <table class="table table-bordered table-responsive-lg">
+                            <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_medicos" id="tabla_medicos">
                                 <thead style="text-align: center;">
                                     <tr class="table-info">
                                         <th>#</th>

@@ -26,6 +26,8 @@ class Cliente extends Model
         'cli_password',
         'dep_id',
         'mun_id',
+        'emp_id',
+        'med_id'
     ];
 
     public function departamento()
@@ -37,18 +39,24 @@ class Cliente extends Model
     {
         return $this->belongsTo(Municipio::class, 'mun_id');
     }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function medico()
+    {
+        return $this->belongsTo(Medico::class, 'med_id');
+    }
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'emp_id');
     }
 
     public function facturas()
     {
         return $this->hasMany(Factura::class);
     }
-
-    // public function recepcions()
-    // {
-    //     return $this->hasMany(Recepcion::class);
-    // }
 }

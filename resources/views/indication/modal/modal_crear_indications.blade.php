@@ -22,17 +22,9 @@
                 <form action="{{ url('indications') }}" method="POST" class="form-horizontal" id="formulario_crear_indicaciones">
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-sm-12" >
-                            <div class="form-group row">
-                                <label class="col-md-4 col-form-label text-right" for="indi_nombre">{{ __('Nombre de la Indicacion') }}: </label>
-                                <div class="col-md-8" style="padding-top: 15px">
-                                    <input type="text" id="indi_nombre" name="indi_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Indicacion" style="text-transform: uppercase; " onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label text-right" for="indi_descripcion">{{ __('Descripcion') }}:</label>
+                                <label class="col-md-4 col-form-label" for="indi_descripcion">{{ __('Descripcion') }}:</label>
                                 <div class="col-md-8">
                                     <textarea class="form-control form-control-sm" name="indi_descripcion" id="indi_descripcion" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); "></textarea>
                                 </div>

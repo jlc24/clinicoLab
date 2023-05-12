@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-body">
                             <h3>{{ __('Lista de Pacientes registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-bordered table-responsive-lg" id="tabla_clientes" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <table class="table table-bordered table-sm table-hover table-responsive-lg tabla-clientes" id="tabla_clientes" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead style="text-align: center;">
                                     <tr class="table-info">
                                         <th>#</th>

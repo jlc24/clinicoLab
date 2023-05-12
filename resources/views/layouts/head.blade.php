@@ -15,6 +15,8 @@
 
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+
 <link href="{{ asset('fontawesome/css/all.min.css') }}" rel="stylesheet">
 
 <link href="{{ asset('dist/css/style.css') }}" rel="stylesheet">
@@ -34,6 +36,10 @@
 <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
 <!-- summernote -->
 <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+
+<link rel="stylesheet" href="{{ asset('dist/css/icons.min.css') }}">
+<link rel="stylesheet" href="{{ asset('dist/css/app.min.css') }}">
+<link rel="stylesheet" href="{{ asset('dist/js/libs/wizard/smart_wizard_all.min.css') }}">
 <!-- sweetalert2 -->
 <link href="{{ asset('sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet">
 <!-- JQuery -->

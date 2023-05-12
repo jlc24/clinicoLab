@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-body">
                             <h3>{{ __('Lista de Metodologías registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-bordered table-responsive-lg">
+                            <table class="table table-bordered table-sm table-hover table-responsive-lg text-center tabla_metodologias" id="tabla_metodologias">
                                 <thead>
                                     <th>#</th>
                                     <th>{{ __('Nombre') }}</th>
@@ -41,9 +41,9 @@
                                 <tbody>
                                     @foreach ($metodos as $metodo)
                                         <tr>
-                                            <td>{{ $metodo->id }}</td>
-                                            <td>{{ $metodo->nombre }}</td>
-                                            <td>{{ $metodo->descripcion }}</td>
+                                            <td class="text-left">{{ $metodo->id }}</td>
+                                            <td class="text-left">{{ $metodo->nombre }}</td>
+                                            <td class="text-left">{{ $metodo->descripcion }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Button group">
                                                     <a href="#" data-toggle="modal" data-target="#modal_actualizar_metodologia_{{ $metodo->id }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>

@@ -66,7 +66,7 @@ class ClienteController extends Controller
     {
         $request->validate([
             'cli_cod' => 'required|unique:clientes|max:10',
-            'cli_nombre' => 'required|max:10',
+            'cli_nombre' => 'required|max:20',
             'cli_apellido_pat' => 'required|max:20',
             'cli_apellido_mat' => 'max:20',
             'cli_ci_nit' => 'required',
@@ -141,7 +141,7 @@ class ClienteController extends Controller
     {
         $request->validate([
             
-            'cli_nombre_update' => 'required|max:10',
+            'cli_nombre_update' => 'required|max:20',
             'cli_apellido_pat_update' => 'required|max:20',
             'cli_apellido_mat_update' => 'max:20',
             'cli_ci_nit_update' => 'required',

@@ -30,7 +30,6 @@ class RecipienteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'reci_nombre' => 'required|max:20',
             'reci_descripcion' => 'max:255',
         ]);
 
@@ -63,12 +62,10 @@ class RecipienteController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'reci_nombre_update' => 'required|max:20',
             'reci_descripcion_update' => 'max:255',
         ]);
 
         $recipiente = Recipiente::find($id);
-        $recipiente->nombre = $request->input('reci_nombre_update');
         $recipiente->descripcion = $request->input('reci_descripcion_update');
         $recipiente->save();
         

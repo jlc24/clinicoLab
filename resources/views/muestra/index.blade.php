@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-body">
                             <h3>{{ __('Lista de Muestras registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-bordered table-responsive-lg">
+                            <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_muestras" id="tabla_muestras">
                                 <thead>
                                     <th>#</th>
                                     <th>{{ __('Nombre') }}</th>

@@ -14,13 +14,16 @@ class Estudio extends Model
         'est_nombre',
         'est_descripcion',
         'est_precio',
-        'est_moneda',
+        'umed_id',
     ];
+
+    public function umedida()
+    {
+        return $this->belongsTo(UMedida::class, 'umed_id');
+    }
 
     public function detalles()
     {
         return $this->hasMany(Detalle::class);
     }
-
-    
 }

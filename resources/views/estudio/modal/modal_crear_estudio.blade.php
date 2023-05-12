@@ -87,7 +87,7 @@
                                     <select class="custom-select custom-select-sm" id="est_recipiente" name="est_recipiente" >
                                         <option value="" selected="">SELECCIONAR...</option>
                                         @foreach ($recipientes as $recipiente)
-                                            <option value="{{ $recipiente->id }}">{{ $recipiente->nombre }}</option>
+                                            <option value="{{ $recipiente->id }}">{{ $recipiente->descripcion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -100,7 +100,7 @@
                                     <select class="custom-select custom-select-sm" id="est_indicaciones" name="est_indicaciones" >
                                         <option value="" selected="">SELECCIONAR...</option>
                                         @foreach ($indicaciones as $indicacion)
-                                            <option value="{{ $indicacion->id }}">{{ $indicacion->nombre }}</option>
+                                            <option value="{{ $indicacion->id }}">{{ $indicacion->descripcion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -114,8 +114,9 @@
                                 </div>
                                 <div class="col-md-3">
                                     <select class="custom-select custom-select-sm" id="est_moneda" name="est_moneda" required>
-                                        <option value="Bs" selected="">Bs</option>
-                                        <option value="$">$</option>
+                                        @foreach ($unidades as $unidad)
+                                            <option value="{{ $unidad->id }}">{{ $unidad->unidad }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

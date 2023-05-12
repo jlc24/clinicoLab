@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('muestra_id');
             $table->unsignedBigInteger('recipiente_id')->nullable();
             $table->unsignedBigInteger('indicacion_id')->nullable();
+            $table->decimal('precio')->nullable();
+            $table->unsignedBigInteger('umed_id')->nullable();
             $table->string('tipo', 20)->nullable();
             $table->timestamps();
 
@@ -24,6 +26,7 @@ return new class extends Migration
             $table->foreign('muestra_id')->references('id')->on('muestras')->onDelete('cascade');
             $table->foreign('recipiente_id')->references('id')->on('recipientes')->onDelete('cascade');
             $table->foreign('indicacion_id')->references('id')->on('indications')->onDelete('cascade');
+            $table->foreign('umed_id')->references('id')->on('u_medidas')->onDelete('cascade');
         });
     }
 

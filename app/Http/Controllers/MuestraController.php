@@ -30,7 +30,7 @@ class MuestraController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'muestra_nombre' => 'required|max:20',
+            'muestra_nombre' => 'required|max:255',
             'muestra_descripcion' => 'max:255',
         ]);
 
@@ -64,7 +64,7 @@ class MuestraController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'muestra_nombre_update' => 'required|max:20',
+            'muestra_nombre_update' => 'required|max:255',
             'muestra_descripcion_update' => 'max:255',
         ]);
 

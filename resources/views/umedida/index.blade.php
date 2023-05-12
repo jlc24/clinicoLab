@@ -20,7 +20,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-8 col-sm-8">
+                <div class="col-xl-7 col-sm-7">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-body">
                             <h3>{{ __('Lista de Unidades de Medida registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-bordered table-responsive-sm">
+                            <table class="table table-sm table-bordered table-hover table-responsive-lg tabla_umedidas text-center" id="tabla_umedidas">
                                 <thead>
                                     <th>#</th>
                                     <th>{{ __('Unidad') }}</th>

@@ -31,10 +31,9 @@
                         </div>
                         <div class="card-body">
                             <h3>{{ __('Lista de Indicaciones registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-bordered table-responsive-lg">
+                            <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_indicaciones" id="tabla_indicaciones">
                                 <thead>
                                     <th>#</th>
-                                    <th>{{ __('Nombre') }}</th>
                                     <th>{{ __('Descripcion') }}</th>
                                     <th>{{ __('Op') }}</th>
                                 </thead>
@@ -42,7 +41,6 @@
                                     @foreach ($indications as $indication)
                                         <tr>
                                             <td>{{ $indication->id }}</td>
-                                            <td>{{ $indication->nombre }}</td>
                                             <td>{{ $indication->descripcion }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Button group">

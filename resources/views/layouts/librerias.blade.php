@@ -28,12 +28,6 @@
 <!-- AdminLTE App -->
 {{-- <script src="{{ asset('dist/js/eventos.js') }}"></script> --}}
 
-<!--Form Wizard-->
-<script src="{{ asset('dist/js/libs/stepy/jquery.stepy.js') }}"></script>
-
-<!-- Validation init js-->
-<script src="{{ asset('dist/js/libs/wizard/wizard.init.js') }}"></script>
-
 <script src="{{ asset('sweetalert2/dist/sweetalert2.min.js') }}"></script>
 
 {{-- <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script> --}}

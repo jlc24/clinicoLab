@@ -3,6 +3,7 @@
 use App\Http\Controllers\AspectoController;
 use App\Http\Controllers\BacteriaController;
 use App\Http\Controllers\CajaController;
+use App\Http\Controllers\CategoriaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ComponenteAspectoController;
 use App\Http\Controllers\ComponenteController;
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\CultivoController;
 use App\Http\Controllers\DetalleController;
@@ -18,11 +20,13 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EstudioController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\IndicationController;
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\MetodologiaController;
 use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\ParametroController;
 use App\Http\Controllers\ProcedimientoController;
+use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RecepcionController;
 use App\Http\Controllers\RecipienteController;
 use App\Http\Controllers\ResultController;
@@ -184,5 +188,33 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/parametros', [ParametroController::class, 'store'])->name('parametros');
     Route::post('/parametros/{id}', [ParametroController::class, 'update'])->name('parametros.update');
     Route::delete('/parametros/{id}', [ParametroController::class, 'destroy'])->name('parametros.destroy');
+
+    Route::get('/categorias', [CategoriaController::class, 'index'])->name('categoria');
+    Route::post('/categorias', [CategoriaController::class, 'store'])->name('categoria.store');
+    Route::get('/categorias/{id}', [CategoriaController::class, 'edit'])->name('categoria.edit');
+    Route::post('/categorias/{id}', [CategoriaController::class, 'update'])->name('categoria.update');
+    Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy'])->name('categoria.destroy');
+
+    Route::get('/materials', [MaterialController::class, 'index'])->name('material');
+    Route::post('/materials', [MaterialController::class, 'store'])->name('material.store');
+    Route::get('/materials/{id}', [MaterialController::class, 'edit'])->name('material.edit');
+    Route::post('/materials/{id}', [MaterialController::class, 'update'])->name('material.update');
+    Route::post('/updateMaterialEstado/{id}', [MaterialController::class, 'updateMaterialEstado'])->name('material.updateEstado');
+
+    Route::get('/providers', [ProviderController::class, 'index'])->name('provider');
+    Route::post('/providers', [ProviderController::class, 'store'])->name('provider.store');
+    Route::get('/providers/{id}', [ProviderController::class, 'edit'])->name('provider.edit');
+    Route::post('/providers/{id}', [ProviderController::class, 'update'])->name('provider.update');
+    Route::delete('/providers/{id}', [ProviderController::class, 'destroy'])->name('provider.destroy');
+    
+    Route::get('/getNITEmpresa/{id}', [ProviderController::class, 'getNITEmpresa'])->name('getNITEmpresa');
+
+    Route::post('/compras', [CompraController::class, 'store'])->name('compra.store');
+    Route::get('/compras/{id}', [CompraController::class, 'edit'])->name('compra.edit');
+    Route::post('/compras/{id}', [CompraController::class, 'update'])->name('compra.update');
+
+    Route::get('/getComprasMaterial/{id}', [CompraController::class, 'getComprasMaterial'])->name('getComprasMaterial');
+    
+    Route::get('/getUmedUnidad/{id}', [UMedidaController::class, 'getUmedUnidad'])->name('getUmedUnidad');
 });
 

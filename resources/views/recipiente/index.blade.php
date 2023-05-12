@@ -31,10 +31,9 @@
                         </div>
                         <div class="card-body">
                             <h3>{{ __('Lista de Recipientes registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-bordered table-responsive-lg">
+                            <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_recipientes" id="tabla_recipientes">
                                 <thead>
                                     <th>#</th>
-                                    <th>{{ __('Nombre') }}</th>
                                     <th>{{ __('Descripción') }}</th>
                                     <th>{{ __('Op') }}</th>
                                 </thead>
@@ -42,7 +41,6 @@
                                     @foreach ($recipientes as $recipiente)
                                         <tr>
                                             <td>{{ $recipiente->id }}</td>
-                                            <td>{{ $recipiente->nombre }}</td>
                                             <td>{{ $recipiente->descripcion }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Button group">

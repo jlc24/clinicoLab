@@ -14,12 +14,17 @@ class Departamento extends Model
         return $this->hasMany(Departamento::class);
     }
 
-    public function cliente()
+    public function clientes()
     {
         return $this->hasMany(Cliente::class);
     }
 
-    public function empresa()
+    public function medicos()
+    {
+        return $this->hasMany(Medico::class);
+    }
+
+    public function empresas()
     {
         return $this->hasMany(Empresa::class);
     }

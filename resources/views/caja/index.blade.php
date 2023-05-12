@@ -30,9 +30,9 @@
                                 </a> {{ __('Cajas') }}
                             </h4>
                         </div>
-                        <div class="card-body" id="tabla_cliente">
+                        <div class="card-body">
                             <h3>{{ __('Lista de Pacientes registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-bordered table-responsive-lg">
+                            <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_cajas" id="tabla_cajas">
                                 <thead style="text-align: center;">
                                     <tr class="table-info">
                                         <th>#</th>

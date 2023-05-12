@@ -1,0 +1,150 @@
+.stepy-step {
+    padding: 0 20px
+}
+
+.stepy-header {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: table;
+    width: 100%;
+    table-layout: fixed
+}
+
+.stepy-header li {
+    cursor: pointer;
+    display: table-cell;
+    vertical-align: top;
+    width: auto;
+    padding: 20px 0;
+    text-align: center;
+    position: relative
+}
+
+.stepy-header li:after,
+.stepy-header li:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 43px;
+    width: 50%;
+    height: 2px;
+    background-color: #522d80;
+    z-index: 9
+}
+
+.stepy-header li:before {
+    left: 0
+}
+
+.stepy-header li:after {
+    right: 0!important
+}
+
+.stepy-header li:first-child:before,
+.stepy-header li:last-child:after {
+    content: none
+}
+
+.stepy-header li span {
+    display: block;
+    margin-top: 10px;
+    color: #adb5bd;
+    font-weight: 600
+}
+
+.stepy-header li div {
+    background-color: #522d80;
+    font-size: 0;
+    position: relative;
+    color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    width: 48px;
+    height: 48px;
+    border: 2px solid #522d80;
+    z-index: 10;
+    line-height: 44px;
+    text-align: center;
+    border-radius: 50%
+}
+
+.stepy-header li div:after {
+    font-family: "Material Design Icons";
+    -webkit-font-smoothing: antialiased;
+    line-height: 44px;
+    -webkit-transition: all .15s ease-in-out;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\F12D";
+    display: inline-block;
+    font-size: 24px;
+    -webkit-transition: all .15s ease-in-out;
+    transition: all .15s ease-in-out
+}
+
+.stepy-header li.stepy-active:after,
+.stepy-header li.stepy-active~li:after,
+.stepy-header li.stepy-active~li:before {
+    background-color: #f8f8f8
+}
+
+.stepy-header li.stepy-active~li div {
+    border-color: #f3f3f3;
+    background-color: #fdfdfd;
+    color: #6c757d;
+    font-size: 18px;
+    font-weight: 600
+}
+
+.stepy-header li.stepy-active~li div:after {
+    content: none
+}
+
+.stepy-header li.stepy-active div {
+    cursor: auto;
+    border-color: #522d80;
+    background-color: #fdfdfd;
+    color: #522d80
+}
+
+.stepy-header li.stepy-active div:after {
+    content: "\F64F"
+}
+
+.stepy-header li.stepy-active span {
+    color: #522d80
+}
+
+@media (max-width:769px) {
+    .stepy-header {
+        margin-bottom: 20px
+    }
+    .stepy-header li {
+        display: block;
+        float: left;
+        width: 50%;
+        padding-bottom: 0
+    }
+    .stepy-header li:first-child:before,
+    .stepy-header li:last-child:after {
+        content: ''
+    }
+    .stepy-header li.stepy-active:last-child:after {
+        background-color: #522d80
+    }
+}
+
+@media (max-width:480px) {
+    .stepy-header li {
+        width: 100%
+    }
+    .stepy-header li.stepy-active:after {
+        background-color: #522d80
+    }
+}
+
+.stepy-navigator {
+    text-align: right;
+    margin-bottom: 0;
+    margin-top: 20px
+}

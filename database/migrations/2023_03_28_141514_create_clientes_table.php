@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->string('cli_cod', 10)->unique();
+            $table->string('cli_cod', 50)->unique();
             $table->string('cli_nombre', 20);
             $table->string('cli_apellido_pat', 20);
             $table->string('cli_apellido_mat', 20)->nullable();
@@ -30,12 +30,14 @@ return new class extends Migration
             $table->unsignedBigInteger('dep_id');
             $table->unsignedBigInteger('mun_id');
             $table->unsignedBigInteger('emp_id')->nullable();
+            $table->unsignedBigInteger('med_id')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('dep_id')->references('id')->on('departamentos');
             $table->foreign('mun_id')->references('id')->on('municipios');
             $table->foreign('emp_id')->references('id')->on('empresas');
+            $table->foreign('med_id')->references('id')->on('medicos');
         });
     }
 

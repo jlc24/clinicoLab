@@ -85,7 +85,7 @@
                                                 @if($recipiente->id == $detalle->recipiente_id)
                                                     {{ 'selected' }}
                                                 @endif
-                                                >{{ $recipiente->nombre }}</option>
+                                                >{{ $recipiente->descripcion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -102,7 +102,7 @@
                                                 @if($indicacion->id == $detalle->indicacion_id)
                                                     {{ 'selected' }}
                                                 @endif
-                                                >{{ $indicacion->nombre }}</option>
+                                                >{{ $indicacion->descripcion }}</option>
                                         @endforeach
                                     </select>
                                 </div>

@@ -14,6 +14,8 @@ class Detalle extends Model
         'muestra_id',
         'recipiente_id',
         'indicacion_id',
+        'precio'.
+        'umed_id',
         'tipo'
     ];
 
@@ -36,6 +38,11 @@ class Detalle extends Model
     {
         return $this->belongsTo(Indication::class, 'indicacion_id');
     }
+
+    public function umedida()
+    {
+        return $this->belongsTo(UMedida::class, 'umed_id');
+    }
     
     public function recepcions()
     {
@@ -45,5 +52,10 @@ class Detalle extends Model
     public function detalleprocedimientos()
     {
         return $this->hasMany(DetalleProcedimiento::class);
+    }
+
+    public function detallematerials()
+    {
+        return $this->hasMany(DetalleMaterial::class);
     }
 }
