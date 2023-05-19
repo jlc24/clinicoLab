@@ -1,16 +1,16 @@
+<script src="{{ asset('dist/js/libs/wizard/jquery.smartWizard.min.js') }}"></script>
+<script src="{{ asset('dist/js/libs/wizard/conf_smart_wizard.js') }}"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    //$("#tabla_clientes").dataTables();
-    
+    $('#smartwizard_crear_client').smartWizard();
+    $('#smartwizard_update_client').smartWizard();
     $('#cli_departamento').on('change', function() {
         var id = $(this).val();
-        //alert(id);
         $.ajax({
             url: '{{ route("datos", ":id") }}'.replace(':id', id),
             type: 'GET',
             success: function(data) {
                 $('#cli_municipio').empty();
-                console.log(data);
                 $.each(data, function(index, element) {
                     $('#cli_municipio').append($('<option>', {
                         value: element.id,
@@ -26,6 +26,8 @@ $(document).ready(function() {
     });
     $("#btnCloseAddClient").on('click', function(){
         $("#formulario_crear_cliente").trigger('reset');
+        $('#smartwizard_crear_client').smartWizard("reset");
+
     })
 
     $("#cli_celular").on('keyup', function(){
@@ -75,7 +77,81 @@ $(document).ready(function() {
         }
     });
 
-    //para modal de modificar
+    $("#btnRegisterClient").on('click', function(event) {
+        event.preventDefault();
+        if ($("#cli_cod").val() == "" || $("#cli_nombre").val() == "" || $("#cli_apellido_pat").val() == "" || $("#cli_apellido_mat").val() == "" || $("#cli_ci_nit").val() == "" || $("#cli_ci_nit_exp").val() == "" || $("#cli_fec_nac").val() == "" || $("#cli_genero").val() == "" || $("#cli_email").val() == "" || $("#cli_direccion").val() == "" || $("#cli_celular").val() == "" || $("#cli_usuario").val() == "" || $("#cli_password").val() == "" || $("#cli_departamento").val() == "" || $("#cli_municipio").val() == "" || $("#cli_estado").val() == "" || $("#cli_rol").val() == "" ) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Algunos campos son requeridos',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        }else{
+            var datos = new FormData();
+            datos.append('cli_cod', $("#cli_cod").val());
+            datos.append('cli_nombre', $("#cli_nombre").val());
+            datos.append('cli_apellido_pat', $("#cli_apellido_pat").val());
+            datos.append('cli_apellido_mat', $("#cli_apellido_mat").val());
+            datos.append('cli_ci_nit', $("#cli_ci_nit").val());
+            datos.append('cli_ci_nit_exp', $("#cli_ci_nit_exp").val());
+            datos.append('cli_fec_nac', $("#cli_fec_nac").val());
+            datos.append('cli_genero', $("#cli_genero").val());
+            datos.append('cli_email', $("#cli_email").val());
+            datos.append('cli_direccion', $("#cli_direccion").val());
+            datos.append('cli_celular', $("#cli_celular").val());
+            datos.append('cli_usuario', $("#cli_usuario").val());
+            datos.append('cli_password', $("#cli_password").val());
+            datos.append('cli_departamento', $("#cli_departamento").val());
+            datos.append('cli_municipio', $("#cli_municipio").val());
+            datos.append('cli_estado', $("#cli_estado").val());
+            datos.append('cli_rol', $("#cli_rol").val());
+            datos.append('med_id', $("#cli_medico").val());
+
+            for (const [key, value] of datos) {
+                console.log(key, '- '+value);
+            };
+            $.ajax({
+                url: '{{ route("cliente.store") }}',
+                type: 'POST',
+                data: datos,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    Swal.fire({
+                        title: '¡Exito!',
+                        text: 'Paciente registrado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                    if (window.location.href.indexOf("clientes") > -1) {
+                        //location.reload();
+                        $('#smartwizard_crear_client').smartWizard("reset");
+                    }else{
+                        $('#smartwizard_crear_client').smartWizard("reset");
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Se ha producido un error.',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        }
+    });
+
+    
+
+    //datatables
     $("#tabla_clientes").dataTable({
         responsive: true,
         columnDefs: [],

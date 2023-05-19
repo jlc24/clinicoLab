@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('muestra_id');
             $table->unsignedBigInteger('recipiente_id')->nullable();
             $table->unsignedBigInteger('indicacion_id')->nullable();
-            $table->decimal('precio')->nullable();
+            $table->unsignedDecimal('precio', 8, 4)->nullable();
             $table->unsignedBigInteger('umed_id')->nullable();
             $table->string('tipo', 20)->nullable();
             $table->timestamps();

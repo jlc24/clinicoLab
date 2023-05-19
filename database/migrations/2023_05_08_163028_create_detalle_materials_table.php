@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('det_id');
             $table->unsignedBigInteger('mat_id');
-            $table->unsignedBigInteger('cantidad')->nullable();
+            $table->unsignedDecimal('cantidad')->nullable();
             $table->unsignedBigInteger('umed_id')->nullable();
-            $table->decimal('precio_total')->nullable();
+            $table->unsignedDecimal('precio_total', 8, 4)->nullable();
             $table->timestamps();
 
             $table->foreign('det_id')->references('id')->on('detalles');

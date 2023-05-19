@@ -29,25 +29,15 @@ class DetalleProcedimientoController extends Controller
         );
     }
 
-    public function getCompProcedimientoEstudio(Request $request)
-    {
-        $det_id = $request->input('q');
-        $proc_id = $request->input('f');
-        $comp_proc_est = DB::table('componentes as c')
-                        ->join('detalle_procedimientos as dp', 'dp.comp_id', '=', 'c.id')
-                        ->select('dp.id', 'c.nombre')
-                        ->where('dp.det_id', '=', $det_id)
-                        ->where('dp.proc_id', '=', $proc_id)
-                        ->get();
-        return response()->json($comp_proc_est);
-    }
     public function getProcedimientoEstudio($id)
     {
         $proc_est = DB::table('procedimientos as p')
                     ->join('detalle_procedimientos as dp', 'dp.proc_id', '=', 'p.id')
                     ->join('detalles as d', 'dp.det_id', '=', 'd.id')
-                    ->select('p.id')
-                    ->where('d.id', '=', $id)
+                    ->join('dp_componentes as dpc', 'dp.id', '=', 'dpc.dp_id')
+                    ->select('p.*', 'dp.id as dp_id')
+                    ->where([['d.id', '=', $id], ['dp.estado', '=', '1']])
+                    ->distinct()
                     ->get();
         return response()->json($proc_est);
     }

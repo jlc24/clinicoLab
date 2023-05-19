@@ -147,13 +147,13 @@
                     if (value.estado == 'Pendiente' || value.estado == 'Resultado') {
                         html += '<td style="border: 1px solid #C6C8CA;">'+
                                     '<div class="btn-group" role="group" aria-label="Button group">'+
-                                        '<a href="#" class="btn btn-sm btn-warning" title="Editar resultado"><i class="fas fa-edit"></i></a>'+
+                                        '<a href="#" data-toggle="modal" data-target="#modal_resultados" class="btn btn-sm btn-outline-warning btn-resultado" title="Editar resultado"><i class="fas fa-edit"></i></a>'+
                                     '</div>'+
                                 '</td>';
                     }else{
                         html += '<td style="border: 1px solid #C6C8CA;">'+
                                     '<div class="btn-group" role="group" aria-label="Button group">'+
-                                        '<a href="#" class="btn btn-sm btn-info" title="Imprimir resultado"><i class="fas fa-print"></i></a>'+
+                                        '<a href="#" class="btn btn-sm btn-outline-info btn-imprimir-resultados" title="Imprimir resultado"><i class="fas fa-print"></i></a>'+
                                     '</div>'+
                                 '</td>';
                     }
@@ -169,54 +169,46 @@
         $("#btnBuscarPaciente").on('click', function() {
             var pacienteId = $("#rec_paciente_id").val();
             var pacienteNombre = $("#rec_paciente_nombre").val();
+            mostrarCargando();
             $.ajax({
                 url: '/buscar_recepcion_paciente/?q=' + pacienteId,
                 dataType: 'json',
                 success: function(data) {
+                    cargarTablaResultado(data);
+                    cerrarCargando();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
                     Swal.fire({
-                        title: 'Espere...',
-                        text: 'Obteniendo datos de ' + pacienteNombre,
-                        icon: 'info',
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
                         showConfirmButton: false,
-                        timer: 2000,
-                    })
-                    setTimeout(function(){
-                        Swal.fire({
-                            title: '¡Éxito!',
-                            text: 'Datos cargados',
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                        cargarTablaResultado(data);
-                    }, 2000);
+                        timer: 2000
+                    });
                 }
             });
         });
         $("#btnBuscarEstudio").on('click', function() {
             var estudioId = $("#rec_estudio_id").val();
             var estudioNombre = $("#rec_estudio_nombre").val();
+            mostrarCargando();
             $.ajax({
                 url: '/buscar_recepcion_estudio/?q=' + estudioId,
                 dataType: 'json',
                 success: function(data) {
+                    cargarTablaResultado(data);
+                    cerrarCargando();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
                     Swal.fire({
-                        title: 'Espere...',
-                        text: 'Obteniendo datos de ' + estudioNombre,
-                        icon: 'info',
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
                         showConfirmButton: false,
-                        timer: 2000,
-                    })
-                    setTimeout(function(){
-                        Swal.fire({
-                            title: '¡Éxito!',
-                            text: 'Datos cargados',
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                        cargarTablaResultado(data);
-                    }, 2000);
+                        timer: 2000
+                    });
                 }
             });
         });
@@ -237,31 +229,338 @@
                     $("#rec_fecha_final").val(hoy.toISOString().split('T')[0]);
                 },2000);
             }else if(fechaInicial <= fechaFin){
+                mostrarCargando();
                 $.ajax({
                     url: '/buscar_recepcion_fechas/?q=' + fechaInicial + '&f=' + fechaFin,
                     dataType: 'json',
                     success: function(data) {
+                        cargarTablaResultado(data);
+                        cerrarCargando();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
                         Swal.fire({
-                            title: 'Espere...',
-                            text: 'Obteniendo datos de fecha ' + fechaInicial + ' a ' + fechaFin,
-                            icon: 'info',
+                            title: 'Oops...',
+                            text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                            icon: 'error',
                             showConfirmButton: false,
-                            timer: 3000,
-                        })
-                        setTimeout(function(){
-                            Swal.fire({
-                                title: '¡Éxito!',
-                                text: 'Datos cargados',
-                                icon: 'success',
-                                showConfirmButton: false,
-                                timer: 2000
-                            });
-                            cargarTablaResultado(data);
-                        }, 2000);
+                            timer: 2000
+                        });
                     }
                 });
             }
         });
+
+        $("#btnCloseSaveResult").on('click', function() {
+            $('.tabla_procedimientos_resultado tbody tr').find('.chkProcedimiento').prop('checked', false);
+            $('.tabla_procedimientos_resultado tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+            $('.tabla_componentes_resultado tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+            $(".divComponentes").css('display', 'none');
+            $(".divAspectos").css('display', 'none');
+        });
+
+        function getProcedimientoRes(id) {
+            $.ajax({
+                url: '{{ route("getProcedimientoEstudio", ":id") }}'.replace(":id", id),
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.length != 0) {
+                        $('.tabla_procedimientos_resultado tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('.tabla_procedimientos_resultado tbody').append(
+                                '<tr>'+
+                                    '<td hidden>' + value.dp_id + '</td>'+
+                                    '<td><button class="btn btn-sm btn-outline-secondary btn-procedimiento-res">' + value.nombre + '</button></td>'+
+                                    '<td hidden><input type="checkbox" name="chkProcedimiento" id="chkProcedimiento" class="chkProcedimiento"></td>'+
+                                '</tr>'
+                            );
+                        });
+                    }else {
+                        $('.tabla_procedimientos_resultado tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', '.btn-resultado', function() {
+            var id = $(this).closest('tr').find('td:eq(0)').text();
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("getClienteResult", ":id") }}'.replace(":id", id),
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //console.log(data);
+                    $(".res_cli_id").val(data[0].cli_id);
+                    $(".res_rec_id").val(data[0].rec_id);
+                    $(".res_cli_nombre").text(data[0].nombre);
+                    $(".res_cli_recepcion").text(data[0].fecha);
+                    $(".res_cli_edad").text(data[0].edad+' años');
+                    $(".res_cli_genero").text(data[0].cli_genero);
+                    $(".res_est_nombre").text(data[0].est_nombre);
+                    $(".res_det_id").val(data[0].det_id);
+                    if (data[0].fac_observacion !== null) {
+                        $(".divObservacion").css('display', 'inline-flex');
+                        $(".res_cli_observacion").text(data[0].fac_observacion);
+                    }
+                    if (data[0].fac_referencia !== null) {
+                        $(".divReferencia").css('display', 'inline-flex');
+                        $(".res_cli_referencia").text(data[0].fac_referencia);
+                    }
+                    setTimeout(function(){
+                        getProcedimientoRes($(".res_det_id").val());
+                        cerrarCargando();
+                    }, 500);
+                }  
+            });
+        });
+
+        function getComponenteDp(valor) {
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("getComponenteDp", ":id") }}'.replace(":id", valor),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.length != 0) {
+                        $('.tabla_componentes_resultado tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('.tabla_componentes_resultado tbody').append(
+                                '<tr>'+
+                                    '<td hidden>' + value.id + '</td>'+
+                                    '<td><button class="btn btn-sm btn-outline-secondary btn-componente-res" style="width: 150px; text-align: center">' + value.nombre + '</button></td>'+
+                                    '<td hidden><input type="checkbox" name="chkComponente" id="chkComponente" class="chkComponente"></td>'+
+                                '</tr>'
+                            );
+                        });
+                        cerrarCargando();
+                    }else {
+                        $('.tabla_componentes_resultado tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', '.btn-procedimiento-res', function() {
+            var dp_id = $(this).closest('tr').find('td:eq(0)').text();
+
+            if ($(".chkProcedimiento").is(':checked')) {
+                $(this).addClass('btn-outline-secondary').removeClass('btn-success');
+                $(".divComponentes").css('display', 'none');
+                $(".btn-componente-res").addClass('btn-outline-secondary').removeClass('btn-warning');
+                $(".chkComponente").prop('checked', false);
+                $(".divAspectos").css('display', 'none');
+                $(".chkProcedimiento").prop('checked', false);
+                $('.tabla_componentes_resultado tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+            }else{
+                getComponenteDp(dp_id);
+                $(this).removeClass('btn-outline-secondary').addClass('btn-success');
+                $(".divComponentes").css('display', '');
+                $(".chkProcedimiento").prop('checked', true);
+            }
+        });
+
+        function desmarcarOpciones() {
+            $('.chkComponente').not(this).prop('checked', false);
+        }
+
+        function searchResults(rec_id, det_id, dp_id, dpc_id, ca_id) {
+            $.ajax({
+                url: '/searchResultRecepcions/?r='+rec_id+'&d='+det_id+'&p='+dp_id+'&c='+dpc_id+'&a='+ca_id,
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    // if (data.length > 0) {
+                    //     $(".resultado-final").val(data[0].resultado);
+                    // }else{
+                    //     $(".resultado-final").val("");
+                    // }
+                },
+            });
+        }
+
+        function tablaAspectoParametro(valor) {
+            var rec_id = $(".res_rec_id").val();
+            var det_id = $(".res_det_id").val();
+            var dp_id = $(".tabla_procedimientos_resultado tbody tr").find('td:eq(0)').text();
+            var dpc_id = $(".res_dpc_id").val();
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("getDPCAspecto",":id") }}'.replace(":id", valor),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    //console.log(data);
+                    if (data.length != 0) {
+                        $('.tabla_aspectos_resultado tbody').empty();
+                        $.each(data, function(index, value) {
+                            var umedid = value.umed_id;
+                            var optionList = '';
+                            @foreach ($unidades as $unidad)
+                                var isSelected = {{ $unidad->id }} === umedid ? 'selected' : '' ;
+                                optionList += '<option value="{{ $unidad->id }}" '+ isSelected + '>{{ $unidad->unidad }}</option>';
+                            @endforeach
+                            
+                            $('.tabla_aspectos_resultado tbody').append(
+                                '<tr>'+
+                                    '<td hidden>' + value.id + '</td>'+
+                                    '<td width="180px">' + value.nombre + '</td>'+
+                                    '<td width="100px"><input type="text" class="form-control form-control-sm resultado-final"></td>'+
+                                    '<td width="100px">'+
+                                        '<select class="custom-select custom-select-sm aspecto_unidad" name="aspecto_unidad" id="aspecto_unidad" disabled>'+
+                                            '<option value="" >Seleccionar...</option>'+
+                                            optionList +
+                                        '</select>'+
+                                    '</td>'+
+                                    '<td class="text-center">'+
+                                        '<div class="btn-group">'+
+                                            '<button type="button" class="btn btn-sm btn-outline-success btn-save-resultado" ><i class="fas fa-save"></i></button>'+
+                                            '<a data-toggle="modal" data-target="#modal_ver_parametro" class="btn btn-sm ' + (value.cant_parametros == 0 ? 'btn-outline-warning' : 'btn-outline-success') + '  btn-ver-parametro" title="Ver Parametro" ' + (value.cant_parametros == 0 ? 'disabled' : '') + '><i class="fas fa-star-of-life"></i></a>'+
+                                        '</div>'+
+                                    '</td>'+
+                                '</tr>'
+                            );
+                        });
+                        cerrarCargando();
+                    }else {
+                        $('.tabla_aspectos_resultado tbody').empty().append('<td colspan="5" class="text-center">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', '.btn-componente-res', function() {
+            var checkbox = $(this).closest('tr').find('.chkComponente');
+            if (checkbox.is(':checked')) {
+                $(this).addClass('btn-outline-secondary').removeClass('btn-warning');
+                $(".divAspectos").css('display', 'none');
+                checkbox.prop('checked', false);
+            }else{
+                $(this).removeClass('btn-outline-secondary').addClass('btn-warning');
+                $(".divAspectos").css('display', '');
+                checkbox.prop('checked', true);
+            }
+            $('.btn-componente-res').addClass('btn-outline-secondary').removeClass('btn-warning');
+            $(this).removeClass('btn-outline-secondary').addClass('btn-warning');
+            
+            $('.chkComponente').prop('checked', false);
+            checkbox.prop('checked', true);
+
+            var thisButton = $(this);
+            $('.tabla_componentes_resultado  tbody  tr').each(function() {
+                var currentButton = $(this).find('.btn-componente-res');
+                if (currentButton.hasClass('btn-warning') && currentButton[0] !== thisButton[0]) {
+                currentButton.removeClass('btn-warning').addClass('btn-outline-secondary');
+                }
+            });
+            desmarcarOpciones.call(checkbox.get(0));
+
+            var dpc_id = $(this).closest('tr').find('td:eq(0)').text();
+            var nombre = $(this).closest('tr').find('td:eq(1)').text();
+            $(".nombre_comp_asp").text('RESULTADOS DE: ' + nombre);
+            $(".res_dpc_id").val(dpc_id);
+
+            tablaAspectoParametro(dpc_id);
+        });
+
+        function getParametro(id) {
+            $.ajax({
+                url: '{{ route("getParametro", ":id") }}'.replace(":id", id),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    if (data.length != 0) {
+                        $('.table_ver_parametro tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('.table_ver_parametro tbody').append(
+                                '<tr>'+
+                                    '<td hidden>'+value.id+'</td>'+
+                                    '<td>'+
+                                        '<select class="custom-select custom-select-sm" disabled>'+
+                                            '<option value="" >Genero...</option>'+
+                                            '<option value="MASCULINO" ' + (value.genero === 'MASCULINO' ? 'selected' : '') + '>MASCULINO</option>'+
+                                            '<option value="FENEMINO" ' + (value.genero === 'FENEMINO' ? 'selected' : '') + '>FENEMINO</option>'+
+                                            '<option value="AMBOS" ' + (value.genero === 'AMBOS' ? 'selected' : '') + '>AMBOS</option>'+
+                                        '</select>'+
+                                    '</td>'+
+                                    '<td width="50px"><input type="number" value="' + (value.edad_inicial === null ? '0' : value.edad_inicial ) + '" class="form-control form-control-sm" readonly></td>'+
+                                    '<td width="50px"><input type="number" value="' + (value.edad_final === null ? '0' : value.edad_final ) + '" class="form-control form-control-sm" readonly></td>'+
+                                    '<td>'+
+                                        '<select class="custom-select custom-select-sm" disabled>'+
+                                            '<option value="" >Tiempo...</option>'+
+                                            '<option value="AÑOS" ' + (value.genero === 'AÑOS' ? 'selected' : '') + '>AÑOS</option>'+
+                                            '<option value="MESES" ' + (value.genero === 'MESES' ? 'selected' : '') + '>MESES</option>'+
+                                            '<option value="DIAS" ' + (value.genero === 'DIAS' ? 'selected' : '') + '>DIAS</option>'+
+                                        '</select>'+
+                                    '</td>'+
+                                    '<td width="50px"><input type="number" value="' + (value.valor_inicial === null ? '0' : value.valor_inicial ) + '" class="form-control form-control-sm" readonly></td>'+
+                                    '<td width="50px"><input type="number" value="' + (value.valor_final === null ? '0' : value.valor_final ) + '"" class="form-control form-control-sm" readonly></td>'+
+                                    '<td><input type="text" value="' + value.referencia + '"" class="form-control form-control-sm" readonly></td>'+
+                                '</tr>'
+                            );
+                        });
+                    }else {
+                        $('.table_ver_parametro tbody').empty().append('<td colspan="8" class="text-center fila_vacia">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', '.btn-ver-parametro', function() {
+            var ca_id = $(this).closest('tr').find('td:eq(0)').text();
+            getParametro(ca_id);
+        })
+        
+        $(document).on('click', '.btn-save-resultado', function() {
+            var rec_id = $(".res_rec_id").val();
+            var det_id = $(".res_det_id").val();
+            var dp_id = $(".tabla_procedimientos_resultado tbody tr").find('td:eq(0)').text();
+            var dpc_id = $(".res_dpc_id").val();
+            var ca_id = $(this).closest('tr').find('td:eq(0)').text();
+            var resultado = $(this).closest('tr').find("td:eq(2) input").val();
+            //alert(rec_id+' '+det_id+' '+dp_id+' '+dpc_id+' '+ca_id);
+            var datos = new FormData();
+            datos.append('rec_id', rec_id);
+            datos.append('det_id', det_id);
+            datos.append('dp_id', dp_id);
+            datos.append('dpc_id', dpc_id);
+            datos.append('ca_id', ca_id);
+            datos.append('resultado', resultado);
+            $.ajax({
+                url: '{{ route("result.store") }}',
+                type: 'POST',
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: 'Resultado registrado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    //setTimeout(function(){
+                        //window.location.href = '{{ route('material') }}';
+                        tablaAspectoParametro(dpc_id);
+                    //}, 1000);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        })
     })
     
 </script>

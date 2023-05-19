@@ -20,7 +20,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-10 col-sm-10">
+                <div class="col-xl-4 col-sm-4">
                     <div class="card">
                         <div class="card-header" style="background-color: #E8F8ED; height: 50px; padding-top: 15px;">
                             <h4 class="page-title">
@@ -29,14 +29,11 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-xl-6 col-sm-6">
-                                    <h3>{{ __('Lista de Resultados') }}</h3>
-                                </div>
-                                <div class="col-xl-6 col-sm-6">
+                                <div class="col-xl-12 col-sm-12">
                                     <div class="form-group row">
-                                        <label for="buscar_resultado" class="col-form-label col-md-3">{{ __('Buscar por') }}:</label>
+                                        <label for="buscar_resultado" class="col-form-label col-md-4">{{ __('Buscar por') }}:</label>
                                         <div class="col-md-8">
-                                            <select name="buscar_resultado" id="buscar_resultado" class="custom-select custom-select" onchange="buscarPor()">
+                                            <select name="buscar_resultado" id="buscar_resultado" class="custom-select" onchange="buscarPor()">
                                                 <option value="paciente" selected>Pacientes</option>
                                                 <option value="estudio">Estudios</option>
                                                 <option value="fecha">Fechas</option>
@@ -44,13 +41,21 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div><hr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-sm-7">
+                    <div class="card">
+                        <div class="card-header" style="background-color: #E8F8ED; height: 50px; padding-top: 15px;">
+                            <h4 class="page-title">
+                                {{ __('Datos a buscar') }}
+                            </h4>
+                        </div>
+                        <div class="card-body">
                             <div id="form_buscar_paciente">
                                 <div class="row justify-content-center">
-                                    <div class="col-xl-10 col-sm-10">
-                                        <label class="col-md-12 col-form-label" >{{ __('Datos del Paciente a buscar') }}:</label>
-                                    </div>
-                                    <div class="col-xl-3 col-sm-3">
+                                    <div class="col-xl-4 col-sm-4">
                                         <div class="form-group row">
                                             <div class="col-md-12" style="display: inline-flex">
                                                 <div class="input-group-prepend">
@@ -61,7 +66,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-5 col-sm-5">
+                                    <div class="col-xl-6 col-sm-6">
                                         <div class="form-group row">
                                             <div class="col-md-12 " style="display: inline-flex;">
                                                 <div class="input-group-prepend" >
@@ -73,17 +78,14 @@
                                     </div>
                                     <div class="col-xl-2 col-sm-2">
                                         <div class="form-group row">
-                                            <button class="btn btn-success" id="btnBuscarPaciente">Buscar</button>
+                                            <button class="btn btn-sm btn-info" id="btnBuscarPaciente">Buscar</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="form_buscar_estudio" style="display: none">
                                 <div class="row justify-content-center">
-                                    <div class="col-xl-10 col-sm-10">
-                                        <label class="col-md-12 col-form-label" >{{ __('Datos del Estudio a buscar') }}:</label>
-                                    </div>
-                                    <div class="col-xl-3 col-sm-3">
+                                    <div class="col-xl-4 col-sm-4">
                                         <div class="form-group row">
                                             <div class="col-md-12" style="display: inline-flex">
                                                 <div class="input-group-prepend">
@@ -94,7 +96,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-5 col-sm-5">
+                                    <div class="col-xl-6 col-sm-6">
                                         <div class="form-group row">
                                             <div class="col-md-12 " style="display: inline-flex;">
                                                 <div class="input-group-prepend" >
@@ -106,35 +108,31 @@
                                     </div>
                                     <div class="col-xl-2 col-sm-2">
                                         <div class="form-group row">
-                                            <button class="btn btn-success" id="btnBuscarEstudio">Buscar</button>
+                                            <button class="btn btn-sm btn-info" id="btnBuscarEstudio">Buscar</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="form_buscar_fechas" style="display: none">
                                 <div class="row justify-content-center">
-                                    <div class="col-xl-3 col-sm-3"></div>
-                                    <div class="col-xl-9 col-sm-9">
-                                        <label class="col-md-12 col-form-label" >{{ __('Datos a buscar por fechas') }}:</label>
-                                    </div>
-                                    <div class="col-xl-2 col-sm-2">
+                                    <div class="col-xl-3 col-sm-3">
                                         <div class="form-group row">
                                             <div class="col-md-12 " style="display: inline-flex;">
-                                                <input type="date" id="rec_fecha_inicio" name="rec_fecha_inicio" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                                <input type="date" id="rec_fecha_inicio" name="rec_fecha_inicio" class="form-control form-control-sm" autocomplete="off" required>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-sm-2">
+                                    <div class="col-xl-3 col-sm-3">
                                         <div class="form-group row">
                                             <div class="col-md-12 " style="display: inline-flex;">
-                                                <input type="date" id="rec_fecha_final" name="rec_fecha_final" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                                <input type="date" id="rec_fecha_final" name="rec_fecha_final" class="form-control form-control-sm" autocomplete="off" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-xl-2 col-sm-2">
                                         <div class="form-group row">
                                             <div class="col-md-12">
-                                                <button class="btn btn-success" id="btnBuscarFechas">Buscar</button>
+                                                <button class="btn btn-info btn-sm" id="btnBuscarFechas">Buscar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -160,6 +158,9 @@
             </div>
         </div>
     </section>
+
+    @include('resultado.modal.modal_resultados')
+    @include('resultado.modal.modal_ver_parametro')
 @endsection
 
 @section('funciones')

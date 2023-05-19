@@ -15,7 +15,9 @@ use App\Http\Controllers\CompraController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\CultivoController;
 use App\Http\Controllers\DetalleController;
+use App\Http\Controllers\DetalleMaterialController;
 use App\Http\Controllers\DetalleProcedimientoController;
+use App\Http\Controllers\DpComponenteController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EstudioController;
 use App\Http\Controllers\FacturaController;
@@ -33,6 +35,7 @@ use App\Http\Controllers\ResultController;
 use App\Http\Controllers\UMedidaController;
 use App\Models\Componente;
 use App\Models\DetalleComponente;
+use App\Models\DetalleMaterial;
 use App\Models\DetalleProcedimiento;
 
 /*
@@ -60,9 +63,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configuration');
 
     Route::get('/clientes', [ClienteController::class, 'index'])->name('cliente');
-    Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente');
+    Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente.store');
     Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit']);
-    Route::put('/clientes/{id}', [ClienteController::class, 'update']);
+    Route::post('/clientes/{id}', [ClienteController::class, 'update'])->name('cliente.update');
 
     Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
     Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
@@ -72,8 +75,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/empresas/{id}', [EmpresaController::class, 'update']);
 
     Route::get('/medicos', [MedicoController::class, 'index'])->name('medico');
-    Route::post('/medicos', [MedicoController::class, 'store'])->name('medico');
-    Route::put('/medicos/{id}', [MedicoController::class, 'update']);
+    Route::post('/medicos', [MedicoController::class, 'store'])->name('medico.store');
+    Route::post('/medicos/{id}', [MedicoController::class, 'update'])->name('medico.update');
 
     Route::get('/cajas', [CajaController::class, 'index'])->name('caja');
     Route::post('/cajas', [CajaController::class, 'store'])->name('caja');
@@ -103,13 +106,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/buscar_medico_id', [RecepcionController::class, 'buscarMedicoId']);
     Route::get('/buscar_medico_nombre', [RecepcionController::class, 'buscarMedicoNombre']);
 
-    Route::get('/buscar_recepcion_paciente', [ResultController::class, 'buscarRecepcionPaciente']);
-    Route::get('/buscar_recepcion_estudio', [ResultController::class, 'buscarRecepcionEstudio']);
-    Route::get('/buscar_recepcion_fechas', [ResultController::class, 'buscarRecepcionFechas']);
-    
-    Route::get('/results', [ResultController::class, 'index'])->name('result');
-
     Route::put('/detalles/{id}', [DetalleController::class, 'update'])->name('detalle.update');
+    Route::post('/updatePrecioEstudio/{id}', [DetalleController::class, 'updatePrecioEstudio'])->name('updatePrecioEstudio');
 
     Route::put('/detalleprocedimientos/{id}', [DetalleProcedimientoController::class, 'update'])->name('detalleprocedimiento.update');
 
@@ -118,6 +116,13 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/estudios/{id}', [EstudioController::class, 'update']);
 
     Route::get('/getDetalle/{id}', [EstudioController::class, 'getDetalle'])->name('getDetalle');
+    Route::get('/getAllMaterials', [EstudioController::class, 'getAllMaterials'])->name('getAllMaterials');
+
+    Route::post('/detmaterials', [DetalleMaterialController::class, 'store'])->name('detmaterial.store');
+    Route::post('/detmaterials/{id}', [DetalleMaterialController::class, 'update'])->name('detmaterial.update');
+    Route::delete('/detmaterials/{id}', [DetalleMaterialController::class, 'destroy'])->name('detmaterial.destroy');
+
+    Route::get('/getMaterialEstudio/{id}', [DetalleMaterialController::class, 'getMaterialEstudio'])->name('getMaterialEstudio');
 
     Route::get('/tabla_procedimiento/{id}', [EstudioController::class, 'tabla_procedimiento'])->name('tabla_procedimiento');
 
@@ -157,7 +162,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getLastProcedimiento', [ProcedimientoController::class, 'getLastProcedimiento'])->name('getLastProcedimiento');
     Route::get('/getAllProcedimiento', [ProcedimientoController::class, 'getAllProcedimiento'])->name('getAllProcedimiento');
 
-    Route::get('/getCompProcedimientoEstudio', [DetalleProcedimientoController::class, 'getCompProcedimientoEstudio'])->name('getCompProcedimientoEstudio');
     Route::get('/getComponenteEstudio/{id}', [DetalleProcedimientoController::class, 'getComponenteEstudio'])->name('getComponenteEstudio');
     Route::get('/getProcedimientoEstudio/{id}', [DetalleProcedimientoController::class, 'getProcedimientoEstudio'])->name('getProcedimientoEstudio');
     Route::get('/getComponenteDp/{id}', [DetalleProcedimientoController::class, 'getComponenteDp'])->name('getComponenteDp');
@@ -176,6 +180,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getAllComponente', [ComponenteController::class, 'getAllComponente'])->name('getAllComponente');
 
     Route::delete('/destroyDetComp/{id}', [ComponenteController::class, 'destroyDetComp'])->name('destroyDetComp.destroy');
+
+    Route::delete('/dpcomponentes/{id}', [DpComponenteController::class, 'destroy'])->name('dpcomponente.destroy');
 
     Route::post('/aspectos', [AspectoController::class, 'store'])->name('aspecto');
     Route::get('/getAspectos', [AspectoController::class, 'getAspectos'])->name('getAspectos');
@@ -199,7 +205,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/materials', [MaterialController::class, 'store'])->name('material.store');
     Route::get('/materials/{id}', [MaterialController::class, 'edit'])->name('material.edit');
     Route::post('/materials/{id}', [MaterialController::class, 'update'])->name('material.update');
+
     Route::post('/updateMaterialEstado/{id}', [MaterialController::class, 'updateMaterialEstado'])->name('material.updateEstado');
+    Route::post('/updateMaterialCompra/{id}', [MaterialController::class, 'updateMaterialCompra'])->name('updateMaterialCompra');
 
     Route::get('/providers', [ProviderController::class, 'index'])->name('provider');
     Route::post('/providers', [ProviderController::class, 'store'])->name('provider.store');
@@ -214,7 +222,19 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/compras/{id}', [CompraController::class, 'update'])->name('compra.update');
 
     Route::get('/getComprasMaterial/{id}', [CompraController::class, 'getComprasMaterial'])->name('getComprasMaterial');
+    Route::get('/updateCompEstado/{id}', [CompraController::class, 'updateCompEstado'])->name('updateCompEstado');
+    Route::get('/updateVencimientoCompra/{id}', [CompraController::class, 'updateVencimientoCompra'])->name('updateVencimientoCompra');
     
     Route::get('/getUmedUnidad/{id}', [UMedidaController::class, 'getUmedUnidad'])->name('getUmedUnidad');
+
+    Route::get('/buscar_recepcion_paciente', [ResultController::class, 'buscarRecepcionPaciente']);
+    Route::get('/buscar_recepcion_estudio', [ResultController::class, 'buscarRecepcionEstudio']);
+    Route::get('/buscar_recepcion_fechas', [ResultController::class, 'buscarRecepcionFechas']);
+    Route::get('/searchResultRecepcions', [ResultController::class, 'searchResultRecepcions']);
+    
+    Route::get('/results', [ResultController::class, 'index'])->name('result');
+    Route::post('/results', [ResultController::class, 'store'])->name('result.store');
+
+    Route::get('/getClienteResult/{id}', [ResultController::class, 'getClienteResult'])->name('getClienteResult');
 });
 

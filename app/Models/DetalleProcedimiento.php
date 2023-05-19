@@ -27,6 +27,6 @@ class DetalleProcedimiento extends Model
 
     public function dpcomponentes()
     {
-        return $this->hasMany(DpComponente::class);
+        return $this->hasMany(DpComponente::class, 'dp_id');
     }
 }

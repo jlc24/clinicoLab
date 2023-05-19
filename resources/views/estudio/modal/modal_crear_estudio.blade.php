@@ -18,20 +18,8 @@
                         </button>
                     </div>
                 @endif
-                {{-- <script>
-                    @if ($errors->any())
-                        var errorHtml = '<div class="alert alert-danger alert-dismissible fade show" role="alert"><ul>';
-                        @foreach ($errors->all() as $error)
-                            errorHtml += '<li>{{ $error }}</li>';
-                        @endforeach
-                        errorHtml += '</ul><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
-                        $('#mi-modal .modal-body').html(errorHtml);
-                        $('#mi-modal').modal('show');
-                    @endif
-                </script> --}}
 
-                <form action="{{ url('estudios') }}" method="POST" class="form-horizontal" id="formulario_crear_estudio">
-                    @csrf
+                <form class="form-horizontal" id="formulario_crear_estudio">
                     <div class="row">
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
@@ -114,19 +102,19 @@
                                 </div>
                                 <div class="col-md-3">
                                     <select class="custom-select custom-select-sm" id="est_moneda" name="est_moneda" required>
-                                        @foreach ($unidades as $unidad)
-                                            <option value="{{ $unidad->id }}">{{ $unidad->unidad }}</option>
-                                        @endforeach
+                                        <option value="" selected disabled>Seleccionar...</option>
+                                        <option value="Bs">Bs</option>
+                                        <option value="$">$</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" id="btnRegisterEst" class="btn btn-success">Registrar</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnRegisterEst" class="btn btn-success">Registrar</button>
+            </div>
         </div>
     </div>
 </div>

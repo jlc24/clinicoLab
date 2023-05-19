@@ -27,7 +27,7 @@
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label" for="show_mat_unidad">{{ __('Unidad') }}:</label>
                             <div class="col-md-4">
-                                <select id="show_mat_unidad" name="show_mat_unidad" class="custom-select custom-select-sm show_mat_unidad" disabled>
+                                <select id="show_mat_unidad" name="show_mat_unidad" class="custom-select show_mat_unidad" disabled>
                                     <option value="" selected>Seleccionar...</option>
                                     @foreach ($medidas as $medida)
                                         <option value="{{ $medida->id }}">{{ $medida->unidad }}</option>
@@ -48,6 +48,7 @@
                                 <th>{{ __('Cantidad Actual') }}</th>
                             </thead>
                             <tbody>
+
                             </tbody>
                         </table>
                     </div>
@@ -58,14 +59,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-12  col-sm-12" style="height: 200px;">
-                        <table class="table table-sm table-hover table-bordered table-responsive-lg  tabla_compras_realizadas" id="tabla_compras_realizadas" >
-                            <thead class="table-success">
-                                <th width="100px">#</th>
+                    <div class="col-xl-12 table-bordered table-responsive col-sm-12" style="height: 200px;">
+                        <table class="table table-sm table-hover  tabla_compras_realizadas" id="tabla_compras_realizadas" >
+                            <thead class="table-info">
+                                <th >#</th>
                                 <th>{{ __('Unidad') }}</th>
+                                <th hidden>{{ __('umed_id') }}</th>
                                 <th>{{ __('Cantidad') }}</th>
-                                <th>{{ __('Precio Comp.') }}</th>
-                                <th>{{ __('Precio Unit.') }}</th>
+                                <th>{{ __('Precio Compra') }}</th>
+                                <th>{{ __('Precio Unitario') }}</th>
+                                <th>{{ __('Fecha Vencimiento') }}</th>
                                 <th>Op</th>
                             </thead>     
                             <tbody>

@@ -13,10 +13,16 @@ return new class extends Migration
     {
         Schema::create('results', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('recep_id');
+            $table->unsignedBigInteger('rec_id');         // recepcion
+            $table->unsignedBigInteger('det_id');           // estudio
+            $table->unsignedBigInteger('dp_id');            // procedimiento
+            $table->unsignedBigInteger('dpc_id');        // componente
+            $table->unsignedBigInteger('ca_id');           // aspecto
+            $table->string('resultado', 255)->nullable();   // resultado
+            $table->unsignedBigInteger('umed_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('recep_id')->references('id')->on('recepcions');
+            $table->foreign('rec_id')->references('id')->on('recepcions');
         });
     }
 

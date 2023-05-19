@@ -61,6 +61,13 @@ class DetalleController extends Controller
         $detalle->save();
     }
 
+    public function updatePrecioEstudio(Request $request, $id)
+    {
+        $detalle = Detalle::find($id);
+        $detalle->precio = $request->input('precio_est');
+        $detalle->save();
+    }
+
     /**
      * Remove the specified resource from storage.
      */

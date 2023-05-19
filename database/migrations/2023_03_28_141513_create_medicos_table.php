@@ -20,13 +20,13 @@ return new class extends Migration
             $table->string('med_ci_nit', 10);
             $table->string('med_exp_ci', 10);
             $table->string('med_genero', 10);
-            $table->string('med_correo')->nullable();
+            $table->string('med_correo', 255)->nullable();
             $table->string('med_celular', 15)->nullable();
-            $table->string('med_direccion')->nullable();
+            $table->string('med_direccion', 255)->nullable();
             $table->string('med_especialidad', 50)->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('med_usuario', 10);
-            $table->string('med_password');
+            $table->string('med_password', 255);
             $table->unsignedBigInteger('dep_id');
             $table->unsignedBigInteger('mun_id');
             $table->timestamps();

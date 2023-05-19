@@ -19,8 +19,7 @@
                     </div>
                 @endif
 
-                <form action="{{ url('medicos/'.$medico->user_id) }}" method="POST" class="form-horizontal" id="formulario_actualizar_medico">
-                    @method('PUT')
+                <form action="{{ route('medico.update', $medico->id) }}" method="POST" class="form-horizontal" id="formulario_actualizar_medico">
                     @csrf
                     <div class="row">
                         <div class="col-xl-4 col-sm-4">
@@ -101,9 +100,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-sm-4">
+                        <div class="col-xl-3 col-sm-3">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="med_genero_update">{{ __('Género') }}: </label>
+                                <label class="col-md-4 col-form-label mr-0 pr-0" for="med_genero_update">{{ __('Género') }}: </label>
                                 <div class="col-md-8">
                                     <select class="custom-select custom-select-sm" id="med_genero_update" name="med_genero_update" required>
                                         @if($medico->med_genero == 'MASCULINO')
@@ -119,7 +118,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-sm-4">
+                        <div class="col-xl-5 col-sm-5">
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="med_especialidad_update">{{ __('Especialidad') }}: </label>
                                 <div class="col-md-8">
@@ -129,11 +128,43 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xl-8 col-sm-8">
+                        <div class="col-xl-6 col-sm-6">
                             <div class="form-group row">
-                                <label class="col-md-2 col-form-label" for="med_direccion_update">{{ __('Dirección') }}:</label>
-                                <div class="col-md-10">
+                                <label class="col-md-12 col-form-label" for="med_direccion_update">{{ __('Dirección') }}:</label>
+                                <div class="col-md-12">
                                     <input type="text" value="{{ $medico->med_direccion }}" class="form-control form-control-sm" id="med_direccion_update" name="med_direccion_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-3">
+                            <div class="form-group row">
+                                <label class="col-md-12 col-form-label" for="cli_departamento_update">{{ __('Departamento') }}:</label>
+                                <div class="col-md-12">
+                                    <select class="custom-select custom-select-sm" id="cli_departamento_update" name="cli_departamento_update" required>
+                                        @foreach ($departamentos as $departamento)
+                                            <option value="{{ $departamento->id }}"
+                                                @if($departamento->id == $medico->dep_id)
+                                                    {{ 'selected' }}
+                                                @endif
+                                                >{{ $departamento->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-sm-3">
+                            <div class="form-group row">
+                                <label class="col-md-12 col-form-label" for="cli_municipio_update">{{ __('Municipio') }}:</label>
+                                <div class="col-md-12">
+                                    <select class="custom-select custom-select-sm" id="cli_municipio_update" name="cli_municipio_update" required>
+                                        @foreach ($municipios as $municipio)
+                                            <option value="{{ $municipio->id }}"
+                                                @if($municipio->id == $medico->mun_id)
+                                                    {{ 'selected' }}
+                                                @endif
+                                                >{{ $municipio->nombre }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -143,9 +174,9 @@
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="med_email_update">{{ __('Email') }}:</label>
                                 <div class="col-md-10 input-group">
-                                    <input type="text" value="{{ $medico->med_correo }}" class="form-control form-control-sm" id="med_email_update" name="med_email_update" autocomplete="off" required>
+                                    <input type="text" value="{{ $medico->med_correo }}" class="form-control form-control-sm" id="med_email_update" name="med_email_update" autocomplete="off" readonly>
                                     <div class="form-check" style="padding-top: 5px; margin-left: 10px;">
-                                        <input class="form-check-input" type="checkbox" id="generar_correo_med_update" name="generar_correo_med_update" title="Generar Correo"> 
+                                        <input class="form-check-input" type="checkbox" id="generar_correo_med_update" name="generar_correo_med_update" title="Generar Correo" disabled> 
                                     </div>
                                 </div>
                             </div>

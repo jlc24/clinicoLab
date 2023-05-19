@@ -19,7 +19,7 @@
                         </label>
                     </div>
                     <div class="col-xl-12 col-sm-12 table-responsive-lg">
-                        <table class="table table-sm table-borderless" id="tabla_detalle_proc">
+                        <table class="table table-sm table-borderless tabla_detalle_proc" id="tabla_detalle_proc">
                             <tbody>
 
                             </tbody>

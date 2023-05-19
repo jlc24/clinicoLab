@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('comp_tipo', 50);
             $table->unsignedBigInteger('prov_id')->nullable();
             $table->string('comp_observacion', 255)->nullable();
-            $table->string('comp_estado', 20)->nullable();
+            $table->unsignedBigInteger('comp_ventas')->nullable();
+            $table->unsignedBigInteger('comp_estado')->nullable();
             $table->timestamps();
 
             $table->foreign('mat_id')->references('id')->on('materials');

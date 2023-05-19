@@ -26,6 +26,6 @@ class DpComponente extends Model
 
     public function componenteaspectos()
     {
-        return $this->hasMany(ComponenteAspecto::class);
+        return $this->hasMany(ComponenteAspecto::class, 'dpc_id');
     }
 }

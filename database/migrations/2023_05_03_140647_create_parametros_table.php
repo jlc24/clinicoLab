@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('edad_inicial')->nullable();
             $table->unsignedBigInteger('edad_final')->nullable();
             $table->string('tiempo', 10)->nullable();
-            $table->unsignedBigInteger('valor_inicial')->nullable();
-            $table->unsignedBigInteger('valor_final')->nullable();
+            $table->unsignedDecimal('valor_inicial')->nullable();
+            $table->unsignedDecimal('valor_final')->nullable();
             $table->string('referencia')->nullable();
             $table->timestamps();
 

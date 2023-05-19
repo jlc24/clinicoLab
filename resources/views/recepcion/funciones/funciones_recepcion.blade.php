@@ -293,12 +293,13 @@
         //----Capturar datos del formulario recepcion
         function cargarTablaRecepcion(){
             var id = $("#rec_factura").val();
+            console.log(id);
             $.ajax({
                 url: '{{ route("tabla_recepcion", ":id") }}'.replace(':id', id),
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    //console.log(data);
+                    console.log(data);
                     if (data.length != 0) {
                         $('#tabla-estudios tbody').empty();
                         $.each(data, function(index, value) {

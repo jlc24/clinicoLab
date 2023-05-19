@@ -38,23 +38,25 @@
                             <button id="btnRegisterComp" class="btn btn-success">{{ __('Agregar') }}</button>
                         </div>
                     </div><br>
-                    <div class="row lista_componentes" style="border: 1px solid #b2b3b4; border-radius: 5px; display: none;">
-                        <div class="col-xl-12 col-sm-12">
-                                <label class="col-form-label" for="proc_nombre">{{ __('Lista de Componentes') }}: </label>
-                                <input type="hidden" name="det_proc_id" id="det_proc_id" class="det_proc_id">
-                                <input type="hidden" name="nombre_estudio" id="nombre_estudio" class="nombre_estudio">
-                        </div>
-                        <div class="col-xl-12 col-sm-12 table-responsive " style="height: 200px;">
-                            <table class="table table-sm table-hover tabla_componentes" id="tabla_componentes" >
-                                <thead class="text-center">
-                                    <th hidden>#</th>
-                                    <th>{{ __('Nombre') }}</th>
-                                    <th>Op</th>
-                                </thead>
-                                <tbody>
-                                    
-                                </tbody>
-                            </table>
+                    <div class="row lista_componentes justify-content-center">
+                        <div class="col-xl-11 col-sm-11" style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
+                            <div class="col-xl-12 col-sm-12">
+                                    <label class="col-form-label" for="proc_nombre">{{ __('Lista de Componentes') }}: </label>
+                                    <input type="hidden" name="det_proc_id" id="det_proc_id" class="det_proc_id">
+                                    <input type="hidden" name="nombre_estudio" id="nombre_estudio" class="nombre_estudio">
+                            </div>
+                            <div class="col-xl-12 col-sm-12 mt-0 pt-0 table-bordered table-responsive " style="height: 200px;">
+                                <table class="table table-sm table-hover tabla_componentes" id="tabla_componentes" >
+                                    <thead class="text-center table-secondary">
+                                        <th hidden>#</th>
+                                        <th>{{ __('Nombre') }}</th>
+                                        <th>Op</th>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

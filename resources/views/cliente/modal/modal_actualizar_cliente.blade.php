@@ -19,8 +19,7 @@
                         </button>
                     </div>
                 @endif
-                <form action="{{ url('clientes/'.$cliente->id) }}" class="form-horizontal" id="formulario_actualizar_cliente">
-                    @method('PUT')
+                <form action="{{ route('cliente.update', $cliente->id) }}" method="POST" class="form-horizontal" id="formulario_actualizar_cliente">
                     @csrf
                     <div class="row">
                         <div class="col-xl-4 col-sm-4">
@@ -136,7 +135,7 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="cli_edad_update">{{ __('Edad') }}: </label>
                                 <div class="col-md-8">
-                                    <input type="text" value="{{ $cliente->cli_edad }}" id="cli_edad_update" name="cli_edad_update" class="form-control form-control-sm" autocomplete="off"  readonly>
+                                    <input type="text" value="{{ $cliente->cli_edad }} años" id="cli_edad_update" name="cli_edad_update" class="form-control form-control-sm" autocomplete="off"  readonly>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +149,6 @@
                                 </div>
                             </div>
                         </div>
-                    
                         <div class="col-xl-3 col-sm-3">
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="cli_departamento_update">{{ __('Departamento') }}:</label>
@@ -189,9 +187,9 @@
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="cli_email_update">{{ __('Email') }}:</label>
                                 <div class="col-md-10 input-group">
-                                    <input type="text" value="{{ $cliente->cli_correo }}" class="form-control form-control-sm" id="cli_email_update" name="cli_email_update" autocomplete="off" required>
+                                    <input type="text" value="{{ $cliente->cli_correo }}" class="form-control form-control-sm" id="cli_email_update" name="cli_email_update" autocomplete="off" readonly>
                                     <div class="form-check" style="padding-top: 5px; margin-left: 10px;">
-                                        <input class="form-check-input" type="checkbox" id="generar_correo_cli_update" name="generar_correo_cli_update" title="Generar Correo"> 
+                                        <input class="form-check-input" type="checkbox" id="generar_correo_cli_update" name="generar_correo_cli_update" title="Generar Correo" disabled> 
                                     </div>
                                 </div>
                             </div>
@@ -208,9 +206,26 @@
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="cli_password_update">{{ __('Contraseña') }}:</label>
                                 <div class="col-md-12">
-                                    <input type="text" value="{{ $cliente->cli_password }}" class="form-control form-control-sm" id="cli_password_update" name="cli_password_update" autocomplete="off" readonly>
+                                    <input type="text" value="{{ $cliente->cli_password }} {{ $cliente->med_id }}" class="form-control form-control-sm" id="cli_password_update" name="cli_password_update" autocomplete="off" readonly>
                                     <input type="hidden" value="1" class="form-control form-control-sm" id="cli_estado_update" name="cli_estado_update" autocomplete="off" readonly>
                                     <input type="hidden" value="cliente" class="form-control form-control-sm" id="cli_rol_update" name="cli_rol_update" autocomplete="off" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-md-12 col-form-label" for="cli_medico_update">{{ __('Medico') }}:</label>
+                                <div class="col-md-10 input-group">
+                                    <select class="custom-select custom-select-sm" id="cli_medico_update" name="cli_medico_update">
+                                        <option value="" selected>Seleccionar...</option>
+                                        @foreach ($medicos as $medico)
+                                            <option value="{{ $medico->id }}"
+                                                @if($medico->id == $cliente->med_id)
+                                                    {{ 'selected' }}
+                                                @endif
+                                                >{{ $medico->med_nombre }} {{ $medico->med_apellido_pat }} {{ $medico->med_apellido_mat }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +233,7 @@
                 </div>
                 <div class="modal-footer">
                     {{-- <button type="button" id="btnCloseAddClient" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                    <button type="submit" id="btnRegisterClient" class="btn btn-success">Registrar</button>
+                    <button type="submit" id="btnUpdateClient" class="btn btn-success">Actualizar</button>
                 </div>
             </form>
         </div>

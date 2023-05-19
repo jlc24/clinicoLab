@@ -145,7 +145,6 @@ class MaterialController extends Controller
                 'cat_id' => $request->input('cat_id'),
             ]);
         }
-        
     }
 
     public function updateMaterialEstado(Request $request, $id)
@@ -153,6 +152,22 @@ class MaterialController extends Controller
         $material = Material::find($id);
         $material->mat_estado = $request->input('mat_estado');
         $material->save();
+    }
+    
+    public function updateMaterialCompra(Request $request, $id)
+    {
+        $material = Material::find($id);
+        $material->umed_id = $request->input('umed_id');
+        $material->mat_cantidad = $request->input('mat_cantidad');
+        $material->mat_precio_compra = $request->input('mat_precio_compra');
+        $material->mat_precio_unitario = $request->input('mat_precio_unitario');
+        $material->mat_ventas = '0';
+        $material->comp_id = $request->input('comp_id');
+        $material->save();
+
+        $compras = Compra::find($request->input('comp_id'));
+        $compras->comp_estado = '1';
+        $compras->save();
     }
 
     /**

@@ -41,6 +41,7 @@
                                         <th>#</th>
                                         <th>Clave</th>
                                         <th>Nombre</th>
+                                        <th hidden>Precio</th>
                                         <th>Estado</th>
                                         <th>Op</th>
                                     </thead>
@@ -50,6 +51,7 @@
                                                 <td>{{ $detalle->id }}</td>
                                                 <td>{{ $detalle->estudio->est_cod }}</td>
                                                 <td>{{ $detalle->estudio->est_nombre }}</td>
+                                                <td hidden>{{ $detalle->estudio->est_precio }}</td>
                                                 <td class="text-center">
                                                     @if($detalle->tipo == null || $detalle->tipo == 'DESHABILITADO')
                                                         <a href="#" class="badge badge-danger btn-tipo-estudio" title="Tipo Estudio" style="font-size: 15px">Deshabilitado</a>
@@ -64,6 +66,7 @@
                                                         @if ($detalle->tipo == 'HABILITADO')
                                                             <button data-id="{{ $detalle->id }}" data-nombre="{{ $detalle->estudio->est_nombre }}" data-toggle="modal" data-target="#modal_configurar_estudio_individual_{{ $detalle->id }}" class="btn btn-sm btn-outline-info btn-detalle-indi-id" title="Configurar Estudio Individual"><i class="fas fa-cog"></i></button>
                                                             @include('estudio.modal.modal_config_estudio_individual')
+                                                            <button data-toggle="modal" data-target="#modal_agregar_material" class="btn btn-sm btn-outline-primary btn-add-material-estudio" title="Agregar Material"><i class="fas fa-book"></i></button>
                                                             <button href="javascript:void(0);" class="btn btn-sm btn-outline-danger btn-delete-estudio" title="Elimnar estudio"><i class="fas fa-trash-alt"></i></button>
                                                         @endif
                                                     </div>
@@ -85,6 +88,7 @@
     @include('componente.modal.modal_crear_componente')
     @include('aspecto.modal.modal_crear_aspecto')
     @include('estudio.modal.modal_config_parametro')
+    @include('estudio.modal.modal_agregar_material')
 @endsection
 
 @section('funciones')

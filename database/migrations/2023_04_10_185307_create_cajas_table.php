@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('cajas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->decimal('caja_monto_inicial');
-            $table->decimal('caja_monto_final')->nullable();
-            $table->decimal('caja_cambio')->nullable();
+            $table->unsignedDecimal('caja_monto_inicial');
+            $table->unsignedDecimal('caja_monto_final')->nullable();
+            $table->unsignedDecimal('caja_cambio')->nullable();
             $table->unsignedBigInteger('caja_estado')->define('1');
             $table->timestamps();
 

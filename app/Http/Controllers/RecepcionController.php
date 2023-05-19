@@ -16,6 +16,7 @@ use App\Models\Municipio;
 use App\Models\Medico;
 use App\Models\Muestra;
 use App\Models\Recepcion;
+use App\Models\Result;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 
@@ -113,7 +114,7 @@ class RecepcionController extends Controller
         $estudios = DB::table('detalles')
                         ->join('estudios', 'detalles.estudio_id', '=', 'estudios.id')
                         ->select('detalles.id', 'est_cod', 'est_nombre', 'est_precio', 'est_moneda')
-                        ->where('est_cod', 'LIKE', '%'.$term.'%')->get();
+                        ->where([['est_cod', 'LIKE', '%'.$term.'%'], ['detalles.tipo', '!=', 'DESHABILITADO']])->get();
         return response()->json($estudios);
     }
 
@@ -123,7 +124,7 @@ class RecepcionController extends Controller
         $estudios = DB::table('detalles')
                         ->join('estudios', 'detalles.estudio_id', '=', 'estudios.id')
                         ->select('detalles.id', 'est_cod', 'est_nombre', 'est_precio', 'est_moneda')
-                        ->where('est_nombre', 'LIKE', '%'.$term.'%')->get();
+                        ->where([['est_nombre', 'LIKE', '%'.$term.'%'], ['detalles.tipo', '!=', 'DESHABILITADO']])->get();
         return response()->json($estudios);
     }
 
@@ -150,7 +151,7 @@ class RecepcionController extends Controller
                                 'estudios.est_nombre', 
                                 'estudios.est_precio', 
                                 'muestras.nombre as muestra', 
-                                'indications.nombre as indicacion',
+                                'indications.descripcion as indicacion',
                                 'estudios.est_moneda')
                         ->where('recepcions.fac_id', $id)
                         ->get();
@@ -177,13 +178,32 @@ class RecepcionController extends Controller
             'estado'=> 'required',
         ]);
 
-        Recepcion::create([
+        $recepcion = Recepcion::create([
             'caja_id' => $request->input('caja_id'),
             'fac_id' => $request->input('fac_id'),
             'det_id' => $request->input('det_id'),
             'estado' => 'Pendiente',
         ]);
 
+        $recep = Recepcion::with('Detalle.DetalleProcedimiento.DpComponente.ComponenteAspecto')
+        ->findOrFail($recepcion->id);
+
+        // Almacena los resultados en la tabla 'results'.
+        foreach ($recep->Detalle as $det) {
+            foreach ($det->DetalleProcedimiento as $dp) {
+                foreach ($dp->DpComponente as $dpc) {
+                    foreach ($dpc->ComponenteAspecto as $ca) {
+                        Result::create([
+                            'rec_id' => $recep->id,
+                            'det_id' => $det->id,
+                            'dp_id' => $dp->id,
+                            'dpc_id' => $dpc->id,
+                            'ca_id' => $ca->id
+                        ]);
+                    }
+                }
+            }
+        }
     }
 
     /**

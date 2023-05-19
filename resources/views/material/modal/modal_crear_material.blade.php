@@ -52,7 +52,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="mat_imagen">{{ __('Imagen') }}:</label>
                             <div class="col-md-9" style="display: inline-flex;">
-                                <input type="file" name="mat_imagen" id="mat_imagen" accept=".jpge,.jpg,image/png" class="form-control form-control-sm form-control-file mat_imagen">
+                                <input type="file" name="mat_imagen" id="mat_imagen" accept=".jpge,.jpg,image/png" class="form-control form-control-sm form-control-file mat_imagen" onchange="VerImagen('mat_imagen', 'img_material')">
                             </div>
                             <div class="col-md-12 text-center">
                                 <small><span style="color: red;" id="error_med_nombre">(Tamaño máximo aprox. 2mb)</span></small>

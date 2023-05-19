@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use App\Models\Departamento;
+use App\Models\Medico;
 use App\Models\Municipio;
 use App\Models\User;
 use DateTime;
@@ -29,6 +30,7 @@ class ClienteController extends Controller
             'clientes' => $clientes,
             'countpac' => Cliente::count(),
             'municipios' => Municipio::all(),
+            'medicos' => Medico::all()
         ]);
     }
 
@@ -111,11 +113,12 @@ class ClienteController extends Controller
             'cli_password' => $request->input('cli_password'),
             'dep_id' => $request->input('cli_departamento'),
             'mun_id' => $request->input('cli_municipio'),
+            'med_id' => $request->input('med_id'),
             'user_id' => $user->id
         ]);
         
 
-        return redirect()->route('cliente')->with('success', 'El registro se ha creado con éxito');
+        
     }
 
     /**
@@ -140,7 +143,6 @@ class ClienteController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            
             'cli_nombre_update' => 'required|max:20',
             'cli_apellido_pat_update' => 'required|max:20',
             'cli_apellido_mat_update' => 'max:20',
@@ -148,30 +150,15 @@ class ClienteController extends Controller
             'cli_ci_nit_exp_update' => 'required|max:10',
             'cli_fec_nac_update' => 'required|date',
             'cli_genero_update' => 'required|max:10',
-            'cli_email_update' => 'required|email|max:255',
             'cli_direccion_update' => 'max:255',
             'cli_celular_update' => 'required|max:15',
             'cli_departamento_update' => 'required',
             'cli_municipio_update' => 'required',
             'cli_usuario_update' => 'required|max:10',
-            'cli_password_update' => 'required',
-            'cli_estado_update' => 'required',
             'cli_rol_update' => 'required'
         ]);
-        // dd($request->all());
-
-        $model = User::find($id); // asumiendo que tienes el id del registro a actualizar
-
-        $model->update([
-            'user' => $request->input('cli_usuario_update'),
-            'email' => $request->input('cli_email_update'),
-            'password' => Hash::make($request->input('cli_password_update')),
-            'estado' => $request->input('cli_estado_update'),
-            'rol' => $request->input('cli_rol_update')
-        ]);
-
-        // Actualizar el registro correspondiente en la tabla Cliente
-        $cliente = Cliente::where('user_id', '=', $id)->first();
+        
+        $cliente = Cliente::find($id);
         $cliente->update([
             'cli_cod' => $request->input('cli_cod_update'),
             'cli_nombre' => $request->input('cli_nombre_update'),
@@ -181,13 +168,11 @@ class ClienteController extends Controller
             'cli_exp_ci' => $request->input('cli_ci_nit_exp_update'),
             'cli_fec_nac' => $request->input('cli_fec_nac_update'),
             'cli_genero' => $request->input('cli_genero_update'),
-            'cli_correo' => $request->input('cli_email_update'),
             'cli_direccion' => $request->input('cli_direccion_update'),
             'cli_celular' => $request->input('cli_celular_update'),
-            'cli_usuario' => $request->input('cli_usuario_update'),
-            'cli_password' => $request->input('cli_password_update'),
             'dep_id' => $request->input('cli_departamento_update'),
-            'mun_id' => $request->input('cli_municipio_update')
+            'mun_id' => $request->input('cli_municipio_update'),
+            'med_id' => $request->input('cli_medico_update')
         ]);
 
         return redirect()->route('cliente')->with('success', 'El registro se ha actualizado con éxito');

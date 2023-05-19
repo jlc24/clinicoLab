@@ -19,9 +19,8 @@
                     </div>
                 @endif
                     <div class="row lista_aspectos" >
-                        <div class="col-xl-4 col-sm-4" style="border: 1px solid #b2b3b4; border-radius: 5px;">
+                        <div class="col-xl-4 col-sm-4" style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
                             <form class="form-horizontal" id="formulario_crear_aspectos">
-                    
                                 <div class="row">
                                     <div class="col-xl-12 col-sm-12" >
                                         <div class="form-group row">

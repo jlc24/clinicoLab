@@ -59,23 +59,25 @@
                             <button id="btnRegisterProc" class="btn btn-success">{{ __('Registrar') }}</button>
                         </div>
                     </div><br>
-                    <div class="row" style="border: 1px solid #C6C8CA; border-radius: 5px;">
-                        <div class="col-xl-12 col-sm-12">
-                                <label class="col-form-label" for="proc_nombre">{{ __('Lista de Procedimientos') }}: </label>
-                                <input type="hidden" name="det_id_proc" id="det_id_proc">
-                                <input type="hidden" name="proc_tipo_estudio" id="proc_tipo_estudio" class="proc_tipo_estudio">
-                        </div>
-                        <div class="col-xl-12 col-sm-12 table-responsive" style="height: 200px">
-                            <table class="table table-sm table-hover text-nowrap tabla_procedimiento" id="tabla_procedimiento">
-                                <thead class="text-center">
-                                    <th hidden>#</th>
-                                    <th>{{ __('Nombre') }}</th>
-                                    <th>Op</th>
-                                </thead>
-                                <tbody>
-                                    
-                                </tbody>
-                            </table>
+                    <div class="row justify-content-center" >
+                        <div class="col-xl-11 col-sm-11" style="border: 1px solid #C6C8CA; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
+                            <div class="col-xl-12 col-sm-12">
+                                    <label class="col-form-label" for="proc_nombre">{{ __('Lista de Procedimientos') }}: </label>
+                                    <input type="hidden" name="det_id_proc" id="det_id_proc">
+                                    <input type="hidden" name="proc_tipo_estudio" id="proc_tipo_estudio" class="proc_tipo_estudio">
+                            </div>
+                            <div class="col-xl-12 col-sm-12 table-bordered table-responsive" style="height: 200px">
+                                <table class="table table-sm table-hover text-nowrap tabla_procedimiento" id="tabla_procedimiento">
+                                    <thead class="text-center table-secondary">
+                                        <th hidden>#</th>
+                                        <th class="text-center">{{ __('Nombre') }}</th>
+                                        <th>Op</th>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
             </div>

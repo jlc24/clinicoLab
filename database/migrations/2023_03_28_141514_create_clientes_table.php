@@ -21,12 +21,12 @@ return new class extends Migration
             $table->string('cli_exp_ci', 10);
             $table->date('cli_fec_nac');
             $table->string('cli_genero', 10);
-            $table->string('cli_correo')->nullable();
-            $table->string('cli_direccion')->nullable();
+            $table->string('cli_correo', 255)->nullable();
+            $table->string('cli_direccion', 255)->nullable();
             $table->string('cli_celular', 15)->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('cli_usuario', 10);
-            $table->string('cli_password');
+            $table->string('cli_password', 255);
             $table->unsignedBigInteger('dep_id');
             $table->unsignedBigInteger('mun_id');
             $table->unsignedBigInteger('emp_id')->nullable();

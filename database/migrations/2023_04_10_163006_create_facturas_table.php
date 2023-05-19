@@ -18,14 +18,14 @@ return new class extends Migration
             $table->unsignedBigInteger('emp_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('config_id')->nullable();
-            $table->decimal('fac_total')->nullable();
+            $table->unsignedDecimal('fac_total')->nullable();
             $table->unsignedBigInteger('fac_estado');
             $table->string('fac_pago', 50)->nullable();
             $table->unsignedBigInteger('fac_descuento')->nullable();
             $table->string('fac_observacion', 255)->nullable();
             $table->string('fac_referencia', 255)->nullable();
-            $table->decimal('fac_importe')->nullable();
-            $table->decimal('fac_cambio')->nullable();
+            $table->unsignedDecimal('fac_importe')->nullable();
+            $table->unsignedDecimal('fac_cambio')->nullable();
             //$table->unsignedBigInteger('fac_iva')->nullable();
             $table->timestamps();
 

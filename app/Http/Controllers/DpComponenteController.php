@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ComponenteAspecto;
 use App\Models\DpComponente;
+use App\Models\Parametro;
 use Illuminate\Http\Request;
 
 class DpComponenteController extends Controller
@@ -58,8 +60,21 @@ class DpComponenteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(DpComponente $dpComponente)
+    public function destroy($id)
     {
-        //
+        $comp_asps = ComponenteAspecto::where('dpcomp_id', '=', $id)->get();
+        if ($comp_asps !== null) {
+            foreach ($comp_asps as $comp_asp) {
+                $parametros = Parametro::where('ca_id', '=', $comp_asp->id)->get();
+                if ($parametros !== null) {
+                    foreach ($parametros as $parametro) {
+                        $parametro->delete();
+                    }
+                }
+                $comp_asp->delete();
+            }
+        }
+        $dpcomp = DpComponente::find($id);
+        $dpcomp->delete();
     }
 }

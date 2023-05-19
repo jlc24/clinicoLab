@@ -7,6 +7,7 @@ use App\Models\Detalle;
 use App\Models\DetalleProcedimiento;
 use App\Models\Estudio;
 use App\Models\Indication;
+use App\Models\Material;
 use App\Models\Metodologia;
 use App\Models\Muestra;
 use App\Models\Recipiente;
@@ -53,6 +54,33 @@ class EstudioController extends Controller
         return response()->json($procedimiento);
     }
 
+    public function getAllMaterials()
+    {
+        $material = Material::where('mat_estado', '!=', 0)
+                            ->whereRaw('mat_cantidad - mat_ventas != 0')
+                            ->get();
+        $umed_ids = $material->pluck('umed_id')->toArray();
+
+        // Obtenemos los valores de unidad de medida correspondientes
+        $unidades = [];
+        foreach ($umed_ids as $umed_id) {
+            $unidad = UMedida::find($umed_id);
+            if (!$unidad) {
+                $unidad = '';
+            } else {
+                $unidad = $unidad->unidad;
+            }
+            $unidades[] = $unidad;
+        }
+
+        // Añadimos los valores de unidad de medida a cada objeto de mat$material
+        foreach ($material as $key => $value) {
+            $value->unidad = $unidades[$key];
+        }
+        return response()->json($material);
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -94,7 +122,7 @@ class EstudioController extends Controller
             'tipo' => 'DESHABILITADO'
         ]);
 
-        return redirect()->route('estudio')->with('success', 'El registro se ha creado con éxito');
+        
 
     }
 

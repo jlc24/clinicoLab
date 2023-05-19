@@ -46,16 +46,16 @@ class Detalle extends Model
     
     public function recepcions()
     {
-        return $this->hasMany(Recepcion::class);
+        return $this->hasMany(Recepcion::class, 'det_id');
     }
 
     public function detalleprocedimientos()
     {
-        return $this->hasMany(DetalleProcedimiento::class);
+        return $this->hasMany(DetalleProcedimiento::class, 'det_id');
     }
 
     public function detallematerials()
     {
-        return $this->hasMany(DetalleMaterial::class);
+        return $this->hasMany(DetalleMaterial::class, 'det_id');
     }
 }

@@ -30,7 +30,7 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-xl-4 col-sm-4">
+                                <div class="col-xl-5 col-sm-5">
                                     <label class="col-md-12 col-form-label" for="rec_factura" >{{ __('Factura') }}:</label>
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex;">
@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-5 col-sm-5">
+                                <div class="col-xl-6 col-sm-6">
                                     <label class="col-md-12 col-form-label" >{{ __('Fecha Recepcion') }}:</label>
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
@@ -199,7 +199,7 @@
                                 <div class="col-xl-3 col-sm-3">
                                     <label class="col-md-12 col-form-label" >{{ __('Recepcionar datos') }}:</label>
                                 </div>
-                                <div class="col-xl-3 col-sm-3">
+                                <div class="col-xl-3 col-sm-3" hidden>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -211,7 +211,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-sm-3">
+                                <div class="col-xl-3 col-sm-3" hidden>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-prepend">

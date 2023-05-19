@@ -29,8 +29,10 @@ class AspectoController extends Controller
         $dpaspecto = DB::table('componente_aspectos as ca')
                         ->join('dp_componentes as dpc', 'ca.dpcomp_id', '=', 'dpc.id')
                         ->join('aspectos as a', 'ca.asp_id', '=', 'a.id')
-                        ->select('ca.id', 'a.nombre', 'ca.umed_id')
+                        ->select('ca.id', 'a.nombre', 'ca.umed_id',
+                        DB::raw('(SELECT COUNT(*) FROM parametros WHERE ca_id = ca.id) as cant_parametros'))
                         ->where('dpc.id', '=', $id)
+                        ->distinct()
                         ->get();
         return response()->json($dpaspecto);
     }

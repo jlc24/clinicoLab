@@ -16,3 +16,8 @@ a:link, a:visited, a:active {
     font-family: Montserrat, Helvetica, sans-serif;
     color:#212121;
 }
+
+.dato_requerido {
+    color: red; 
+    margin-left: 5px; 
+}

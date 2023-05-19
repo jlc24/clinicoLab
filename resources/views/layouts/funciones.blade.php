@@ -66,8 +66,7 @@
                 if (!filaNoData) {
                     filaNoData = $tabla.insertRow();
                     filaNoData.setAttribute("id", "no-data-row");
-                    const nuevaFila = filaNoData.insertCell();
-                    //const nuevaCelda = nuevaFila.insertCell();
+                    const nuevaCelda = filaNoData.insertCell();
                     nuevaCelda.style.textAlign = 'center';
                     nuevaCelda.colSpan = filas[0].children.length;
                     nuevaCelda.textContent = 'No se encontraron datos';
@@ -97,6 +96,25 @@
         }else{
             imgMaterial.src = URL.createObjectURL(inputImagen.files[0]);
         }
+    }
+
+    //var convert = require('convert-units');
+
+    function mostrarCargando() {
+        Swal.fire({
+            title: 'Espere...',
+            text: 'Cargando datos.',
+            icon: 'info',
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        });
+    }
+    function cerrarCargando() {
+        Swal.close();
     }
     
     @if(session('success'))
