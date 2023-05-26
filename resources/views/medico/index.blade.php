@@ -5,13 +5,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Administración</h1>
+                    <h1 class="m-0">{{ __('Administración') }}</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Inicio</a></li>
-                        <li class="breadcrumb-item"><a href="#">Administración</a></li>
-                        <li class="breadcrumb-item active">Médicos</li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Inicio') }}</a></li>
+                        <li class="breadcrumb-item"><a href="#">{{ __('Administración') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('Médicos') }}</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -26,20 +26,20 @@
                             <h4 class="page-title">
                                 <a style="color: #32C861;" href="#" data-toggle="modal"  data-target="#modal_crear_medico" title="Agregar medico">
                                     <i class="far fa-plus-square"></i>
-                                </a> Registrar Medico
+                                </a> {{ __('Registrar Médico') }}
                             </h4>
                         </div>
                         <div class="card-body" id="tabla_medico">
-                            <h3>Lista de Medicos registrados en el Sistema</h3><hr>
+                            <h3>{{ __('Lista de Medicos registrados en el Sistema') }}</h3><hr>
                             <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_medicos" id="tabla_medicos">
                                 <thead style="text-align: center;">
                                     <tr class="table-info">
                                         <th>#</th>
-                                        <th>Codigo</th>
-                                        <th>Nombre</th>
-                                        <th>Apellido Paterno</th>
-                                        <th>Apellido Materno</th>
-                                        <th>Contacto</th>
+                                        <th>{{ __('Código') }}</th>
+                                        <th>{{ __('Nombre') }}</th>
+                                        <th>{{ __('Apellido Paterno') }}</th>
+                                        <th>{{ __('Apellido Materno') }}</th>
+                                        <th>{{ __('Contacto') }}</th>
                                         <th>Op</th>
                                     </tr>
                                 </thead>

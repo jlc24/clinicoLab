@@ -1,5 +1,8 @@
 <script type="text/javascript">
-    //para eliminar datos solo colocar el nombre de la ruta correspondiente   
+    //para eliminar datos solo colocar el nombre de la ruta correspondiente 
+    $(window).on('load', function() {
+        $('#loader-wrapper').fadeOut('slow');
+    });  
     $(document).on('click', '.btn-delete', function(e) {
         e.preventDefault();
         var id = $(this).data('id');

@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xl-4 col-sm-4" style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
+                    <div class="col-xl-4 col-sm-12" style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
                         <div class="form-group row">
                             <label class="col-md-12 col-form-label" for="search_material">{{ __('Material') }}: </label>
                             <div class="col-md-12">
@@ -19,15 +19,17 @@
                         </div>
                         <div class="row">
                             <label class="col-form-label" for="proc_nombre">{{ __('Lista de Materiales') }}: </label>
-                            <table class="table table-sm">
-                                <thead class="text-center" style="background-color: #BBEAF2">
-                                    <th hidden>#</th>
-                                    <th>{{ __('Nombre') }}</th>
-                                    <th class="text-center">{{ __('Medida') }}</th>
-                                    <th>Op</th>
-                                </thead>
-                            </table>
-                            <div class="col-xl-12 col-sm-12 table-responsive table-bordered mt-0 pt-0" style="height: 300px;">
+                            <div class="col-xl-12 col-sm-12">
+                                <table class="table table-sm mb-0 pb-0">
+                                    <thead class="text-center" style="background-color: #BBEAF2">
+                                        <th hidden>#</th>
+                                        <th width="100px">{{ __('Nombre') }}</th>
+                                        <th class="text-center">{{ __('Medida') }}</th>
+                                        <th width="50px">Op</th>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="col-xl-12 col-sm-12 table-responsive table-bordered" style="height: 300px;">
                                 <table class="table table-sm table-hover tabla_lista_materiales" id="tabla_lista_materiales" >
                                     <tbody>
                                         
@@ -36,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-8 col-sm-8" >
+                    <div class="col-xl-8 col-sm-12" >
                         <div class="row justify-content-center" >
                             <div class="col-xl-11 col-sm-11 text-center">
                                 <label class="col-form-label">{{ __('MATERIALES AGREGADOS') }}</label>
@@ -44,7 +46,7 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-xl-12 col-sm-12 ">
-                                <table class="table table-sm table-bordered">
+                                <table class="table table-sm table-bordered mb-0 pb-0">
                                     <thead style="background-color: #BAECCA;">
                                         <th width="50px"></th>
                                         <th hidden>#</th>
@@ -56,7 +58,7 @@
                                     </thead>
                                 </table>
                             </div>
-                            <div class="col-xl-12 col-sm-12 table-responsive table-borderless mt-0 pt-0" style="height: 320px">
+                            <div class="col-xl-12 col-sm-12 table-responsive table-borderless" style="height: 320px">
                                 <table class="table table-sm table-hover tabla_material_estudio" id="tabla_material_estudio" >
                                     
                                     <tbody>

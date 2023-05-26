@@ -55,4 +55,9 @@ class Factura extends Model
     {
         return $this->hasMany(Recepcion::class);
     }
+
+    public function results()
+    {
+        return $this->hasMany(Result::class, 'fac_id');
+    }
 }

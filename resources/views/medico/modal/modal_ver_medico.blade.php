@@ -56,12 +56,12 @@
 
                             <h1 class="col-xl-3 col-sm-3 col-form-label">{{ __('Dep.') }}:</h1>
                             <div class="col-xl-9 col-sm-9">
-                                {{-- <label class="col-form-label">{{ $medico->departamento->nombre }}</label> --}}
+                                <label class="col-form-label">{{ $medico->departamento->nombre }}</label>
                             </div>
 
                             <h1 class="col-xl-3 col-sm-3 col-form-label">{{ __('Municipio') }}:</h1>
                             <div class="col-xl-9 col-sm-9">
-                                {{-- <label class="col-form-label">{{ $medico->municipio->nombre }}</label> --}}
+                                <label class="col-form-label">{{ $medico->municipio->nombre }}</label>
                             </div>
 
                             <h1 class="col-xl-3 col-sm-3 col-form-label">{{ __('Celular') }}:</h1>

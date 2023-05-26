@@ -14,7 +14,7 @@ class DpComponente extends Model
         'comp_id'
     ];
 
-    public function detaleprocedimiento()
+    public function detalleprocedimiento()
     {
         return $this->belongsTo(DetalleProcedimiento::class, 'dp_id');
     }

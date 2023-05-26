@@ -100,7 +100,6 @@ class EstudioController extends Controller
             'est_descripcion' => 'max:255',
             'est_muestra' => 'required',
             'est_precio' => 'required|decimal:2',
-            'est_moneda' => 'required'
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
@@ -152,8 +151,7 @@ class EstudioController extends Controller
             'est_nombre_update' => 'required|max:255',
             'est_descripcion_update' => 'max:255',
             'est_muestra_update' => 'required',
-            'est_precio_update' => 'required|decimal:2',
-            'est_moneda_update' => 'required'
+            'est_precio_update' => 'required|decimal:2'
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);

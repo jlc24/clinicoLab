@@ -20,20 +20,20 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-4 col-sm-4">
+                <div class="col-xl-3 col-sm-12">
                     <div class="card">
-                        <div class="card-header" style="background-color: #E8F8ED; height: 50px; padding-top: 15px;">
+                        <div class="card-header" style="background-color: #E8F8ED; height: 40px;">
                             <h4 class="page-title">
                                 {{ __('Resultados') }}
                             </h4>
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-xl-12 col-sm-12">
+                                <div class="col-xl-12 col-sm-12 pt-3 mb-3">
                                     <div class="form-group row">
-                                        <label for="buscar_resultado" class="col-form-label col-md-4">{{ __('Buscar por') }}:</label>
-                                        <div class="col-md-8">
-                                            <select name="buscar_resultado" id="buscar_resultado" class="custom-select" onchange="buscarPor()">
+                                        <label for="buscar_resultado" class="col-form-label col-md-5">{{ __('Buscar por') }}:</label>
+                                        <div class="col-md-7">
+                                            <select name="buscar_resultado" id="buscar_resultado" class="custom-select buscar_resultado" onchange="buscarPor()">
                                                 <option value="paciente" selected>Pacientes</option>
                                                 <option value="estudio">Estudios</option>
                                                 <option value="fecha">Fechas</option>
@@ -45,16 +45,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-7 col-sm-7">
+                <div class="col-xl-6 col-sm-12">
                     <div class="card">
-                        <div class="card-header" style="background-color: #E8F8ED; height: 50px; padding-top: 15px;">
+                        <div class="card-header" style="background-color: #E8F8ED; height: 40px;">
                             <h4 class="page-title">
                                 {{ __('Datos a buscar') }}
                             </h4>
                         </div>
                         <div class="card-body">
                             <div id="form_buscar_paciente">
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-center pt-3 mb-4">
                                     <div class="col-xl-4 col-sm-4">
                                         <div class="form-group row">
                                             <div class="col-md-12" style="display: inline-flex">
@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                             <div id="form_buscar_estudio" style="display: none">
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-center pt-3 mb-4">
                                     <div class="col-xl-4 col-sm-4">
                                         <div class="form-group row">
                                             <div class="col-md-12" style="display: inline-flex">
@@ -114,15 +114,15 @@
                                 </div>
                             </div>
                             <div id="form_buscar_fechas" style="display: none">
-                                <div class="row justify-content-center">
-                                    <div class="col-xl-3 col-sm-3">
+                                <div class="row justify-content-center pt-3 mb-4">
+                                    <div class="col-xl-5 col-sm-5">
                                         <div class="form-group row">
                                             <div class="col-md-12 " style="display: inline-flex;">
                                                 <input type="date" id="rec_fecha_inicio" name="rec_fecha_inicio" class="form-control form-control-sm" autocomplete="off" required>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-3 col-sm-3">
+                                    <div class="col-xl-5 col-sm-5">
                                         <div class="form-group row">
                                             <div class="col-md-12 " style="display: inline-flex;">
                                                 <input type="date" id="rec_fecha_final" name="rec_fecha_final" class="form-control form-control-sm" autocomplete="off" required>
@@ -131,9 +131,39 @@
                                     </div>
                                     <div class="col-xl-2 col-sm-2">
                                         <div class="form-group row">
-                                            <div class="col-md-12">
-                                                <button class="btn btn-info btn-sm" id="btnBuscarFechas">Buscar</button>
-                                            </div>
+                                            <button class="btn btn-info btn-sm" id="btnBuscarFechas">Buscar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-sm-12">
+                    <div class="card">
+                        <div class="card-header" style="background-color: #E8F8ED; height: 40px;">
+                            <h4 class="page-title">
+                                {{ __('Estado') }}
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="col-sm-6">
+                                    <div class="form-group clearfix">
+                                        <div class="icheck-danger d-inline">
+                                            <input type="radio" name="r3" checked id="pendiente">
+                                            <label for="radioSuccess1"><a href="javascript:void(0)" class="badge badge-danger btn-estado-pendiente" onclick="isCheckEstado('#pendiente')">PENDIENTE</a>
+                                            </label>
+                                        </div>
+                                        <div class="icheck-success d-inline">
+                                            <input type="radio" name="r3" id="resultado">
+                                            <label for="radioSuccess2"><a href="javascript:void(0)" class="badge badge-success btn-estado-resultado" onclick="isCheckEstado('#resultado')">RESULTADO</a>
+                                            </label>
+                                        </div>
+                                        <div class="icheck-primary d-inline">
+                                            <input type="radio" name="r3" id="todo">
+                                            <label for="radioSuccess3"><a href="javascript:void(0)" class="badge badge-primary btn-estado-todos" onclick="isCheckEstado('#todo')">TODOS</a>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>

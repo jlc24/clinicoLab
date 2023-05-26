@@ -19,7 +19,7 @@
                     </div>
                 @endif
                     <div class="row lista_aspectos" >
-                        <div class="col-xl-4 col-sm-4" style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
+                        <div class="col-xl-4 col-sm-12" style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
                             <form class="form-horizontal" id="formulario_crear_aspectos">
                                 <div class="row">
                                     <div class="col-xl-12 col-sm-12" >
@@ -42,14 +42,16 @@
                                 <label class="col-form-label" for="proc_nombre">{{ __('Lista de Aspectos') }}: </label>
                             </div>
                             <div class="row">
-                                <table class="table table-sm">
-                                    <thead class="text-center" style="background-color: #BBEAF2">
-                                        <th hidden>#</th>
-                                        <th>{{ __('Nombre') }}</th>
-                                        <th>Op</th>
-                                    </thead>
-                                </table>
-                                <div class="col-xl-12 col-sm-12 table-responsive table-bordered mt-0 pt-0" style="height: 300px;">
+                                <div class="col-xl-12 col-sm-12">
+                                    <table class="table table-sm mb-0 pb-0">
+                                        <thead class="text-center" style="background-color: #BBEAF2">
+                                            <th hidden>#</th>
+                                            <th>{{ __('Nombre') }}</th>
+                                            <th>Op</th>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="col-xl-12 col-sm-12 table-responsive table-bordered" style="height: 300px;">
                                     <table class="table table-sm table-hover tabla_aspectos" id="tabla_aspectos" >
                                         
                                         <tbody>
@@ -59,15 +61,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-8 col-sm-8" >
+                        <div class="col-xl-8 col-sm-12" >
                             <div class="row justify-content-center" >
                                 <div class="col-xl-11 col-sm-11 text-center">
                                     <label class="col-form-label">{{ __('ASPECTOS A EVALUAR') }}</label>
                                 </div>
                             </div>
                             <div class="row justify-content-center">
-                                <div class="col-xl-10 col-sm-10 ">
-                                    <table class="table table-sm">
+                                <div class="col-xl-10 col-sm-12 ">
+                                    <table class="table table-sm mb-0 pb-0">
                                         <thead style="background-color: #BAECCA;">
                                             <th width="50px"></th>
                                             <th hidden>#</th>
@@ -77,7 +79,7 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="col-xl-10 col-sm-10 table-responsive table-borderless mt-0 pt-0" style="height: 420px">
+                                <div class="col-xl-10 col-sm-12 table-responsive table-borderless" style="height: 420px">
                                     <table class="table table-sm table-hover tabla_dpc_parametro" id="tabla_dpc_parametro" >
                                         
                                         <tbody>

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('results', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('fac_id');         // factura
             $table->unsignedBigInteger('rec_id');         // recepcion
             $table->unsignedBigInteger('det_id');           // estudio
             $table->unsignedBigInteger('dp_id');            // procedimiento
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('umed_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('rec_id')->references('id')->on('recepcions');
+            $table->foreign('fac_id')->references('id')->on('facturas');
         });
     }
 

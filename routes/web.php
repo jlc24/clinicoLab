@@ -27,6 +27,7 @@ use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\MetodologiaController;
 use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\ParametroController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProcedimientoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RecepcionController;
@@ -69,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
     Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
+    Route::get('/getEstudioClienteRecepcion/{id}', [ClienteController::class, 'getEstudioClienteRecepcion'])->name('getEstudioClienteRecepcion');
 
     Route::get('/empresas', [EmpresaController::class, 'index'])->name('empresa');
     Route::post('/empresas', [EmpresaController::class, 'store'])->name('empresa');
@@ -97,7 +99,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/validarFactura', [RecepcionController::class, 'validarFactura']);
 
         Route::post('/facturas', [FacturaController::class, 'store'])->name('factura');
-        Route::put('/facturas/{id}', [FacturaController::class, 'update']);
+        Route::post('/facturas/{id}', [FacturaController::class, 'update'])->name('factura.update');
     });
     Route::get('/buscar_paciente_id', [RecepcionController::class, 'buscarPacienteId']);
     Route::get('/buscar_paciente_nombre', [RecepcionController::class, 'buscarPacienteNombre']);
@@ -230,11 +232,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/buscar_recepcion_paciente', [ResultController::class, 'buscarRecepcionPaciente']);
     Route::get('/buscar_recepcion_estudio', [ResultController::class, 'buscarRecepcionEstudio']);
     Route::get('/buscar_recepcion_fechas', [ResultController::class, 'buscarRecepcionFechas']);
-    Route::get('/searchResultRecepcions', [ResultController::class, 'searchResultRecepcions']);
+    Route::get('/getDPCAspectoResult', [ResultController::class, 'getDPCAspectoResult']);
     
     Route::get('/results', [ResultController::class, 'index'])->name('result');
     Route::post('/results', [ResultController::class, 'store'])->name('result.store');
+    Route::post('/results/{id}', [ResultController::class, 'update'])->name('result.update');
+
+    Route::post('/updateEstadoRecepcion/{id}', [ResultController::class, 'updateEstadoRecepcion'])->name('updateEstadoRecepcion');
 
     Route::get('/getClienteResult/{id}', [ResultController::class, 'getClienteResult'])->name('getClienteResult');
+
+    Route::get('/pdfFactura/{id}', [PdfController::class, 'pdfFactura'])->name('factura.pdf');
+    Route::get('/pdfresultado/{id}', [PdfController::class, 'pdfResultado'])->name('resultado.pdf');
+    Route::get('/getRutaFacturaCliente/{id}', [PdfController::class, 'getRutaFacturaCliente'])->name('getRutaFacturaCliente');
+
+    Route::get('/getFacturaCliente/{id}', [FacturaController::class , 'getFacturaCliente'])->name('getFacturaCliente');
 });
 

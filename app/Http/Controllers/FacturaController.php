@@ -18,7 +18,18 @@ class FacturaController extends Controller
         //
     }
 
-    
+    public function getFacturaCliente($id)
+    {
+        $facturas = DB::table('facturas as f')
+                        ->join('clientes as c', 'f.cli_id', '=', 'c.id')
+                        ->select('f.id', 'f.fac_ruta_file', 
+                                DB::raw("DATE_FORMAT(f.created_at, '%d-%m-%Y') as fecha"),
+                                DB::raw("DATE_FORMAT(f.created_at, '%H:%i') as hora"))
+                        ->where('c.id', '=', $id)
+                        ->get();
+
+        return response()->json($facturas);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -93,7 +104,6 @@ class FacturaController extends Controller
             'fac_cambio' => $request->input('fac_cambio')
         ]);
 
-        return redirect()->route('recepcion')->with('success', 'Se generó la factura correctamente');
     }
 
     /**

@@ -15,6 +15,7 @@ class Estudio extends Model
         'est_descripcion',
         'est_precio',
         'umed_id',
+        'est_moneda'
     ];
 
     public function umedida()

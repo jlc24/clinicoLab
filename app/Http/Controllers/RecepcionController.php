@@ -182,28 +182,33 @@ class RecepcionController extends Controller
             'caja_id' => $request->input('caja_id'),
             'fac_id' => $request->input('fac_id'),
             'det_id' => $request->input('det_id'),
-            'estado' => 'Pendiente',
+            'estado' => 'PENDIENTE',
         ]);
 
-        $recep = Recepcion::with('Detalle.DetalleProcedimiento.DpComponente.ComponenteAspecto')
-        ->findOrFail($recepcion->id);
+        $fac_id = $recepcion->fac_id;
+        $rec_id = $recepcion->id;
+        
+        $recep_all = DB::table('recepcions as r')
+                        ->join('detalles as d', 'r.det_id', '=', 'd.id')
+                        ->join('detalle_procedimientos as dp', 'dp.det_id', '=', 'd.id')
+                        ->join('dp_componentes as dpc', 'dpc.dp_id', '=', 'dp.id')
+                        ->join('componente_aspectos as ca', 'ca.dpcomp_id', '=', 'dpc.id')
+                        ->select('r.id as rec_id', 'd.id as det_id', 'dp.id as dp_id', 'dpc.id as dpc_id', 'ca.id as ca_id')
+                        ->where('r.id', $rec_id)
+                        ->get();
+        $records = [];
 
-        // Almacena los resultados en la tabla 'results'.
-        foreach ($recep->Detalle as $det) {
-            foreach ($det->DetalleProcedimiento as $dp) {
-                foreach ($dp->DpComponente as $dpc) {
-                    foreach ($dpc->ComponenteAspecto as $ca) {
-                        Result::create([
-                            'rec_id' => $recep->id,
-                            'det_id' => $det->id,
-                            'dp_id' => $dp->id,
-                            'dpc_id' => $dpc->id,
-                            'ca_id' => $ca->id
-                        ]);
-                    }
-                }
-            }
+        foreach ($recep_all as $row) {
+            $records[] = [
+                'fac_id' => $fac_id,
+                'rec_id' => $row->rec_id,
+                'det_id' => $row->det_id,
+                'dp_id' => $row->dp_id,
+                'dpc_id' => $row->dpc_id,
+                'ca_id' => $row->ca_id,
+            ];
         }
+        Result::insert($records);
     }
 
     /**
@@ -235,6 +240,10 @@ class RecepcionController extends Controller
      */
     public function destroy($id)
     {
+        $results = Result::where('rec_id', '=', $id);
+        if ($results !== null) {
+            $results->delete();
+        }
         $recepcion = Recepcion::find($id);
         $recepcion->delete();
         return response()->json(['success', 'El registro se ha eliminado con éxito']);

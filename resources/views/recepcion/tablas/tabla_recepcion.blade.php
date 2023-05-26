@@ -1,5 +1,5 @@
 <div class="col-xl-12 col-sm-12">
-    <table class="table table-bordered table-responsive-lg" id="tabla-estudios">
+    <table class="table table-bordered table-responsive-sm" id="tabla-estudios">
         <thead>
             <th>Clave</th>
             <th>Estudio</th>

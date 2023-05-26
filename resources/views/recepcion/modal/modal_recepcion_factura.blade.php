@@ -31,12 +31,12 @@
                             </div>
                             <div class="row">
                                 <div class="col-xl-3 col-sm-3">
-                                    <label class="col-form-label" for="fac_factura" >{{ __('Factura') }} Nº:</label>
+                                    <label class="col-form-label" for="fac_factura_id" >{{ __('Factura') }} Nº:</label>
                                 </div>
                                 <div class="col-xl-3 col-sm-3">
                                     <div class="form-group row">
                                         <div class="col-md-12">
-                                            <input type="text" id="fac_factura_id" name="fac_factura_id" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                            <label class="col-form-label fac_factura_id" for="fac_factura" id="fac_factura_id"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -221,7 +221,7 @@
             </div>
             <div class="modal-footer">
                 {{-- <button type="button" id="btnCloseAddClient" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                <button class="btn btn-success" onclick="UpdateFactura()">Registrar</button>
+                <button data-toggle="modal" data-target="#exampleModal" class="btn btn-success btn-facturar-recepcion">Registrar</button>
             </div>
         </div>
     </div>

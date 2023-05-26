@@ -23,7 +23,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="est_cod">{{ __('Clave') }}:</label>
+                                <label class="col-md-4 col-form-label" for="est_cod">{{ __('Clave') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-5" style="display: inline-flex;">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px; height: 31px;"><i class="fas fa-key"></i></div>
@@ -41,7 +41,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-sm-12" >
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="est_nombre">{{ __('Nombre Estudio') }}: </label>
+                                <label class="col-md-4 col-form-label" for="est_nombre">{{ __('Nombre Estudio') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-8">
                                     <input type="text" id="est_nombre" name="est_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Estudio" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
                                 </div>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="est_muestra">{{ __('Tipo de Muestra') }}: </label>
+                                <label class="col-md-4 col-form-label" for="est_muestra">{{ __('Tipo de Muestra') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-8">
                                     <select class="custom-select custom-select-sm" id="est_muestra" name="est_muestra" required>
                                         <option value="" selected="" disabled>SELECCIONAR...</option>
@@ -83,7 +83,7 @@
                         </div>
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="est_indicaciones">{{ __('Indicaciones') }}: </label>
+                                <label class="col-md-4 col-form-label" for="est_indicaciones">{{ __('Indicaciones') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-8">
                                     <select class="custom-select custom-select-sm" id="est_indicaciones" name="est_indicaciones" >
                                         <option value="" selected="">SELECCIONAR...</option>
@@ -96,14 +96,13 @@
                         </div>
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="est_precio">{{ __('Precio') }}: </label>
+                                <label class="col-md-4 col-form-label" for="est_precio">{{ __('Precio') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-5">
                                     <input type="number" min="0" step="0.01" value="0.00" id="est_precio" name="est_precio" class="form-control form-control-sm" autocomplete="off" placeholder="Precio Estudio" required>
                                 </div>
                                 <div class="col-md-3">
                                     <select class="custom-select custom-select-sm" id="est_moneda" name="est_moneda" required>
-                                        <option value="" selected disabled>Seleccionar...</option>
-                                        <option value="Bs">Bs</option>
+                                        <option value="Bs" selected>Bs</option>
                                         <option value="$">$</option>
                                     </select>
                                 </div>

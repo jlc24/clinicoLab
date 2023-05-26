@@ -77,46 +77,56 @@
 
         $('#btnRegisterEst').on('click', function(event) {
             event.preventDefault();
-            var datos = new FormData();
-            datos.append('est_cod', $("#est_cod").val());
-            datos.append('est_nombre', $("#est_nombre").val());
-            datos.append('est_descripcion', $("#est_descripcion").val());
-            datos.append('est_precio', $("#est_precio").val());
-            datos.append('est_moneda', $("#est_moneda").val());
-            datos.append('est_muestra', $("#est_muestra").val());
-            datos.append('est_recipiente', $("#est_recipiente").val());
-            datos.append('est_indicaciones', $("#est_indicaciones").val());
-
-            $.ajax({
-                url: '{{ route("estudio") }}',
-                type: 'POST',
-                data: datos,
-                processData: false,
-                contentType: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data) {
-                    Swal.fire({
-                        title: '¡Exito!',
-                        text: 'Estudio registrado',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    location.reload();
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'Se ha producido un error.',
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-            });
+            if ($("#est_cod").val() == "" || $("#est_nombre").val() == "" || $("#est_precio").val() == "" || $("#est_moneda").val() == "" || $("#est_muestra").val() == "" || $("#est_indicaciones").val() == "" ) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Algunos campos son requeridos',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }else{
+                var datos = new FormData();
+                datos.append('est_cod', $("#est_cod").val());
+                datos.append('est_nombre', $("#est_nombre").val());
+                datos.append('est_descripcion', $("#est_descripcion").val());
+                datos.append('est_precio', $("#est_precio").val());
+                datos.append('est_moneda', $("#est_moneda").val());
+                datos.append('est_muestra', $("#est_muestra").val());
+                datos.append('est_recipiente', $("#est_recipiente").val());
+                datos.append('est_indicaciones', $("#est_indicaciones").val());
+    
+                $.ajax({
+                    url: '{{ route("estudio") }}',
+                    type: 'POST',
+                    data: datos,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        Swal.fire({
+                            title: '¡Exito!',
+                            text: 'Estudio registrado',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        location.reload();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'Se ha producido un error.',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            }
         });
 
         $(document).on('click', '.btn-delete-estudio', function() {
@@ -1210,10 +1220,10 @@
                                 '<tr>'+
                                     '<td hidden>'+value.id+'</td>'+
                                     '<td hidden>'+value.mat_id+'</td>'+
-                                    '<td>'+ value.mat_nombre +'</td>'+
+                                    '<td width="100px">'+ value.mat_nombre +'</td>'+
                                     '<td>'+ value.unidad +'</td>'+
                                     '<td hidden>'+ value.umed_id +'</td>'+
-                                    '<td class="text-center">'+
+                                    '<td class="text-center" width="50px" style="vertical-align: middle;">'+
                                         '<button type="button" class="btn btn-sm btn-outline-info btn-use-material" title="Usar Material"><i class="fas fa-greater-than fa-sm"></i></button>'+
                                     '</td>'+
                                 '</tr>'

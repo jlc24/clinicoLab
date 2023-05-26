@@ -3,7 +3,6 @@
 <script type="text/javascript">
 $(document).ready(function() {
     $('#smartwizard_crear_client').smartWizard();
-    $('#smartwizard_update_client').smartWizard();
     $('#cli_departamento').on('change', function() {
         var id = $(this).val();
         $.ajax({
@@ -108,9 +107,9 @@ $(document).ready(function() {
             datos.append('cli_rol', $("#cli_rol").val());
             datos.append('med_id', $("#cli_medico").val());
 
-            for (const [key, value] of datos) {
-                console.log(key, '- '+value);
-            };
+            // for (const [key, value] of datos) {
+            //     console.log(key, '- '+value);
+            // };
             $.ajax({
                 url: '{{ route("cliente.store") }}',
                 type: 'POST',
@@ -149,8 +148,6 @@ $(document).ready(function() {
         }
     });
 
-    
-
     //datatables
     $("#tabla_clientes").dataTable({
         responsive: true,
@@ -182,6 +179,132 @@ $(document).ready(function() {
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
         }
+    });
+
+    function getClientResult(id) {
+        mostrarCargando();
+        $.ajax({
+            url: '{{ route("getEstudioClienteRecepcion", ":id") }}'.replace(":id", id),
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.length != 0) {
+                    $('.tabla-resultados-cliente tbody').empty();
+                    $.each(data, function(index, value) {
+                        $('.tabla-resultados-cliente tbody').append(
+                            '<tr>'+
+                                '<td style="vertical-align: middle;">'+ value.rec_id +'</td>'+
+                                '<td style="vertical-align: middle;">'+ value.est_cod +'</td>'+
+                                '<td style="vertical-align: middle;">'+ value.est_nombre +'</td>'+
+                                '<td style="vertical-align: middle;">'+ value.est_precio + ' ' + value.est_moneda +'</td>'+
+                                '<td style="vertical-align: middle;">'+ 'CANCELADO' +'</td>'+
+                                '<td style="vertical-align: middle;" width="40px"><a href="#" class="badge ' + (value.estado == 'PENDIENTE' ? 'badge-danger' : 'badge-success') + '" title="Estado">' + value.estado + '</a></td>'+
+                                '<td class="text-center" style="vertical-align: middle;">'+
+                                    '<button data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-primary btn-sm btn-show-result" title="Ver resultado" ' + (value.estado == 'PENDIENTE' ? 'disabled' : '') + '><i class="fas fa-print"></i></button>'+
+                                '</td>'+
+                            '</tr>'
+                        );
+                    });
+                }else {
+                    $('.tabla-resultados-cliente tbody').empty().append('<td colspan="7" class="text-center fila_vacia">No hay datos recepcionados</td>');
+                }
+                cerrarCargando();
+            }
+        });
+    }
+
+    $(document).on('click', '.btnVerResultados', function() {
+        var cli_id = $(this).closest('tr').find('td:eq(0)').text();
+        getClientResult(cli_id);
+    });
+
+    function getFacturaCliente(id) {
+        mostrarCargando();
+        $.ajax({
+            url: '{{ route("getFacturaCliente", ":id") }}'.replace(":id", id),
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data.length != 0) {
+                    $('.tabla-facturas-cliente tbody').empty();
+                    $.each(data, function(index, value) {
+                        $('.tabla-facturas-cliente tbody').append(
+                            '<tr>'+
+                                '<td style="vertical-align: middle;">'+ value.id +'</td>'+
+                                '<td style="vertical-align: middle;">'+ value.fecha +'</td>'+
+                                '<td style="vertical-align: middle;">'+ value.hora +'</td>'+
+                                '<td style="vertical-align: middle;">'+ (value.fac_ruta_file !== null ? 'SI' : 'NO') +'</td>'+
+                                '<td class="text-center" style="vertical-align: middle;">'+
+                                    '<button data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-primary btn-sm btn-show-fact" title="Ver resultado"><i class="fas fa-print"></i></button>'+
+                                '</td>'+
+                            '</tr>'
+                        );
+                    });
+                }else {
+                    $('.tabla-facturas-cliente tbody').empty().append('<td colspan="7" class="text-center fila_vacia">No hay datos recepcionados</td>');
+                }
+                cerrarCargando();
+            }
+        });
+    }
+
+    $(document).on('click', '.btnVerFacturas', function() {
+        var cli_id = $(this).closest('tr').find('td:eq(0)').text();
+        $(".fac_cli_id").val(cli_id);
+        getFacturaCliente(cli_id);
+    });
+
+    function PdfFactura(id) {
+        mostrarCargando();
+        $.ajax({
+            url: '{{ route("getRutaFacturaCliente", ":id") }}'.replace(":id", id),
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                if (data.fac_ruta_file !== null) {
+                    $(document).on('shown.bs.modal', '#exampleModal', function (event) {
+                        var pdfFrame = document.getElementById('pdfFrame');
+                        var checkPDFReadyInterval = setInterval(function() {
+                            if (data.fac_ruta_file !== null) {
+                                pdfFrame.src = "{{ asset('storage') }}"+"/"+data.fac_ruta_file;
+                                clearInterval(checkPDFReadyInterval);
+                            }
+                        }, 100);
+                    });
+                }else{
+                    $.ajax({
+                        url: '{{ route("factura.pdf", ":id") }}'.replace(":id", id),
+                        type: 'GET',
+                        success: function(response) {
+                            getFacturaCliente($(".fac_cli_id").val());
+                            console.log(response);
+                            var pdfFrame = document.getElementById('pdfFrame');
+                            var checkPDFReadyInterval = setInterval(function() {
+                                if (response.fac_ruta_file !== null) {
+                                    pdfFrame.src = "{{ asset('storage') }}"+"/"+response.fac_ruta_file;
+                                    clearInterval(checkPDFReadyInterval);
+                                }
+                            }, 100);
+                            //window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
+                        }
+                    });
+                }
+                cerrarCargando();
+            }
+        });
+    }
+
+    $(document).on('click', '.btn-show-fact', function() {
+        var fac_id = $(this).closest('tr').find('td:eq(0)').text();
+        console.log(fac_id);
+        PdfFactura(fac_id);
+    });
+
+    $(document).on('click', '.btnClosePdfGenerate', function() {
+        var pdfFrame = document.getElementById('pdfFrame');
+        pdfFrame.src = "";
     });
     
 });

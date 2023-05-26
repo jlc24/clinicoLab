@@ -10,11 +10,18 @@ class Result extends Model
     use HasFactory;
 
     protected $fillable = [
+        'fac_id',
         'rec_id',
         'det_id',
         'dp_id',
         'dpc_id',
         'ca_id',
-        'resultado'
+        'resultado',
+        'umed_id'
     ];
+
+    public function factura()
+    {
+        return $this->belongsTo(Factura::class, 'fac_id');
+    }
 }

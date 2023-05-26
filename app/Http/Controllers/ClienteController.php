@@ -9,6 +9,7 @@ use App\Models\Medico;
 use App\Models\Municipio;
 use App\Models\User;
 use DateTime;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ClienteController extends Controller
@@ -18,7 +19,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = Cliente::paginate(10);
+        $clientes = Cliente::all();
         foreach ($clientes as $cliente) {
             $fec_nac = new DateTime($cliente->cli_fec_nac);
             $hoy = new DateTime();
@@ -52,6 +53,20 @@ class ClienteController extends Controller
         return response()->json($datos);
     }
     
+    public function getEstudioClienteRecepcion($id)
+    {
+        $cliente = DB::table('clientes as c')
+                        ->join('facturas as f', 'f.cli_id', '=', 'c.id')
+                        ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
+                        ->join('detalles as d', 'r.det_id', '=', 'd.id')
+                        ->join('estudios as e', 'd.estudio_id', '=', 'e.id')
+                        ->select('r.id as rec_id', 'e.est_cod', 'e.est_nombre', 'e.est_precio', 'e.est_moneda', 'f.fac_total', 'f.fac_importe', 'f.fac_cambio',
+                                    DB::raw("DATE_FORMAT(r.created_at, '%d-%m-%Y') as fecha"),
+                                    DB::raw("DATE_FORMAT(r.created_at, '%H:%i') as hora"), 'r.estado')
+                        ->where('c.id', '=', $id)
+                        ->get();
+        return response()->json($cliente);
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -4,8 +4,9 @@
     @include('layouts.head')
 
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
     <div id="app" class="wrapper">
+
         <!-- Top bar -->
         @include('layouts.topbar')
         <!-- /.navbar Left Sidebar -->
@@ -25,6 +26,10 @@
             @else
             @include('layouts.footer')
         @endguest
+    </div>
+    <div id="loader-wrapper">
+        <div id="loader"></div>
+        <div id="loading-text">Cargando...</div>
     </div>
     
     @include('layouts.librerias')

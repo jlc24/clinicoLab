@@ -51,7 +51,6 @@
 
                             <h1 class="col-xl-3 col-sm-3 col-form-label">{{ __('Fecha Nac.') }}:</h1>
                             <div class="col-xl-6 col-sm-6">
-                                {{-- <label class="col-form-label">{{ $cliente->cli_fec_nac }}</label> --}}
                                 @php
                                     $espanol = setlocale(LC_TIME, 'es_ES.UTF-8', 'es_ES', 'es');
                                     $fechaNacimiento = new DateTime($cliente->cli_fec_nac);

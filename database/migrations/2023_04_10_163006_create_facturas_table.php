@@ -27,6 +27,7 @@ return new class extends Migration
             $table->unsignedDecimal('fac_importe')->nullable();
             $table->unsignedDecimal('fac_cambio')->nullable();
             //$table->unsignedBigInteger('fac_iva')->nullable();
+            $table->string('fac_ruta_file', 255)->nullable();
             $table->timestamps();
 
             $table->foreign('cli_id')->references('id')->on('clientes');

@@ -9,17 +9,18 @@
                 <div class="row">
                     <div class="col-xl-12 col-sm-12 " style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
                         <div class="row">
-                            <div class="col-xl-7 col-sm-7" style="display: inline-flex;">
+                            <div class="col-xl-7 col-sm-12" style="display: inline-flex;">
                                 <div class="col-md-3">
                                     <label class="col-form-label" for="res_cli_nombre">{{ __('Paciente') }}: </label>
                                 </div>
                                 <div class="col-md-9">
-                                    <h1 class="col-form-label res_cli_nombre" id="res_cli_nombre">FRANCISCO LEDEZMA FERRUFINO</h1>
-                                    <input type="hidden" name="res_cli_id" id="res_cli_id" class="res_cli_id">
+                                    <h1 class="col-form-label res_cli_nombre" id="res_cli_nombre"></h1>
+                                    <input type="hidden" name="res_fac_id" id="res_fac_id" class="res_fac_id">
                                     <input type="hidden" name="res_rec_id" id="res_rec_id" class="res_rec_id">
+                                    <input type="hidden" name="res_cli_id" id="res_cli_id" class="res_cli_id">
                                 </div>
                             </div>
-                            <div class="col-xl-5 col-sm-5" style="display: inline-flex">
+                            <div class="col-xl-5 col-sm-12" style="display: inline-flex">
                                 <div class="col-md-4">
                                     <label class="col-form-label" for="res_cli_recepcion">{{ __('Recepcion') }}:</label>
                                 </div>
@@ -29,7 +30,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xl-7 col-sm-7" style="display: inline-flex;">
+                            <div class="col-xl-7 col-sm-12" style="display: inline-flex;">
                                 <div class="col-md-3">
                                     <label class="col-form-label" for="res_cli_genero">{{ __('Genero') }}: </label>
                                 </div>
@@ -37,7 +38,7 @@
                                     <h1 class="col-form-label res_cli_genero" id="res_cli_genero"></h1>
                                 </div>
                             </div>
-                            <div class="col-xl-5 col-sm-5" style="display: inline-flex">
+                            <div class="col-xl-5 col-sm-12" style="display: inline-flex">
                                 <div class="col-md-4">
                                     <label class="col-form-label" for="res_cli_edad">{{ __('Edad') }}:</label>
                                 </div>
@@ -67,20 +68,23 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xl-12 col-sm-12" style="display: inline-flex;">
-                                <div class="col-md-2">
+                            <div class="col-xl-7 col-sm-12" style="display: inline-flex;">
+                                <div class="col-md-3">
                                     <label class="col-form-label" for="res_est_nombre">{{ __('Estudio') }}: </label>
                                 </div>
-                                <div class="col-md-10">
+                                <div class="col-md-9">
                                     <h1 class="col-form-label res_est_nombre" id="res_est_nombre"></h1>
                                     <input type="hidden" name="res_det_id" id="res_det_id" class="res_det_id">
                                 </div>
+                            </div>
+                            <div class="col-xl-5 col-sm-12" style="display: inline-flex">
+                                
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row mt-2">
-                    <div class="col-xl-3 col-sm-3">
+                    <div class="col-xl-3 col-sm-12">
                         <div class="row">
                             <div class="col-md-12">
                                 <label class="col-form-label" for="fac_paciente_nombre">{{ __('Procedimiento') }}: </label>
@@ -106,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-9 col-sm-9 divAspectos" style="display: none;">
+                    <div class="col-xl-9 col-sm-12 divAspectos" style="display: none;">
                         <div class="row justify-content-center" >
                             <div class="col-xl-11 col-sm-11 text-center">
                                 <label class="col-form-label nombre_comp_asp"></label>
@@ -119,16 +123,15 @@
                                     <thead style="background-color: #BAECCA;">
                                         <th width="30px"></th>
                                         <th hidden>#</th>
-                                        <th width="150px">Aspecto</th>
-                                        <th width="100px">Resultado</th>
-                                        <th class="text-center" width="100px">Unidad</th>
-                                        <th class="text-center">Op</th>
+                                        <th width="150px">{{ __('Aspecto') }}</th>
+                                        <th width="100px">{{ __('Resultado') }}</th>
+                                        <th class="text-center" width="100px">{{ __('Unidad') }}</th>
+                                        <th class="text-center">{{ __('Parámetros') }}</th>
                                     </thead>
                                 </table>
                             </div>
                             <div class="col-xl-12 col-sm-12 table-responsive table-borderless mt-0 pt-0" style="height: 220px">
                                 <table class="table table-sm table-hover tabla_aspectos_resultado" id="tabla_aspectos_resultado" >
-                                    
                                     <tbody>
 
                                     </tbody>

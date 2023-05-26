@@ -15,11 +15,10 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response){
-                    //console.log(response);
                     if (response.id == undefined) {
                         $.ajax({
-                            url:"{{ route('factura') }}",
-                            method:"POST",
+                            url: "{{ route('factura') }}",
+                            method: "POST",
                             data: fac_estado,
                             contentType: false,
                             processData: false,
@@ -84,7 +83,6 @@
                     url: '/buscar_medico_id/?q=' + request.term,
                     dataType: 'json',
                     success: function(data) {
-                        //console.log(data);
                         response(data);
                     }
                 });
@@ -110,7 +108,6 @@
                     url: '/buscar_medico_nombre/?q=' + request.term,
                     dataType: 'json',
                     success: function(data) {
-                        //console.log(data);
                         response(data);
                     }
                 });
@@ -137,7 +134,6 @@
                     url: '/buscar_paciente_id/?q=' + request.term,
                     dataType: 'json',
                     success: function(data) {
-                        //console.log(data);
                         response(data);
                     }
                 });
@@ -164,7 +160,6 @@
                     url: '/buscar_paciente_nombre/?q=' + request.term,
                     dataType: 'json',
                     success: function(data) {
-                        //console.log(data);
                         response(data);
                     }
                 });
@@ -192,7 +187,6 @@
                     url: '/buscar_emp_id/?q=' + request.term,
                     dataType: 'json',
                     success: function(data) {
-                        //console.log(data);
                         response(data);
                     }
                 });
@@ -217,7 +211,6 @@
                     url: '/buscar_emp_nombre/?q=' + request.term,
                     dataType: 'json',
                     success: function(data) {
-                        //console.log(data);
                         response(data);
                     }
                 });
@@ -243,7 +236,6 @@
                     url: '/buscar_estudio_id/?q=' + request.term,
                     dataType: 'json',
                     success: function(data) {
-                        //console.log(data);
                         response(data);
                     }
                 });
@@ -269,7 +261,6 @@
                     url: '/buscar_estudio_nombre/?q=' + request.term,
                     dataType: 'json',
                     success: function(data) {
-                        //console.log(data);
                         response(data);
                     }
                 });
@@ -293,13 +284,11 @@
         //----Capturar datos del formulario recepcion
         function cargarTablaRecepcion(){
             var id = $("#rec_factura").val();
-            console.log(id);
             $.ajax({
                 url: '{{ route("tabla_recepcion", ":id") }}'.replace(':id', id),
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
                     if (data.length != 0) {
                         $('#tabla-estudios tbody').empty();
                         $.each(data, function(index, value) {
@@ -319,7 +308,6 @@
                                 sumPrecios += parseFloat(precio);
                             }
                         });
-                        //console.log(sumPrecios);
                         $('#est_precio_total').val(sumPrecios.toFixed(2));
                     }else {
                         $('#tabla-estudios tbody').empty().append('<td colspan="7" class="text-center">No hay datos recepcionados para factura '+$("#rec_factura").val()+'</td>');
@@ -356,9 +344,7 @@
             datos.append("fac_id", $("#rec_factura").val());
             datos.append("det_id", $("#rec_est_id").val());
             datos.append("estado", $("#rec_estado").val());
-            for (var campo of datos.values()) {
-                console.log(campo);
-            }
+            
             $.ajax({
                 url:"{{ route('recepcion') }}",
                 method:"POST",
@@ -369,7 +355,6 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
-                    console.log('La solicitud ha sido completada con éxito.');
                     Swal.fire({
                         title: 'Registrado',
                         text: 'Registro de Evento Exitoso',
@@ -495,7 +480,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    //console.log(data);
                     if (data.length != 0) {
                         $('#tabla-factura tbody').empty();
                         $.each(data, function(index, value) {
@@ -513,7 +497,6 @@
                                 sumPrecios += parseFloat(precio);
                             }
                         });
-                        //console.log(sumPrecios);
                         $('#fac_precio_total').val(sumPrecios.toFixed(2));
                     }else {
                         $('#tabla-factura tbody').empty().append('<td colspan="7" class="text-center">No hay datos recepcionados para factura '+$("#rec_factura").val()+'</td>');
@@ -571,7 +554,6 @@
                             tiempo + '\n\n' +
                             empresa + ", " + direccion + "." + '\n\n' +
                             "Whatsapp: " + num_empresa + ".";
-                console.log(mensaje);
 
                 $("#enviar_texto").val(mensaje);
             }
@@ -594,8 +576,7 @@
                 var link = 'https://api.whatsapp.com/send?phone=' + codigo + numero + '&text=' + mensaje;
                 window.open(link);
             }
-
-        })
+        });
 
         $("#btnUpdateRec").on('click' , function() {
             if ($("#rec_paciente_clave").val() == "" || $("#rec_paciente_nombre").val() == "") {
@@ -631,7 +612,7 @@
             }else{
                 $('#btnUpdateRec').attr('data-toggle', 'modal');
                 $('#btnUpdateRec').attr('data-target', '#modal_crear_factura');
-                $("#fac_factura_id").val($("#rec_factura").val());
+                $("#fac_factura_id").text($("#rec_factura").val());
                 $("#fac_paciente_id").val($("#rec_paciente_id").val());
                 $("#fac_paciente_nombre").text($("#rec_paciente_nombre").val());
                 $("#fac_paciente_edad").text($("#rec_edad").val());
@@ -663,40 +644,85 @@
             document.getElementById("fac_cambio").value = cambio;
         });
 
-    });
-    function UpdateFactura() {
-        event.preventDefault();
-        if($('#fac_tipo_pago').val() == 'EFECTIVO'){
-            if (parseFloat($('#fac_importe').val()) < parseFloat($('#fac_precio_total').val())) {
-                Swal.fire({
-                    title: 'Oops...',
-                    text: 'Ingrese Monto de Pago Correcto',
-                    icon: 'info',
-                    showConfirmButton: false,
-                    timer: 2000,
-                })
-                setTimeout(function(){
-                    $('#fac_importe').trigger('focus');
-                }, 2000);
-                return false;
-            }else{
-                Swal.fire({
-                    title: '¿Está seguro?',
-                    text: 'Revisar los datos antes de continuar',
-                    icon: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#40CC6C',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Si, continuar',
-                    cancelButtonText: 'No'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#form_crear_factura').attr('action', '/facturas/' + $("#fac_factura_id").val());
-                        $('#form_crear_factura').submit();
-                        event.preventDefault();
-                    }
-                });
-            }
+        function UpdateFactura(fac_id, datos) {
+            mostrarCargando();
+            $.ajax({
+                url: "{{ route('factura.update', ':id') }}".replace(':id', fac_id),
+                type: "POST",
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    $.ajax({
+                        url: '{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id),
+                        type: 'GET',
+                        success: function(data) {
+                            var pdfFrame = document.getElementById('pdfFrame');
+                            var checkPDFReadyInterval = setInterval(function() {
+                                if (data.fac_ruta_file !== null) {
+                                    pdfFrame.src = "{{ asset('storage') }}"+"/"+data.fac_ruta_file;
+                                    clearInterval(checkPDFReadyInterval);
+                                }
+                            }, 100);
+                            $(document).on('click', '.btnClosePdfGenerate', function () {
+                                window.location.href = '{{ route('recepcion') }}';
+                            });
+                        }
+                    });
+                    cerrarCargando();
+                    // window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
+                    // setTimeout(function(){
+                        //window.location.href = '{{ route('recepcion') }}';
+                    // }, 2000);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
         }
-    }
+
+        $(document).on('click', '.btn-facturar-recepcion', function() {
+            var id = $('.fac_factura_id').text();
+            if($('#fac_tipo_pago').val() == 'EFECTIVO'){
+                if (parseFloat($('#fac_importe').val()) < parseFloat($('#fac_precio_total').val())) {
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Ingrese Monto de Pago Correcto',
+                        icon: 'info',
+                        showConfirmButton: false,
+                        timer: 2000,
+                    })
+                    setTimeout(function(){
+                        $('#fac_importe').trigger('focus');
+                    }, 2000);
+                    return false;
+                }else{
+                    var datos = new FormData();
+                    datos.append('fac_paciente_id', $("#fac_paciente_id").val());
+                    datos.append('fac_medico_id', $("#fac_medico_id").val());
+                    datos.append('fac_empresa_id', $("#fac_empresa_id").val());
+                    datos.append('fac_precio_total', $('#fac_precio_total').val());
+                    datos.append('fac_estado', $('#fac_estado').val());
+                    datos.append('fac_tipo_pago', $('#fac_tipo_pago').val());
+                    //datos.append('fac_descuento', $('#fac_descuento').val());
+                    datos.append('fac_observacion', $('#fac_observacion').val());
+                    datos.append('fac_referencia', $('#fac_referencia').val());
+                    datos.append('fac_importe', $('#fac_importe').val());
+                    datos.append('fac_cambio', $('#fac_cambio').val());
+
+                    UpdateFactura(id, datos);
+                }
+            }
+        });
+    });
 </script>
