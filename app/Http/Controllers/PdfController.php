@@ -10,10 +10,13 @@ use App\Models\DpComponente;
 use App\Models\Factura;
 use App\Models\Medico;
 use App\Models\Procedimiento;
+use App\Models\Recepcion;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use DateTime;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Support\Facades\Storage;
 
 class PdfController extends Controller
@@ -24,7 +27,7 @@ class PdfController extends Controller
                     ->join('facturas as f', 'f.cli_id', '=', 'c.id')
                     ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
                     ->leftjoin('medicos as m', 'm.id', '=', 'c.med_id')
-                    ->select('f.id as factura', 'f.fac_total', 'f.fac_ruta_file', 'c.cli_fec_nac', 'c.*', 'c.id as cli_id',
+                    ->select('f.id as factura', 'f.fac_total', 'f.fac_ruta_file', 'c.cli_fec_nac', 'c.*', 'c.id as cli_id', 
                             DB::raw("CONCAT(c.cli_nombre, ' ', 
                                             c.cli_apellido_pat, ' ', 
                                             c.cli_apellido_mat) AS nombre"), 
@@ -130,16 +133,32 @@ class PdfController extends Controller
             $factura = str_pad($factura, 6, '0', STR_PAD_LEFT);
             $paciente->num_factura = $factura;
             
+            $config = Configuration::all()->first();
             //var_dump($paciente);
+            // $options = new Options();
+            // $options->set('isRemoteEnabled', true);
+            // $options->set('defaultFont', 'Helvetica');
+            // $options->set('title', 'Título del documento');
+            // $options->set('author', $config->nombre."_".$config->nit);
+            // $options->set('keywords', 'Factura'.$config->nombre);
+            // $author = $config->nombre."_".$config->nit;
+            // $titulo = $paciente->numfactura."_Factura_".$config->nombre;
+            // $options = [
+            //     'isRemoteEnabled' => true,
+            //     'defaultFont' => 'Helvetica',
+            //     'title' => $titulo,
+            //     'author' => $author,
+            //     'keywords' => 'Factura'.$config->nombre
+            // ];
     
             $pdf = Pdf::loadView('recepcion.pdf.recepcion', [
-                'config' => Configuration::all()->first(), 
+                'config' => $config, 
                 'paciente' => $paciente,
                 'estudios' => $estudios
             ]);
     
             $date = now()->format('Ymd');
-            $filename = "factura_"."$id".$date.$id."_cancelado.pdf";
+            $filename = "factura_".$id.$date.$id."_cancelado.pdf";
             $directory = "public/factura/".$id."/";
     
             if (!Storage::exists($directory)) {
@@ -172,7 +191,7 @@ class PdfController extends Controller
                     ->join('facturas as f', 'f.cli_id', '=', 'c.id')
                     ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
                     ->leftjoin('medicos as m', 'm.id', '=', 'c.med_id')
-                    ->select('f.id as factura', 'f.fac_total', 'r.id as rec_id', 'c.cli_fec_nac', 'c.*', 'c.id as cli_id',
+                    ->select('f.id as factura', 'f.fac_total', 'r.id as rec_id', 'r.rec_ruta_file', 'c.cli_fec_nac', 'c.*', 'c.id as cli_id', 'c.cli_password',
                             DB::raw("CONCAT(c.cli_nombre, ' ', 
                                             c.cli_apellido_pat, ' ', 
                                             c.cli_apellido_mat) AS nombre"), 
@@ -185,42 +204,127 @@ class PdfController extends Controller
                     ->where('r.id', '=', $id)
                     ->first();
         
-        $fecha_nac = new DateTime($paciente->cli_fec_nac);
-        $hoy = new DateTime();
-        $edad = $hoy->diff($fecha_nac)->y;
-        $paciente->edad = $edad;
+        if ($paciente->rec_ruta_file == null) {
+            $fecha_nac = new DateTime($paciente->cli_fec_nac);
+            $hoy = new DateTime();
+            $edad = $hoy->diff($fecha_nac)->y;
+            $paciente->edad = $edad;
+            
+            $estudio = DB::table('detalles as d')
+                        ->join('estudios as e', 'e.id', '=', 'd.estudio_id')
+                        ->join('recepcions as r', 'r.det_id', '=', 'd.id')
+                        ->join('facturas as f', 'f.id', '=', 'r.fac_id')
+                        ->join('clientes as c', 'f.cli_id', '=', 'c.id')
+                        ->select('e.id as est_id', 'e.est_nombre')
+                        ->where('r.id', '=', $paciente->rec_id)
+                        ->first();
+    
+            $results = DB::table('results as res')
+                        ->join('recepcions as r', 'res.rec_id', '=', 'r.id')
+                        ->join('detalles as d', 'res.det_id', '=', 'd.id')
+                        ->join('detalle_procedimientos as dp', 'res.dp_id', '=', 'dp.id')
+                        ->join('dp_componentes as dpc', 'res.dpc_id', '=', 'dpc.id')
+                        ->join('componentes as c', 'dpc.comp_id', '=', 'c.id')
+                        ->join('componente_aspectos as ca', 'res.ca_id', '=', 'ca.id')
+                        ->join('parametros as p', 'p.ca_id', '=', 'ca.id')
+                        ->join('aspectos as a', 'ca.asp_id', '=', 'a.id')
+                        ->select('c.nombre as componente' , 'a.nombre as aspecto', 'res.resultado', 'res.umed_id', 'p.referencia')
+                        ->where('r.id', '=', $paciente->rec_id)
+                        ->groupBy('c.nombre', 'a.nombre', 'res.resultado', 'res.umed_id', 'p.referencia')
+                        ->get();
+    
+            // $factura = $paciente->factura;
+            // $factura = str_pad($factura, 6, '0', STR_PAD_LEFT);
+            // $paciente->num_factura = $factura;
+    
+            //var_dump($paciente);
+            $config = Configuration::all()->first();
+            $options = new Options();
+            $options->set('isRemoteEnabled', true);
+            $options->set('defaultFont', 'Helvetica');
+            $options->set('title', 'RESULTADO DE ESTUDIO');
+            $options->set('author', $config->nombre."_".$config->nit);
+            $options->set('keywords', 'Resultado'.$config->nombre);
+            $options->set('isHtml5ParserEnabled', true);
+            $options->set('print_media_type', false);
+            $options->set('force_charset', 'ISO-8859-1');
+            $options->set('isJavascriptEnabled', false);
+            $options->set('debugLayout', false);
+            $options->set('debugLayoutLines', false);
+            $options->set('debugLayoutBlocks', false);
+            $options->set('isFontSubsettingEnabled', true);
+            $options->set('enable_css_floating', false);
+            $options->set('fontHeightRatio', 1.0);
+            $options->set('encrypt', [
+                'user_password' => $paciente->cli_password,
+                'owner_password' => null,
+                'permissions' => [
+                    'print' => true,
+                    'modify' => false,
+                    'copy' => false,
+                    'annot-forms' => false,
+                    'fill-forms' => false,
+                    'extract' => false,
+                    'assemble' => false,
+                 ]
+            ]);
+    
+            // $pdf = Pdf::loadView('resultado.pdf.resultado', [
+            //     'config' => $config, 
+            //     'paciente' => $paciente,
+            //     'estudio' => $estudio,
+            //     'results' => $results
+            // ]);
+
+            $html = view('resultado.pdf.resultado', [
+                'config' => $config,
+                'paciente' => $paciente,
+                'estudio' => $estudio,
+                'results' => $results
+            ])->render();
+
+            $dompdf = new Dompdf($options);
+            $dompdf->loadHtml($html);
+                
+            $dompdf->render();
+            
+            $date = now()->format('Ymd');
+            $filename = "resultados_".$id.$date.$id.".pdf";
+            $directory = "public/resultados/".$id."/";
+            
+            if (!Storage::exists($directory)) {
+                Storage::makeDirectory($directory);
+            }
+            $newdirectory = str_replace("public/", "", $directory);
+            $ruta = $newdirectory.$filename;
+            
+            // $pdf->getDomPDF()->setOptions($options);
+            // $pdf->render();
+            // $pdf->save(storage_path('app/'.$directory.$filename));
+            $file_path = storage_path('app/'.$directory.$filename);
+            file_put_contents($file_path, $dompdf->output());
+
+            if (file_exists($file_path)) {
+                $recfile = Recepcion::find($id);
+                $recfile->rec_ruta_file = $ruta;
+                $recfile->save();
+
+                return response()->json($recfile);
+            }else{
+                return false;
+            }
+            
+            
+            //return $pdf->stream('factura.pdf');
+    
+            // return $pdf->stream('resultados.pdf');
+        }
         
-        $estudio = DB::table('detalles as d')
-                    ->join('estudios as e', 'e.id', '=', 'd.estudio_id')
-                    ->join('recepcions as r', 'r.det_id', '=', 'd.id')
-                    ->join('facturas as f', 'f.id', '=', 'r.fac_id')
-                    ->join('clientes as c', 'f.cli_id', '=', 'c.id')
-                    ->select('e.id as est_id', 'e.est_nombre')
-                    ->where('r.id', '=', $paciente->rec_id)
-                    ->first();
+    }
 
-        $results = DB::table('results as res')
-                    ->join('recepcions as r', 'res.rec_id', '=', 'r.id')
-                    ->join('detalles as d', 'res.det_id', '=', 'd.id')
-                    ->join('detalle_procedimientos as dp', 'res.dp_id', '=', 'dp.id')
-                    ->join('dp_componentes as dpc', 'res.dpc_id', '=', 'dpc.id')
-                    ->join('componentes as c', 'dpc.comp_id', '=', 'c.id')
-                    ->join('componente_aspectos as ca', 'res.ca_id', '=', 'ca.id')
-                    ->join('parametros as p', 'p.ca_id', '=', 'ca.id')
-                    ->join('aspectos as a', 'ca.asp_id', '=', 'a.id')
-                    ->select('res.id', 'res.fac_id', 'res.rec_id', 'res.det_id', 'res.dp_id', 'res.dpc_id', 'c.nombre' , 'res.ca_id', 'a.nombre as aspecto', 'res.resultado', 'res.umed_id',
-                    'p.referencia')
-                    ->where('r.id', '=', $paciente->rec_id)
-                    ->get();
-
-        //var_dump($paciente);
-
-        $pdf = Pdf::loadView('resultado.pdf.resultado', [
-            'config' => Configuration::all()->first(), 
-            'paciente' => $paciente,
-            'estudio' => $estudio,
-            'results' => $results
-        ]);
-        return $pdf->stream('resultados.pdf');
+    public function getRutaRecepcionCliente($id)
+    {
+        $recepcionpdf = Recepcion::find($id);
+        return response()->json($recepcionpdf);
     }
 }

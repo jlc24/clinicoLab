@@ -245,6 +245,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pdfFactura/{id}', [PdfController::class, 'pdfFactura'])->name('factura.pdf');
     Route::get('/pdfresultado/{id}', [PdfController::class, 'pdfResultado'])->name('resultado.pdf');
     Route::get('/getRutaFacturaCliente/{id}', [PdfController::class, 'getRutaFacturaCliente'])->name('getRutaFacturaCliente');
+    Route::get('/getRutaRecepcionCliente/{id}', [PdfController::class, 'getRutaRecepcionCliente'])->name('getRutaRecepcionCliente');
 
     Route::get('/getFacturaCliente/{id}', [FacturaController::class , 'getFacturaCliente'])->name('getFacturaCliente');
 });

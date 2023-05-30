@@ -164,7 +164,7 @@
                                 html += '<td style="border: 1px solid #C6C8CA;">'+
                                             '<div class="btn-group" role="group" aria-label="Button group">'+
                                                 '<a href="#" data-toggle="modal" data-target="#modal_resultados" class="btn btn-sm btn-outline-warning btn-resultado" title="Editar resultado"><i class="fas fa-edit"></i></a>'+
-                                                '<a href="#"  class="btn btn-sm btn-outline-info btn-imprimir-resultados" title="Imprimir resultado" target="_blank" rel="noopener noreferrer"><i class="fas fa-print"></i></a>'+
+                                                '<button data-toggle="modal" data-target="#exampleModal" class="btn btn-sm btn-outline-info btn-imprimir-resultados" title="Imprimir resultado" target="_blank" rel="noopener noreferrer"><i class="fas fa-print"></i></button>'+
                                             '</div>'+
                                         '</td>';
                             }
@@ -610,6 +610,7 @@
             datos.append('res_estado', 'RESULTADO');
             updateEstadoRecepcion(rec_id, datos);
         });
+
         $(document).on('click', '.btn-res-success', function() {
             var rec_id = $(this).closest('tr').find('td:eq(0)').text();
             var datos = new FormData();
@@ -621,5 +622,57 @@
             var rec_id = $(this).closest('tr').find('td:eq(0)').text();
             $(this).attr("href", "{{ route('resultado.pdf', ':id') }}".replace(':id', rec_id));
         });
+
+        $(document).on('click', '.btnClosePdfGenerate', function() {
+            var pdfFrame = document.getElementById('pdfFrame');
+            pdfFrame.src = "";
+        });
+
+        function PdfResultado(rec_id) {
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("getRutaRecepcionCliente", ":id") }}'.replace(":id", rec_id),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    if (data.rec_ruta_file !== null) {
+                        $(document).on('shown.bs.modal', '#exampleModal', function (event) {
+                            var pdfFrame = document.getElementById('pdfFrame');
+                            var checkPDFReadyInterval = setInterval(function() {
+                                if (data.rec_ruta_file !== null) {
+                                    pdfFrame.src = "{{ asset('storage') }}"+"/"+data.rec_ruta_file;
+                                    clearInterval(checkPDFReadyInterval);
+                                    cerrarCargando();
+                                }
+                            }, 100);
+                        });
+                    }else{
+                        $.ajax({
+                            url: '{{ route("resultado.pdf", ":id") }}'.replace(":id", rec_id),
+                            type: 'GET',
+                            success: function(response) {
+                                console.log(response);
+                                var pdfFrame = document.getElementById('pdfFrame');
+                                var checkPDFReadyInterval = setInterval(function() {
+                                    if (response.rec_ruta_file !== null) {
+                                        pdfFrame.src = "{{ asset('storage') }}"+"/"+response.rec_ruta_file;
+                                        clearInterval(checkPDFReadyInterval);
+                                        cerrarCargando();
+                                    }
+                                }, 100);
+                                //window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        
+        $(document).on('click', '.btn-imprimir-resultados', function() {
+            var rec_id = $(this).closest('tr').find('td:eq(0)').text();
+            PdfResultado(rec_id);
+        });
+    
     });
 </script>

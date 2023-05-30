@@ -73,7 +73,7 @@
                                         <thead style="background-color: #BAECCA;">
                                             <th width="50px"></th>
                                             <th hidden>#</th>
-                                            <th width="180px">Aspecto</th>
+                                            <th width="180px">Prueba</th>
                                             <th class="text-center" width="100px">Unidad</th>
                                             <th class="text-center">Parámetro</th>
                                         </thead>

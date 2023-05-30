@@ -191,6 +191,7 @@
 
     @include('resultado.modal.modal_resultados')
     @include('resultado.modal.modal_ver_parametro')
+    @include('cliente.modal.modal_ver_resultadopdf')
 @endsection
 
 @section('funciones')

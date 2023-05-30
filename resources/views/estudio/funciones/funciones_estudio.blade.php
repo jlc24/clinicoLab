@@ -243,7 +243,7 @@
                                 '<tr><td hidden>' + value.id + '</td>'+
                                     '<td>' + value.nombre + '</td>'+
                                     '<td class="text-center">'+
-                                        '<a href="javascript:void(0);" data-toggle="modal" data-target="#modal_crear_aspecto" class="btn btn-sm btn-outline-info btn-add-asp" title="Agregar Aspectos"><i class="fas fa-cogs"></i></a>'+
+                                        '<a href="javascript:void(0);" data-toggle="modal" data-target="#modal_crear_aspecto" class="btn btn-sm btn-outline-info btn-add-asp" title="Agregar Prueba"><i class="fas fa-cogs"></i></a>'+
                                         '<a href="javascript:void(0);"  class="btn btn-sm btn-outline-danger btn-del-comp" title="Eliminar Componente"><i class="fas fa-trash-alt"></i></a>'+
                                     '</td>'+
                                 '</tr>');
@@ -745,7 +745,7 @@
                             $('.tabla_aspectos tbody').append(
                                 '<tr><td hidden>' + value.id + '</td>'+
                                     '<td>' + value.nombre + '</td>'+
-                                    '<td class="text-center"><a href="javascript:void(0);" class="btn btn-sm btn-outline-info btn-use-asp" title="Usar Aspecto"><i class="fas fa-greater-than fa-sm"></i></a></td>'+
+                                    '<td class="text-center"><a href="javascript:void(0);" class="btn btn-sm btn-outline-info btn-use-asp" title="Usar Prueba"><i class="fas fa-greater-than fa-sm"></i></a></td>'+
                                 '</tr>');
                         });
                     }else {
@@ -988,7 +988,7 @@
             }else{
                 unidad = " - " + medida;
             }
-            $('.aspecto_nombre_parametro').text('Configurar Aspecto: ' + aspecto_nombre + ' ' + unidad);
+            $('.aspecto_nombre_parametro').text('Configurar Prueba: ' + aspecto_nombre + ' ' + unidad);
             $('.aspecto_id_parametro').val(id);
             getParametro(id);
         });
