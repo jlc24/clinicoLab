@@ -19,78 +19,91 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-4 col-sm-4">
+                <div class="col-xl-4 col-sm-6">
                     <div class="card">
-                        
                         <div class="card-body text-center">
                             <div>
-                                <h3>{{ __('Logo de la Empresa') }}</h3>
+                                <h4>{{ __('Logo de la Empresa') }}</h4>
                             </div>
-                            <div class="mt-5 mb-5">
-                                <img src="{{ asset('dist/img/default.png') }}" width="300px" style="border: 2px solid rgb(146, 144, 144); border-radius: 10px; box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);;">
+                            <div class="mt-4 mb-4">
+                                @if($datos->logo == null)
+                                    <img src="{{ asset('dist/img/default.png') }}" class="img_logo" width="250px" height="250px" style="border: 2px solid rgb(146, 144, 144); border-radius: 50%; box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);;">
+                                @else
+                                    <img src="{{ asset($datos->logo) }}" class="img_logo" width="250px" height="250px" style="border: 2px solid rgb(146, 144, 144); border-radius: 50%; box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);;">
+                                @endif
                             </div>
                             <div class="text-center">
-                                <form class="form-horizontal" id="form_subir_logo" action="" method="post">
-                                    @csrf
-                                    <div class="form-group row">
-                                        <label class="col-form-label" for="photo_logo">{{ __('Cambiar Logo') }}: </label>
+                                <div class="form-group row">
+                                    <label class="col-form-label" for="photo_logo">{{ __('Cambiar Logo') }}: </label>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-md-10">
+                                        <input type="file" name="photo_logo" id="photo_logo" accept=".jpge,.jpg,image/png" class="form-control form-control-sm form-control-file photo_logo" onchange="VerImagen('photo_logo', 'img_logo')">
                                     </div>
-                                    <div class="form-group row justify-content-center">
-                                        <div class="col-md-11">
-                                            <input type="file" name="photo_logo" id="photo_logo" accept=".jpge,.jpg,image/png" class="form-control form-control-file">
-                                        </div>
+                                    <div class="col-md-1 m-0 p-0 div-clear-file" hidden>
+                                        <a href="javascript:void(0)" title="Borrar imagen seleccionada" class="btn-clear-file"><i class="fas fa-refresh"></i></a>
                                     </div>
-                                    <div class="form-group row justify-content-center">
-                                        <div class="col-md-11">
-                                            <button type="submit" class="btn btn-sm btn-outline-success">{{ __('Guardar cambios') }}</button>
-                                        </div>
+                                </div>
+                                <div class="form-group row justify-content-center">
+                                    <div class="col-md-11">
+                                        <button class="btn btn-sm btn-outline-success btn-save-logo" hidden>{{ __('Guardar cambios') }}</button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-6 col-sm-6">
+                <div class="col-xl-7 col-sm-6">
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-xl-9 col-sm-9">
-                                    <h3>{{ __('Datos principales de la Empresa') }}</h3>
+                                <div class="col-xl-9 col-sm-12">
+                                    <h4>{{ __('Datos principales de la Empresa') }}</h4>
                                 </div>
-                                <div class="col-xl-3 col-sm-3 text-right">
-                                    <button class="btn btn-sm btn-warning">Editar</button>
+                                <div class="col-xl-3 col-sm-12 text-right">
+                                    <button class="btn btn-sm btn-outline-warning btn-config-edit">Editar</button>
+                                    <input type="checkbox" name="chk-edit" id="chk-edit" hidden>
                                 </div>
                             </div>
-                            <form action="" method="post">
-                                <div class="mt-5">
+                            <div class="row mt-4 justify-content-center">
+                                <div class="col-xl-11 col-sm-12">
                                     <div class="form-group row">
-                                        <label for="conf_nombre" class="col-form-label col-md-3">{{ __('Nombre') }}:</label>
-                                        <div class="col-md-8">
-                                            <input type="text" value="{{ $datos->nombre }}" name="conf_nombre" id="conf_nombre" class="form-control form-control-sm">
+                                        <label for="config_nombre" class="col-form-label col-md-3">{{ __('Nombre') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" value="{{ $datos->nombre }}" name="config_nombre" id="config_nombre" class="form-control form-control-sm" disabled>
+                                            <input type="hidden" value="{{ $datos->id }}" name="config_id" id="config_id" class="form-control form-control-sm" disabled>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
                                     <div class="form-group row">
-                                        <label for="nit" class="col-form-label col-md-3">N.I.T.:</label>
-                                        <div class="col-md-8">
-                                            <input type="number" value="{{ $datos->nit }}" name="nit" id="nit" class="form-control form-control-sm">
+                                        <label for="config_nit" class="col-form-label col-md-3">N.I.T.:</label>
+                                        <div class="col-md-9">
+                                            <input type="number" value="{{ $datos->nit }}" name="config_nit" id="config_nit" class="form-control form-control-sm" disabled>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
                                     <div class="form-group row">
-                                        <label for="direccion" class="col-form-label col-md-3">{{ __('Dirección') }}:</label>
-                                        <div class="col-md-8">
-                                            <input type="text" value="{{ $datos->direccion }}" name="direccion" id="direccion" class="form-control form-control-sm">
+                                        <label for="config_direccion" class="col-form-label col-md-3">{{ __('Dirección') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" value="{{ $datos->direccion }}" name="config_direccion" id="config_direccion" class="form-control form-control-sm" disabled>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
                                     <div class="form-group row">
-                                        <label for="pais" class="col-form-label col-md-3">{{ __('País') }}:</label>
-                                        <div class="col-md-8">
-                                            <input type="text" value="{{ $datos->pais }}" name="pais" id="pais" class="form-control form-control-sm">
+                                        <label for="config_pais" class="col-form-label col-md-3">{{ __('País') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" value="{{ $datos->pais }}" name="config_pais" id="config_pais" class="form-control form-control-sm" disabled>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
                                     <div class="form-group row">
                                         <label for="cli_departamento" class="col-form-label col-md-3">{{ __('Departamento') }}:</label>
-                                        <div class="col-md-8">
-                                            <select name="cli_departamento" id="cli_departamento" class="custom-select custom-select-sm">
+                                        <div class="col-md-3">
+                                            <select name="cli_departamento" id="cli_departamento" class="custom-select custom-select-sm" disabled>
                                                 <option value="" disabled>Seleccionar...</option>
                                                 @foreach ($departamentos as $departamento)
                                                     <option value="{{ $departamento->nombre }}" 
@@ -102,11 +115,9 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
                                         <label for="cli_municipio" class="col-form-label col-md-3">{{ __('Municipio') }}:</label>
-                                        <div class="col-md-8">
-                                            <select name="cli_municipio" id="cli_municipio" class="custom-select custom-select-sm">
+                                        <div class="col-md-3">
+                                            <select name="cli_municipio" id="cli_municipio" class="custom-select custom-select-sm" disabled>
                                                 <option value="">Seleccionar...</option>
                                                 @foreach ($municipios as $municipio)
                                                     <option value="{{ $municipio->nombre }}"
@@ -119,29 +130,45 @@
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
                                     <div class="form-group row">
-                                        <label for="telefono" class="col-form-label col-md-3">{{ __('Teléfono') }}/{{ __('Celular') }}:</label>
-                                        <div class="col-md-8">
-                                            <input type="number" value="{{ $datos->telefono }}" name="telefono" id="telefono" class="form-control form-control-sm">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="web" class="col-form-label col-md-3">{{ __('Dirección Web') }}:</label>
-                                        <div class="col-md-8">
-                                            <input type="text" value="{{ $datos->web }}" name="web" id="web" class="form-control form-control-sm">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row text-center">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-sm btn-outline-success">Guardar Cambios</button>
+                                        <label for="config_telefono" class="col-form-label col-md-3">{{ __('Teléfono') }}/{{ __('Celular') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="number" value="{{ $datos->telefono }}" name="config_telefono" id="config_telefono" class="form-control form-control-sm" disabled>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row">
+                                        <label for="config_email" class="col-form-label col-md-3">{{ __('Email') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="email" value="{{ $datos->email }}" name="config_email" id="config_email" class="form-control form-control-sm" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row">
+                                        <label for="config_web" class="col-form-label col-md-3">{{ __('Dirección Web') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" value="{{ $datos->web }}" name="config_web" id="config_web" class="form-control form-control-sm" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row text-center">
+                                        <button class="btn btn-sm btn-outline-success btn-config-save" hidden>Guardar Cambios</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+@endsection
+
+@section('funciones')
+    @include('configuracion.funciones.funcion_config')
 @endsection

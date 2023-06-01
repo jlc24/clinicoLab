@@ -17,6 +17,7 @@ class Configuration extends Model
         'departamento',
         'municipio',
         'telefono',
+        'email',
         'web', 
         'logo', 
     ];

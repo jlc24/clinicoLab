@@ -26,7 +26,7 @@
                                         <div class="form-group row">
                                             <label class="col-md-12 col-form-label" for="asp_nombre">{{ __('Nombre') }}: </label>
                                             <div class="col-md-12">
-                                                <input type="text" id="asp_nombre" name="asp_nombre" class="form-control form-control-sm asp_nombre" autocomplete="off" placeholder="Nombre Aspecto" required>
+                                                <input type="text" id="asp_nombre" name="asp_nombre" class="form-control form-control-sm asp_nombre" autocomplete="off" placeholder="Nombre Prueba" required>
                                                 <input type="hidden" name="dp_comp_id" id="dp_comp_id" class="dp_comp_id">
                                             </div>
                                         </div>
@@ -39,7 +39,7 @@
                                 </div>
                             </form>
                             <div class="row">
-                                <label class="col-form-label" for="proc_nombre">{{ __('Lista de Aspectos') }}: </label>
+                                <label class="col-form-label" for="proc_nombre">{{ __('Lista de Pruebas') }}: </label>
                             </div>
                             <div class="row">
                                 <div class="col-xl-12 col-sm-12">
@@ -64,7 +64,7 @@
                         <div class="col-xl-8 col-sm-12" >
                             <div class="row justify-content-center" >
                                 <div class="col-xl-11 col-sm-11 text-center">
-                                    <label class="col-form-label">{{ __('ASPECTOS A EVALUAR') }}</label>
+                                    <label class="col-form-label">{{ __('PRUEBAS A EVALUAR') }}</label>
                                 </div>
                             </div>
                             <div class="row justify-content-center">

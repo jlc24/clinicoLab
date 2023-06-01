@@ -361,7 +361,7 @@
                         icon: 'success',
                         showConfirmButton: false,
                         timer: 2000
-                    })
+                    });
                     cargarTablaRecepcion();
                     $("#rec_est_id").val("");
                     $("#rec_est_clave").val("");
@@ -693,6 +693,7 @@
 
         $(document).on('click', '.btn-facturar-recepcion', function() {
             var id = $('.fac_factura_id').text();
+            $(".exampleModalLabel").text('Factura');
             if($('#fac_tipo_pago').val() == 'EFECTIVO'){
                 if (parseFloat($('#fac_importe').val()) < parseFloat($('#fac_precio_total').val())) {
                     Swal.fire({

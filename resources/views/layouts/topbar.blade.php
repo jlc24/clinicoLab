@@ -32,46 +32,59 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            
             <li class="nav-item dropdown">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                    {{ Auth::user()->user }}
+                    @if(Auth::user()->rol == 'cliente')
+                        {{ Auth::user()->cliente->cli_nombre }} {{ Auth::user()->cliente->cli_apellido_pat }} {{ Auth::user()->cliente->cli_apellido_mat }} ({{ Auth::user()->rol }})
+                    @else
+                        {{ Auth::user()->user }}
+                    @endif
                 </a>
                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ route('perfil') }}">
-                        {{ __('Perfil') }}
-                    </a>
-                    <a class="dropdown-item" href="{{ route('configuration') }}">
-                        {{ __('Configuración') }}
-                    </a><hr>
-                    <a class="dropdown-item" href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                        $.ajax({
-                            url: '{{ route('getCajaStatus') }}',
-                            type: 'GET',
-                            success: function(data) {
-                                //console.log(data);
-                                if (data.caja_estado == 1) {
-                                    Swal.fire({
-                                        title: 'Caja Abierta',
-                                        text: 'Aun tiene caja abierta, debe cerrarla para cerrar sesion',
-                                        icon: 'error',
-                                        showConfirmButton: false,
-                                        timer: 3000,
-                                    }).then(function() {
-                                        window.location.href = '{{ route('caja') }}';
-                                    });
-                                }else{
-                                    $('#logout-form').submit();
-                                }
-                            }
-                        });">
+                    @if(Auth::user()->rol == 'cliente')
+                        <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); $('#logout-form').submit();"> 
                         {{ __('Cerrar Sesión') }}
-                    </a>
+                        </a>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    @else
+                        <a class="dropdown-item" href="{{ route('perfil') }}">
+                            {{ __('Perfil') }}
+                        </a>
+                        <a class="dropdown-item" href="{{ route('configuration') }}">
+                            {{ __('Configuración') }}
+                        </a>
+                        <hr>
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                            $.ajax({
+                                url: '{{ route('getCajaStatus') }}',
+                                type: 'GET',
+                                success: function(data) {
+                                    if (data.caja_estado == 1) {
+                                        Swal.fire({
+                                            title: 'Caja Abierta',
+                                            text: 'Aun tiene caja abierta, debe cerrarla para cerrar sesion',
+                                            icon: 'error',
+                                            showConfirmButton: false,
+                                            timer: 3000,
+                                        }).then(function() {
+                                            window.location.href = '{{ route('caja') }}';
+                                        });
+                                    }else{
+                                        $('#logout-form').submit();
+                                    }
+                                }
+                            });">
+                            {{ __('Cerrar Sesión') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    @endif
                 </div>
             </li>
         </ul>

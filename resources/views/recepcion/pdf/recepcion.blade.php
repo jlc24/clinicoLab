@@ -4,11 +4,28 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+        <meta name="author" content="{{ $config->nombre }}_{{ $config->nit }}_{{ $paciente->factura }}">
+        <meta name="description" content="Factura realizado en {{ $config->nombre }}">
+        <meta name="keywords" content="Resultado, Estudio, Análisis, Pruebas, Factura">
+        <meta name="copyright" content="Copyright &copy; {{ date('Y') }}-{{ $config->nombre }}">
         <!-- Bootstrap CSS -->
         {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous"> --}}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
         <style>
+            .encabezado {
+                border-collapse: collapse;
+                width: auto;
+                max-width: 800px;
+                margin: auto;
+                font-family: Arial, sans-serif;
+                border: 1px solid #fff;
+            }
+
+            .encabezado td {
+                padding: 0px;
+                font-size: 10px;
+            }
+
             .custom-table {
                 border-collapse: collapse;
                 width: 100%;
@@ -89,10 +106,38 @@
         <title>Factura</title>
     </head>
     <body>
-        <h3>{{ $config->nombre }}</h3>
-        <h6>{{ $config->direccion }}</h6>
-        <h6>{{ $config->telefono }}</h6>
-        <h6>{{ $config->pais }} - {{ $config->departamento }}</h6>
+        <div class="row">
+            <div class="col-xl-11" >
+                <div class="text-right" style="width: 300px; height: auto; background-color: #fff; padding: 5px; border: 1px solid white; display: inline-block; margin-left: 50px;">
+                    @if($config->logo == null)
+                        <img src="{{ asset('dist/img/default.png') }}" alt="" width="100px">
+                    @else
+                        <img src="{{ asset($config->logo) }}" alt="" width="100px" height="100px" style="border-radius: 50%">
+                    @endif
+                </div>
+                <div style="width: 300px; height: auto; background-color: #fff; padding: 5px; border: 1px solid white; display: inline-block;">
+                    <table class="encabezado">
+                        <tbody>
+                            <tr>
+                                <td>{{ $config->nombre }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ $config->nit }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ $config->telefono }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ $config->direccion }}</td>
+                            </tr>
+                            <tr>
+                                <td style="text-transform: uppercase;">{{ $config->departamento }} - {{ $config->pais }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         
         <h2 class="text-center">{{ __('FACTURA') }}</h2>
         <h4 class="text-center"><strong>Nº: </strong>{{ $paciente->num_factura }}</h4>

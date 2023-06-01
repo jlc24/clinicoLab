@@ -12,12 +12,12 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th width="50px">#</th>
-                                    <th width="50px">{{ __('Codigo') }}</th>
-                                    <th width="300px">{{ __('Estudio') }}</th>
-                                    <th width="80px">{{ __('Precio') }}</th>
-                                    <th width="120px">{{ __('Estado') }}</th>
-                                    <th width="100px">{{ __('Estado') }}</th>
-                                    <th>Op</th>
+                                    <th width="100px">{{ __('Codigo') }}</th>
+                                    <th width="350px">{{ __('Estudio') }}</th>
+                                    <th width="100px">{{ __('Precio') }}</th>
+                                    <th width="120px" hidden>{{ __('Estado') }}</th>
+                                    <th width="60px">{{ __('Estado') }}</th>
+                                    <th width="50px">Op</th>
                                 </tr>
                             </thead>
                         </table>

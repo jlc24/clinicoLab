@@ -31,4 +31,8 @@ class HomeController extends Controller
         $contUser = User::whereIn('rol', ['admin', 'user'])->count();
         return view('home', ['contcli' => $contcli, 'contmed' => $contmed, 'contUser' => $contUser]);
     }
+    public function ejemplo()
+    {
+        return view('ejemplo.index');
+    }
 }

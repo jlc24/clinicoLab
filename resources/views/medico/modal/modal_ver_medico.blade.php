@@ -10,7 +10,11 @@
                     <div class="col-xl-5 col-sm-5 pt-3 mr-1" style="border-style: solid; border-width: 1px; border-radius: 10px; border-color: #C6C8CA">
                         <div class="form-group row">
                             <div class="col-md-12 text-center">
-                                <img src="{{ asset('dist/img/avatar5.png') }}" width="150px" style="border-style: solid; border-radius: 50%">
+                                <img @if($medico->med_genero == 'MASCULINO')
+                                        src="{{ asset('dist/img/avatar5.png') }}"
+                                    @elseif($medico->med_genero == 'FEMENINO')
+                                        src="{{ asset('dist/img/avatar2.png') }}"
+                                    @endif width="150px" style="border-style: solid; border-radius: 50%">
                             </div>
                         </div>
                         <div class="form-group row justify-content-center">

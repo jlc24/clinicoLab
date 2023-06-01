@@ -23,11 +23,11 @@ $(document).ready(function() {
     $('#modal_crear_cliente').on('shown.bs.modal', function () {
         $('#cli_nombre').trigger('focus');
     });
+    
     $("#btnCloseAddClient").on('click', function(){
         $("#formulario_crear_cliente").trigger('reset');
         $('#smartwizard_crear_client').smartWizard("reset");
-
-    })
+    });
 
     $("#cli_celular").on('keyup', function(){
         let input = $(this).val();
@@ -194,14 +194,14 @@ $(document).ready(function() {
                     $.each(data, function(index, value) {
                         $('.tabla-resultados-cliente tbody').append(
                             '<tr>'+
-                                '<td style="vertical-align: middle;">'+ value.rec_id +'</td>'+
-                                '<td style="vertical-align: middle;">'+ value.est_cod +'</td>'+
+                                '<td style="vertical-align: middle;" width="50px">'+ value.rec_id +'</td>'+
+                                '<td style="vertical-align: middle;" width="100px">'+ value.est_cod +'</td>'+
                                 '<td style="vertical-align: middle;">'+ value.est_nombre +'</td>'+
                                 '<td style="vertical-align: middle;">'+ value.est_precio + ' ' + value.est_moneda +'</td>'+
-                                '<td style="vertical-align: middle;">'+ 'CANCELADO' +'</td>'+
-                                '<td style="vertical-align: middle;" width="40px"><a href="#" class="badge ' + (value.estado == 'PENDIENTE' ? 'badge-danger' : 'badge-success') + '" title="Estado">' + value.estado + '</a></td>'+
-                                '<td class="text-center" style="vertical-align: middle;">'+
-                                    '<button data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-primary btn-sm btn-show-result" title="Ver resultado" ' + (value.estado == 'PENDIENTE' ? 'disabled' : '') + '><i class="fas fa-print"></i></button>'+
+                                '<td style="vertical-align: middle;" hidden>'+ 'CANCELADO' +'</td>'+
+                                '<td style="vertical-align: middle;" width="40px"><span class="badge ' + (value.estado == 'PENDIENTE' ? 'badge-danger' : 'badge-success') + '" title="Estado">' + value.estado + '</span></td>'+
+                                '<td class="text-center" style="vertical-align: middle;" width="50px">'+
+                                    '<button data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-primary btn-sm btn-show-result" title="Ver resultado" ' + (value.estado == 'PENDIENTE' ? 'hidden' : '') + '><i class="fas fa-print"></i></button>'+
                                 '</td>'+
                             '</tr>'
                         );
@@ -234,9 +234,9 @@ $(document).ready(function() {
                                 '<td style="vertical-align: middle;">'+ value.id +'</td>'+
                                 '<td style="vertical-align: middle;">'+ value.fecha +'</td>'+
                                 '<td style="vertical-align: middle;">'+ value.hora +'</td>'+
-                                '<td style="vertical-align: middle;">'+ (value.fac_ruta_file !== null ? 'SI' : 'NO') +'</td>'+
+                                '<td style="vertical-align: middle;" hidden>'+ (value.fac_ruta_file !== null ? 'SI' : 'NO') +'</td>'+
                                 '<td class="text-center" style="vertical-align: middle;">'+
-                                    '<button data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-primary btn-sm btn-show-fact" title="Ver resultado"><i class="fas fa-print"></i></button>'+
+                                    '<button data-toggle="modal" data-target="#exampleModal" class="btn btn-outline-primary btn-sm btn-show-fact" title="Ver factura"><i class="fas fa-print"></i></button>'+
                                 '</td>'+
                             '</tr>'
                         );
@@ -262,14 +262,14 @@ $(document).ready(function() {
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                console.log(data);
                 if (data.fac_ruta_file !== null) {
-                    $(document).on('shown.bs.modal', '#exampleModal', function (event) {
-                        var pdfFrame = document.getElementById('pdfFrame');
+                    $(document).on('shown.bs.modal', '.exampleModal', function (event) {
+                        var pdfFrame = document.querySelector('.pdfFrame');
                         var checkPDFReadyInterval = setInterval(function() {
                             if (data.fac_ruta_file !== null) {
                                 pdfFrame.src = "{{ asset('storage') }}"+"/"+data.fac_ruta_file;
                                 clearInterval(checkPDFReadyInterval);
+                                cerrarCargando();
                             }
                         }, 100);
                     });
@@ -279,31 +279,30 @@ $(document).ready(function() {
                         type: 'GET',
                         success: function(response) {
                             getFacturaCliente($(".fac_cli_id").val());
-                            console.log(response);
-                            var pdfFrame = document.getElementById('pdfFrame');
+                            var pdfFrame = document.querySelector('.pdfFrame');
                             var checkPDFReadyInterval = setInterval(function() {
                                 if (response.fac_ruta_file !== null) {
                                     pdfFrame.src = "{{ asset('storage') }}"+"/"+response.fac_ruta_file;
                                     clearInterval(checkPDFReadyInterval);
+                                    cerrarCargando();
                                 }
                             }, 100);
                             //window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
                         }
                     });
                 }
-                cerrarCargando();
             }
         });
     }
 
     $(document).on('click', '.btn-show-fact', function() {
         var fac_id = $(this).closest('tr').find('td:eq(0)').text();
-        console.log(fac_id);
+        $(".exampleModalLabel").text('Factura')
         PdfFactura(fac_id);
     });
 
     $(document).on('click', '.btnClosePdfGenerate', function() {
-        var pdfFrame = document.getElementById('pdfFrame');
+        var pdfFrame = document.querySelector('.pdfFrame');
         pdfFrame.src = "";
     });
 
@@ -315,8 +314,8 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(data) {
                 if (data.rec_ruta_file !== null) {
-                    $(document).on('shown.bs.modal', '#exampleModal', function (event) {
-                        var pdfFrame = document.getElementById('pdfFrame');
+                    $(document).on('shown.bs.modal', '.exampleModal', function (event) {
+                        var pdfFrame = document.querySelector('.pdfFrame');
                         var checkPDFReadyInterval = setInterval(function() {
                             if (data.rec_ruta_file !== null) {
                                 pdfFrame.src = "{{ asset('storage') }}"+"/"+data.rec_ruta_file;
@@ -330,7 +329,7 @@ $(document).ready(function() {
                         url: '{{ route("resultado.pdf", ":id") }}'.replace(":id", rec_id),
                         type: 'GET',
                         success: function(response) {
-                            var pdfFrame = document.getElementById('pdfFrame');
+                            var pdfFrame = document.querySelector('.pdfFrame');
                             var checkPDFReadyInterval = setInterval(function() {
                                 if (response.rec_ruta_file !== null) {
                                     pdfFrame.src = "{{ asset('storage') }}"+"/"+response.rec_ruta_file;
@@ -348,6 +347,7 @@ $(document).ready(function() {
     
     $(document).on('click', '.btn-show-result', function() {
         var rec_id = $(this).closest('tr').find('td:eq(0)').text();
+        $(".exampleModalLabel").text("Resultados");
         PdfResultado(rec_id);
     });
 });

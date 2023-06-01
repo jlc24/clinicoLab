@@ -4,10 +4,10 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        {{-- <meta name="author" content="{{ $config->nombre }}_{{ $config->nit }}">
+        <meta name="author" content="{{ $config->nombre }}_{{ $config->nit }}_{{ $paciente->factura }}">
         <meta name="description" content="Resultado de estudio realizado en {{ $config->nombre }}">
         <meta name="keywords" content="Resultado, Estudio, Análisis, Pruebas">
-        <meta name="copyright" content="Copyright &copy; {{ date('Y') }}-{{ $config->nombre }}"> --}}
+        <meta name="copyright" content="Copyright &copy; {{ date('Y') }}-{{ $config->nombre }}">
         <!-- Bootstrap CSS -->
         {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous"> --}}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
@@ -92,7 +92,7 @@
                     @if($config->logo == null)
                         <img src="{{ asset('dist/img/default.png') }}" alt="" width="100px">
                     @else
-                        <img src="{{ $config->logo }}" alt="" width="100px">
+                        <img src="{{ asset($config->logo) }}" alt="" width="80px" height="80px" style="border-radius: 50%;">
                     @endif
                 </div>
                 <div style="width: 300px; height: auto; background-color: #fff; padding: 5px; border: 1px solid white; display: inline-block;">
@@ -102,13 +102,16 @@
                                 <td>{{ $config->nombre }}</td>
                             </tr>
                             <tr>
+                                <td>{{ $config->nit }}</td>
+                            </tr>
+                            <tr>
                                 <td>{{ $config->telefono }}</td>
                             </tr>
                             <tr>
                                 <td>{{ $config->direccion }}</td>
                             </tr>
                             <tr>
-                                <td>{{ $config->pais }} - {{ $config->departamento }}</td>
+                                <td style="text-transform: uppercase;">{{ $config->departamento }} - {{ $config->pais }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -123,7 +126,7 @@
                     <tbody>
                         <tr>
                             <td><strong>{{ __('Codigo') }}:</strong></td>
-                            <td>{{ $paciente->cli_cod }}</td>
+                            <td>{{ $paciente->rec_id }}{{ $paciente->cli_cod }}{{ $paciente->cli_ci_nit }}</td>
                             <td><strong>{{ __('Fecha Toma') }}:</strong></td>
                             <td>{{ $paciente->fecha }}</td>
                             <td><strong>{{ __('Hora') }}:</strong></td>

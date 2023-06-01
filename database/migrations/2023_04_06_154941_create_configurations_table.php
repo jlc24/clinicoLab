@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('departamento', 20)->nullable();
             $table->string('municipio', 50)->nullable();
             $table->string('telefono', 20)->nullable();
+            $table->string('email', 255)->nullable();
             $table->string('web', 255)->nullable();
             $table->string('logo', 255)->nullable();
             $table->timestamps();

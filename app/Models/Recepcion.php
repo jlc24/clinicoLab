@@ -10,10 +10,12 @@ class Recepcion extends Model
     use HasFactory;
 
     protected $fillable = [
+        'rec_codigo',
         'fac_id',
         'caja_id',
         'det_id',
         'estado',
+        'rec_ruta_file'
     ];
 
     public function detalle()

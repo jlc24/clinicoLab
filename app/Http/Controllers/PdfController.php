@@ -297,6 +297,7 @@ class PdfController extends Controller
             }
             $newdirectory = str_replace("public/", "", $directory);
             $ruta = $newdirectory.$filename;
+            $recCodigo = $paciente->rec_id.$paciente->cli_cod.$paciente->cli_ci_nit;
             
             // $pdf->getDomPDF()->setOptions($options);
             // $pdf->render();
@@ -306,6 +307,7 @@ class PdfController extends Controller
 
             if (file_exists($file_path)) {
                 $recfile = Recepcion::find($id);
+                $recfile->rec_codigo = $recCodigo;
                 $recfile->rec_ruta_file = $ruta;
                 $recfile->save();
 
@@ -313,10 +315,6 @@ class PdfController extends Controller
             }else{
                 return false;
             }
-            
-            
-            //return $pdf->stream('factura.pdf');
-    
             // return $pdf->stream('resultados.pdf');
         }
         

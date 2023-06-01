@@ -12,10 +12,10 @@
                         <table class="table table-sm table-borderless pb-0 mb-0">
                             <thead class="thead-light">
                                 <tr>
-                                    <th>#</th>
-                                    <th>{{ __('Fecha') }}</th>
+                                    <th width="60px" class="text-center">#</th>
+                                    <th width="230px">{{ __('Fecha') }}</th>
                                     <th>{{ __('Hora') }}</th>
-                                    <th>{{ __('Archivo') }}</th>
+                                    <th hidden>{{ __('Archivo') }}</th>
                                     <th>Op</th>
                                 </tr>
                             </thead>

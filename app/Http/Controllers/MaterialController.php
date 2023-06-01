@@ -55,7 +55,7 @@ class MaterialController extends Controller
 
             $imagen = $request->file('mat_imagen');
             $nombreArchivo = time().'_'.$imagen->getClientOriginalName();
-            $rutaCarpetaDestino = 'imagenes/'.$request->cat_id.'/'.$material->id.'/';
+            $rutaCarpetaDestino = 'imagenes/materiales/'.$request->cat_id.'/'.$material->id.'/';
             if (!is_dir($rutaCarpetaDestino)) {
                 mkdir($rutaCarpetaDestino, 0777, true);
             }

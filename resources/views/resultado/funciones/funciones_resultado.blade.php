@@ -618,13 +618,8 @@
             updateEstadoRecepcion(rec_id, datos);
         });
 
-        $(document).on('click', '.btn-imprimir-resultados', function() {
-            var rec_id = $(this).closest('tr').find('td:eq(0)').text();
-            $(this).attr("href", "{{ route('resultado.pdf', ':id') }}".replace(':id', rec_id));
-        });
-
         $(document).on('click', '.btnClosePdfGenerate', function() {
-            var pdfFrame = document.getElementById('pdfFrame');
+            var pdfFrame = document.querySelector('.pdfFrame');
             pdfFrame.src = "";
         });
 
@@ -635,31 +630,29 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
                     if (data.rec_ruta_file !== null) {
-                        $(document).on('shown.bs.modal', '#exampleModal', function (event) {
-                            var pdfFrame = document.getElementById('pdfFrame');
+                        $(document).on('shown.bs.modal', '.exampleModal', function (event) {
+                            var pdfFrame = document.querySelector('.pdfFrame');
                             var checkPDFReadyInterval = setInterval(function() {
                                 if (data.rec_ruta_file !== null) {
                                     pdfFrame.src = "{{ asset('storage') }}"+"/"+data.rec_ruta_file;
                                     clearInterval(checkPDFReadyInterval);
-                                    cerrarCargando();
                                 }
                             }, 100);
+                            cerrarCargando();
                         });
                     }else{
                         $.ajax({
                             url: '{{ route("resultado.pdf", ":id") }}'.replace(":id", rec_id),
                             type: 'GET',
                             success: function(response) {
-                                console.log(response);
                                 var pdfFrame = document.getElementById('pdfFrame');
                                 var checkPDFReadyInterval = setInterval(function() {
                                     if (response.rec_ruta_file !== null) {
                                         pdfFrame.src = "{{ asset('storage') }}"+"/"+response.rec_ruta_file;
                                         clearInterval(checkPDFReadyInterval);
-                                        cerrarCargando();
                                     }
+                                    cerrarCargando();
                                 }, 100);
                                 //window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
                             }
@@ -671,6 +664,7 @@
         
         $(document).on('click', '.btn-imprimir-resultados', function() {
             var rec_id = $(this).closest('tr').find('td:eq(0)').text();
+            $(".exampleModalLabel").text('Resultados');
             PdfResultado(rec_id);
         });
     

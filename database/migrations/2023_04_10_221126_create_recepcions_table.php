@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('recepcions', function (Blueprint $table) {
             $table->id();
+            $table->string('rec_codigo', 20)->nullable();
             $table->unsignedBigInteger('caja_id');
             $table->unsignedBigInteger('fac_id');
             $table->unsignedBigInteger('det_id');

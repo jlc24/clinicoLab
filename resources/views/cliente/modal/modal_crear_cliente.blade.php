@@ -59,7 +59,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="cli_apellido_pat">{{ __('Ap. Paterno') }}:<span class="dato_requerido">*</span></label>
+                                            <label class="col-md-3 col-form-label" for="cli_apellido_pat">{{ __('Apellidos') }}:<span class="dato_requerido">*</span></label>
                                             <div class="col-md-5">
                                                 <input type="text" placeholder="Apellido Paterno" id="cli_apellido_pat" name="cli_apellido_pat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); Usuario(); Password()" required>
                                             </div>

@@ -21,6 +21,7 @@ class ConfigurationSeeder extends Seeder
             'departamento' => 'Oruro',
             'municipio' => 'Oruro',
             'telefono' => '68293415',
+            'web' => 'clinicolab@gmail.com',
             'web' => 'www.clinicolab.com',
             'logo' => '',
         ]);
