@@ -10,16 +10,38 @@
                 dataType: 'json',
                 success: function(data) {
                     console.log(data);
-                    $(document).on('shown.bs.modal', '.exampleModal', function (event) {
-                        var pdfFrame = document.querySelector('.pdfFrame');
-                        var checkPDFReadyInterval = setInterval(function() {
-                            if (data.rec_ruta_file !== null) {
-                                pdfFrame.src = "{{ asset('storage') }}"+"/"+data.rec_ruta_file;
-                                clearInterval(checkPDFReadyInterval);
-                            }
-                            cerrarCargando();
-                        }, 100);
-                    });
+                    if (data.rec_ruta_file !== null) {
+                        $(document).on('shown.bs.modal', '.exampleModal', function (event) {
+                            var pdfFrame = document.querySelector('.pdfFrame');
+                            var checkPDFReadyInterval = setInterval(function() {
+                                if (data.rec_ruta_file !== null) {
+                                    pdfFrame.src = "{{ asset('storage') }}"+"/"+data.rec_ruta_file;
+                                    clearInterval(checkPDFReadyInterval);
+                                }
+                                cerrarCargando();
+                            }, 100);
+                        });
+                    }else{
+                        $(document).on('shown.bs.modal', '.exampleModal', function (event) {
+                            var pdfFrame = document.querySelector('.pdfFrame');
+                            var checkPDFReadyInterval = setInterval(function() {
+                                if (data.rec_ruta_file == null) {
+                                    pdfFrame.src = "";
+                                    clearInterval(checkPDFReadyInterval);
+                                    cerrarCargando();
+                                }
+                            }, 100);
+                        });
+                        setTimeout(function() {
+                            Swal.fire({
+                                title: 'Oops...',
+                                text: 'No hay documento de resultado, por favor comuníquese con la administración de ClinicoLab.',
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 5000
+                            });
+                        }, 500);
+                    }
                 }
             });
         });
@@ -33,16 +55,38 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    $(document).on('shown.bs.modal', '.exampleModal', function (event) {
-                        var pdfFrame = document.querySelector('.pdfFrame');
-                        var checkPDFReadyInterval = setInterval(function() {
-                            if (data.fac_ruta_file !== null) {
-                                pdfFrame.src = "{{ asset('storage') }}"+"/"+data.fac_ruta_file;
-                                clearInterval(checkPDFReadyInterval);
-                            }
-                            cerrarCargando();
-                        }, 100);
-                    });
+                    if (data.fac_ruta_file !== null) {
+                        $(document).on('shown.bs.modal', '.exampleModal', function (event) {
+                            var pdfFrame = document.querySelector('.pdfFrame');
+                            var checkPDFReadyInterval = setInterval(function() {
+                                if (data.fac_ruta_file !== null) {
+                                    pdfFrame.src = "{{ asset('storage') }}"+"/"+data.fac_ruta_file;
+                                    clearInterval(checkPDFReadyInterval);
+                                }
+                                cerrarCargando();
+                            }, 100);
+                        });
+                    }else{
+                        $(document).on('shown.bs.modal', '.exampleModal', function (event) {
+                            var pdfFrame = document.querySelector('.pdfFrame');
+                            var checkPDFReadyInterval = setInterval(function() {
+                                if (data.fac_ruta_file == null) {
+                                    pdfFrame.src = "";
+                                    clearInterval(checkPDFReadyInterval);
+                                    cerrarCargando();
+                                }
+                            }, 100);
+                        });
+                        setTimeout(function() {
+                            Swal.fire({
+                                title: 'Oops...',
+                                text: 'No hay documento de factura, por favor comuniquese con la administración de ClinicoLab.',
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 5000
+                            });
+                        }, 500);
+                    }
                 }
             });
         });

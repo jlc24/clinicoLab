@@ -666,13 +666,13 @@
                                     pdfFrame.src = "{{ asset('storage') }}"+"/"+data.fac_ruta_file;
                                     clearInterval(checkPDFReadyInterval);
                                 }
+                                cerrarCargando();
                             }, 100);
                             $(document).on('click', '.btnClosePdfGenerate', function () {
                                 window.location.href = '{{ route('recepcion') }}';
                             });
                         }
                     });
-                    cerrarCargando();
                     // window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
                     // setTimeout(function(){
                         //window.location.href = '{{ route('recepcion') }}';

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Configuration;
 use App\Models\Factura;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -15,7 +16,48 @@ class FacturaController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        if ($user->rol == 'admin') {
+            $facturas = DB::table('facturas as f')
+                        ->join('users as u', 'u.id', '=', 'f.user_id')
+                        ->join('clientes as c', 'c.id', '=', 'f.cli_id')
+                        ->join('usuarios as us', 'us.user_id', '=', 'u.id')
+                        ->select('f.id as factura',
+                            DB::raw("CONCAT(c.cli_nombre, ' ', 
+                                            c.cli_apellido_pat, ' ', 
+                                            c.cli_apellido_mat) AS nombre"), 
+                            DB::raw("DATE_FORMAT(f.updated_at, '%d-%m-%Y') as fecha"),
+                            DB::raw("DATE_FORMAT(f.updated_at, '%H:%i') as hora"),
+                            DB::raw("CONCAT(us.usuario_nombre, ' ', 
+                                            us.usuario_apellido_pat) AS nom_user"))
+                        ->orderByDesc('f.id')
+                        ->get();
+        }elseif ($user->rol == 'usuario' || $user->rol == 'medico') {
+            $facturas = DB::table('facturas as f')
+                        ->join('users as u', 'u.id', '=', 'f.user_id')
+                        ->join('clientes as c', 'c.id', '=', 'f.cli_id')
+                        ->join('usuarios as us', 'us.user_id', '=', 'u.id')
+                        ->select('f.id as factura',
+                            DB::raw("CONCAT(c.cli_nombre, ' ', 
+                                            c.cli_apellido_pat, ' ', 
+                                            c.cli_apellido_mat) AS nombre"), 
+                            DB::raw("DATE_FORMAT(f.updated_at, '%d-%m-%Y') as fecha"),
+                            DB::raw("DATE_FORMAT(f.updated_at, '%H:%i') as hora"),
+                            DB::raw("CONCAT(us.usuario_nombre, ' ', 
+                                            us.usuario_apellido_pat) AS nom_user"))
+                        ->where('u.id', '=', $user->id)
+                        ->orderByDesc('f.id')
+                        ->get();
+        }
+        foreach ($facturas as $factura ) {
+            $fac = $factura->factura;
+            $fac= str_pad($fac, 6, '0', STR_PAD_LEFT);
+            $factura->num_factura = $fac;
+        }
+
+        return view('factura.index', [
+            'facturas' => $facturas
+        ]);
     }
 
     public function getFacturaCliente($id)

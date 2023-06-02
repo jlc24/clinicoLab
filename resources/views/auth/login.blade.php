@@ -34,8 +34,8 @@
 
         .square {
             position: relative;
-            width: 550px;
-            height: 550px;
+            width: 500px;
+            height: 500px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -263,7 +263,7 @@
                         @endif
                 </div><br>
                 <div class="links">
-                    <input type="checkbox" name="show-password" id="show-password"><label for="show-password">Mostrar contraseña</label> 
+                    <input type="checkbox" name="show-password" id="show-password"><label for="show-password">&nbsp;&nbsp;Mostrar contraseña</label> 
                 </div><br>
                 <div class="inputBx">
                     <a href="{{ url('/') }}" class="volver">Regresar</a>

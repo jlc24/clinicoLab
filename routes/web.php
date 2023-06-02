@@ -21,6 +21,7 @@ use App\Http\Controllers\DpComponenteController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EstudioController;
 use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\IndicationController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MedicoController;
@@ -115,6 +116,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/facturas', [FacturaController::class, 'store'])->name('factura');
             Route::post('/facturas/{id}', [FacturaController::class, 'update'])->name('factura.update');
         });
+
+        Route::get('/facturas', [FacturaController::class, 'index'])->name('factura');
         Route::get('/buscar_paciente_id', [RecepcionController::class, 'buscarPacienteId']);
         Route::get('/buscar_paciente_nombre', [RecepcionController::class, 'buscarPacienteNombre']);
         Route::get('/buscar_estudio_id', [RecepcionController::class, 'buscarEstudioId']);
@@ -211,9 +214,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/parametros/{id}', [ParametroController::class, 'update'])->name('parametros.update');
         Route::delete('/parametros/{id}', [ParametroController::class, 'destroy'])->name('parametros.destroy');
         
-        
-        
-        
         Route::get('/getUmedUnidad/{id}', [UMedidaController::class, 'getUmedUnidad'])->name('getUmedUnidad');
         
         Route::middleware('role:admin')->group(function () {
@@ -262,6 +262,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/getClienteResult/{id}', [ResultController::class, 'getClienteResult'])->name('getClienteResult');
     
         Route::get('/getFacturaCliente/{id}', [FacturaController::class , 'getFacturaCliente'])->name('getFacturaCliente');
+
+        Route::get('/historyView', [HistoryController::class, 'historyViewRecepcion'])->name('historyViewRecepcion');
+        Route::get('/historyRecepcion', [HistoryController::class, 'historyRecepcion']);
     });
 
     

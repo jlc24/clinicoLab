@@ -172,8 +172,8 @@
                                             <label class="col-md-3 col-form-label" for="usuario_rol">{{ __('Rol') }}:<span class="dato_requerido">*</span></label>
                                             <div class="col-md-9">
                                                 <select class="custom-select custom-select-sm" id="usuario_rol" name="usuario_rol" >
-                                                    <option value="" selected="" disabled>SELECCIONAR...</option>
-                                                    <option value="usuario">USUARIO</option>
+                                                    <option value="usuario" selected>USUARIO</option>
+                                                    <option value="admin">ADMINISTRADOR</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -87,6 +87,11 @@ $(document).ready(function() {
                 timer: 2000
             });
         }else{
+            if ($("#cli_medico").val() == "" || $("#cli_medico").val() == null) {
+                cli_medico = "";
+            }else {
+                cli_medico = $("#cli_medico").val();
+            }
             var datos = new FormData();
             datos.append('cli_cod', $("#cli_cod").val());
             datos.append('cli_nombre', $("#cli_nombre").val());
@@ -105,7 +110,7 @@ $(document).ready(function() {
             datos.append('cli_municipio', $("#cli_municipio").val());
             datos.append('cli_estado', $("#cli_estado").val());
             datos.append('cli_rol', $("#cli_rol").val());
-            datos.append('med_id', $("#cli_medico").val());
+            datos.append('med_id', cli_medico);
 
             // for (const [key, value] of datos) {
             //     console.log(key, '- '+value);
@@ -128,7 +133,7 @@ $(document).ready(function() {
                         timer: 1000
                     });
                     if (window.location.href.indexOf("clientes") > -1) {
-                        //location.reload();
+                        location.reload();
                         $('#smartwizard_crear_client').smartWizard("reset");
                     }else{
                         $('#smartwizard_crear_client').smartWizard("reset");
@@ -274,22 +279,41 @@ $(document).ready(function() {
                         }, 100);
                     });
                 }else{
-                    $.ajax({
-                        url: '{{ route("factura.pdf", ":id") }}'.replace(":id", id),
-                        type: 'GET',
-                        success: function(response) {
-                            getFacturaCliente($(".fac_cli_id").val());
-                            var pdfFrame = document.querySelector('.pdfFrame');
-                            var checkPDFReadyInterval = setInterval(function() {
-                                if (response.fac_ruta_file !== null) {
-                                    pdfFrame.src = "{{ asset('storage') }}"+"/"+response.fac_ruta_file;
-                                    clearInterval(checkPDFReadyInterval);
-                                    cerrarCargando();
-                                }
-                            }, 100);
-                            //window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
-                        }
+                    // $.ajax({
+                    //     url: '{{ route("factura.pdf", ":id") }}'.replace(":id", id),
+                    //     type: 'GET',
+                    //     success: function(response) {
+                    //         getFacturaCliente($(".fac_cli_id").val());
+                    //         var pdfFrame = document.querySelector('.pdfFrame');
+                    //         var checkPDFReadyInterval = setInterval(function() {
+                    //             if (response.fac_ruta_file !== null) {
+                    //                 pdfFrame.src = "{{ asset('storage') }}"+"/"+response.fac_ruta_file;
+                    //                 clearInterval(checkPDFReadyInterval);
+                    //                 cerrarCargando();
+                    //             }
+                    //         }, 100);
+                    //         //window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
+                    //     }
+                    // });
+                    $(document).on('shown.bs.modal', '.exampleModal', function (event) {
+                        var pdfFrame = document.querySelector('.pdfFrame');
+                        var checkPDFReadyInterval = setInterval(function() {
+                            if (data.fac_ruta_file == null) {
+                                pdfFrame.src = "";
+                                clearInterval(checkPDFReadyInterval);
+                                cerrarCargando();
+                            }
+                        }, 100);
                     });
+                    setTimeout(function() {
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'No hay documento de factura, por favor comuniquese con la administración de ClinicoLab.',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 5000
+                        });
+                    }, 500);
                 }
             }
         });
@@ -325,21 +349,40 @@ $(document).ready(function() {
                         }, 100);
                     });
                 }else{
-                    $.ajax({
-                        url: '{{ route("resultado.pdf", ":id") }}'.replace(":id", rec_id),
-                        type: 'GET',
-                        success: function(response) {
-                            var pdfFrame = document.querySelector('.pdfFrame');
-                            var checkPDFReadyInterval = setInterval(function() {
-                                if (response.rec_ruta_file !== null) {
-                                    pdfFrame.src = "{{ asset('storage') }}"+"/"+response.rec_ruta_file;
-                                    clearInterval(checkPDFReadyInterval);
-                                    cerrarCargando();
-                                }
-                            }, 100);
-                            //window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
-                        }
+                    // $.ajax({
+                    //     url: '{{ route("resultado.pdf", ":id") }}'.replace(":id", rec_id),
+                    //     type: 'GET',
+                    //     success: function(response) {
+                    //         var pdfFrame = document.querySelector('.pdfFrame');
+                    //         var checkPDFReadyInterval = setInterval(function() {
+                    //             if (response.rec_ruta_file !== null) {
+                    //                 pdfFrame.src = "{{ asset('storage') }}"+"/"+response.rec_ruta_file;
+                    //                 clearInterval(checkPDFReadyInterval);
+                    //                 cerrarCargando();
+                    //             }
+                    //         }, 100);
+                    //         //window.open('{{ route("factura.pdf", ":id") }}'.replace(":id", fac_id), '_blank');
+                    //     }
+                    // });
+                    $(document).on('shown.bs.modal', '.exampleModal', function (event) {
+                        var pdfFrame = document.querySelector('.pdfFrame');
+                        var checkPDFReadyInterval = setInterval(function() {
+                            if (data.rec_ruta_file == null) {
+                                pdfFrame.src = "";
+                                clearInterval(checkPDFReadyInterval);
+                                cerrarCargando();
+                            }
+                        }, 100);
                     });
+                    setTimeout(function() {
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'No hay documento de resultado, por favor comuníquese con la administración de ClinicoLab.',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 5000
+                        });
+                    }, 500);
                 }
             }
         });

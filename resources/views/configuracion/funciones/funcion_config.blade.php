@@ -3,7 +3,7 @@
         $(document).on('click', '.btn-config-edit', function() {
             $("#chk-edit").prop('checked', true);
             if ($("#chk-edit").is(':checked')) {
-                $('.btn-config-edit').removeClass('btn-outline-warning').addClass('btn-warning btn-config-edit-q');
+                $('.btn-config-edit').removeClass('btn-outline-warning').addClass('btn-danger btn-config-edit-q').text('Cancelar');
                 $("#config_nombre").prop('disabled', false);
                 $("#config_nombre").focus();
                 $("#config_nit").prop('disabled', false);
@@ -20,7 +20,7 @@
         $(document).on('click', '.btn-config-edit-q', function() {
             $("#chk-edit").prop('checked', false);
             if ($("#chk-edit").prop('checked', false)) {
-                $('.btn-config-edit').removeClass('btn-warning btn-config-edit-q').addClass('btn-outline-warning btn-config-edit');
+                $('.btn-config-edit').removeClass('btn-danger btn-config-edit-q').addClass('btn-outline-warning btn-config-edit').text('Editar');
                 $("#config_nombre").prop('disabled', true);
                 $("#config_nit").prop('disabled', true);
                 $("#config_direccion").prop('disabled', true);

@@ -62,123 +62,125 @@
                             </li>
                         </ul>
                     </li>
+                    @if(Auth::user()->rol == 'admin' || Auth::user()->rol == 'medico')
+                        @php
+                            $activeRoutesCatalog = [ 
+                                'antibiograma', 
+                                'bacteria', 
+                                'cultivo', 
+                                'estudio', 
+                                'medicamento', 
+                                'laboratorio', 
+                                'muestra', 
+                                'indication', 
+                                'recipiente', 
+                                'metodologia', 
+                                'umedida', 
+                                'categoria', 
+                                'material',
+                                'provider'
+                            ];
+                        @endphp
+                        <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesCatalog) ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesCatalog) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-book-medical"></i>
+                                <p>
+                                    {{ __('Catálogos') }}
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview" >
+                                <li class="nav-item px-2" hidden>
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-microscope"></i>
+                                        <p>{{ __('Antibiogramas') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="{{ route('bacteria') }}" class="nav-link {{ Request::is('bacterias') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-bacteria"></i>
+                                        <p>{{ __('Bacterias') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="{{ route('cultivo') }}" class="nav-link {{ Request::is('cultivos') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-vial"></i>
+                                        <p>{{ __('Cultivos') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="{{ route('estudio') }}" class="nav-link {{ Request::is('estudios') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-clipboard-list"></i>
+                                        <p>{{ __('Estudios') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2" hidden>
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-capsules"></i>
+                                        <p>{{ __('Medicamentos') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2" hidden>
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fas fa-clinic-medical"></i>
+                                        <p>{{ __('Laboratorio') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="{{ route('muestra') }}" class="nav-link {{ Request::is('muestras') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-prescription-bottle"></i>
+                                        <p>{{ __('Tipos de Muestras') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="{{ route('indication') }}" class="nav-link {{ Request::is('indications') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-file-contract"></i>
+                                        <p>{{ __('Indicaciones') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="{{ route('recipiente') }}" class="nav-link {{ Request::is('recipientes') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-prescription-bottle-alt"></i>
+                                        <p>{{ __('Recipientes') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="{{ route('metodologia') }}" class="nav-link {{ Request::is('metodologias') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-procedures"></i>
+                                        <p>{{ __('Metodologías') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="{{ route('umedida') }}" class="nav-link {{ Request::is('umedidas') ? 'active' : '' }}">
+                                        <i class="nav-icon fas fa-ruler-horizontal"></i>
+                                        <p>{{ __('Unidades de Medida') }}</p>
+                                    </a>
+                                </li>
+                                @if(Auth::user()->rol =='admin')
+                                    <li class="nav-item px-2">
+                                        <a href="{{ route('categoria') }}" class="nav-link {{ Request::is('categorias') ? 'active' : '' }}">
+                                            <i class="nav-icon fas fa-folder"></i>
+                                            <p>{{ __('Categoría') }}</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item px-2">
+                                        <a href="{{ route('material') }}" class="nav-link {{ Request::is('materials') ? 'active' : '' }}">
+                                            <i class="nav-icon fas fa-toolbox"></i>
+                                            <p>{{ __('Materiales') }}</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item px-2">
+                                        <a href="{{ route('provider') }}" class="nav-link {{ Request::is('providers') ? 'active' : '' }}">
+                                            <i class="nav-icon fas fa-users-rectangle"></i>
+                                            <p>{{ __('Proveedores') }}</p>
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </li>
+                    @endif
                     @php
-                        $activeRoutesCatalog = [ 
-                            'antibiograma', 
-                            'bacteria', 
-                            'cultivo', 
-                            'estudio', 
-                            'medicamento', 
-                            'laboratorio', 
-                            'muestra', 
-                            'indication', 
-                            'recipiente', 
-                            'metodologia', 
-                            'umedida', 
-                            'categoria', 
-                            'material',
-                            'provider'
-                        ];
-                    @endphp
-                    <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesCatalog) ? 'menu-open' : '' }}">
-                        <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesCatalog) ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-book-medical"></i>
-                            <p>
-                                {{ __('Catálogos') }}
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview" >
-                            <li class="nav-item px-2" hidden>
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-microscope"></i>
-                                    <p>{{ __('Antibiogramas') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="{{ route('bacteria') }}" class="nav-link {{ Request::is('bacterias') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-bacteria"></i>
-                                    <p>{{ __('Bacterias') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="{{ route('cultivo') }}" class="nav-link {{ Request::is('cultivos') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-vial"></i>
-                                    <p>{{ __('Cultivos') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="{{ route('estudio') }}" class="nav-link {{ Request::is('estudios') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-clipboard-list"></i>
-                                    <p>{{ __('Estudios') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2" hidden>
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-capsules"></i>
-                                    <p>{{ __('Medicamentos') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2" hidden>
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-clinic-medical"></i>
-                                    <p>{{ __('Laboratorio') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="{{ route('muestra') }}" class="nav-link {{ Request::is('muestras') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-prescription-bottle"></i>
-                                    <p>{{ __('Tipos de Muestras') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="{{ route('indication') }}" class="nav-link {{ Request::is('indications') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-file-contract"></i>
-                                    <p>{{ __('Indicaciones') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="{{ route('recipiente') }}" class="nav-link {{ Request::is('recipientes') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-prescription-bottle-alt"></i>
-                                    <p>{{ __('Recipientes') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="{{ route('metodologia') }}" class="nav-link {{ Request::is('metodologias') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-procedures"></i>
-                                    <p>{{ __('Metodologías') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="{{ route('umedida') }}" class="nav-link {{ Request::is('umedidas') ? 'active' : '' }}">
-                                    <i class="nav-icon fas fa-ruler-horizontal"></i>
-                                    <p>{{ __('Unidades de Medida') }}</p>
-                                </a>
-                            </li>
-                            @if(Auth::user()->rol =='admin')
-                                <li class="nav-item px-2">
-                                    <a href="{{ route('categoria') }}" class="nav-link {{ Request::is('categorias') ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-folder"></i>
-                                        <p>{{ __('Categoría') }}</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item px-2">
-                                    <a href="{{ route('material') }}" class="nav-link {{ Request::is('materials') ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-toolbox"></i>
-                                        <p>{{ __('Materiales') }}</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item px-2">
-                                    <a href="{{ route('provider') }}" class="nav-link {{ Request::is('providers') ? 'active' : '' }}">
-                                        <i class="nav-icon fas fa-users-rectangle"></i>
-                                        <p>{{ __('Proveedores') }}</p>
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </li>
-                    @php
-                        $activeRoutesCaptura = [ 'recepcion', 'result' ];
+                        $activeRoutesCaptura = [ 'recepcion', 'result', 'historyViewRecepcion' ];
                     @endphp
                     <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesCaptura) ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesCaptura) ? 'active' : '' }}">
@@ -195,6 +197,12 @@
                                     <p>{{ __('Recepción') }}</p>
                                 </a>
                             </li>
+                            <li class="nav-item px-2">
+                                <a href="{{ route('historyViewRecepcion') }}" class="nav-link {{ Request::is('historyView') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-file-clipboard"></i>
+                                    <p>{{ __('Historial Recepción') }}</p>
+                                </a>
+                            </li>
                             @if(Auth::user()->rol =='admin')
                                 <li class="nav-item px-2">
                                     <a href="{{ route('result') }}" class="nav-link {{ Request::is('results') ? 'active' : '' }}">
@@ -206,7 +214,7 @@
                         </ul>
                     </li>
                     @php
-                        $activeRoutesTools = [ 'caja' ];
+                        $activeRoutesTools = [ 'caja', 'factura' ];
                     @endphp
                     <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesTools) ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesTools) ? 'active' : '' }}">
@@ -220,7 +228,13 @@
                             <li class="nav-item px-2">
                                 <a href="{{ route('caja') }}" class="nav-link {{ Request::is('cajas') ? 'active' : '' }}">
                                     <i class=" nav-icon fas fa-box"></i>
-                                    <p>{{ __('Caja') }}</p>
+                                    <p>{{ __('Cajas') }}</p>
+                                </a>
+                            </li>
+                            <li class="nav-item px-2">
+                                <a href="{{ route('factura') }}" class="nav-link {{ Request::is('facturas') ? 'active' : '' }}">
+                                    <i class=" nav-icon fas fa-file-archive"></i>
+                                    <p>{{ __('Facturas') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item px-2">
@@ -235,19 +249,19 @@
                                     <p>{{ __('Fórmulas') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item px-2">
+                            <li class="nav-item px-2" hidden>
                                 <a href="#" class="nav-link">
                                     <i class="fas fa-clipboard nav-icon"></i>
                                     <p>{{ __('Lista de Precios') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item px-2">
+                            <li class="nav-item px-2" hidden>
                                 <a href="#" class="nav-link">
                                     <i class="fa-solid fa-cart-plus nav-icon"></i>
                                     <p>{{ __('Control de Resultados') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item px-2">
+                            <li class="nav-item px-2" hidden>
                                 <a href="#" class="nav-link">
                                     <i class="fa-solid fa-cart-plus nav-icon"></i>
                                     <p>{{ __('Convenios') }}</p>
@@ -269,20 +283,20 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class=" nav-icon fa-solid fa-user-plus"></i>
-                                    <p>{{ __('Clientes') }}</p>
+                                    <i class=" nav-icon fas fa-file-archive"></i>
+                                    <p>{{ __('Facturas') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fa-solid fa-user-doctor"></i>
-                                    <p>{{ __('Medicos') }}</p>
+                                    <i class="nav-icon fas fa-file"></i>
+                                    <p>{{ __('Resultados') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                    <p>{{ __('Productos') }}</p>
+                                    <p>{{ __('Reportes') }}</p>
                                 </a>
                             </li>
                         </ul>
@@ -301,20 +315,20 @@
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class=" nav-icon fa-solid fa-user-plus"></i>
-                                    <p>{{ __('Clientes') }}</p>
+                                    <i class=" nav-icon fa-solid fa-box"></i>
+                                    <p>{{ __('Cajas') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fa-solid fa-user-doctor"></i>
-                                    <p>{{ __('Medicos') }}</p>
+                                    <i class="nav-icon fa-solid fa-toolbox"></i>
+                                    <p>{{ __('Material') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
-                                    <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                    <p>{{ __('Productos') }}</p>
+                                    <i class="nav-icon fa-solid fa-file"></i>
+                                    <p>{{ __('Resultados') }}</p>
                                 </a>
                             </li>
                         </ul>

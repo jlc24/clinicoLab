@@ -132,8 +132,6 @@ class ClienteController extends Controller
             'user_id' => $user->id
         ]);
         
-
-        
     }
 
     /**

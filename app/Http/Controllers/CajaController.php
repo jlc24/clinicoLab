@@ -6,6 +6,8 @@ use App\Models\Caja;
 use App\Models\Factura;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class CajaController extends Controller
 {
@@ -14,13 +16,13 @@ class CajaController extends Controller
      */
     public function index()
     {
-        $usuario = auth()->user();
+        $usuario = Auth::user();
         if ($usuario->rol == 'admin') {
-            $cajas = Caja::all();
-        } elseif ($usuario->rol == 'recepcion') {
-            $cajas = Caja::where('user_id', '=', $usuario->id)->get();
+            $cajas = Caja::orderByDesc('created_at')->get();
+        } elseif ($usuario->rol == 'usuario') {
+            $cajas = Caja::where('user_id', '=', $usuario->id)->orderBy('created_at')->get();
         }
-        $totalFactura = Factura::sum('fac_total');
+        $totalFactura = Factura::whereDate('updated_at', Carbon::today())->sum('fac_total');
         
         return view('caja.index', [ 
             'cajas' => $cajas,
@@ -30,7 +32,7 @@ class CajaController extends Controller
 
     public function getCajaStatus()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $caja = Caja::where('user_id', '=', $user->id)->latest()->first();
         return response()->json($caja);
     }
@@ -53,7 +55,7 @@ class CajaController extends Controller
             'caja_estado' => 'required'
         ]);
 
-        $usuario = auth()->user();
+        $usuario = Auth::user();
         Caja::create([
             'user_id' => $usuario->id,
             'caja_monto_inicial' => $request->input('caja_monto_apertura'),
@@ -90,7 +92,7 @@ class CajaController extends Controller
             'caja_cambio' => 'required',
         ]);
 
-        $usuario = auth()->user();
+        $usuario = Auth::user();
         $caja = Caja::where('id', '=', $id)->first();
         $caja->update([
             'user_id' => $usuario->id,
