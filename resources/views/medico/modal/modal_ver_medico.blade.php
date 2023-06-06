@@ -22,14 +22,25 @@
                             <div class="col-xl-6 col-sm-6">
                                 <label class="col-form-label">{{ $medico->med_cod }}</label>
                             </div>
-                            <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Usuario') }}:</h1>
-                            <div class="col-xl-6 col-sm-6">
-                                <label class="col-form-label">{{ $medico->med_correo }}</label>
-                            </div>
-                            <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Contraseña') }}:</h1>
-                            <div class="col-xl-6 col-sm-6">
-                                <label class="col-form-label">{{ $medico->med_password }}</label>
-                            </div>
+                            @if(Auth::user()->rol == 'admin')
+                                <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Usuario') }}:</h1>
+                                <div class="col-xl-6 col-sm-6">
+                                    <label class="col-form-label">{{ $medico->med_correo }}</label>
+                                </div>
+                                <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Contraseña') }}:</h1>
+                                <div class="col-xl-6 col-sm-6">
+                                    <label class="col-form-label">{{ $medico->med_password }}</label>
+                                </div>
+                            @else
+                                <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Usuario') }}:</h1>
+                                <div class="col-xl-6 col-sm-6">
+                                    <label class="col-form-label">*******************</label>
+                                </div>
+                                <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Contraseña') }}:</h1>
+                                <div class="col-xl-6 col-sm-6">
+                                    <label class="col-form-label">*******************</label>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div class="col-xl-6 col-sm-6 pt-2 ml-1" style="border-style: solid; border-width: 1px; border-radius: 10px; border-color: #C6C8CA">

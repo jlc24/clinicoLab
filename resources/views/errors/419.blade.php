@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>404 Pagina no encontrada</title>
+    <title>419 Sesion Expirada</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     <style>
@@ -51,10 +51,10 @@
 </head>
 <body>
     <div>
-        <h1>404</h1>
-        <h2><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Página no encontrada.</h2>
-        <p>No pudimos encontrar la pagina que estabas buscando.</p>
-        <a href="{{ url('/home') }}">Regresar al inicio</a>
+        <h1>419</h1>
+        <h2><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Página expirada.</h2>
+        <p>Lo sentimos, tu sesión ha expirado. Por favor actualiza la página e inténtalo nuevamente.</p>
+        <a href="{{ url('/') }}">Regresar al inicio</a>
     </div>
 </body>
 </html>

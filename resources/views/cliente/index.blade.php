@@ -55,15 +55,15 @@
                                             <td class="text-center">
                                                 <div class="btn-group" role="group" aria-label="Button group">
                                                     <button data-toggle="modal" data-target="#modal_actualizar_cliente_{{ $cliente->id }}" class="btnEditarCliente btn btn-sm btn-outline-warning" title="Editar Paciente"><i class="fas fa-user-edit"></i></button>
-                                                    <a href="#" data-toggle="modal" data-target="#modal_ver_cliente_{{ $cliente->id }}" class="btn btn-sm btn-outline-info" title="Mostrar Informacion del Paciente"><i class="fas fa-info-circle"></i></a>
+                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#modal_ver_cliente" class="btn btn-sm btn-outline-info btnVerCliente" title="Mostrar Informacion del Paciente"><i class="fas fa-info-circle"></i></a>
                                                     <a href="javascript:void(0);" id="btnAddRecepcion" class="btn btn-sm btn-outline-danger btnAddRecepcion" title="Recepcionar Estudio"><i class="fas fa-keyboard"></i></a>
-                                                    <a href="#" data-toggle="modal" data-target="#modal_ver_resultado" id="btnVerResultados" class="btn btn-sm btn-outline-success btnVerResultados" title="Ver resultados"><i class="fas fa-eye"></i></a>
-                                                    <a href="#" data-toggle="modal" data-target="#modal_ver_factura" id="btnVerFacturas" class="btn btn-sm btn-outline-primary btnVerFacturas" title="Ver Facturas"><i class="fas fa-file-archive"></i></a>
+                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#modal_ver_resultado" id="btnVerResultados" class="btn btn-sm btn-outline-success btnVerResultados" title="Ver resultados"><i class="fas fa-eye"></i></a>
+                                                    <a href="javascript:void(0);" data-toggle="modal" data-target="#modal_ver_factura" id="btnVerFacturas" class="btn btn-sm btn-outline-primary btnVerFacturas" title="Ver Facturas"><i class="fas fa-file-archive"></i></a>
                                                     {{-- <a href="javascript:void(0);" id="btnVerReporte" class="btn btn-sm btn-outline-secondary" title="ver Reporte"><i class="fas fa-file"></i></a> --}}
                                                 </div>
                                             </td>
                                             @include('cliente.modal.modal_actualizar_cliente')
-                                            @include('cliente.modal.modal_ver_cliente')
+                                            
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -76,8 +76,9 @@
     </section>
     
     @include('cliente.modal.modal_crear_cliente')
+    @include('cliente.modal.modal_ver_cliente')
     @include('cliente.modal.modal_ver_resultado')
-    "@include('cliente.modal.modal_ver_facturas')"
+    @include('cliente.modal.modal_ver_facturas')
     @include('cliente.modal.modal_ver_resultadopdf')
 @endsection
 

@@ -152,6 +152,87 @@ $(document).ready(function() {
             });
         }
     });
+    function getCliente(id) {
+        mostrarCargando();
+        $.ajax({
+            url: '{{ route("cliente.show", ":id") }}'.replace(":id", id),
+            type: 'GET',
+            success: function(data) {
+                if (data.length !== 0) {
+                    if(data[0].cli_genero == 'MASCULINO'){
+                        $(".img-perfil-cliente").attr('src', "{{ asset('dist/img/avatar5.png') }}")
+                    }else{
+                        $(".img-perfil-cliente").attr('src', "{{ asset('dist/img/avatar3.png') }}")
+                    }
+                    $(".cli_cod").text(data[0].cli_cod);
+                    $(".cli_id").val(data[0].id);
+                    $(".cli_correo").text(data[0].cli_correo);
+                    $(".cli_password").text(data[0].cli_password);
+                    if (data[0].estado == '1') {
+                        $(".cli_estado_color").removeClass('badge badge-danger btn-cliente-activar').addClass('badge badge-success btn-cliente-desactivar').text('ACTIVO');
+                    }else{
+                        $(".cli_estado_color").removeClass('badge badge-success btn-cliente-desactivar').addClass('badge badge-danger btn-cliente-activar').text('INACTIVO');
+                    }
+                    $(".cli_nombre").text(data[0].cli_nombre+' '+data[0].cli_apellido_pat+' '+data[0].cli_apellido_mat);
+                    $(".cli_ci").text(data[0].cli_ci_nit);
+                    $(".cli_exp").text(data[0].cli_exp_ci);
+                    $(".cli_direccion").text(data[0].cli_direccion);
+                    $(".cli_telefono").text(data[0].cli_telefono);
+                    $(".cli_fec_nac").text(data[0].fecha_nacimiento);
+                    $(".cli_edad").text(data[0].cli_edad + ' años');
+                    $(".cli_dep").text(data[0].dep);
+                    $(".cli_mun").text(data[0].mun);
+                    $(".cli_num_celular").text(data[0].cli_celular);
+                    $(".cli_celular").attr('href', 'https://api.whatsapp.com/send?phone=591'+data[0].cli_celular);
+                    cerrarCargando();
+                }
+            }
+        });
+    }
+
+    $(document).on('click', '.btnVerCliente', function() {
+        var cli_id = $(this).closest('tr').find('td:eq(0)').text();
+        getCliente(cli_id);
+    })
+
+    function updateEstado(ruta, datos, id) {
+        $.ajax({
+            url: ruta,
+            type: 'POST',
+            data: datos,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(data) {
+                getCliente(id);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Se ha producido un error.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+        });
+    }
+
+    $(document).on('click', '.btn-cliente-desactivar', function() {
+        var cli_id = $(".cli_id").val();
+        var datos = new FormData();
+        datos.append('estado', 0);
+        updateEstado('{{ route("cliente.estado.0", ":id") }}'.replace(":id", cli_id), datos, cli_id);
+    });
+    $(document).on('click', '.btn-cliente-activar', function() {
+        var cli_id = $(".cli_id").val();
+        var datos = new FormData();
+        datos.append('estado', 1);
+        updateEstado('{{ route("cliente.estado.1", ":id") }}'.replace(":id", cli_id), datos, cli_id);
+    });
 
     //datatables
     $("#tabla_clientes").dataTable({

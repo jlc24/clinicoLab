@@ -51,9 +51,9 @@
 </head>
 <body>
     <div>
-        <h1>404</h1>
-        <h2><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Página no encontrada.</h2>
-        <p>No pudimos encontrar la pagina que estabas buscando.</p>
+        <h1>403</h1>
+        <h2><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Acceso no autorizado.</h2>
+        <p>Estas tratando de acceder a datos no autorizados, se registró el acceso y se informará a la administracion.</p>
         <a href="{{ url('/home') }}">Regresar al inicio</a>
     </div>
 </body>

@@ -30,6 +30,7 @@ use App\Http\Controllers\MuestraController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ParametroController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\ProcedimientoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RecepcionController;
@@ -68,22 +69,16 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
     
-        Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuario');
-        Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuario.store');
-        Route::get('/usuarios/{id}', [UsuarioController::class, 'edit'])->name('usuario.edit');
-        Route::post('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuario.update');
-    
-        Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configuration');
-        Route::post('/configurations', [ConfigurationController::class, 'store'])->name('config.store');
-        Route::post('/configurations/{id}', [ConfigurationController::class, 'update'])->name('config.update');
-        Route::post('/updateLogo/{id}', [ConfigurationController::class, 'updateLogo'])->name('config.imagen');
+        
     
         Route::get('/clientes', [ClienteController::class, 'index'])->name('cliente');
         Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente.store');
-        Route::get('/clientes/{id}/edit', [ClienteController::class, 'edit']);
-        Route::post('/clientes/{id}', [ClienteController::class, 'update'])->name('cliente.update');
+        Route::get('/clientes/{id}', [ClienteController::class, 'show'])->name('cliente.show')->middleware('ajax');
+        Route::post('/clientes/{id}', [ClienteController::class, 'update'])->name('cliente.update')->middleware('ajax');
+
+        
     
-        Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
+        //Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
         Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
         Route::get('/getEstudioClienteRecepcion/{id}', [ClienteController::class, 'getEstudioClienteRecepcion'])->name('getEstudioClienteRecepcion');
     
@@ -100,7 +95,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/cajas/{id}', [CajaController::class, 'update']);
     
         Route::get('/getCajaStatus', [CajaController::class, 'getCajaStatus'])->name('getCajaStatus');
-    
+        
         Route::middleware(['verificarEstadoCaja'])->group(function () {
             Route::get('/recepcion', [RecepcionController::class, 'index'])->name('recepcion');
             Route::post('/recepcion', [RecepcionController::class, 'store'])->name('recepcion');
@@ -217,6 +212,23 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/getUmedUnidad/{id}', [UMedidaController::class, 'getUmedUnidad'])->name('getUmedUnidad');
         
         Route::middleware('role:admin')->group(function () {
+
+            Route::post('/updateActivarClientEstado/{id}', [ClienteController::class, 'updateActivarClientEstado'])->name('cliente.estado.1');
+            Route::post('/updateDesactivarClientEstado/{id}', [ClienteController::class, 'updateDesactivarClientEstado'])->name('cliente.estado.0');
+
+            Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuario');
+            Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuario.store');
+            Route::get('/usuarios/{id}', [UsuarioController::class, 'edit'])->name('usuario.edit')->middleware('ajax');
+            Route::post('/usuarios/{id}', [UsuarioController::class, 'update'])->name('usuario.update');
+
+            Route::post('/updateDesactivarUserEstado/{id}', [UsuarioController::class, 'updateDesactivarUserEstado'])->name('usuario.estado.0');
+            Route::post('/updateActivarUserEstado/{id}', [UsuarioController::class, 'updateActivarUserEstado'])->name('usuario.estado.1');
+        
+            Route::get('/configurations', [ConfigurationController::class, 'index'])->name('configuration');
+            Route::post('/configurations', [ConfigurationController::class, 'store'])->name('config.store');
+            Route::post('/configurations/{id}', [ConfigurationController::class, 'update'])->name('config.update');
+            Route::post('/updateLogo/{id}', [ConfigurationController::class, 'updateLogo'])->name('config.imagen');
+
             Route::get('/providers', [ProviderController::class, 'index'])->name('provider');
             Route::post('/providers', [ProviderController::class, 'store'])->name('provider.store');
             Route::get('/providers/{id}', [ProviderController::class, 'edit'])->name('provider.edit');
@@ -253,7 +265,10 @@ Route::middleware(['auth'])->group(function () {
             
             Route::get('/results', [ResultController::class, 'index'])->name('result');
             Route::post('/results', [ResultController::class, 'store'])->name('result.store');
-            Route::post('/results/{id}', [ResultController::class, 'update'])->name('result.update');
+            Route::post('/results/{id}', [ResultController::class, 'update'])->name('result.update')->middleware('ajax');
+
+            Route::get('/permisos', [PermisoController::class, 'index'])->name('permiso');
+            Route::post('/permisos', [PermisoController::class, 'store'])->name('permiso.store');
             
         });
     
@@ -266,16 +281,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/historyView', [HistoryController::class, 'historyViewRecepcion'])->name('historyViewRecepcion');
         Route::get('/historyRecepcion', [HistoryController::class, 'historyRecepcion']);
     });
-
     
     Route::middleware('role:cliente')->group(function () {
         Route::get('/pacientes', [PacienteController::class, 'index'])->name('paciente');
     });
 
-    Route::get('/pdfFactura/{id}', [PdfController::class, 'pdfFactura'])->name('factura.pdf');
-    Route::get('/pdfresultado/{id}', [PdfController::class, 'pdfResultado'])->name('resultado.pdf');
-    Route::get('/getRutaFacturaCliente/{id}', [PdfController::class, 'getRutaFacturaCliente'])->name('getRutaFacturaCliente');
-    Route::get('/getRutaRecepcionCliente/{id}', [PdfController::class, 'getRutaRecepcionCliente'])->name('getRutaRecepcionCliente');
+    Route::get('/pdfFactura/{id}', [PdfController::class, 'pdfFactura'])->name('factura.pdf')->middleware('ajax');
+    Route::get('/pdfresultado/{id}', [PdfController::class, 'pdfResultado'])->name('resultado.pdf')->middleware('ajax');
+    Route::get('/getRutaFacturaCliente/{id}', [PdfController::class, 'getRutaFacturaCliente'])->name('getRutaFacturaCliente')->middleware('ajax');
+    Route::get('/getRutaRecepcionCliente/{id}', [PdfController::class, 'getRutaRecepcionCliente'])->name('getRutaRecepcionCliente')->middleware('ajax');
 
 });
 

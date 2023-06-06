@@ -137,9 +137,52 @@ class ClienteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Cliente $cliente)
+    public function show($id)
     {
-        //
+        $clientes = DB::table('clientes as c')
+                    ->join('users as u', 'u.id', '=', 'c.user_id')
+                    ->join('departamentos as d', 'd.id', '=', 'c.dep_id')
+                    ->join('municipios as m', 'm.id', '=', 'c.mun_id')
+                    ->leftJoin('medicos as med', 'med.id', '=', 'c.med_id')
+                    ->select('c.*', 'u.estado', 'm.nombre as mun', 'd.nombre as dep', 'med.med_nombre', 'med.med_apellido_pat', 'med.med_apellido_mat')
+                    ->where('c.id', '=', $id)
+                    ->get();
+
+        foreach ($clientes as $cliente) {
+            $fec_nac = new DateTime($cliente->cli_fec_nac);
+            $hoy = new DateTime();
+            $edad = $hoy->diff($fec_nac)->y;
+            $cliente->cli_edad = $edad;
+
+            $espanol = setlocale(LC_TIME, 'es_ES.UTF-8', 'es_ES', 'es');
+            $fechaNacimiento = new DateTime($cliente->cli_fec_nac);
+            $cliente->fecha_nacimiento = strftime('%e de %B de %Y', $fechaNacimiento->getTimestamp());
+        }
+        
+        return response()->json($clientes);
+    }
+
+    public function updateActivarClientEstado(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'required|integer'
+        ]);
+        
+        $cliente = Cliente::find($id);
+        $user = User::find($cliente->user_id);
+        $user->estado = '1';
+        $user->save();
+    }
+    public function updateDesactivarClientEstado(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'required|integer'
+        ]);
+        
+        $cliente = Cliente::find($id);
+        $user = User::find($cliente->user_id);
+        $user->estado = '0';
+        $user->save();
     }
 
     /**

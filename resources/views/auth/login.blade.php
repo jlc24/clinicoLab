@@ -193,27 +193,24 @@
                 <div class="inputBx">
                     <input type="email" id="email" name="email" placeholder="Email" class="email @error('email') is-invalid @enderror" value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @php
-                    // Inicializar variable para contar errores
                         $errorCount = 0;
                     @endphp
                     @foreach ($errors->get('email') as $error)
                         @php
-                            // Incrementar contador de errores
                             $errorCount++;
                         @endphp
                         <div style="background-color: white; width: 280px; margin: 10px; padding: 2px; border-radius: 5px; text-align: center;">
                             <small>
                                 <span class="invalid-feedback" role="alert" style="color: red;">
-                                    {{ $error }} {{ $errorCount }}
+                                    {{ $error }}
                                 </span>
                             </small>
                         </div>
                     @endforeach
                     @if ($errorCount >= 3)
-                        <!-- Mostrar contador sólo si hay 3 o más errores -->
                         <div id="countdown" style="background-color: white; width: 280px; margin: 10px; padding: 2px; border-radius: 5px; text-align: center;"></div>
                         <script>
-                            var timeLeft = 60; // tiempo deseado en segundos
+                            var timeLeft = 60;
                             var countdownEl = document.getElementById('countdown');
                             setInterval(function() {
                                 if (timeLeft > 0) {
@@ -229,12 +226,10 @@
                 <div class="inputBx">
                     <input type="password" id="password" name="password" placeholder="Contraseña" class="password @error('password') is-invalid @enderror" required autocomplete="current-password">
                     @php
-                    // Inicializar variable para contar errores
                         $errorCount = 0;
                     @endphp
                     @foreach ($errors->get('password') as $error)
                         @php
-                            // Incrementar contador de errores
                             $errorCount++;
                         @endphp
                         <div style="background-color: white; width: 280px; margin: 5px; padding: 2px; border-radius: 5px;">
@@ -246,10 +241,9 @@
                         </div>
                         @endforeach
                         @if ($errorCount >= 3)
-                            <!-- Mostrar contador sólo si hay 3 o más errores -->
                             <div id="countdown" style="background-color: white; width: 280px; margin: 10px; padding: 2px; border-radius: 5px; text-align: center;"></div>
                             <script>
-                                var timeLeft = 60; // tiempo deseado en segundos
+                                var timeLeft = 60;
                                 var countdownEl = document.getElementById('countdown');
                                 setInterval(function() {
                                     if (timeLeft > 0) {
@@ -273,28 +267,8 @@
         </div>
     </div>
     <script>
-        // var index = 0;
-        // var images = [
-        //     "ruta_de_imagen_1.jpg",
-        //     "ruta_de_imagen_2.jpg",
-        //     "ruta_de_imagen_3.jpg"
-        // ];
-        // var slider = document.createElement("img");
-        // slider.setAttribute("src", images[index]);
-        // slider.setAttribute("style", "position: absolute; top: 0px; left: 0px; transition: opacity ease-in-out 1s;");
-        // document.body.appendChild(slider);
-
-        // setInterval(function() {
-        //     index = (index + 1) % images.length;
-        //     slider.style.opacity = "0";
-        //     setTimeout(function() {
-        //         slider.setAttribute("src", images[index]);
-        //         slider.style.opacity = "1";
-        //     }, 1000);
-        // }, 5000);
-
         document.addEventListener("DOMContentLoaded", function() {
-            document.body.classList.add("loaded"); /* Agregar la clase loaded a body después de cargar */
+            document.body.classList.add("loaded");
         });
 
         const checkbox = document.getElementById('show-password');

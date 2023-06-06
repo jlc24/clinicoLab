@@ -36,7 +36,11 @@
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                     @if(Auth::user()->rol == 'cliente')
                         {{ Auth::user()->cliente->cli_nombre }} {{ Auth::user()->cliente->cli_apellido_pat }} {{ Auth::user()->cliente->cli_apellido_mat }} ({{ Auth::user()->rol }})
-                    @else
+                    @elseif(Auth::user()->rol == 'usuario')
+                        {{ Auth::user()->usuario->usuario_nombre }} {{ Auth::user()->usuario->usuario_apellido_pat }} {{ Auth::user()->usuario->usuario_apellido_mat }} ({{ Auth::user()->rol }})
+                    @elseif(Auth::user()->rol == 'medico')
+                        {{ Auth::user()->medico->med_nombre }} {{ Auth::user()->medico->med_apellido_pat }} {{ Auth::user()->medico->med_apellido_mat }} ({{ Auth::user()->rol }})
+                    @elseif(Auth::user()->rol == 'admin')
                         {{ Auth::user()->user }}
                     @endif
                 </a>
@@ -49,13 +53,15 @@
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
-                    @else
+                    @elseif(Auth::user()->rol == 'medico' || Auth::user()->rol == 'usuario' || Auth::user()->rol == 'admin')
                         <a class="dropdown-item" href="{{ route('perfil') }}">
                             {{ __('Perfil') }}
                         </a>
-                        <a class="dropdown-item" href="{{ route('configuration') }}">
-                            {{ __('Configuración') }}
-                        </a>
+                        @if(Auth::user()->rol == 'admin')
+                            <a class="dropdown-item" href="{{ route('configuration') }}">
+                                {{ __('Configuración') }}
+                            </a>
+                        @endif
                         <hr>
                         <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();

@@ -26,8 +26,8 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                 </div>
-                                <input type="hidden" value="" name="usuario_id_update" id="usuario_id_update">
-                                <input type="text" id="usuario_nombre_update" name="usuario_nombre_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioUp(); PasswordUp(); generarCorreoUp()" required>
+                                <input type="hidden" name="usuario_id_update" id="usuario_id_update" class="usuario_id_update">
+                                <input type="text" id="usuario_nombre_update" name="usuario_nombre_update" class="form-control form-control-sm usuario_nombre_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioUp(); PasswordUp(); generarCorreoUp()" required>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                 </div>
-                                <input type="text" id="usuario_apellido_pat_update" name="usuario_apellido_pat_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioUp(); PasswordUp(); generarCorreoUp()" required>
+                                <input type="text" id="usuario_apellido_pat_update" name="usuario_apellido_pat_update" class="form-control form-control-sm usuario_apellido_pat_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioUp(); PasswordUp(); generarCorreoUp()" required>
                             </div>
                         </div>
                     </div>
@@ -49,7 +49,7 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                 </div>
-                                <input type="text" id="usuario_apellido_mat_update" name="usuario_apellido_mat_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioUp(); PasswordUp(); generarCorreoUp()" >
+                                <input type="text" id="usuario_apellido_mat_update" name="usuario_apellido_mat_update" class="form-control form-control-sm usuario_apellido_mat_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioUp(); PasswordUp(); generarCorreoUp()" >
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="usuario_ci_nit_update">C.I.: </label>
                             <div class="col-md-9">
-                                <input type="number" min="0" id="usuario_ci_nit_update" name="usuario_ci_nit_update" class="form-control form-control-sm" autocomplete="off"  onkeyup="PasswordUp(); generarCorreoUp()" required>
+                                <input type="number" min="0" id="usuario_ci_nit_update" name="usuario_ci_nit_update" class="form-control form-control-sm usuario_ci_nit_update" autocomplete="off"  onkeyup="PasswordUp(); generarCorreoUp()" required>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="usuario_ci_nit_exp_update">Exp.:</label>
                             <div class="col-md-9">
-                                <select class="custom-select custom-select-sm" id="usuario_ci_nit_exp_update" name="usuario_ci_nit_exp_update" required>
+                                <select class="custom-select custom-select-sm usuario_ci_nit_exp_update" id="usuario_ci_nit_exp_update" name="usuario_ci_nit_exp_update" required>
                                     @foreach ($departamentos as $departamento)
                                         <option value="{{ $departamento->nombre }}">{{ $departamento->nombre }}</option>
                                     @endforeach
@@ -79,7 +79,7 @@
                         <div class="form-group row">
                             <label class="col-md-5 col-form-label" for="usuario_fec_nac_update">{{ __('Fecha Nac.') }}: </label>
                             <div class="col-md-7">
-                                <input type="date" id="usuario_fec_nac_update" name="usuario_fec_nac_update" class="form-control form-control-sm" autocomplete="off" onchange="CalcularEdad()" required>
+                                <input type="date" id="usuario_fec_nac_update" name="usuario_fec_nac_update" class="form-control form-control-sm usuario_fec_nac_update" autocomplete="off" onchange="CalcularEdad()" required>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label" for="usuario_cod_update">{{ __('Cod') }}: </label>
                             <div class="col-md-8">
-                                <input type="text" id="usuario_cod_update" name="usuario_cod_update" class="form-control form-control-sm" autocomplete="off" readonly>
+                                <input type="text" id="usuario_cod_update" name="usuario_cod_update" class="form-control form-control-sm usuario_cod_update" autocomplete="off" readonly>
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                         <div class="form-group row">
                             <label class="col-md-4 p-0 col-form-label" for="usuario_celular_update">{{ __('Celular') }}: </label>
                             <div class="col-md-8">
-                                <input type="number" min="0" id="usuario_celular_update" name="usuario_celular_update" class="form-control form-control-sm" autocomplete="off" placeholder="Celular" required>
+                                <input type="number" min="0" id="usuario_celular_update" name="usuario_celular_update" class="form-control form-control-sm usuario_celular_update" autocomplete="off" placeholder="Celular" required>
                                 <small><span style="color: red; display: none" id="error_usuario_celular_update">(Celular no valido)</span></small>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                         <div class="form-group row">
                             <label class="col-md-4 p-0 col-form-label" for="usuario_genero_update">{{ __('Género') }}: </label>
                             <div class="col-md-8">
-                                <select class="custom-select custom-select-sm" id="usuario_genero_update" name="usuario_genero_update" required>
+                                <select class="custom-select custom-select-sm usuario_genero_update" id="usuario_genero_update" name="usuario_genero_update" required>
                                     <option value="FEMENINO" selected>FEMENINO</option>
                                     <option value="MASCULINO">MASCULINO</option>
                                     <option value="OTRO">OTRO</option>
@@ -118,7 +118,7 @@
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label" for="usuario_edad_update">{{ __('Edad') }}: </label>
                             <div class="col-md-8">
-                                <input type="text" id="usuario_edad_update" name="usuario_edad_update" class="form-control form-control-sm" autocomplete="off"  readonly>
+                                <input type="text" id="usuario_edad_update" name="usuario_edad_update" class="form-control form-control-sm usuario_edad_update" autocomplete="off"  readonly>
                             </div>
                         </div>
                     </div>
@@ -128,7 +128,7 @@
                         <div class="form-group row">
                             <label class="col-md-12 col-form-label" for="usuario_direccion_update">{{ __('Dirección') }}:</label>
                             <div class="col-md-12">
-                                <input type="text" class="form-control form-control-sm" id="usuario_direccion_update" name="usuario_direccion_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                <input type="text" class="form-control form-control-sm usuario_direccion_update" id="usuario_direccion_update" name="usuario_direccion_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
                             </div>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                         <div class="form-group row">
                             <label class="col-md-12 col-form-label" for="usuario_departamento_update">{{ __('Departamento') }}:</label>
                             <div class="col-md-12">
-                                <select class="custom-select custom-select-sm" id="usuario_departamento_update" name="usuario_departamento_update" required>
+                                <select class="custom-select custom-select-sm usuario_departamento_update" id="usuario_departamento_update" name="usuario_departamento_update" required>
                                     @foreach ($departamentos as $departamento)
                                         <option value="{{ $departamento->nombre }}">{{ $departamento->nombre }}</option>
                                     @endforeach
@@ -148,7 +148,7 @@
                         <div class="form-group row">
                             <label class="col-md-12 col-form-label" for="usuario_municipio_update">{{ __('Municipio') }}:</label>
                             <div class="col-md-12">
-                                <select class="custom-select custom-select-sm" id="usuario_municipio_update" name="usuario_municipio_update" required>
+                                <select class="custom-select custom-select-sm usuario_municipio_update" id="usuario_municipio_update" name="usuario_municipio_update" required>
                                     @foreach ($municipios as $municipio)
                                         <option value="{{ $municipio->nombre }}">{{ $municipio->nombre }}</option>
                                     @endforeach
@@ -162,7 +162,7 @@
                         <div class="form-group row">
                             <label class="col-md-12 col-form-label" for="usuario_email_update">{{ __('Email') }}:</label>
                             <div class="col-md-10 input-group">
-                                <input type="text" class="form-control form-control-sm" id="usuario_email_update" name="usuario_email_update" autocomplete="off" readonly>
+                                <input type="text" class="form-control form-control-sm usuario_email_update" id="usuario_email_update" name="usuario_email_update" autocomplete="off" readonly>
                                 <div class="form-check" style="padding-top: 5px; margin-left: 10px;">
                                     <input class="form-check-input" type="checkbox" id="generar_correo_usuario_update" name="generar_correo_usuario_update" title="Generar Correo" disabled> 
                                 </div>
@@ -173,7 +173,7 @@
                         <div class="form-group row">
                             <label class="col-md-12 col-form-label" for="usuario_usuario_update">{{ __('Usuario') }}:</label>
                             <div class="col-md-12">
-                                <input type="text" class="form-control form-control-sm" id="usuario_usuario_update" name="usuario_usuario_update" autocomplete="off" readonly>
+                                <input type="text" class="form-control form-control-sm usuario_usuario_update" id="usuario_usuario_update" name="usuario_usuario_update" autocomplete="off" readonly>
                             </div>
                         </div>
                     </div>
@@ -181,9 +181,7 @@
                         <div class="form-group row">
                             <label class="col-md-12 col-form-label" for="usuario_password_update">{{ __('Contraseña') }}:</label>
                             <div class="col-md-12">
-                                <input type="text" class="form-control form-control-sm" id="usuario_password_update" name="usuario_password_update" autocomplete="off" readonly>
-                                <input type="hidden" value="1" class="form-control form-control-sm" id="usuario_estado_update" name="usuario_estado_update" autocomplete="off" readonly>
-                                <input type="hidden" value="usuarioente" class="form-control form-control-sm" id="usuario_rol_update" name="usuario_rol_update" autocomplete="off" readonly>
+                                <input type="text" class="form-control form-control-sm usuario_password_update" id="usuario_password_update" name="usuario_password_update" autocomplete="off" readonly>
                             </div>
                         </div>
                     </div>
@@ -191,9 +189,10 @@
                         <div class="form-group row">
                             <label class="col-md-12 col-form-label" for="usuario_rol_update">{{ __('Rol') }}:</label>
                             <div class="col-md-10 input-group">
-                                <select class="custom-select custom-select-sm" id="usuario_rol_update" name="usuario_rol_update">
-                                    <option value="" selected>Seleccionar...</option>
+                                <select class="custom-select custom-select-sm usuario_rol_update" id="usuario_rol_update" name="usuario_rol_update" required>
                                     
+                                    <option value="admin">ADMINISTRADOR</option>
+                                    <option value="usuario">USUARIO</option>
                                 </select>
                             </div>
                         </div>
@@ -201,8 +200,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                {{-- <button type="button" id="btnCloseAddClient" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                <button id="btnUpdateClient" class="btn btn-success">Actualizar</button>
+                <button id="btnUpdateUsuario" class="btn btn-success">Actualizar</button>
             </div>
         </div>
     </div>

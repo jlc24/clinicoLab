@@ -65,8 +65,8 @@ class FacturaController extends Controller
         $facturas = DB::table('facturas as f')
                         ->join('clientes as c', 'f.cli_id', '=', 'c.id')
                         ->select('f.id', 'f.fac_ruta_file', 
-                                DB::raw("DATE_FORMAT(f.created_at, '%d-%m-%Y') as fecha"),
-                                DB::raw("DATE_FORMAT(f.created_at, '%H:%i') as hora"))
+                                DB::raw("DATE_FORMAT(f.updated_at, '%d-%m-%Y') as fecha"),
+                                DB::raw("DATE_FORMAT(f.updated_at, '%H:%i') as hora"))
                         ->where('c.id', '=', $id)
                         ->get();
 

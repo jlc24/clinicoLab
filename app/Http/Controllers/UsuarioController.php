@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departamento;
+use App\Models\Medico;
 use App\Models\Municipio;
+use App\Models\Permiso;
 use App\Models\User;
 use App\Models\Usuario;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
@@ -22,6 +26,8 @@ class UsuarioController extends Controller
             'users' => User::all(),
             'departamentos' => Departamento::all(),
             'municipios' => Municipio::all(),
+            'medicos' => Medico::all(),
+            'permisos' => Permiso::all()
         ]);
     }
 
@@ -91,12 +97,50 @@ class UsuarioController extends Controller
         //
     }
 
+    public function updateActivarUserEstado(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'required|integer'
+        ]);
+        
+        $usuario = Usuario::find($id);
+        $user = User::find($usuario->user_id);
+        $user->estado = '1';
+        $user->save();
+    }
+    public function updateDesactivarUserEstado(Request $request, $id)
+    {
+        $request->validate([
+            'estado' => 'required|integer'
+        ]);
+        
+        $usuario = Usuario::find($id);
+        $user = User::find($usuario->user_id);
+        $user->estado = '0';
+        $user->save();
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Usuario $usuario)
+    public function edit($id)
     {
-        //
+        $usuarios = DB::table('usuarios as u')
+                        ->join('users as us', 'us.id', '=', 'u.user_id')
+                        ->select('u.*', 'us.rol as usuario_rol', 'us.estado')
+                        ->where('u.id', '=', $id)
+                        ->get();
+        foreach ($usuarios as $usuario ) {
+            $fecha_nac = new DateTime($usuario->usuario_fec_nac);
+            $hoy = new DateTime();
+            $edad = $hoy->diff($fecha_nac)->y;
+            $usuario->usuario_edad = $edad;
+
+            $espanol = setlocale(LC_TIME, 'es_ES.UTF-8', 'es_ES', 'es');
+            $fechaNacimiento = new DateTime($usuario->usuario_fec_nac);
+            $usuario->fecha_nacimiento = strftime('%e de %B de %Y', $fechaNacimiento->getTimestamp());
+        }
+        return response()->json($usuarios);
     }
 
     /**

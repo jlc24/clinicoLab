@@ -174,10 +174,14 @@
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="med_email_update">{{ __('Email') }}:</label>
                                 <div class="col-md-10 input-group">
-                                    <input type="text" value="{{ $medico->med_correo }}" class="form-control form-control-sm" id="med_email_update" name="med_email_update" autocomplete="off" readonly>
-                                    <div class="form-check" style="padding-top: 5px; margin-left: 10px;">
-                                        <input class="form-check-input" type="checkbox" id="generar_correo_med_update" name="generar_correo_med_update" title="Generar Correo" disabled> 
-                                    </div>
+                                    @if(Auth::user()->rol == 'admin')
+                                        <input type="text" value="{{ $medico->med_correo }}" class="form-control form-control-sm" id="med_email_update" name="med_email_update" autocomplete="off" readonly>
+                                        <div class="form-check" style="padding-top: 5px; margin-left: 10px;">
+                                            <input class="form-check-input" type="checkbox" id="generar_correo_med_update" name="generar_correo_med_update" title="Generar Correo" disabled> 
+                                        </div>
+                                    @else
+                                        <input type="password" value="******************************" class="form-control form-control-sm" id="med_email_update" name="med_email_update" autocomplete="off" readonly>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -185,7 +189,11 @@
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="med_usuario_update">{{ __('Usuario') }}:</label>
                                 <div class="col-md-12">
-                                    <input type="text" value="{{ $medico->med_usuario }}" class="form-control form-control-sm" id="med_usuario_update" name="med_usuario_update" autocomplete="off" readonly required>
+                                    @if(Auth::user()->rol == 'admin')
+                                        <input type="text" value="{{ $medico->med_usuario }}" class="form-control form-control-sm" id="med_usuario_update" name="med_usuario_update" autocomplete="off" readonly required>
+                                    @else
+                                        <input type="password" value="***************" class="form-control form-control-sm" id="med_usuario_update" name="med_usuario_update" autocomplete="off" readonly required>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -193,7 +201,11 @@
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="med_password_update">{{ __('Contraseña') }}:</label>
                                 <div class="col-md-12">
-                                    <input type="text" value="{{ $medico->med_password }}" class="form-control form-control-sm" id="med_password_update" name="med_password_update" autocomplete="off" readonly required>
+                                    @if(Auth::user()->rol == 'admin')
+                                        <input type="text" value="{{ $medico->med_password }}" class="form-control form-control-sm" id="med_password_update" name="med_password_update" autocomplete="off" readonly required>
+                                    @else
+                                        <input type="password" value="***************" class="form-control form-control-sm" id="med_password_update" name="med_password_update" autocomplete="off" readonly required>
+                                    @endif
                                     <input type="hidden" value="1" class="form-control form-control-sm" id="med_estado_update" name="med_estado_update" autocomplete="off" readonly>
                                     <input type="hidden" value="medico" class="form-control form-control-sm" id="med_rol_update" name="med_rol_update" autocomplete="off" readonly>
                                 </div>

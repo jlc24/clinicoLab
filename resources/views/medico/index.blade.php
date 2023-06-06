@@ -56,8 +56,7 @@
                                                 <div class="btn-group" role="group" aria-label="Button group">
                                                     <button data-toggle="modal" data-target="#modal_actualizar_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-warning" ><i class="fas fa-user-edit"></i></button>
                                                     <button data-toggle="modal" data-target="#modal_ver_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-info"><i class="fas fa-info-circle"></i></button>
-                                                    {{-- <button class="btn btn-sm btn-outline-success"><i class="fas fa-eye"></i></button>
-                                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-file"></i></button> --}}
+                                                    <button data-toggle="modal" data-target="#modal_permisos_medico" class="btn btn-sm btn-outline-success btnPermisoMedico" title="Asignar permisos"><i class="fas fa-cog"></i></button>
                                                 </div>
                                             </td>
                                             @include('medico.modal.modal_actualizar_medico')

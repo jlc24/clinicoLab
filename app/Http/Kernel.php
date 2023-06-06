@@ -18,6 +18,8 @@ class Kernel extends HttpKernel
         // ...
         'verificarEstadoCaja' => \App\Http\Middleware\VerificarEstadoCaja::class,
         'role' => \App\Http\Middleware\CheckRole::class,
+        'ajax' => \App\Http\Middleware\CheckAjaxRequest::class,
+
     ];
 
 

@@ -33,12 +33,17 @@ class LoginController extends Controller
     {
         // Obtén el usuario actualmente autenticado
         $user = Auth::user();
+        // Verificar si el usuario está activo
+        if ($user->estado == 1) {
+            // Verifica el rol del usuario y devuelve la ruta apropiada
+            if ($user->rol === 'cliente') {
+                return '/pacientes';
+            } else {
+                return '/home';
+            }
 
-        // Verifica el rol del usuario y devuelve la ruta apropiada
-        if ($user->rol === 'cliente') {
-            return '/pacientes';
-        } else {
-            return '/home';
+        }else{
+            Auth::logout();
         }
     }
 

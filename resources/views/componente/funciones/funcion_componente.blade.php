@@ -5,6 +5,6 @@
         });
         $("#btnCloseAddComponente").on('click', function() {
             $("#formulario_crear_componentes").trigger('reset');
-        })
+        });
     })
 </script>

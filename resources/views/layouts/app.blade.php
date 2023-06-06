@@ -28,9 +28,14 @@
         @endguest
     </div>
     <div id="loader-wrapper">
-        <div id="loader"></div>
-        <div id="loading-text">Cargando...</div>
+        <div class="contenedor">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <span class="loading">Cargando...</span>
+        </div>
     </div>
+    
     
     @include('layouts.librerias')
     

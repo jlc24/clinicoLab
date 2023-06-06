@@ -14,7 +14,7 @@
     },
     "dependencies": {
         "convert-units": "^2.3.4",
-        "sweetalert2": "^11.7.3",
+        "sweetalert2": "^11.4.8",
         "units-converter": "^1.0.3"
     }
 }

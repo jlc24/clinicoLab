@@ -32,7 +32,7 @@
         <header id="header" class="fixed-top d-flex align-items-center header-transparent">
             <div class="container d-flex justify-content-between align-items-center">
                 <div class="logo">
-                    <h1 class="text-light"><a href="{{ url('/') }}"><span>ClinicoLab</span></a></h1>
+                    <h1 class="text-light"><a href="{{ url('/') }}"><span>{{ config('app.name', 'Laravel') }}</span></a></h1>
                     <!-- Uncomment below if you prefer to use an image logo -->
                     {{-- <a href="{{ url('/') }}"><img src="{{ asset('imagenes/1/1/1684528540_LogoQJL.png') }}" alt="" class="img-fluid"></a> --}}
                 </div>
@@ -48,7 +48,11 @@
                         <li>
                             @if (Route::has('login'))
                                     @auth
-                                        <a href="{{ url('/home') }}">SistemaWEB</a>
+                                        @if(Auth::user()->rol == 'cliente')
+                                            <a href="{{ url('/paciente') }}">SistemaWEB</a>
+                                        @else
+                                            <a href="{{ url('/home') }}">SistemaWEB</a>
+                                        @endif
                                     @else
                                         <a href="{{ route('login') }}">Iniciar Sesión</a>
                                     @endauth
@@ -66,7 +70,7 @@
                 <!-- Slide 1 -->
                 <div class="carousel-item active">
                     <div class="carousel-container">
-                        <h2 class="animate__animated animate__fadeInDown">Bienvenido a <span>ClinicoLab</span></h2>
+                        <h2 class="animate__animated animate__fadeInDown">Bienvenido a <span>{{ config('app.name', 'Laravel') }}</span></h2>
                         <p class="animate__animated animate__fadeInUp">Ut velit est quam dolor ad a aliquid qui aliquid. Sequi ea ut et est quaerat sequi nihil ut aliquam. Occaecati alias dolorem mollitia ut. Similique ea voluptatem. Esse doloremque accusamus repellendus deleniti vel. Minus et tempore modi architecto.</p>
                         <a href="" class="btn-get-started animate__animated animate__fadeInUp">Read More</a>
                     </div>

@@ -62,8 +62,8 @@
                                                 @if($usuario->user->rol !== 'admin')
                                                     <div class="btn-group" role="group" aria-label="Button group">
                                                         <button data-toggle="modal" data-target="#modal_actualizar_usuario" class="btnEditarUsuario btn btn-sm btn-outline-warning" title="Editar Usuario"><i class="fas fa-user-edit"></i></button>
-                                                        <button data-toggle="modal" data-target="#modal_ver_usuario" class="btn btn-sm btn-outline-success" title="Ver Usuario"><i class="fas fa-eye"></i></button>
-                                                        <button data-toggle="modal" data-target="#modal_ver_usuario" class="btn btn-sm btn-outline-info" title="Asignar permisos"><i class="fas fa-cog"></i></button>
+                                                        <button data-toggle="modal" data-target="#modal_ver_usuario" class="btn btn-sm btn-outline-info btnShowUsuario" title="Ver Usuario"><i class="fas fa-eye"></i></button>
+                                                        <button data-toggle="modal" data-target="#modal_asginar_permiso" class="btn btn-sm btn-outline-success btnPermisoUsuario" title="Asignar permisos"><i class="fas fa-cog"></i></button>
                                                     </div>
                                                 @endif
                                             </td>
@@ -80,6 +80,8 @@
 
     @include('user.modal.modal_crear_usuario')
     @include('user.modal.modal_actualizar_usuario')
+    @include('user.modal.modal_ver_usuario')
+    @include('permiso.modal.modal_asignar_permisos')
 @endsection
 
 @section('funciones')

@@ -138,6 +138,7 @@ class HistoryController extends Controller
                             if ($caja) {
                                 $recepcion->where('c.id', $caja);
                             }
+                            $recepcion->where('u.id', '=', $user->id);
                             
                             $recepcion = $recepcion->get();
         }

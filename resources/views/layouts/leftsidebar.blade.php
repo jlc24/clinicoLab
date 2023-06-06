@@ -23,7 +23,7 @@
                         </a>
                     </li>
                     @php
-                        $activeRoutesAdmin = [ 'cliente','usuario','medico','empresa', 'usuario'];
+                        $activeRoutesAdmin = [ 'cliente','usuario','medico','empresa', 'usuario', 'permiso'];
                     @endphp
                     <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesAdmin) ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesAdmin) ? 'active' : '' }}">
@@ -39,6 +39,12 @@
                                     <a href="{{ route('usuario') }}" class="nav-link {{ Request::is('usuarios') ? 'active' : '' }}">
                                         <i class=" nav-icon fa-solid fa-user-plus"></i>
                                         <p>{{ __('Usuarios del Sistema') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="{{ route('permiso') }}" class="nav-link {{ Request::is('permisos') ? 'active' : '' }}">
+                                        <i class=" nav-icon fa-solid fa-cogs"></i>
+                                        <p>{{ __('Permisos') }}</p>
                                     </a>
                                 </li>
                             @endif
