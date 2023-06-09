@@ -6,44 +6,49 @@
                 <button type="button" id="btnCloseAddPermiso" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <input type="hidden" name="user_id" id="user_id" class="user_id">
                 <div class="row">
-                    @php
+                    {{-- @php
                         $permisoArray = $permisos->toArray();
                         $chunks = array_chunk($permisoArray, ceil(count($permisoArray) / 2));
-                    @endphp
+                    @endphp --}}
                     <div class="col-md-12">
                         <div class="card">
                             <table class="table table-sm table-bordered table-light" style="width: 100%;">
                                 <tr>
                                     <td style="width: 50%; padding: 0; margin: 0;">
-                                        <table class="table table-sm table-bordered">
+                                        <table class="table table-sm table-bordered tabla-permiso1">
                                             <thead class="thead-light">
+                                                <th hidden>#</th>
                                                 <th>Nombre</th>
                                                 <th class="text-center">Acceso</th>
                                             </thead>
                                             <tbody>
-                                                @foreach ($chunks[0] as $permiso)
+                                                {{-- @foreach ($chunks[0] as $permiso)
                                                     <tr>
+                                                        <td hidden>{{ $permiso['id'] }}</td>
                                                         <td>{{ $permiso['permiso'] }}</td>
-                                                        <td class="text-center"><input type="checkbox" name="" id=""></td>
+                                                        <td class="text-center"><input type="checkbox" name="checkPermiso" id="checkPermiso" class="checkPermiso"></td>
                                                     </tr>
-                                                @endforeach
+                                                @endforeach --}}
                                             </tbody>
                                         </table>
                                     </td>
                                     <td style="width: 50%; padding: 0; margin: 0;">
-                                        <table class="table table-sm table-bordered">
+                                        <table class="table table-sm table-bordered tabla-permiso2">
                                             <thead class="thead-light">
+                                                <th hidden>#</th>
                                                 <th>Nombre</th>
                                                 <th class="text-center">Acceso</th>
                                             </thead>
                                             <tbody>
-                                                @foreach ($chunks[1] as $permiso)
+                                                {{-- @foreach ($chunks[1] as $permiso)
                                                     <tr>
+                                                        <td hidden>{{ $permiso['id'] }}</td>
                                                         <td>{{ $permiso['permiso'] }}</td>
-                                                        <td class="text-center"><input type="checkbox" name="" id=""></td>
+                                                        <td class="text-center"><input type="checkbox" name="checkPermiso" id="checkPermiso" class="checkPermiso"></td>
                                                     </tr>
-                                                @endforeach
+                                                @endforeach --}}
                                             </tbody>
                                         </table>
                                     </td>

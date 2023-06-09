@@ -54,7 +54,15 @@
         <h1>419</h1>
         <h2><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Página expirada.</h2>
         <p>Lo sentimos, tu sesión ha expirado. Por favor actualiza la página e inténtalo nuevamente.</p>
-        <a href="{{ url('/') }}">Regresar al inicio</a>
+        @guest
+            <a href="{{ url('/') }}">Regresar al inicio</a>
+        @else
+            @if(Auth::user()->rol == 'admin' || Auth::user()->rol == 'usuario')
+                <a href="{{ url('/home') }}">Regresar al inicio</a>
+            @elseif(Auth::user()->rol == 'cliente')
+                <a href="{{ url('/pacientes') }}">Regresar al inicio</a>
+            @endif
+        @endguest
     </div>
 </body>
 </html>

@@ -54,7 +54,15 @@
         <h1>403</h1>
         <h2><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Acceso no autorizado.</h2>
         <p>Estas tratando de acceder a datos no autorizados, se registró el acceso y se informará a la administracion.</p>
-        <a href="{{ url('/home') }}">Regresar al inicio</a>
+        @guest
+            <a href="{{ url('/') }}">Regresar al inicio</a>
+        @else
+            @if(Auth::user()->rol == 'admin' || Auth::user()->rol == 'usuario')
+                <a href="{{ url('/home') }}">Regresar al inicio</a>
+            @elseif(Auth::user()->rol == 'cliente')
+                <a href="{{ url('/pacientes') }}">Regresar al inicio</a>
+            @endif
+        @endguest
     </div>
 </body>
 </html>

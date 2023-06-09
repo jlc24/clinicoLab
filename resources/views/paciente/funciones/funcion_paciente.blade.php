@@ -9,7 +9,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
                     if (data.rec_ruta_file !== null) {
                         $(document).on('shown.bs.modal', '.exampleModal', function (event) {
                             var pdfFrame = document.querySelector('.pdfFrame');

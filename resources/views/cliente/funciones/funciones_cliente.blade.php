@@ -274,7 +274,6 @@ $(document).ready(function() {
             type: 'GET',
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 if (data.length != 0) {
                     $('.tabla-resultados-cliente tbody').empty();
                     $.each(data, function(index, value) {

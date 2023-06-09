@@ -14,7 +14,6 @@
                 type: 'GET',
                 success: function(data) {
                     $('#emp_municipio').empty();
-                    console.log(data);
                     $.each(data, function(index, element) {
                         $('#emp_municipio').append($('<option>', {
                             value: element.id,

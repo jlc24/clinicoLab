@@ -6,6 +6,7 @@ use App\Models\Departamento;
 use App\Models\Medico;
 use App\Models\Municipio;
 use App\Models\Permiso;
+use App\Models\PermisoUser;
 use App\Models\User;
 use App\Models\Usuario;
 use DateTime;
@@ -87,6 +88,15 @@ class UsuarioController extends Controller
             'usuario_municipio' => $request->input('usuario_municipio'),
             'user_id' => $user->id
         ]);
+
+        $permisos = Permiso::all();
+        foreach ($permisos as $permiso ) {
+            PermisoUser::create([
+                'user_id' => $user->id,
+                'permiso_id' => $permiso->id,
+                'estado' => 0
+            ]);
+        }
     }
 
     /**

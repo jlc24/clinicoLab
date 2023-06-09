@@ -47,16 +47,15 @@
                         <li><a href="contact.html">Contact Us</a></li>
                         <li>
                             @if (Route::has('login'))
-                                    @auth
-                                        @if(Auth::user()->rol == 'cliente')
-                                            <a href="{{ url('/paciente') }}">SistemaWEB</a>
-                                        @else
-                                            <a href="{{ url('/home') }}">SistemaWEB</a>
-                                        @endif
+                                @auth
+                                    @if(Auth::user()->rol == 'cliente')
+                                        <a href="{{ url('/pacientes') }}">SistemaWEB</a>
                                     @else
-                                        <a href="{{ route('login') }}">Iniciar Sesión</a>
-                                    @endauth
-                                </div>
+                                        <a href="{{ url('/home') }}">SistemaWEB</a>
+                                    @endif
+                                @else
+                                    <a href="{{ route('login') }}">Iniciar Sesión</a>
+                                @endauth
                             @endif
                         </li>
                     </ul>

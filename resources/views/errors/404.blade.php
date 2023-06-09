@@ -54,7 +54,15 @@
         <h1>404</h1>
         <h2><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Página no encontrada.</h2>
         <p>No pudimos encontrar la pagina que estabas buscando.</p>
-        <a href="{{ url('/home') }}">Regresar al inicio</a>
+        @guest
+            <a href="{{ url('/') }}">Regresar al inicio</a>
+        @else
+            @if(Auth::user()->rol == 'admin' || Auth::user()->rol == 'usuario')
+                <a href="{{ url('/home') }}">Regresar al inicio</a>
+            @elseif(Auth::user()->rol == 'cliente')
+                <a href="{{ url('/pacientes') }}">Regresar al inicio</a>
+            @endif
+        @endguest
     </div>
 </body>
 </html>

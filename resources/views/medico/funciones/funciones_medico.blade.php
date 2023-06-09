@@ -93,9 +93,9 @@
                 datos.append('med_estado', $("#med_estado").val());
                 datos.append('med_rol', $("#med_rol").val());
 
-                for (const [key, value] of datos) {
-                    console.log(key, '- '+value);
-                };
+                // for (const [key, value] of datos) {
+                //     console.log(key, '- '+value);
+                // };
                 $.ajax({
                     url:'{{ route("medico.store") }}',
                     type:'POST',
@@ -163,6 +163,110 @@
                     "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                     "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                 }
+            }
+        });
+
+        function getMedico(id) {
+            $.ajax({
+                url: '{{ route("getMedico", ":id") }}'.replace(":id", id),
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $(".user_id").val(data.user_id);
+                }
+            });
+        }
+
+        function getPermisos(id) {
+            $.ajax({
+                url: '{{ route("getPermisosUser", ":id") }}'.replace(":id", id),
+                type: 'GET',
+                success: function(data) {
+                    if (data.length != 0) {
+                        var size = data.length / 2;
+                        var permisos1 = data.slice(0, size);
+                        var permisos2 = data.slice(size);
+                        $('.tabla-permiso1 tbody').empty()
+                        permisos1.forEach(function(permiso) {
+                            var row = $("<tr>");
+                            row.append($("<td hidden>").text(permiso.id));
+                            row.append($("<td>").text(permiso.permiso));
+                            var checkbox = $("<input>").attr("type", "checkbox").addClass("checkPermiso");
+                            if (permiso.estado === 1) {
+                                checkbox.prop("checked", true);
+                            }
+                            row.append($("<td class='text-center'>").append(checkbox));
+                            $(".tabla-permiso1 tbody").append(row);
+                        });
+                        $('.tabla-permiso2 tbody').empty()
+                        permisos2.forEach(function(permiso) {
+                            var row = $("<tr>");
+                            row.append($("<td hidden>").text(permiso.id));
+                            row.append($("<td>").text(permiso.permiso));
+                            var checkbox = $("<input>").attr("type", "checkbox").addClass("checkPermiso");
+                            if (permiso.estado === 1) {
+                                checkbox.prop("checked", true);
+                            }
+                            row.append($("<td class='text-center'>").append(checkbox));
+                            $(".tabla-permiso2 tbody").append(row);
+                        });
+                    }else {
+                        $('.tabla-permiso1 tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                        $('.tabla-permiso2 tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', '.btnPermisoMedico', function() {
+            var med_id = $(this).closest('tr').find('td:eq(0)').text();
+            getMedico(med_id);
+            mostrarCargando();
+            setTimeout(function() {
+                var user_id = $(".user_id").val();
+                getPermisos(user_id);
+                cerrarCargando();
+            }, 500);
+        });
+
+        function updatePermiso(datos, id, user) {
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("updatePermiso", ":id") }}'.replace(":id", id),
+                type: 'POST',
+                data: datos,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    getPermisos(user);
+                    cerrarCargando();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Se ha producido un error.',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        }
+
+        $(document).on('click', '.checkPermiso', function() {
+            var permiso_id = $(this).closest('tr').find('td:eq(0)').text();
+            var user_id = $(".user_id").val();
+            var datos = new FormData();
+            if ($(this).is(':checked')) {
+                datos.append('estado', 1);
+                updatePermiso(datos, permiso_id, user_id);
+            }else{
+                datos.append('estado', 0);
+                updatePermiso(datos, permiso_id, user_id);
             }
         });
     });

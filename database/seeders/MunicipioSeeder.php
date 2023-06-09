@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Municipio;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -365,6 +366,6 @@ class MunicipioSeeder extends Seeder
             [ 'nombre' => 'Bermejo', 'dep_id' => '9' ],
         ];  
 
-        DB::table('municipios')->insert($data);
+        Municipio::create($data);
     }
 }

@@ -6,6 +6,8 @@ use App\Models\Medico;
 use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Municipio;
+use App\Models\Permiso;
+use App\Models\PermisoUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -23,8 +25,15 @@ class MedicoController extends Controller
             'medicos' => $medicos, 
             'departamentos' => $departamentos,
             'municipios' => Municipio::all(), 
-            'countmed' => $countmed
+            'countmed' => $countmed,
+            'permisos' => Permiso::all()
         ]);
+    }
+
+    public function getMedico($id)
+    {
+        $medico = Medico::find($id);
+        return response()->json($medico);
     }
 
     /**
@@ -83,7 +92,15 @@ class MedicoController extends Controller
             'mun_id' => $request->input('med_municipio'),
             'user_id' => $user->id
         ]);
-        
+
+        $permisos = Permiso::all();
+        foreach ($permisos as $permiso ) {
+            PermisoUser::create([
+                'user_id' => $user->id,
+                'permiso_id' => $permiso->id,
+                'estado' => 0
+            ]);
+        }
     }
 
     /**

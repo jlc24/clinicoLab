@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Medico;
 use App\Models\Municipio;
+use App\Models\Permiso;
+use App\Models\PermisoUser;
 use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -131,7 +133,6 @@ class ClienteController extends Controller
             'med_id' => $request->input('med_id'),
             'user_id' => $user->id
         ]);
-        
     }
 
     /**

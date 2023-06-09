@@ -22,6 +22,28 @@ class ResultController extends Controller
         ]);
     }
 
+    public function getResults()
+    {
+        $results = DB::table('clientes as c')
+                        ->join('facturas as f', 'f.cli_id', '=', 'c.id')
+                        ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
+                        ->join('detalles as d', 'r.det_id', '=', 'd.id')
+                        ->join('estudios as e', 'd.estudio_id', '=', 'e.id')
+                        ->select('r.id as numero', 'r.rec_codigo', 
+                                DB::raw("CONCAT(c.cli_nombre, ' ', 
+                                                c.cli_apellido_pat, ' ', 
+                                                c.cli_apellido_mat) AS nombre"), 
+                                DB::raw("DATE_FORMAT(r.updated_at, '%d/%m/%Y') AS fecha"), 
+                                DB::raw("DATE_FORMAT(r.updated_at, '%H:%i') as hora"), 
+                                'e.est_nombre as estudio', 
+                                'r.estado as estado')
+                        ->where('r.estado', '=', 'RESULTADO')
+                        ->get();
+        return view('result.index', [
+            'results' => $results
+        ]);
+    }
+
     public function buscarRecepcionPaciente(Request $request)
     {
         $term = $request->input('q');

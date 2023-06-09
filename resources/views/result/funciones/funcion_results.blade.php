@@ -9,7 +9,7 @@
             $("#form_comfirmar_pass").trigger("reset");
         });
         //datatables
-        $(".tabla-facturas").dataTable({
+        $(".tabla-results").dataTable({
             responsive: true,
             columnDefs: [],
             "lengthMenu": [10, 20, 30, 100],
@@ -41,21 +41,21 @@
             }
         });
 
-        $(document).on('click', '.btn-show-factura', function() {
-            var fac_id = $(this).closest('tr').find('td:eq(0)').text();
-            $(".exampleModalLabel").text('Factura');
+        $(document).on('click', '.btn-show-resultado', function() {
+            var rec_id = $(this).closest('tr').find('td:eq(0)').text();
+            $(".exampleModalLabel").text('Resultado');
             mostrarCargando();
             $.ajax({
-                url: '{{ route("getRutaFacturaCliente", ":id") }}'.replace(":id", fac_id),
+                url: '{{ route("getRutaRecepcionCliente", ":id") }}'.replace(":id", rec_id),
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    if (data.fac_ruta_file !== null) {
+                    if (data.rec_ruta_file !== null) {
                         var pdfFrame = document.querySelector('.pdfFrame');
                         $(document).on('shown.bs.modal', '.exampleModal', function (event) {
                             var checkPDFReadyInterval = setInterval(function() {
-                                if (data.fac_ruta_file !== null) {
-                                    pdfFrame.src = "{{ asset('storage') }}"+"/"+data.fac_ruta_file;
+                                if (data.rec_ruta_file !== null) {
+                                    pdfFrame.src = "{{ asset('storage') }}"+"/"+data.rec_ruta_file;
                                     clearInterval(checkPDFReadyInterval);
                                 }
                                 cerrarCargando();
@@ -65,7 +65,7 @@
                         $(document).on('shown.bs.modal', '.exampleModal', function (event) {
                             var pdfFrame = document.querySelector('.pdfFrame');
                             var checkPDFReadyInterval = setInterval(function() {
-                                if (data.fac_ruta_file == null) {
+                                if (data.rec_ruta_file == null) {
                                     pdfFrame.src = "";
                                     clearInterval(checkPDFReadyInterval);
                                     cerrarCargando();
@@ -75,7 +75,7 @@
                         setTimeout(function() {
                             Swal.fire({
                                 title: 'Oops...',
-                                text: 'No hay documento de factura, por favor comuniquese con la administración de ClinicoLab.',
+                                text: 'No hay documento de resultado, por favor comuniquese con la administración de ClinicoLab.',
                                 icon: 'error',
                                 showConfirmButton: false,
                                 timer: 5000
@@ -86,10 +86,9 @@
             });
         });
 
-        $(document).on('click', '.btn-generate-factura', function() {
-            var fac_id = $(this).closest('tr').find('td:eq(0)').text();
-            $(".rec_id").val(fac_id);
-            alert(fac_id);
+        $(document).on('click', '.btn-generate-resultado', function() {
+            var rec_id = $(this).closest('tr').find('td:eq(0)').text();
+            $(".rec_id").val(rec_id);
         });
 
         $(document).on('click', '.btnClosePdfGenerate', function() {
@@ -117,7 +116,7 @@
                             setTimeout(function() {
                                 mostrarCargando();
                                 $.ajax({
-                                    url: '{{ route("getRutaFacturaCliente", ":id") }}'.replace(":id", $(".rec_id").val()),
+                                    url: '{{ route("getRutaRecepcionCliente", ":id") }}'.replace(":id", $(".rec_id").val()),
                                     type: 'GET',
                                     dataType: 'json',
                                     success: function(data) {
@@ -131,11 +130,11 @@
                                                 timer: 2000
                                             });
                                             setTimeout(() => {
-                                                window.location.href = '{{ route('factura') }}';
+                                                window.location.href = '{{ route('resultado') }}';
                                             }, 2000);
                                         }else{
                                             $.ajax({
-                                                url: '{{ route("factura.pdf", ":id") }}'.replace(":id", $(".rec_id").val()),
+                                                url: '{{ route("resultado.pdf", ":id") }}'.replace(":id", $(".rec_id").val()),
                                                 type: 'GET',
                                                 success: function(response) {
                                                     cerrarCargando();

@@ -33,4 +33,9 @@ class Usuario extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function permiso_users()
+    {
+        return $this->hasMany(PermisoUser::class);
+    }
 }

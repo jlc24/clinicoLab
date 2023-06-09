@@ -46,7 +46,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
                     $("#prov_nit").val(data.emp_nit);
                     $("#prov_direccion").val(data.emp_direccion)
                 }
@@ -67,9 +66,6 @@
                 datos.append('web', $("#prov_web").val());
                 datos.append('descripcion', $("#prov_descripcion").val());
                 datos.append('notas', $("#prov_notas").val());
-                for (var value of datos.values()) {
-                    console.log(value);
-                }
 
                 $.ajax({
                     url: '{{ route("provider.store") }}',

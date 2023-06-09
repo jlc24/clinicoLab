@@ -54,7 +54,15 @@
         <h1>500</h1>
         <h2><i class="fas fa-exclamation-triangle text-danger"></i> Oops! Algo salió mal...</h2>
         <p>Trabajaremos para solucionarlo de inmediato.</p>
-        <a href="{{ url('/home') }}">Regresar al inicio</a>
+        @guest
+            <a href="{{ url('/') }}">Regresar al inicio</a>
+        @else
+            @if(Auth::user()->rol == 'admin' || Auth::user()->rol == 'usuario')
+                <a href="{{ url('/home') }}">Regresar al inicio</a>
+            @elseif(Auth::user()->rol == 'cliente')
+                <a href="{{ url('/pacientes') }}">Regresar al inicio</a>
+            @endif
+        @endguest
     </div>
 </body>
 </html>

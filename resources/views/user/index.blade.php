@@ -34,30 +34,22 @@
                             <table class="table table-bordered table-sm table-hover table-responsive-lg tabla-usuarios" id="tabla_usuarios" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead style="text-align: center;">
                                     <tr class="table-info">
+                                        <th hidden>id</th>
                                         <th>#</th>
                                         <th>{{ __('Nombre') }}</th>
                                         <th>{{ __('Dirección') }}</th>
                                         <th>{{ __('Rol') }}</th>
-                                        <th>{{ __('Estado') }}</th>
                                         <th>Op</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($usuarios as $usuario)
-                                        <tr>
+                                    <tr>
+                                            <td hidden>{{ $usuario->user->id }}</td>
                                             <td>{{ $usuario->id }}</td>
                                             <td>{{ $usuario->usuario_nombre }} {{ $usuario->usuario_apellido_pat }} {{ $usuario->usuario_apellido_mat }}</td>
                                             <td>{{ $usuario->usuario_direccion }}</td>
                                             <td>{{ $usuario->user->rol }}</td>
-                                            <td class="text-center">
-                                                @if ($usuario->user->rol !== 'admin')
-                                                    @if($usuario->user->estado == '1')
-                                                        <a href="javascript:void(0)" class="badge badge-success">ACTIVO</a>
-                                                    @else
-                                                        <a href="javascript:void(0)" class="badge badge-danger">INACTIVO</a>
-                                                    @endif
-                                                @endif
-                                            </td>
                                             <td class="text-center">
                                                 @if($usuario->user->rol !== 'admin')
                                                     <div class="btn-group" role="group" aria-label="Button group">

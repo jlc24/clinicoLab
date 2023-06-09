@@ -220,7 +220,7 @@
                         </ul>
                     </li>
                     @php
-                        $activeRoutesTools = [ 'caja', 'factura' ];
+                        $activeRoutesTools = [ 'caja' ];
                     @endphp
                     <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesTools) ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesTools) ? 'active' : '' }}">
@@ -237,49 +237,51 @@
                                     <p>{{ __('Cajas') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item px-2">
-                                <a href="{{ route('factura') }}" class="nav-link {{ Request::is('facturas') ? 'active' : '' }}">
-                                    <i class=" nav-icon fas fa-file-archive"></i>
-                                    <p>{{ __('Facturas') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fa-solid fa-user-doctor"></i>
-                                    <p>{{ __('Corte de Caja') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2">
-                                <a href="#" class="nav-link">
-                                    <i class="fas fa-square-root-alt nav-icon"></i>
-                                    <p>{{ __('Fórmulas') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2" hidden>
-                                <a href="#" class="nav-link">
-                                    <i class="fas fa-clipboard nav-icon"></i>
-                                    <p>{{ __('Lista de Precios') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2" hidden>
-                                <a href="#" class="nav-link">
-                                    <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                    <p>{{ __('Control de Resultados') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item px-2" hidden>
-                                <a href="#" class="nav-link">
-                                    <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                    <p>{{ __('Convenios') }}</p>
-                                </a>
-                            </li>
+                            @if(Auth::user()->rol == 'admin')
+                                <li class="nav-item px-2">
+                                    <a href="#" class="nav-link">
+                                        <i class=" nav-icon fas fa-file-archive"></i>
+                                        <p>{{ __('Facturas') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fa-solid fa-user-doctor"></i>
+                                        <p>{{ __('Corte de Caja') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-square-root-alt nav-icon"></i>
+                                        <p>{{ __('Fórmulas') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2" hidden>
+                                    <a href="#" class="nav-link">
+                                        <i class="fas fa-clipboard nav-icon"></i>
+                                        <p>{{ __('Lista de Precios') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2" hidden>
+                                    <a href="#" class="nav-link">
+                                        <i class="fa-solid fa-cart-plus nav-icon"></i>
+                                        <p>{{ __('Control de Resultados') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2" hidden>
+                                    <a href="#" class="nav-link">
+                                        <i class="fa-solid fa-cart-plus nav-icon"></i>
+                                        <p>{{ __('Convenios') }}</p>
+                                    </a>
+                                </li>
+                            @endif
                         </ul>
                     </li>
                     @php
-                        $activeRoutesPrint = [ ];
+                        $activeRoutesPrint = [ 'factura', 'resultado'];
                     @endphp
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
+                    <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesPrint) ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesPrint) ? 'active' : '' }}">
                             <i class="nav-icon fa-solid fa-print"></i>
                             <p>
                                 {{ __('Reimpresiones') }}
@@ -287,22 +289,16 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
+                            <li class="nav-item px-2">
+                                <a href="{{ route('factura') }}" class="nav-link {{ Request::is('facturas') ? 'active' : '' }}">
                                     <i class=" nav-icon fas fa-file-archive"></i>
                                     <p>{{ __('Facturas') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
+                            <li class="nav-item px-2">
+                                <a href="{{ route('resultado') }}" class="nav-link {{ Request::is('resultados') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-file"></i>
                                     <p>{{ __('Resultados') }}</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="fa-solid fa-cart-plus nav-icon"></i>
-                                    <p>{{ __('Reportes') }}</p>
                                 </a>
                             </li>
                         </ul>
@@ -319,19 +315,31 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            <li class="nav-item">
+                            <li class="nav-item px-2">
                                 <a href="#" class="nav-link">
-                                    <i class=" nav-icon fa-solid fa-box"></i>
+                                    <i class=" nav-icon fa-solid fa-file">C</i>
                                     <p>{{ __('Cajas') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item px-2">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fa-solid fa-toolbox"></i>
+                                    <i class="nav-icon fa-solid fa-file">M</i>
                                     <p>{{ __('Material') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item px-2">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-file">R</i>
+                                    <p>{{ __('Resultados') }}</p>
+                                </a>
+                            </li>
+                            <li class="nav-item px-2">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fa-solid fa-file">e</i>
+                                    <p>{{ __('Estudios') }}</p>
+                                </a>
+                            </li>
+                            <li class="nav-item px-2">
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon fa-solid fa-file"></i>
                                     <p>{{ __('Resultados') }}</p>

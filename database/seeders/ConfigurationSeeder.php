@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Configuration;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +14,7 @@ class ConfigurationSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('configurations')->insert([
+        Configuration::create([
             'nombre' => 'ClinicoLab',
             'nit' => '12345678',
             'direccion' => '6 DE OCTUBRE ENTRE CARO Y MONTECINOS #4521',

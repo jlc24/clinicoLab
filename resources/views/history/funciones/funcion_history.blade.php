@@ -1,14 +1,12 @@
 <script>
     $(document).ready(function() {
         
-
         function getTablaHistoryRecepcion(ruta) {
             mostrarCargando();
             $.ajax({
                 url: ruta,
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
                     if (data.length != 0) {
                         $('.tabla-historial-recepcion tbody').empty();
                         $.each(data, function(index, value) {

@@ -67,4 +67,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Factura::class);
     }
+
+    public function permiso_users()
+    {
+        return $this->hasMany(PermisoUser::class);
+    }
 }

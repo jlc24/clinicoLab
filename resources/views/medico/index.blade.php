@@ -56,7 +56,9 @@
                                                 <div class="btn-group" role="group" aria-label="Button group">
                                                     <button data-toggle="modal" data-target="#modal_actualizar_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-warning" ><i class="fas fa-user-edit"></i></button>
                                                     <button data-toggle="modal" data-target="#modal_ver_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-info"><i class="fas fa-info-circle"></i></button>
-                                                    <button data-toggle="modal" data-target="#modal_permisos_medico" class="btn btn-sm btn-outline-success btnPermisoMedico" title="Asignar permisos"><i class="fas fa-cog"></i></button>
+                                                    @if(Auth::user()->rol == 'admin')
+                                                        <button data-toggle="modal" data-target="#modal_asginar_permiso" class="btn btn-sm btn-outline-success btnPermisoMedico" title="Asignar permisos"><i class="fas fa-cog"></i></button>
+                                                    @endif
                                                 </div>
                                             </td>
                                             @include('medico.modal.modal_actualizar_medico')
@@ -66,12 +68,19 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="card-footer">
+                            {{-- {{ Auth::user()->permiso_user->usuario_id }} --}}
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
     @include('medico.modal.modal_crear_medico')
+    @if(Auth::user()->rol == 'admin')
+        @include('permiso.modal.modal_asignar_permisos')
+    @endif
 @endsection
 
 @section('funciones')

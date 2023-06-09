@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AspectoController;
+use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\BacteriaController;
 use App\Http\Controllers\CajaController;
 use App\Http\Controllers\CategoriaController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\ParametroController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\PermisoController;
+use App\Http\Controllers\PermisoUserController;
 use App\Http\Controllers\ProcedimientoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RecepcionController;
@@ -43,6 +45,7 @@ use App\Models\Componente;
 use App\Models\DetalleComponente;
 use App\Models\DetalleMaterial;
 use App\Models\DetalleProcedimiento;
+use App\Models\PermisoUser;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,14 +72,10 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
     
-        
-    
         Route::get('/clientes', [ClienteController::class, 'index'])->name('cliente');
         Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente.store');
         Route::get('/clientes/{id}', [ClienteController::class, 'show'])->name('cliente.show')->middleware('ajax');
         Route::post('/clientes/{id}', [ClienteController::class, 'update'])->name('cliente.update')->middleware('ajax');
-
-        
     
         //Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
         Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
@@ -216,6 +215,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/updateActivarClientEstado/{id}', [ClienteController::class, 'updateActivarClientEstado'])->name('cliente.estado.1');
             Route::post('/updateDesactivarClientEstado/{id}', [ClienteController::class, 'updateDesactivarClientEstado'])->name('cliente.estado.0');
 
+            Route::get('/getMedico/{id}', [MedicoController::class, 'getMedico'])->name('getMedico');
+
             Route::get('/usuarios', [UsuarioController::class, 'index'])->name('usuario');
             Route::post('/usuarios', [UsuarioController::class, 'store'])->name('usuario.store');
             Route::get('/usuarios/{id}', [UsuarioController::class, 'edit'])->name('usuario.edit')->middleware('ajax');
@@ -266,12 +267,19 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/results', [ResultController::class, 'index'])->name('result');
             Route::post('/results', [ResultController::class, 'store'])->name('result.store');
             Route::post('/results/{id}', [ResultController::class, 'update'])->name('result.update')->middleware('ajax');
-
+            
             Route::get('/permisos', [PermisoController::class, 'index'])->name('permiso');
             Route::post('/permisos', [PermisoController::class, 'store'])->name('permiso.store');
             
+            Route::get('/getPermisosUser/{id}', [PermisoUserController::class, 'getPermisosUser'])->name('getPermisosUser')->middleware('ajax');
+            Route::post('/updatePermiso/{id}', [PermisoUserController::class, 'updatePermiso'])->name('updatePermiso')->middleware('ajax');
+            
         });
-    
+
+        Route::post('/confirmarPassword', [ConfirmPasswordController::class, 'confirmarPassword'])->name('confirmarPassword');
+        
+        Route::get('/resultados', [ResultController::class, 'getResults'])->name('resultado');
+
         Route::post('/updateEstadoRecepcion/{id}', [ResultController::class, 'updateEstadoRecepcion'])->name('updateEstadoRecepcion');
     
         Route::get('/getClienteResult/{id}', [ResultController::class, 'getClienteResult'])->name('getClienteResult');
