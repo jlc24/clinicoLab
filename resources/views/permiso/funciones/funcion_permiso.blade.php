@@ -69,5 +69,49 @@
                 }
             });
         });
+
+        function editPermiso(id) {
+            $.ajax({
+                url: '{{ route("permiso.edit", ":id") }}'.replace(":id", id),
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $(".permiso_id").val(data.id);
+                    $(".permiso_desc_update").val(data.permiso);
+                }
+            });
+        }
+
+        $(document).on('click', '.btnEditarPermiso', function() {
+            var permiso_id = $(this).closest('tr').find('td:eq(0)').text();
+            editPermiso(permiso_id);
+        });
+
+        $(document).on('click', '.btnUpdatePermiso', function() {
+            var datos = new FormData();
+            datos.append('permiso', $(".permiso_desc_update").val());
+            $.ajax({
+                url: '{{ route("permiso.update", ":id") }}'.replace(":id", $(".permiso_id").val()),
+                type: "POST",
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire({
+                        title: 'Actualizado',
+                        text: 'Se actualizó el dato correctamente',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000,
+                    });
+                    setTimeout(function(){
+                        window.location.href = '{{ route('permiso') }}';
+                    }, 1000);
+                }
+            });
+        });
     });
 </script>

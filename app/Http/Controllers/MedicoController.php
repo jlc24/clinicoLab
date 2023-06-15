@@ -30,6 +30,12 @@ class MedicoController extends Controller
         ]);
     }
 
+    public function countMedicos()
+    {
+        $medicos = Medico::count();
+        return response()->json($medicos);
+    }
+
     public function getMedico($id)
     {
         $medico = Medico::find($id);

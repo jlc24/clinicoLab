@@ -146,6 +146,7 @@
                 $('#rec_paciente_nombre').val(ui.item.cli_nombre+' '+ui.item.cli_apellido_pat+' '+ui.item.cli_apellido_mat);
                 $('#rec_genero').val(ui.item.cli_genero);
                 $('#rec_edad').val(ui.item.edad+' años');
+                $('#rec_celular').val(ui.item.cli_celular);
                 return false;
             }
         }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
@@ -172,6 +173,7 @@
                 $('#rec_paciente_nombre').val(ui.item.cli_nombre+' '+ui.item.cli_apellido_pat+' '+ui.item.cli_apellido_mat);
                 $('#rec_genero').val(ui.item.cli_genero);
                 $('#rec_edad').val(ui.item.edad+' años');
+                $('#rec_celular').val(ui.item.cli_celular);
                 return false;
             }
         }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
@@ -295,7 +297,7 @@
                             $('#tabla-estudios tbody').append(
                                 '<tr><td>' + value.est_cod + '</td>'+
                                     '<td>' + value.est_nombre + '</td>'+
-                                    '<td>' + value.est_precio + '</td>'+
+                                    '<td class="text-right">' + value.est_precio + '</td>'+
                                     '<td>' + value.muestra + '</td>'+
                                     '<td>' + value.indicacion + '</td>'+
                                     '<td><a href="javascript:void(0);" data-id="'+ value.rec_id+ '" data-route="{{ route("recepcion.destroy", ":id") }} " class="btn btn-sm btn-outline-danger btn-delete-estudio" title="Eliminar Estudio"><i class="fas fa-trash-alt"></i></a></td>'+
@@ -310,6 +312,7 @@
                         });
                         $('#est_precio_total').val(sumPrecios.toFixed(2));
                     }else {
+                        $('#est_precio_total').val("");
                         $('#tabla-estudios tbody').empty().append('<td colspan="7" class="text-center">No hay datos recepcionados para factura '+$("#rec_factura").val()+'</td>');
                     }
                 }
@@ -443,6 +446,7 @@
                 $("#rec_medico_nombre").prop("disabled", true);
                 $("#rec_medico_nombre").val("");
                 $("#rec_medico_add").css({"pointer-events": "none", "opacity": "0.5"});
+                $("#rec_especialidad").val("");
             }
         })
         $("#checkEmpresa").on('change', function () {
@@ -523,6 +527,7 @@
             }else{
                 $(this).attr('data-toggle', 'modal');
                 $(this).attr('data-target', '#modal_enviar_cotizacion');
+                $("#enviar_numero").val($("#rec_celular").val());
                 var saludo = 'Hola Buenos días,';
                 var medio = 'Por este medio te enviamos la información solicitada.';
                 var tiempo = '*RESULTADOS SE ENTREGAN EL MISMO DIA*';
@@ -580,6 +585,8 @@
 
         $("#btnUpdateRec").on('click' , function() {
             if ($("#rec_paciente_clave").val() == "" || $("#rec_paciente_nombre").val() == "") {
+                $('#btnUpdateRec').attr('data-toggle', '');
+                $('#btnUpdateRec').attr('data-target', '');
                 Swal.fire({
                     title: 'Oops...',
                     text: 'Ingrese datos del paciente',
@@ -598,7 +605,7 @@
                 $('#btnUpdateRec').attr('data-target', '');
                 Swal.fire({
                     title: 'Oops...',
-                    text: 'Debe registrar al menos un estudio o grupo de estudios',
+                    text: 'Debe registrar al menos un estudio.',
                     icon: 'info',
                     showConfirmButton: false,
                     timer: 2000,
@@ -713,7 +720,7 @@
                     datos.append('fac_medico_id', $("#fac_medico_id").val());
                     datos.append('fac_empresa_id', $("#fac_empresa_id").val());
                     datos.append('fac_precio_total', $('#fac_precio_total').val());
-                    datos.append('fac_estado', $('#fac_estado').val());
+                    datos.append('fac_estado', 1);
                     datos.append('fac_tipo_pago', $('#fac_tipo_pago').val());
                     //datos.append('fac_descuento', $('#fac_descuento').val());
                     datos.append('fac_observacion', $('#fac_observacion').val());
@@ -725,5 +732,88 @@
                 }
             }
         });
+
+        const hoy = new Date();
+        const mesActual = hoy.getMonth();
+        const anioActual = hoy.getFullYear();
+
+        for (let i = 1; i <= 12; i++) {
+            $('#fac_fecha_exp_mes').append($('<option></option>').val(i).text(obtenerNombreDelMes(i - 1)));
+        }
+
+        $('#fac_fecha_exp_mes').val(mesActual + 1);
+
+        for (let i = anioActual; i <= anioActual + 10; i++) {
+            $('#fac_fecha_exp_anio').append($('<option></option>').val(i).text(i));
+        }
+
+        $('#fac_fecha_exp_anio').val(anioActual);
+
+        function obtenerNombreDelMes(numeroDeMes) {
+            const nombresDeMes = [
+                'ENE', 'FEB', 'MAR', 'ABR',
+                'MAY', 'JUN', 'JUL', 'AGO',
+                'SEP', 'OCT', 'NOV', 'DIC'
+            ];
+            return nombresDeMes[numeroDeMes];
+        }
+
+        // $("#fac_num_tarjeta").on('keyup', function(event) {
+            
+        //     var input = $(this).val();
+
+        //     let cardNumber = event.target.value;
+        //     // Reemplazar los primeros dígitos con asteriscos
+        //     let maskedCardNumber = cardNumber.slice(0, -4).replace(/./g, '*');
+
+        //     // Separar los últimos 4 dígitos y agregarlos a la versión enmascarada de la tarjeta
+        //     if (cardNumber.length > 4) {
+        //         maskedCardNumber += ' ' + cardNumber.slice(-4).replace(/\s/g,'').replace(/(\d{4})/g, '$1');
+        //     } else {
+        //         maskedCardNumber += cardNumber.slice(-4);
+        //     }
+        //     $(event.target).val(maskedCardNumber);
+        // });
+        
+        $("#fac_tipo_pago").on('change', function() {
+            if ($(this).val() == 'EFECTIVO') {
+                $(".efectivo").prop('hidden', false);
+                $(".tarjeta_credito_debito").prop('hidden', true);
+                $(".cheque").prop('hidden', true);
+                $(".transferencia").prop('hidden', true);
+                $(".otro").prop('hidden', true);
+                $("#fac_importe").val("0.00");
+                $("#fac_importe").trigger('focus');
+            }else if ($(this).val() == 'CREDITO/DEBITO') {
+                $(".efectivo").prop('hidden', true);
+                $(".tarjeta_credito_debito").prop('hidden', false);
+                $(".cheque").prop('hidden', true);
+                $(".transferencia").prop('hidden', true);
+                $(".otro").prop('hidden', true);
+                $("#fac_num_tarjeta").trigger('focus');
+            }else if ($(this).val() == 'CHEQUE') {
+                $(".efectivo").prop('hidden', true);
+                $(".tarjeta_credito_debito").prop('hidden', true);
+                $(".cheque").prop('hidden', false);
+                $(".transferencia").prop('hidden', true);
+                $(".otro").prop('hidden', true);
+                $("#fac_num_cheque").trigger('focus');
+            }else if ($(this).val() == 'TRANSFERENCIA') {
+                $(".efectivo").prop('hidden', true);
+                $(".tarjeta_credito_debito").prop('hidden', true);
+                $(".cheque").prop('hidden', true);
+                $(".transferencia").prop('hidden', false);
+                $(".otro").prop('hidden', true);
+                $("#fac_trans_banco").trigger('focus');
+            }else if ($(this).val() == 'OTRO') {
+                $(".efectivo").prop('hidden', true);
+                $(".tarjeta_credito_debito").prop('hidden', true);
+                $(".cheque").prop('hidden', true);
+                $(".transferencia").prop('hidden', true);
+                $(".otro").prop('hidden', false);
+                $("#fac_num_cheque").trigger('focus');
+            }
+        });
+
     });
 </script>

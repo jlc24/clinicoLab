@@ -20,7 +20,7 @@
     <section class="content" id="RecepcionEstudio">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-4 col-sm-4">
+                <div class="col-xl-12 col-sm-12">
                     <form id="form_recepcion_factura">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
@@ -30,24 +30,41 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-xl-5 col-sm-12">
-                                    <label class="col-md-12 col-form-label" for="rec_factura" >{{ __('Factura') }}:</label>
+                                <div class="col-xl-1 col-sm-12">
+                                    <label class="col-form-label" for="rec_factura" >{{ __('Caja') }}:</label>
+                                </div>
+                                <div class="col-xl-2 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex;">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px; height: 31px; width: 35px;"><strong>Nº</strong></div>
                                             </div>
-                                            <input type="text"  id="rec_factura" name="rec_factura" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
-                                            <input type="hidden" value="{{ $caja->id }}" name="rec_caja" id="rec_caja">
+                                            <input type="number" value="{{ $caja->id }}" name="rec_caja" id="rec_caja" class="form-control form-control-sm" readonly>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-6 col-sm-12">
-                                    <label class="col-md-12 col-form-label" >{{ __('Fecha Recepcion') }}:</label>
+                                <div class="col-xl-1 col-sm-12">
+                                    <label class="col-form-label" for="rec_factura" >{{ __('Factura') }}:</label>
+                                </div>
+                                <div class="col-xl-2 col-sm-12">
+                                    <div class="form-group row">
+                                        <div class="col-md-12" style="display: inline-flex;">
+                                            <div class="input-group-prepend">
+                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px; height: 31px; width: 35px;"><strong>Nº</strong></div>
+                                            </div>
+                                            <input type="number"  id="rec_factura" name="rec_factura" class="form-control form-control-sm" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-2 col-sm-12"></div>
+                                <div class="col-xl-2 col-sm-12">
+                                    <label class="col-form-label" for="rec_fecha">{{ __('Fecha Recepcion') }}:</label>
+                                </div>
+                                <div class="col-xl-2 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-calendar-alt"></i></div>
+                                                <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px; height: 31px; width: 35px;"><i class="fas fa-calendar-alt"></i></div>
                                             </div>
                                             <input type="date" value="{{ date('Y-m-d') }}" placeholder="Fecha" id="rec_fecha" name="rec_fecha" class="form-control form-control-sm" readonly>
                                         </div>
@@ -56,28 +73,26 @@
                             </div>                            
                             <div class="row" id="datosPaciente">
                                 <div class="col-xl-12 col-sm-12">
-                                    <label class="col-md-12 col-form-label" ><i class="fas fa-user"></i> {{ __('Datos del Paciente a recepcionar') }}:</label>
+                                    <label class="col-md-12 col-form-label" ><i class="fas fa-user"></i> {{ __('Datos del Paciente a recepcionar') }}:<span class="dato_requerido">*</span></label>
                                 </div>
-                                <div class="col-xl-3 col-sm-12">
+                                <div class="col-xl-2 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
                                             <input type="text" placeholder="Clave" id="rec_paciente_clave" name="rec_paciente_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-9 col-sm-12">
+                                <div class="col-xl-4 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12 " style="display: inline-flex;">
                                             <input type="text" placeholder="Nombre Paciente" id="rec_paciente_nombre" name="rec_paciente_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text" style="padding-left: 5px; border-radius: 0px 5px 5px 0px; height: 31px; width: 40px"><a href="#" data-toggle="modal" data-target="#modal_crear_cliente" title="Nuevo paciente" style="color: #000"><i class="fas fa-user">+</i></a> </div>
+                                                <div class="input-group-text" style="padding-left: 5px; border-radius: 0px 5px 5px 0px; height: 31px; width: 40px"><a href="#" data-toggle="modal" data-target="#modal_crear_cliente" title="Nuevo paciente" style="color: #000" class="btnAddPaciente"><i class="fas fa-user">+</i></a> </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row" hidden>
-                                <div class="col-xl-6 col-sm-12">
+                                <div class="col-xl-2 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12">
                                             <input type="text" placeholder="Genero" id="rec_genero" name="rec_genero" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
@@ -85,19 +100,26 @@
                                         
                                     </div>
                                 </div>
-                                <div class="col-xl-6 col-sm-12">
+                                <div class="col-xl-2 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12">
                                             <input type="text" placeholder="Edad" id="rec_edad" name="rec_edad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-xl-2 col-sm-12">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <input type="text" placeholder="Celular" id="rec_celular" name="rec_celular" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="row">
+                            <div class="row" hidden>
                                 <div class="col-xl-12 col-sm-12 mb-2">
                                     <div class="form-group form-check">
                                         <input type="checkbox" class="form-check-input" name="checkEmpresa" id="checkEmpresa" title="Habilitar Empresa">
-                                        <label class="form-check-label" for="checkEmpresa"><i class="fas fa-building"></i><strong>{{ __(' Datos de la Empresa a recepcionar') }}: (Opcional)</strong></label>
+                                        <label class="form-check-label" for="checkEmpresa"><i class="fas fa-building"></i><strong>{{ __(' Datos de la Empresa a recepcionar') }}: </strong></label>
                                     </div>
                                 </div>
                                 <div class="col-xl-3 col-sm-12">
@@ -134,14 +156,14 @@
                                         <label class="form-check-label" for="checkMedico"><i class="fa-solid fa-user-doctor"></i><strong>{{ __(' Datos del Medico a recepcionar') }}: (Opcional)</strong></label>
                                     </div>
                                 </div>
-                                <div class="col-xl-3 col-sm-12">
+                                <div class="col-xl-2 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
                                             <input type="text" placeholder="Clave" id="rec_medico_clave" name="rec_medico_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 5px 5px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" disabled>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-9 col-sm-12">
+                                <div class="col-xl-6 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12 " style="display: inline-flex;">
                                             <input type="text" placeholder="Nombre del Medico" id="rec_medico_nombre" name="rec_medico_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 5px 0px 0px 5px; " onkeyup="javascript:this.value=this.value.toUpperCase();" disabled>
@@ -151,9 +173,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row" hidden>
-                                <div class="col-xl-8 col-sm-12">
+                                <div class="col-xl-4 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12">
                                             <input type="text" placeholder="Especialidad" id="rec_especialidad" name="rec_especialidad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly>
@@ -161,8 +181,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <hr><div class="row">
+                            <div class="row">
                                 <div class="col-xl-12 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
@@ -182,7 +201,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xl-8 col-sm-8">
+                <div class="col-xl-12 col-sm-12">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
@@ -196,35 +215,11 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-xl-3 col-sm-12">
-                                    <label class="col-md-12 col-form-label" >{{ __('Recepcionar datos') }}:</label>
-                                </div>
-                                <div class="col-xl-3 col-sm-12" hidden>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="radio" id="radio_perfil">
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-outline-secondary">Perfiles o Grupos</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xl-3 col-sm-12" hidden>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text">
-                                                    <input type="radio" id="radio_estudio" checked>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-secondary" disabled>Estudios</button>
-                                        </div>
-                                    </div>
+                                <div class="col-xl-12 col-sm-12">
+                                    <label class="col-md-12 col-form-label" >{{ __('Recepcionar estudios') }}:</label>
                                 </div>
                             </div>
-                            <div class="row" id="RecepcionPerfil" style="display: none;">
+                            <div class="row" id="RecepcionPerfil" hidden>
                                 <div class="col-xl-3 col-sm-12">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="display: inline-flex">
@@ -298,6 +293,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                @include('recepcion.tablas.tabla_recepcion')
+                            </div>
                             <div class="row justify-content-center">
                                 <div class="col-xl-3 col-sm-12">
                                     <div class="form-group row">
@@ -329,14 +327,14 @@
                                             <input type="hidden" name="rec_paciente_id" id="rec_paciente_id">
                                             <input type="hidden" name="rec_medico_id" id="rec_medico_id">
                                             <input type="hidden" name="rec_empresa_id" id="rec_empresa_id">
-                                            <a href="javascript:void(0);" id="btnUpdateRec" class="btn btn-outline-info">Recepcionar</a>
+                                            <a href="#" id="btnUpdateRec" class="btn btn-outline-info" >Recepcionar</a>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-4 col-sm-12 text-right">
                                     <div class="form-group row">
                                         <div class="col-md-12" style="margin-top: 35px">
-                                            <a href="javascript:void(0)" id="btnEnviarCotizacion" class="btn btn-outline-success" title="Enviar Cotizacion"><i class="fab fa-whatsapp fa-2x"></i></a>
+                                            <a href="#" id="btnEnviarCotizacion" class="btn btn-outline-success" title="Enviar Cotizacion"><i class="fab fa-whatsapp fa-2x"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -344,13 +342,6 @@
                         </div>
                     </div>
                     </form>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                @include('recepcion.tablas.tabla_recepcion')
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

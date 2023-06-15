@@ -35,7 +35,11 @@
                             <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_cajas" id="tabla_cajas">
                                 <thead style="text-align: center;">
                                     <tr class="table-info">
-                                        <th>#</th>
+                                        @if(Auth::user()->rol == 'admin')
+                                            <th>#</th>
+                                        @else
+                                            <th hidden>#</th>
+                                        @endif
                                         <th>{{ __('Usuario') }}</th>
                                         <th>{{ __('Fecha Apertura') }}</th>
                                         <th>{{ __('Monto Inicial') }}</th>
@@ -48,7 +52,11 @@
                                 <tbody>
                                     @foreach ($cajas as $caja)
                                         <tr>
-                                            <td>{{ $caja->id }}</td>
+                                            @if(Auth::user()->rol == 'admin')
+                                                <td>{{ $caja->id }}</td>
+                                            @else
+                                                <td hidden>{{ $caja->id }}</td>
+                                            @endif
                                             <td>{{ $caja->user->user }}</td>
                                             <td>{{ $caja->created_at }}</td>
                                             <td>{{ $caja->caja_monto_inicial }}</td>
@@ -62,8 +70,7 @@
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Button group">
                                                     @if($caja->caja_estado == '1')
-                                                        <button data-toggle="modal" data-target="#modal_actualizar_caja_{{ $caja->id }}" class="btnEditarCaja btn btn-sm btn-outline-warning" title="Cerrar Caja"><i class="fas fa-lock-open"></i></button>
-                                                        @include('caja.modal.modal_actualizar_caja')
+                                                        <button data-toggle="modal" data-target="#modal_actualizar_caja" class="btnEditarCaja btn btn-sm btn-outline-warning btnUpdateCaja" title="Cerrar Caja"><i class="fas fa-lock-open"></i></button>
                                                     @else
                                                         <button class="btn btn-sm btn-danger" title="Caja Cerrada"><i class="fas fa-lock" disabled></i></button>
                                                     @endif
@@ -82,6 +89,7 @@
     </section>
 
     @include('caja.modal.modal_crear_caja')
+    @include('caja.modal.modal_actualizar_caja')
 @endsection
 
 @section('funciones')

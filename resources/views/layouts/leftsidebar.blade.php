@@ -238,7 +238,7 @@
                                 </a>
                             </li>
                             @if(Auth::user()->rol == 'admin')
-                                <li class="nav-item px-2">
+                                <li class="nav-item px-2" hidden>
                                     <a href="#" class="nav-link">
                                         <i class=" nav-icon fas fa-file-archive"></i>
                                         <p>{{ __('Facturas') }}</p>
@@ -304,10 +304,10 @@
                         </ul>
                     </li>
                     @php
-                        $activeRoutesReport = [ ];
+                        $activeRoutesReport = [ 'reporte.caja', 'reporte.estudio' ];
                     @endphp
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
+                    <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesReport) ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesReport) ? 'active' : '' }}">
                             <i class="nav-icon fa-solid fa-file-lines"></i>
                             <p>
                                 {{ __('Reportes') }}
@@ -316,37 +316,44 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item px-2">
-                                <a href="#" class="nav-link">
-                                    <i class=" nav-icon fa-solid fa-file">C</i>
-                                    <p>{{ __('Cajas') }}</p>
+                                <a href="{{ route('reporte.caja') }}" class="nav-link {{ Request::is('reportes/cajas') ? 'active' : '' }}">
+                                    <i class=" nav-icon ">C</i>
+                                    <p>{{ __('ajas') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item px-2">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fa-solid fa-file">M</i>
-                                    <p>{{ __('Material') }}</p>
+                                    <i class="nav-icon ">M</i>
+                                    <p>{{ __('aterial') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item px-2">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fa-solid fa-file">R</i>
-                                    <p>{{ __('Resultados') }}</p>
+                                    <i class="nav-icon ">R</i>
+                                    <p>{{ __('esultados') }}</p>
+                                </a>
+                            </li>
+                            <li class="nav-item px-2">
+                                <a href="{{ route('reporte.estudio') }}" class="nav-link {{ Request::is('reportes/estudios') ? 'active' : '' }}">
+                                    <i class="nav-icon ">E</i>
+                                    <p>{{ __('studios') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item px-2">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fa-solid fa-file">e</i>
-                                    <p>{{ __('Estudios') }}</p>
+                                    <i class="nav-icon ">G</i>
+                                    <p>{{ __('enerales') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item px-2">
                                 <a href="#" class="nav-link">
-                                    <i class="nav-icon fa-solid fa-file"></i>
-                                    <p>{{ __('Resultados') }}</p>
+                                    <i class="nav-icon fas fa-book"></i>
+                                    <p>{{ __('Lista de reportes') }}</p>
                                 </a>
                             </li>
                         </ul>
                     </li>
+                    
                 @else
                     <li class="nav-item">
                         <a href="{{ route('paciente') }}" class="nav-link {{ Route::currentRouteName() === 'paciente' ? 'active' : '' }}">

@@ -41,7 +41,7 @@
                             </a>
                         </li>
                     </ul>
-                    <form class="form-horizontal" id="formulario_crear_cliente">
+                    
                         <div class="tab-content">
                             <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
                                 <div class="row justify-content-center">
@@ -49,7 +49,7 @@
                                         <div class="form-group row">
                                             <label class="col-md-3 col-form-label" for="cli_cod">{{ __('Cod') }}:<span class="dato_requerido">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" value="PA{{ $countpac+1 }}" id="cli_cod" name="cli_cod" class="form-control form-control-sm" autocomplete="off" readonly>
+                                                <input type="text" id="cli_cod" name="cli_cod" class="form-control form-control-sm" autocomplete="off" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -177,7 +177,7 @@
                                             <label class="col-md-3 col-form-label" for="cli_medico">{{ __('Medico') }}:</label>
                                             <div class="col-md-9">
                                                 <select class="custom-select custom-select-sm" id="cli_medico" name="cli_medico" >
-                                                    <option value="" selected="" disabled>SELECCIONAR...</option>
+                                                    <option value="" selected="">SELECCIONAR...</option>
                                                     @foreach ($medicos as $medico)
                                                         <option value="{{ $medico->id }}">{{ $medico->med_nombre }} {{ $medico->med_apellido_pat }} {{ $medico->med_apellido_mat }}</option>
                                                     @endforeach
@@ -188,7 +188,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    
                 </div>
             </div>
         </div>

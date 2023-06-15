@@ -50,17 +50,25 @@ class PermisoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Permiso $permiso)
+    public function edit($id)
     {
-        //
+        $permiso = Permiso::find($id);
+        return response()->json($permiso);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Permiso $permiso)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'permiso' => 'required|string|max:255'
+        ]);
+
+        $permiso = Permiso::find($id);
+        $permiso->update([
+            'permiso' => $request->input('permiso')
+        ]);
     }
 
     /**

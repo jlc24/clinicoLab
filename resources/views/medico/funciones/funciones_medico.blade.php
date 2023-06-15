@@ -8,8 +8,8 @@
             $('#med_nombre').trigger('focus');
         });
         $("#btnCloseAddMedic").on('click', function(){
-            $("#formulario_crear_medico").trigger('reset');
-            $('#smartwizard_crear_medico').smartWizard('reset');
+            limpiarMed();
+            $("#smartwizard_crear_medico").smartWizard("reset");
         });
 
         $('#med_departamento').on('change', function() {
@@ -62,9 +62,44 @@
                 $("#med_email").focus();
             }
         });
+        
+        function limpiarMed() {
+            $("#med_cod").val("");
+            $("#med_nombre").val("");
+            $("#med_apellido_pat").val("");
+            $("#med_apellido_mat").val("");
+            $("#med_ci_nit").val("");
+            $("#med_ci_nit_exp").val("");
+            $("#med_genero").val("");
+            $("#med_especialidad").val("");
+            $("#med_email").val("");
+            $("#med_direccion").val("");
+            $("#med_celular").val("");
+            $("#med_usuario").val("");
+            $("#med_password").val("");
+            $("#med_departamento").val("");
+            $("#med_municipio").val("");
+            $("#med_estado").val("");
+            $("#med_rol").val("");
+            $("#generar_correo_med").prop('checked', false);
+            $("#med_email").prop('readonly', false);
+        }
+
+        $(document).on('click', '.btnAddMedico', function() {
+            $.ajax({
+                url: '{{ route("countMedicos") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    $("#med_cod").val('MED' + (data+1));
+                    $("#med_estado").val("medico")
+                    $("#med_rol").val("1")
+                }
+            });
+        });
 
         $(document).on('click', '.btnRegisterMedico', function() {
-            event.preventDefault();
             if ($("#med_cod").val() == "" || $("#med_nombre").val() == "" || $("#med_apellido_pat").val() == "" || $("#med_apellido_mat").val() == "" || $("#med_ci_nit").val() == "" || $("#med_ci_nit_exp").val() == "" || $("#med_genero").val() == "" || $("#med_email").val() == "" || $("#med_direccion").val() == "" || $("#med_celular").val() == "" || $("#med_usuario").val() == "" || $("#med_password").val() == "" || $("#med_departamento").val() == "" || $("#med_municipio").val() == "" || $("#med_estado").val() == "" || $("#med_rol").val() == "" ) {
                 Swal.fire({
                     title: 'Error!',
@@ -113,10 +148,12 @@
                             showConfirmButton: false,
                             timer: 1000
                         });
-                        if (window.location.href.indexOf("medicos") > -1) {
-                            location.reload();
+                        if (window.location.href.indexOf("/medicos") > -1) {
+                            limpiarMed();
                             $('#smartwizard_crear_medico').smartWizard("reset");
+                            window.location.reload();
                         }else{
+                            limpiarMed();
                             $('#smartwizard_crear_medico').smartWizard("reset");
                         }
                     },

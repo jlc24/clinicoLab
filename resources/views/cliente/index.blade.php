@@ -24,7 +24,7 @@
                     <div class="card">
                         <div class="card-header" style="background-color: #E8F8ED; height: 50px; padding-top: 15px;">
                             <h4 class="page-title">
-                                <a style="color: #32C861;" href="#" data-toggle="modal" data-target="#modal_crear_cliente" title="Agregar Cliente">
+                                <a style="color: #32C861;" href="#" data-toggle="modal" data-target="#modal_crear_cliente" title="Agregar Cliente" class="btnAddPaciente">
                                     <i class="far fa-plus-square"></i>
                                 </a> {{ __('Nuevo Paciente') }}
                             </h4>
@@ -34,7 +34,11 @@
                             <table class="table table-bordered table-sm table-hover table-responsive-lg tabla-clientes" id="tabla_clientes" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead style="text-align: center;">
                                     <tr class="table-info">
-                                        <th>#</th>
+                                        @if(Auth::user()->rol == 'admin')
+                                            <th>#</th>
+                                        @else
+                                            <th hidden>#</th>
+                                        @endif
                                         <th>{{ __('Codigo') }}</th>
                                         <th>{{ __('Nombre') }}</th>
                                         <th>{{ __('Apellido Paterno') }}</th>
@@ -46,7 +50,11 @@
                                 <tbody>
                                     @foreach ($clientes as $cliente)
                                         <tr>
-                                            <td>{{ $cliente->id }}</td>
+                                            @if(Auth::user()->rol == 'admin')
+                                                <td>{{ $cliente->id }}</td>
+                                            @else
+                                                <td hidden>{{ $cliente->id }}</td>
+                                            @endif
                                             <td>{{ $cliente->cli_cod }}</td>
                                             <td>{{ $cliente->cli_nombre }}</td>
                                             <td>{{ $cliente->cli_apellido_pat }}</td>

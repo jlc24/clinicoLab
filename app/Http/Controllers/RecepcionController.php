@@ -18,6 +18,7 @@ use App\Models\Muestra;
 use App\Models\Recepcion;
 use App\Models\Result;
 use DateTime;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RecepcionController extends Controller
@@ -27,6 +28,8 @@ class RecepcionController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        $caja = Caja::where('user_id', '=', $user->id)->latest()->first();
         return view('recepcion.index', [
             'departamentos' => Departamento::all(), 
             'clientes' => Cliente::all(),
@@ -40,7 +43,7 @@ class RecepcionController extends Controller
             'estudios' => Estudio::all(),
             'muestras' => Muestra::all(),
             'indicacions' => Indication::all(),
-            'caja' => Caja::latest()->first(),
+            'caja' => $caja,
             'factura' => DB::table('facturas')->latest()->first(),
             'empresa' => Configuration::latest()->first(),
         ]);

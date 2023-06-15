@@ -56,32 +56,76 @@
     //--------------
 
     // Get context with jQuery - using jQuery's .get() method.
-    var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
+    $.ajax({
+        url: '{{ route("estudiosRecepcionados") }}',
+        type:'GET',
+        dataType: 'json',
+        success :function(data){
+            console.log(data);
+            var estCodArray = []; //crear arreglo vacio para almacenar est_cod
+            var cantidadArray = []; //crear arreglo vacio para almacenar cantidad
+            data.forEach(function(item) {
+                estCodArray.push(item.est_cod); //agregar est_cod al arreglo estCodArray
+                cantidadArray.push(item.cantidad); //agregar cantidad al arreglo cantidadArray
+            });
+            console.log(estCodArray);
+            console.log(cantidadArray);
 
-    var areaChartData = {
-        labels  : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
-        datasets: [
-            {
-            label               : 'Estudios Recepcionados',
-            backgroundColor     : 'rgba(60,141,188,0.9)',
-            borderColor         : 'rgba(60,141,188,0.8)',
-            pointRadius          : false,
-            pointColor          : '#3b8bba',
-            pointStrokeColor    : 'rgba(60,141,188,1)',
-            pointHighlightFill  : '#fff',
-            pointHighlightStroke: 'rgba(60,141,188,1)',
-            data                : [28, 48, 40, 19, 86, 27, 90]
-            },
-        ]
-    }
+            var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
+        
+            var areaChartData = {
+                labels  : estCodArray,
+                datasets: [
+                    {
+                        label               : 'Estudios Recepcionados',
+                        backgroundColor     : 'rgba(60,141,18,0.9)',
+                        borderColor         : 'rgba(60,141,188,0.8)',
+                        pointRadius          : true,
+                        pointColor          : '#3b8bba',
+                        pointStrokeColor    : 'rgba(60,141,188,1)',
+                        pointHighlightFill  : '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data                : cantidadArray
+                    },
+                ]
+            }
+            var areaChartOptions = {
+                maintainAspectRatio : false,
+                responsive : true,
+                legend: {
+                    display: true,
+                },
+                scales: {
+                    xAxes: [{
+                        gridLines : {
+                            display : false,
+                        }
+                    }],
+                    yAxes: [{
+                        gridLines : {
+                            display : false,
+                        }
+                    }]
+                }
+            }
+
+            // This will get the first returned node in the jQuery collection.
+            new Chart(areaChartCanvas, {
+                type: 'line',
+                data: areaChartData,
+                options: areaChartOptions
+            })
+        }
+    });
+
     var areaChartData1 = {
         labels  : ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
         datasets: [
             {
             label               : 'Clientes',
-            backgroundColor     : 'rgba(60,141,188,0.9)',
-            borderColor         : 'rgba(60,141,188,0.8)',
-            pointRadius          : false,
+            backgroundColor     : 'rgba(60,141,50,0.9)',
+            borderColor         : 'rgba(60,14,50,0.8)',
+            pointRadius          : true,
             pointColor          : '#3b8bba',
             pointStrokeColor    : 'rgba(60,141,188,1)',
             pointHighlightFill  : '#fff',
@@ -112,11 +156,11 @@
     }
 
     // This will get the first returned node in the jQuery collection.
-    new Chart(areaChartCanvas, {
-        type: 'line',
-        data: areaChartData,
-        options: areaChartOptions
-    })
+    // new Chart(areaChartCanvas, {
+    //     type: 'line',
+    //     data: areaChartData,
+    //     options: areaChartOptions
+    // })
     //-------------
     //- LINE CHART -
     //--------------

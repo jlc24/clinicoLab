@@ -89,7 +89,6 @@
         $(document).on('click', '.btn-generate-factura', function() {
             var fac_id = $(this).closest('tr').find('td:eq(0)').text();
             $(".rec_id").val(fac_id);
-            alert(fac_id);
         });
 
         $(document).on('click', '.btnClosePdfGenerate', function() {

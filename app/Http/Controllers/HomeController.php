@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Medico;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -31,8 +32,23 @@ class HomeController extends Controller
         $contUser = User::whereIn('rol', ['admin', 'usuario'])->count();
         return view('home', ['contcli' => $contcli, 'contmed' => $contmed, 'contUser' => $contUser]);
     }
-    public function ejemplo()
+
+    // public function ejemplo()
+    // {
+    //     return view('ejemplo.index');
+    // }
+
+    public function estudiosRecepcionados()
     {
-        return view('ejemplo.index');
+        $recepcions = DB::table('recepcions as r')
+                            ->join('detalles as d', 'd.id', '=', 'r.det_id')
+                            ->join('estudios as e', 'd.estudio_id', '=', 'e.id')
+                            ->select('e.est_cod', 'e.est_nombre', 
+                            DB::raw('COUNT(*) as cantidad'), 
+                            DB::raw('(COUNT(*) * e.est_precio) as total'))
+                            ->groupBy('e.est_cod', 'e.est_nombre', 'e.est_precio')
+                            ->get();
+                            
+        return response()->json($recepcions);
     }
 }

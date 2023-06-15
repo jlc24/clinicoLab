@@ -25,7 +25,7 @@ $(document).ready(function() {
     });
     
     $("#btnCloseAddClient").on('click', function(){
-        $("#formulario_crear_cliente").trigger('reset');
+        limpiar();
         $('#smartwizard_crear_client').smartWizard("reset");
     });
 
@@ -75,10 +75,46 @@ $(document).ready(function() {
             $("#cli_email").focus();
         }
     });
+    function limpiar() {
+        //$("#cli_cod").val("");
+        $("#cli_nombre").val("");
+        $("#cli_apellido_pat").val("");
+        $("#cli_apellido_mat").val("");
+        $("#cli_ci_nit").val("");
+        $("#cli_ci_nit_exp").val("");
+        $("#cli_fec_nac").val("");
+        $("#cli_genero").val("");
+        $("#cli_email").val("");
+        $("#cli_direccion").val("");
+        $("#cli_celular").val("");
+        $("#cli_usuario").val("");
+        $("#cli_password").val("");
+        $("#cli_departamento").val("");
+        $("#cli_municipio").val("");
+        $("#cli_estado").val("");
+        $("#cli_rol").val("");
+        $("#cli_medico").val("");
+        $("#generar_correo_cli").prop('checked', false);
+        $("#cli_email").prop('readonly', false);
+    }
 
-    $("#btnRegisterClient").on('click', function(event) {
-        event.preventDefault();
+    $(document).on('click', '.btnAddPaciente', function() {
+        $.ajax({
+            url: '{{ route("countClientes") }}',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                $("#cli_cod").val('PA'+ (data+1));
+                $("#cli_estado").val("1");
+                $("#cli_rol").val("cliente");
+            }
+        });
+    })
+
+    $(document).on('click', '.btnRegisterClient', function() {
         if ($("#cli_cod").val() == "" || $("#cli_nombre").val() == "" || $("#cli_apellido_pat").val() == "" || $("#cli_apellido_mat").val() == "" || $("#cli_ci_nit").val() == "" || $("#cli_ci_nit_exp").val() == "" || $("#cli_fec_nac").val() == "" || $("#cli_genero").val() == "" || $("#cli_email").val() == "" || $("#cli_direccion").val() == "" || $("#cli_celular").val() == "" || $("#cli_usuario").val() == "" || $("#cli_password").val() == "" || $("#cli_departamento").val() == "" || $("#cli_municipio").val() == "" || $("#cli_estado").val() == "" || $("#cli_rol").val() == "" ) {
+            console.log($("#cli_cod").val());
             Swal.fire({
                 title: 'Error!',
                 text: 'Algunos campos son requeridos',
@@ -132,10 +168,12 @@ $(document).ready(function() {
                         showConfirmButton: false,
                         timer: 1000
                     });
-                    if (window.location.href.indexOf("clientes") > -1) {
-                        location.reload();
+                    if (window.location.href.indexOf("/clientes") > -1) {
+                        limpiar();
                         $('#smartwizard_crear_client').smartWizard("reset");
+                        window.location.reload();
                     }else{
+                        limpiar();
                         $('#smartwizard_crear_client').smartWizard("reset");
                     }
                 },

@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" style="background-color: #32C861; color: #fff">
                 <h1 class="modal-title fs-5" id="modal_actualizar_medico_{{ $medico->id }}Label"><strong>{{ __('Modificar Medico') }}</strong></h1>
-                <button type="button" id="btnCloseAddMedic" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="btnCloseUpMedic" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 @if ($errors->any())

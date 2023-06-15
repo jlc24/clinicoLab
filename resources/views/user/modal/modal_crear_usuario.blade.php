@@ -41,7 +41,7 @@
                             </a>
                         </li>
                     </ul>
-                    <form class="form-horizontal" id="formulario_crear_usuario">
+                    
                         <div class="tab-content">
                             <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
                                 <div class="row justify-content-center">
@@ -181,7 +181,7 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    
                 </div>
             </div>
         </div>

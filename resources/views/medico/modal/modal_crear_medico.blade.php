@@ -40,137 +40,136 @@
                             </a>
                         </li>
                     </ul>
-                    <form class="form-horizontal" id="formulario_crear_medico">
-                        <div class="tab-content">
-                            <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
-                                <div class="row justify-content-center">
-                                    <div class="col-xl-12 col-sm-12">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_cod">{{ __('Cod') }}:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-3">
-                                                <input type="text" value="MED{{ $countmed+1 }}" id="med_cod" name="med_cod" class="form-control form-control-sm" autocomplete="off" readonly required>
-                                            </div>
-                                            <label class="col-md-2 col-form-label" for="med_genero">{{ __('Género') }}:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-4">
-                                                <select class="custom-select custom-select-sm" id="med_genero" name="med_genero" required>
-                                                    <option value="" selected="" disabled>SELECCIONAR...</option>
-                                                    <option value="MASCULINO">MASCULINO</option>
-                                                    <option value="FEMENINO">FEMENINO</option>
-                                                    <option value="OTRO">OTRO</option>
-                                                </select>
-                                            </div>
+                    
+                    <div class="tab-content">
+                        <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-12 col-sm-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_cod">{{ __('Cod') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-3">
+                                            <input type="text" id="med_cod" name="med_cod" class="form-control form-control-sm" autocomplete="off" readonly required>
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_nombre">{{ __('Nombres') }}:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="text" placeholder="Nombres" id="med_nombre" name="med_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" required>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_apellido_pat">{{ __('Apellidos') }}:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-5">
-                                                <input type="text" placeholder="Apellido Paterno" id="med_apellido_pat" name="med_apellido_pat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" required>
-                                            </div>
-                                            <div class="col-md-4 ml-0 pl-0">
-                                                <input type="text" placeholder="Apellido Materno" id="med_apellido_mat" name="med_apellido_mat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_ci_nit">C.I.:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-4">
-                                                <input type="number" min="0" id="med_ci_nit" name="med_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onkeyup="PasswordMed()" required>
-                                            </div>
-                                            <label class="col-md-1 col-form-label ml-0 pl-0" for="med_ci_nit_exp">Exp.:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-4">
-                                                <select class="custom-select custom-select-sm" id="med_ci_nit_exp" name="med_ci_nit_exp" required>
-                                                    <option value="" selected="" disabled>SELECCIONAR...</option>
-                                                    @foreach ($departamentos as $departamento)
-                                                        <option value="{{ $departamento->nombre }}">{{ $departamento->nombre }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_especialidad">{{ __('Especialidad') }}:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="text" placeholder="Especialidad" id="med_especialidad" name="med_especialidad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
-                                            </div>
+                                        <label class="col-md-2 col-form-label" for="med_genero">{{ __('Género') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-4">
+                                            <select class="custom-select custom-select-sm" id="med_genero" name="med_genero" required>
+                                                <option value="" selected="" disabled>SELECCIONAR...</option>
+                                                <option value="MASCULINO">MASCULINO</option>
+                                                <option value="FEMENINO">FEMENINO</option>
+                                                <option value="OTRO">OTRO</option>
+                                            </select>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
-                                <div class="row justify-content-center">
-                                    <div class="col-xl-12 col-sm-12">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_celular">{{ __('Celular') }}:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="number" min="0" id="med_celular" name="med_celular" class="form-control form-control-sm" autocomplete="off" placeholder="Celular" required>
-                                                <small><span style="color: red; display: none" id="error_med_celular">(Celular no valido)</span></small>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_direccion">{{ __('Dirección') }}:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="text" placeholder="Direccion" class="form-control form-control-sm" id="med_direccion" name="med_direccion" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_departamento">{{ __('Departamento') }}:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-9">
-                                                <select class="custom-select custom-select-sm" id="med_departamento" name="med_departamento" >
-                                                    <option value="" selected="" disabled>SELECCIONAR...</option>
-                                                    @foreach ($departamentos as $departamento)
-                                                        <option value="{{ $departamento->id }}">{{ $departamento->nombre }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_municipio">{{ __('Municipio') }}:<span class="dato_requerido">*</span></label>
-                                            <div class="col-md-9">
-                                                <select class="custom-select custom-select-sm" id="med_municipio" name="med_municipio" >
-                                                    <option value="" selected="" disabled>SELECCIONAR...</option>
-                                                    
-                                                </select>
-                                            </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_nombre">{{ __('Nombres') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" placeholder="Nombres" id="med_nombre" name="med_nombre" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" required>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
-                                <div class="row justify-content-center">
-                                    <div class="col-xl-12 col-sm-12">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_email">{{ __('Email') }}:</label>
-                                            <div class="col-md-8">
-                                                <input type="text" placeholder="Correo electrónico" class="form-control form-control-sm" id="med_email" name="med_email" autocomplete="off" required>
-                                            </div>
-                                            <div class="col-md-1 ml-0 pl-0">
-                                                <div class="form-check" style="padding-top: 5px; margin-left: 10px;">
-                                                    <input class="form-check-input" type="checkbox" id="generar_correo_med" name="generar_correo_med" title="Generar Correo"> 
-                                                </div>
-                                            </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_apellido_pat">{{ __('Apellidos') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-5">
+                                            <input type="text" placeholder="Apellido Paterno" id="med_apellido_pat" name="med_apellido_pat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" required>
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_usuario">{{ __('Usuario') }}:</label>
-                                            <div class="col-md-9">
-                                                <input type="text" placeholder="Usuario" class="form-control form-control-sm" id="med_usuario" name="med_usuario" autocomplete="off" readonly required>
-                                            </div>
+                                        <div class="col-md-4 ml-0 pl-0">
+                                            <input type="text" placeholder="Apellido Materno" id="med_apellido_mat" name="med_apellido_mat" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" >
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="med_password">{{ __('Contraseña') }}:</label>
-                                            <div class="col-md-9">
-                                                <input type="text" placeholder="Contraseña" class="form-control form-control-sm" id="med_password" name="med_password" autocomplete="off" readonly required>
-                                                <input type="hidden" value="1" class="form-control form-control-sm" id="med_estado" name="med_estado" autocomplete="off" readonly>
-                                                <input type="hidden" value="medico" class="form-control form-control-sm" id="med_rol" name="med_rol" autocomplete="off" readonly>
-                                            </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_ci_nit">C.I.:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-4">
+                                            <input type="number" min="0" id="med_ci_nit" name="med_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onkeyup="PasswordMed()" required>
+                                        </div>
+                                        <label class="col-md-1 col-form-label ml-0 pl-0" for="med_ci_nit_exp">Exp.:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-4">
+                                            <select class="custom-select custom-select-sm" id="med_ci_nit_exp" name="med_ci_nit_exp" required>
+                                                <option value="" selected="" disabled>SELECCIONAR...</option>
+                                                @foreach ($departamentos as $departamento)
+                                                    <option value="{{ $departamento->nombre }}">{{ $departamento->nombre }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_especialidad">{{ __('Especialidad') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" placeholder="Especialidad" id="med_especialidad" name="med_especialidad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                        <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-12 col-sm-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_celular">{{ __('Celular') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="number" min="0" id="med_celular" name="med_celular" class="form-control form-control-sm" autocomplete="off" placeholder="Celular" required>
+                                            <small><span style="color: red; display: none" id="error_med_celular">(Celular no valido)</span></small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_direccion">{{ __('Dirección') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" placeholder="Direccion" class="form-control form-control-sm" id="med_direccion" name="med_direccion" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_departamento">{{ __('Departamento') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-9">
+                                            <select class="custom-select custom-select-sm" id="med_departamento" name="med_departamento" >
+                                                <option value="" selected="" disabled>SELECCIONAR...</option>
+                                                @foreach ($departamentos as $departamento)
+                                                    <option value="{{ $departamento->id }}">{{ $departamento->nombre }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_municipio">{{ __('Municipio') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-9">
+                                            <select class="custom-select custom-select-sm" id="med_municipio" name="med_municipio" >
+                                                <option value="" selected="" disabled>SELECCIONAR...</option>
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-12 col-sm-12">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_email">{{ __('Email') }}:</label>
+                                        <div class="col-md-8">
+                                            <input type="text" placeholder="Correo electrónico" class="form-control form-control-sm" id="med_email" name="med_email" autocomplete="off" required>
+                                        </div>
+                                        <div class="col-md-1 ml-0 pl-0">
+                                            <div class="form-check" style="padding-top: 5px; margin-left: 10px;">
+                                                <input class="form-check-input" type="checkbox" id="generar_correo_med" name="generar_correo_med" title="Generar Correo"> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_usuario">{{ __('Usuario') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" placeholder="Usuario" class="form-control form-control-sm" id="med_usuario" name="med_usuario" autocomplete="off" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_password">{{ __('Contraseña') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" placeholder="Contraseña" class="form-control form-control-sm" id="med_password" name="med_password" autocomplete="off" readonly required>
+                                            <input type="hidden" value="1" class="form-control form-control-sm" id="med_estado" name="med_estado" autocomplete="off" readonly>
+                                            <input type="hidden" value="medico" class="form-control form-control-sm" id="med_rol" name="med_rol" autocomplete="off" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

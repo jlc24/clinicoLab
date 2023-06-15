@@ -34,7 +34,11 @@
                             <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_empresas" id="tabla_empresas">
                                 <thead style="text-align: center;">
                                     <tr class="table-info">
-                                        <th>#</th>
+                                        @if(Auth::user()->rol == 'admin')
+                                            <th>#</th>
+                                        @else
+                                            <th hidden>#</th>
+                                        @endif
                                         <th>{{ __('Codigo') }}</th>
                                         <th>{{ __('Nombre') }}</th>
                                         <th>{{ __('NIT') }}</th>
@@ -45,7 +49,11 @@
                                 <tbody>
                                     @foreach ($empresas as $empresa)
                                         <tr>
-                                            <td>{{ $empresa->id }}</td>
+                                            @if(Auth::user()->rol == 'admin')
+                                                <td>{{ $empresa->id }}</td>
+                                            @else
+                                                <td hidden>{{ $empresa->id }}</td>
+                                            @endif
                                             <td>{{ $empresa->emp_cod }}</td>
                                             <td>{{ $empresa->emp_nombre }}</td>
                                             <td>{{ $empresa->emp_nit }}</td>
@@ -54,11 +62,6 @@
                                                 <div class="btn-group" role="group" aria-label="Button group">
                                                     <a href="#" data-toggle="modal" data-target="#modal_actualizar_empresa_{{ $empresa->id }}" class="btn btn-sm btn-outline-warning" title="Editar Empresa"><i class="fas fa-user-edit"></i></a>
                                                     @include('empresa.modal.modal_actualizar_empresa')
-                                                    {{-- <a href="#" data-toggle="modal" data-target="#modal_ver_empresa_{{ $empresa->id }}" class="btn btn-sm btn-outline-info" title="Mostrar Informacion de la Empresa"><i class="fas fa-info-circle"></i></a> --}}
-                                                    {{-- @include('empresa.modal.modal_modificar_empresa') --}}
-                                                    {{-- <a href="javascript:void(0);" id="btnAddResultado" class="btn btn-sm btn-outline-danger" title="Generar Resultado"><i class="fas fa-shop"></i></a>
-                                                    <a href="javascript:void(0);" id="btnVerResultados" class="btn btn-sm btn-outline-success" title="Ver resultados"><i class="fas fa-eye"></i></a>
-                                                    <a href="javascript:void(0);" id="btnVerReporte" class="btn btn-sm btn-outline-secondary" title="ver Reporte"><i class="fas fa-file"></i></a> --}}
                                                 </div>
                                             </td>
                                         </tr>

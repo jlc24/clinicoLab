@@ -31,7 +31,7 @@
                         </div>
                         <div class="card-body" id="tabla_cliente">
                             <h3>{{ __('Lista de Permisos registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-sm table-bordered table-responsive-lg tabla-permisos" id="tabla-permisos">
+                            <table class="table table-sm table-bordered table-hover table-responsive-lg tabla-permisos" id="tabla-permisos">
                                 <thead style="text-align: center;">
                                     <tr>
                                         <th>#</th>
@@ -46,7 +46,7 @@
                                             <td>{{ $permiso->permiso }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group" aria-label="Button group">
-                                                    <button data-toggle="modal" data-target="#modal_actualizar_componente" class="btnEditarComponente btn btn-sm btn-outline-warning" title="Editar Componente"><i class="fas fa-user-edit"></i></button>
+                                                    <button data-toggle="modal" data-target="#modal_actualizar_permiso" class="btnEditarPermiso btn btn-sm btn-outline-warning" title="Editar Permiso"><i class="fas fa-user-edit"></i></button>
                                                     <button type="button" class="btn btn-sm btn-outline-danger btn-delete"><i class="fas fa-trash-alt"></i></button>
                                                 </div>
                                             </td>
@@ -62,6 +62,7 @@
     </section>
 
     @include('permiso.modal.modal_crear_permiso')
+    @include('permiso.modal.modal_actualizar_permiso')
 @endsection
 
 @section('funciones')

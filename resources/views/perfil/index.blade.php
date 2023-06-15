@@ -55,8 +55,77 @@
                 <div class="col-xl-7 col-sm-6">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Title</h5>
-                            <p class="card-text">Content</p>
+                            <h5 >Datos Personales</h5>
+                            <div class="row mt-4 justify-content-center">
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row">
+                                        <label for="config_nombre" class="col-form-label col-md-3">{{ __('Nombre') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" value="{{ $usuario->nombre }}" name="config_nombre" id="config_nombre" class="form-control form-control-sm" disabled>
+                                            <input type="hidden" value="{{ $usuario->id }}" name="config_id" id="config_id" class="form-control form-control-sm" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row">
+                                        <label for="config_nit" class="col-form-label col-md-3">C.I.:</label>
+                                        <div class="col-md-9">
+                                            <input type="number" value="{{ $usuario->user_ci }}" name="config_nit" id="config_nit" class="form-control form-control-sm" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row">
+                                        <label for="config_direccion" class="col-form-label col-md-3">{{ __('Dirección') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" value="{{ $usuario->user_dir }}" name="config_direccion" id="config_direccion" class="form-control form-control-sm" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row">
+                                        <label for="config_pais" class="col-form-label col-md-3">{{ __('País') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" value="" name="config_pais" id="config_pais" class="form-control form-control-sm" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 >{{ __('Datos de acceso') }}</h5>
+                            <div class="row justify-content-center">
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row">
+                                        <label for="config_nombre" class="col-form-label col-md-3">{{ __('Usuario') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" value="{{ $usuario->user_user }}" name="config_nombre" id="config_nombre" class="form-control form-control-sm" disabled>
+                                            <input type="hidden" value="{{ $usuario->id }}" name="config_id" id="config_id" class="form-control form-control-sm" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row">
+                                        <label for="config_nit" class="col-form-label col-md-3">{{ __('Email') }}:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" value="{{ $usuario->user_correo }}" name="config_nit" id="config_nit" class="form-control form-control-sm" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-11 col-sm-12">
+                                    <div class="form-group row">
+                                        <label for="config_direccion" class="col-form-label col-md-3">{{ __('Password') }}:</label>
+                                        <div class="col-md-8">
+                                            <input type="password" value="{{ $usuario->user_pass }}" name="config_direccion" id="config_direccion" class="form-control form-control-sm" disabled>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a href="#" class="btn btn-sm btn-info" title="Ver contraseña"><i class="fas fa-eye"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

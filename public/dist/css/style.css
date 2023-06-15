@@ -16,6 +16,16 @@ a:link, a:visited, a:active {
     font-family: Montserrat, Helvetica, sans-serif;
     color:#212121;
 }
+.ui-autocomplete {
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.ui-menu-item {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
 
 .dato_requerido {
     color: red; 
@@ -172,3 +182,40 @@ a:link, a:visited, a:active {
     text-transform: uppercase;
   }
   
+.table-descripcion {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial, sans-serif;
+    border: 3px solid white;
+}
+
+.table-descripcion thead {
+    background-color: #2AA6E5;
+    color: white;
+}
+
+.table-descripcion tbody tr:nth-of-type(odd) {
+    background-color: #E9F0FE;
+}
+
+.table-descripcion tbody tr:nth-of-type(even) {
+    background-color: #FFF;
+}
+
+.table-descripcion th,
+.table-descripcion td {
+    padding: 10px;
+    font-size: 15px;
+    border: 2px solid white;
+}
+
+.table-descripcion tfoot td:nth-child(-n+3) {
+    background-color: white;
+}
+
+.table-descripcion tfoot td:nth-last-child(-n+3) {
+    background-color: white;
+    background-color: #2AA6E5;
+    text-align: right;
+    color: white;
+}

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CajaController extends Controller
 {
@@ -20,9 +21,9 @@ class CajaController extends Controller
         if ($usuario->rol == 'admin') {
             $cajas = Caja::orderByDesc('created_at')->get();
         } elseif ($usuario->rol == 'usuario') {
-            $cajas = Caja::where('user_id', '=', $usuario->id)->orderBy('created_at')->get();
+            $cajas = Caja::where('user_id', '=', $usuario->id)->orderByDesc('created_at')->get();
         }
-        $totalFactura = Factura::whereDate('updated_at', Carbon::today())->sum('fac_total');
+        $totalFactura = Factura::where('user_id', '=', $usuario->id)->whereDate('updated_at', Carbon::today())->sum('fac_total');
         
         return view('caja.index', [ 
             'cajas' => $cajas,
@@ -68,9 +69,77 @@ class CajaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Caja $caja)
+    public function show($id)
     {
-        //
+        $caja = DB::table('cajas as c')
+                    ->join('users as u', 'c.user_id', '=', 'u.id')
+                    ->select('c.*', 'u.user', 'c.created_at')
+                    ->where('c.id', '=', $id)
+                    ->get();
+        $fecha_creacion = date('Y-m-d', strtotime($caja[0]->created_at));
+        $fecha_actual = date('Y-m-d');
+        if ($fecha_creacion === $fecha_actual) {
+            $totalFactura = Factura::where('user_id', '=', $caja[0]->user_id)->whereDate('updated_at', Carbon::today())->sum('fac_total');
+        }else  {
+            $totalFactura = Factura::where('user_id', '=', $caja[0]->user_id)->whereDate('updated_at', $fecha_creacion)->sum('fac_total');
+
+        }
+        $caja[0]->total_factura = $totalFactura;
+        return response()->json($caja);
+    }
+
+    public function getFacturasCaja($id)
+    {
+        $user = Auth::user();
+        $caja = Caja::find($id);
+        $fecha_creacion = date('Y-m-d', strtotime($caja->created_at));
+        $fecha_actual = date('Y-m-d');
+        if ($user->rol == 'admin') {
+            if ($fecha_creacion === $fecha_actual) {
+                $facturas = DB::table('facturas as f')
+                                ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
+                                ->join('cajas as c', 'r.caja_id', '=', 'c.id')
+                                ->select(DB::raw('DISTINCT f.id'), 'f.fac_pago', 
+                                DB::raw("DATE_FORMAT(f.updated_at, '%d-%m-%Y') as fecha"),
+                                DB::raw("DATE_FORMAT(f.updated_at, '%H:%i') as hora"), 'f.fac_total')
+                                ->where([['f.user_id', '=', $user->id], ['f.fac_estado', '=', '1'], ['c.id', '=', $id]])
+                                ->whereDate('f.updated_at', Carbon::today())
+                                ->get();
+            }else  {
+                $facturas = DB::table('facturas as f')
+                                ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
+                                ->join('cajas as c', 'r.caja_id', '=', 'c.id')
+                                ->select(DB::raw('DISTINCT f.id'), 'f.fac_pago', 
+                                DB::raw("DATE_FORMAT(f.updated_at, '%d-%m-%Y') as fecha"),
+                                DB::raw("DATE_FORMAT(f.updated_at, '%H:%i') as hora"), 'f.fac_total')
+                                ->where([['f.user_id', '=', $user->id], ['f.fac_estado', '=', '1'], ['c.id', '=', $id]])
+                                ->whereDate('f.updated_at', $fecha_creacion)
+                                ->get();
+            }
+        }else if ($user->rol == 'usuario' || $user->rol == 'medico') {
+            if ($fecha_creacion === $fecha_actual) {
+                $facturas = DB::table('facturas as f')
+                                ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
+                                ->join('cajas as c', 'r.caja_id', '=', 'c.id')
+                                ->select(DB::raw('DISTINCT f.id'), 'f.fac_pago', 
+                                DB::raw("DATE_FORMAT(f.updated_at, '%d-%m-%Y') as fecha"),
+                                DB::raw("DATE_FORMAT(f.updated_at, '%H:%i') as hora"), 'f.fac_total')
+                                ->where([['f.user_id', '=', $user->id], ['c.id', '=', $id], ['f.fac_estado', '=', '1']])
+                                ->whereDate('f.updated_at', Carbon::today())
+                                ->get();
+            }else  {
+                $facturas = DB::table('facturas as f')
+                                ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
+                                ->join('cajas as c', 'r.caja_id', '=', 'c.id')
+                                ->select(DB::raw('DISTINCT f.id'), 'f.fac_pago', 
+                                DB::raw("DATE_FORMAT(f.updated_at, '%d-%m-%Y') as fecha"),
+                                DB::raw("DATE_FORMAT(f.updated_at, '%H:%i') as hora"), 'f.fac_total')
+                                ->where([['f.user_id', '=', $user->id], ['c.id', '=', $id], ['f.fac_estado', '=', '1']])
+                                ->whereDate('f.updated_at', $fecha_creacion)
+                                ->get();
+            }
+        }
+        return response()->json($facturas);
     }
 
     /**
@@ -92,16 +161,14 @@ class CajaController extends Controller
             'caja_cambio' => 'required',
         ]);
 
-        $usuario = Auth::user();
-        $caja = Caja::where('id', '=', $id)->first();
+        $caja = Caja::find($id);
         $caja->update([
-            'user_id' => $usuario->id,
             'caja_monto_final' => $request->input('caja_monto_cierre'),
-            'caja_estado' => $request->input('caja_estado'),
+            'caja_estado' => 0,
             'caja_cambio' => $request->input('caja_cambio')
         ]);
 
-        return redirect()->route('caja')->with('success', 'Se cerró la caja con éxito');
+        
     }
 
     /**

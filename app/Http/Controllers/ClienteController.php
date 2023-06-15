@@ -37,6 +37,12 @@ class ClienteController extends Controller
         ]);
     }
 
+    public function countClientes()
+    {
+        $clientes = Cliente::count();
+        return response()->json($clientes);
+    }
+
     public function clientes($id)
     {
         $clientes = Cliente::where('id', $id)->get();

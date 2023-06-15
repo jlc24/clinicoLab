@@ -37,6 +37,7 @@ use App\Http\Controllers\ProcedimientoController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\RecepcionController;
 use App\Http\Controllers\RecipienteController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResultController;
 use App\Http\Controllers\UMedidaController;
 use App\Http\Controllers\UserController;
@@ -46,6 +47,7 @@ use App\Models\DetalleComponente;
 use App\Models\DetalleMaterial;
 use App\Models\DetalleProcedimiento;
 use App\Models\PermisoUser;
+use FontLib\Table\Type\name;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,7 +70,9 @@ Route::middleware(['auth'])->group(function () {
     
     Route::middleware('role:admin|usuario')->group(function () {
         Route::get('/home', [HomeController::class, 'index'])->name('home');
-        Route::get('/ejemplo', [HomeController::class, 'ejemplo'])->name('ejemplo');
+        //Route::get('/ejemplo', [HomeController::class, 'ejemplo'])->name('ejemplo');
+
+        Route::get('/estudiosRecepcionados', [HomeController::class, 'estudiosRecepcionados'])->name('estudiosRecepcionados')->middleware('ajax');
     
         Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil');
     
@@ -76,6 +80,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente.store');
         Route::get('/clientes/{id}', [ClienteController::class, 'show'])->name('cliente.show')->middleware('ajax');
         Route::post('/clientes/{id}', [ClienteController::class, 'update'])->name('cliente.update')->middleware('ajax');
+
+        Route::get('/countClientes', [ClienteController::class, 'countClientes'])->name('countClientes');
     
         //Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
         Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
@@ -88,11 +94,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/medicos', [MedicoController::class, 'index'])->name('medico');
         Route::post('/medicos', [MedicoController::class, 'store'])->name('medico.store');
         Route::post('/medicos/{id}', [MedicoController::class, 'update'])->name('medico.update');
+
+        Route::get('/countMedicos', [MedicoController::class, 'countMedicos'])->name('countMedicos');
     
         Route::get('/cajas', [CajaController::class, 'index'])->name('caja');
         Route::post('/cajas', [CajaController::class, 'store'])->name('caja');
-        Route::put('/cajas/{id}', [CajaController::class, 'update']);
+        Route::get('/cajas/{id}', [CajaController::class, 'show'])->name('caja.show');
+        Route::post('/cajas/{id}', [CajaController::class, 'update'])->name('caja.update');
     
+        Route::get('/getFacturasCaja/{id}', [CajaController::class, 'getFacturasCaja'])->name('getFacturasCaja');
         Route::get('/getCajaStatus', [CajaController::class, 'getCajaStatus'])->name('getCajaStatus');
         
         Route::middleware(['verificarEstadoCaja'])->group(function () {
@@ -270,6 +280,8 @@ Route::middleware(['auth'])->group(function () {
             
             Route::get('/permisos', [PermisoController::class, 'index'])->name('permiso');
             Route::post('/permisos', [PermisoController::class, 'store'])->name('permiso.store');
+            Route::get('/permisos/{id}', [PermisoController::class, 'edit'])->name('permiso.edit');
+            Route::post('/permisos/{id}', [PermisoController::class, 'update'])->name('permiso.update');
             
             Route::get('/getPermisosUser/{id}', [PermisoUserController::class, 'getPermisosUser'])->name('getPermisosUser')->middleware('ajax');
             Route::post('/updatePermiso/{id}', [PermisoUserController::class, 'updatePermiso'])->name('updatePermiso')->middleware('ajax');
@@ -288,6 +300,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/historyView', [HistoryController::class, 'historyViewRecepcion'])->name('historyViewRecepcion');
         Route::get('/historyRecepcion', [HistoryController::class, 'historyRecepcion']);
+
+        Route::get('/reportes/cajas', [ReportController::class, 'reporteCaja'])->name('reporte.caja');
+        Route::get('/reportes/estudios', [ReportController::class, 'reporteEstudio'])->name('reporte.estudio');
     });
     
     Route::middleware('role:cliente')->group(function () {

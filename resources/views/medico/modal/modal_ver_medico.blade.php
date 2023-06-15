@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header" style="background-color: #31D2F2; color: #fff">
                 <h1 class="modal-title fs-5" id="modal_ver_medico_{{ $medico->id }}Label"><strong>{{ __('Datos del Médico') }}</strong></h1>
-                <button type="button" id="btnCloseUpClient" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                <button type="button" id="btnCloseShowMedico" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row justify-content-center">
