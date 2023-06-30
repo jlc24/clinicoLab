@@ -62,7 +62,7 @@
                                                     <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
                                                 </div>
                                                 <input type="hidden" name="rec_paciente_id" id="rec_paciente_id">
-                                                <input type="text" placeholder="Clave Paciente" id="rec_paciente_clave" name="rec_paciente_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                                <input type="text" placeholder="Clave" id="rec_paciente_clave" name="rec_paciente_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                             </div>
                                         </div>
                                     </div>
@@ -92,7 +92,7 @@
                                                     <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px;"><i class="fas fa-keyboard"></i></div>
                                                 </div>
                                                 <input type="hidden" name="rec_estudio_id" id="rec_estudio_id">
-                                                <input type="text" placeholder="Clave Estudio" id="rec_estudio_clave" name="rec_estudio_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                                <input type="text" placeholder="Clave" id="rec_estudio_clave" name="rec_estudio_clave" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px; " onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                             </div>
                                         </div>
                                     </div>
@@ -192,6 +192,7 @@
     @include('resultado.modal.modal_resultados')
     @include('resultado.modal.modal_ver_parametro')
     @include('cliente.modal.modal_ver_resultadopdf')
+    @include('confirmacion.modal_confirmacion')
 @endsection
 
 @section('funciones')

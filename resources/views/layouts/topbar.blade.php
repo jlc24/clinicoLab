@@ -6,7 +6,7 @@
     </ul>
     <ul class="navbar-nav ml-auto">
         @if(Auth::user()->rol == 'admin' || Auth::user()->rol == 'usuario')
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" hidden>
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="fas fa-bell fa-2x" style="color: #fff"></i>
                     <span class="badge badge-warning navbar-badge">15</span>

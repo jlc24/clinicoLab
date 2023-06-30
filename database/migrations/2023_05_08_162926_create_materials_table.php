@@ -20,9 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('umed_id')->nullable();
             $table->unsignedBigInteger('mat_cantidad')->nullable();
             $table->unsignedBigInteger('mat_cantidad_minima')->nullable();
-            $table->decimal('mat_precio_compra')->nullable();
-            $table->decimal('mat_precio_unitario')->nullable();
-            $table->unsignedBigInteger('mat_ventas')->nullable();
+            $table->unsignedDecimal('mat_precio_compra')->nullable();
+            $table->unsignedDecimal('mat_precio_unitario')->nullable();
+            $table->unsignedDecimal('mat_ventas')->nullable();
             $table->unsignedBigInteger('mat_estado')->nullable();
             $table->unsignedBigInteger('cat_id')->nullable();
             $table->unsignedBigInteger('comp_id')->nullable();

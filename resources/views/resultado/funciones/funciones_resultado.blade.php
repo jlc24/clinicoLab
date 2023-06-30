@@ -153,7 +153,7 @@
                                         '<td style="border: 1px solid #C6C8CA;">' + value.fecha + '</td>'+
                                         '<td style="border: 1px solid #C6C8CA;">' + value.estudio + '</td>'+
                                         '<td style="border: 1px solid #C6C8CA;">' + value.codigo + '</td>'+
-                                        '<td style="border: 1px solid #C6C8CA;"><a href="javascript:void(0)" class="' + (value.estado == 'PENDIENTE' ? 'badge badge-danger btn-res-pendiente' : 'badge badge-success btn-res-success') + '">' + value.estado + '</a></td>';
+                                        '<td style="border: 1px solid #C6C8CA;">' + (value.estado == 'PENDIENTE' ? '<a href="javascript:void(0)" data-toggle="modal" data-target="#confirmPassword" class="badge badge-danger btn-res-pendiente">' + value.estado + '</a>' : '<span class="badge badge-success">' + value.estado + '</span>') + '</td>';
                             if (value.estado == 'PENDIENTE') {
                                 html += '<td style="border: 1px solid #C6C8CA;">'+
                                             '<div class="btn-group" role="group" aria-label="Button group">'+
@@ -163,7 +163,6 @@
                             }else{
                                 html += '<td style="border: 1px solid #C6C8CA;">'+
                                             '<div class="btn-group" role="group" aria-label="Button group">'+
-                                                '<a href="#" data-toggle="modal" data-target="#modal_resultados" class="btn btn-sm btn-outline-warning btn-resultado" title="Editar resultado"><i class="fas fa-edit"></i></a>'+
                                                 '<button data-toggle="modal" data-target="#exampleModal" class="btn btn-sm btn-outline-info btn-imprimir-resultados" title="Imprimir resultado" target="_blank" rel="noopener noreferrer"><i class="fas fa-print"></i></button>'+
                                             '</div>'+
                                         '</td>';
@@ -604,19 +603,132 @@
             });
         }
 
-        $(document).on('click', '.btn-res-pendiente', function() {
-            var rec_id = $(this).closest('tr').find('td:eq(0)').text();
-            var datos = new FormData();
-            datos.append('res_estado', 'RESULTADO');
-            updateEstadoRecepcion(rec_id, datos);
+        $('#confirmPassword').on('shown.bs.modal', function () {
+            $('#password').trigger('focus');
         });
 
-        $(document).on('click', '.btn-res-success', function() {
-            var rec_id = $(this).closest('tr').find('td:eq(0)').text();
-            var datos = new FormData();
-            datos.append('res_estado', 'PENDIENTE');
-            updateEstadoRecepcion(rec_id, datos);
+        $("#btnCloseConfirmPass").on('click', function() {
+            $("#form_comfirmar_pass").trigger("reset");
         });
+
+        $('#form_comfirmar_pass').on('submit', function(e) {
+            e.preventDefault(); // evita el comportamiento predeterminado del formulario
+            Swal.fire({
+                title: '¿Esta seguro que los resultados del estudio ya se encuentran registrados?',
+                text: 'Si cambia el estado de la recepcion ya NO podra registrar los resultados del estudio.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#4CAF50',
+                cancelButtonColor: '#D33',
+                confirmButtonText: 'Si, Habilitar',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if ($("#password").val().length >= 8) {
+                        $.ajax({
+                            type: 'POST',
+                            url: $(this).attr('action'),
+                            data: $(this).serialize(),
+                            success: function(response) {
+                                
+                                if (response.success) {
+                                    Swal.fire({
+                                        title: 'Contraseña verificada!!!',
+                                        text: 'La contraseña coincide con la registrada',
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        //allowOutsideClick: false,
+                                        timer: 2000
+                                    });
+                                    setTimeout(function() {
+                                        mostrarCargando();
+                                        var rec_id = $('.rec_id').val();
+                                        var datos = new FormData();
+                                        datos.append('res_estado', 'RESULTADO'); 
+                                        updateEstadoRecepcion(rec_id, datos);
+                                        
+                                    }, 2000);
+                                } else {
+                                    const maxIntentos = parseInt(response.maxIntentos);
+                                    let errorMessage = response.message;
+                                    if (maxIntentos < 3) {
+                                        errorMessage += ` Te quedan ${3 - maxIntentos} intentos.`;
+                                        Swal.fire({
+                                            title: 'Oops...!!!',
+                                            html: `${errorMessage}`,
+                                            icon: 'error',
+                                            showConfirmButton: false,
+                                            allowOutsideClick: false,
+                                            timer: 2000
+                                        });
+                                        $("#password").focus();
+                                        $("#password").val("");
+                                    } else {
+                                        errorMessage += ` Espere 60 segundos antes de volver a intentarlo.`
+                                        let countdown = 60;
+                                        const intervalId  = setInterval(() => {
+                                            countdown--;
+                                            const timerEl = Swal.getHtmlContainer().querySelector('#timer');
+                                            if (timerEl) {
+                                                timerEl.textContent = countdown;
+                                            }
+                                            if (countdown <= 0) {
+                                                clearInterval(intervalId);
+                                                Swal.close();
+                                                $("#password").focus();
+                                                $("#password").val("");
+                                            }
+                                        }, 1000); 
+                                        // Desactivar los botones de confirmación para prevenir intentos adicionales durante el tiempo de espera
+                                        Swal.fire({
+                                            title: 'Oops...!!!',
+                                            html: `${errorMessage}<br/><span id="timer">60</span> segundos restantes.`,
+                                            icon: 'error',
+                                            showConfirmButton: false,
+                                            allowOutsideClick: false
+                                        });
+                                        Swal.disableButtons();
+                                    }
+                                }
+                            },
+                            error: function (xhr, textStatus, errorThrown) {
+                                console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                                Swal.fire({
+                                    title: 'Oops...',
+                                    text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                                    icon: 'error',
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                });
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'La longitud de la contraseña debe ser mínimo de 8 dígitos.',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        $("#password").focus();
+                        $("#password").val("");
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-res-pendiente', function() {
+            
+            var rec_id = $(this).closest('tr').find('td:eq(0)').text();
+            $(".rec_id").val(rec_id);
+        });
+
+        // $(document).on('click', '.btn-res-success', function() {
+        //     var rec_id = $(this).closest('tr').find('td:eq(0)').text();
+        //     var datos = new FormData();
+        //     datos.append('res_estado', 'PENDIENTE');
+        //     updateEstadoRecepcion(rec_id, datos);
+        // });
 
         $(document).on('click', '.btnClosePdfGenerate', function() {
             var pdfFrame = document.querySelector('.pdfFrame');

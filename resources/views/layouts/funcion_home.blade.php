@@ -61,15 +61,15 @@
         type:'GET',
         dataType: 'json',
         success :function(data){
-            console.log(data);
+            // console.log(data);
             var estCodArray = []; //crear arreglo vacio para almacenar est_cod
             var cantidadArray = []; //crear arreglo vacio para almacenar cantidad
             data.forEach(function(item) {
                 estCodArray.push(item.est_cod); //agregar est_cod al arreglo estCodArray
                 cantidadArray.push(item.cantidad); //agregar cantidad al arreglo cantidadArray
             });
-            console.log(estCodArray);
-            console.log(cantidadArray);
+            // console.log(estCodArray);
+            // console.log(cantidadArray);
 
             var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
         

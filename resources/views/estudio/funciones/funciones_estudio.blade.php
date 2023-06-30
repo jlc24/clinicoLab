@@ -1242,6 +1242,7 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
+                    console.log(data);
                     if (data.length != 0) {
                         $('.tabla_material_estudio tbody').empty();
                         $.each(data, function(index, value) {
