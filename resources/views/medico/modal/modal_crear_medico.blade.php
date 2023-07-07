@@ -29,13 +29,19 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#step-2">
-                                <span class="num">2</span>
-                                {{ __('DATOS DE CONTACTO') }}
+                                <div class="num">2</div>
+                                {{ __('DATOS PERSONALES (Cont.)') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#step-3">
                                 <span class="num">3</span>
+                                {{ __('DATOS DE CONTACTO') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#step-4">
+                                <span class="num">4</span>
                                 {{ __('DATOS DE USUARIO') }}
                             </a>
                         </li>
@@ -76,11 +82,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label" for="med_ci_nit">C.I.:<span class="dato_requerido">*</span></label>
+                                        <label class="col-md-3 col-form-label" for="med_ci_nit">C.I.:</label>
                                         <div class="col-md-4">
                                             <input type="number" min="0" id="med_ci_nit" name="med_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onkeyup="PasswordMed()" required>
                                         </div>
-                                        <label class="col-md-1 col-form-label ml-0 pl-0" for="med_ci_nit_exp">Exp.:<span class="dato_requerido">*</span></label>
+                                        <label class="col-md-1 col-form-label ml-0 pl-0" for="med_ci_nit_exp">Exp.:</label>
                                         <div class="col-md-4">
                                             <select class="custom-select custom-select-sm" id="med_ci_nit_exp" name="med_ci_nit_exp" required>
                                                 <option value="" selected="" disabled>SELECCIONAR...</option>
@@ -91,7 +97,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label" for="med_especialidad">{{ __('Especialidad') }}:<span class="dato_requerido">*</span></label>
+                                        <label class="col-md-3 col-form-label" for="med_especialidad">{{ __('Especialidad') }}:</label>
                                         <div class="col-md-9">
                                             <input type="text" placeholder="Especialidad" id="med_especialidad" name="med_especialidad" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                         </div>
@@ -103,6 +109,49 @@
                             <div class="row justify-content-center">
                                 <div class="col-xl-12 col-sm-12">
                                     <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_convenio">{{ __('Convenio') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-7">
+                                            <input type="number" min="0" step="1" id="med_convenio" name="med_convenio" class="form-control form-control-sm" autocomplete="off" required>
+                                        </div>
+                                        <label class="col-md-1 col-form-label" for="">%</label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_banco">{{ __('Banco') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-9">
+                                            {{-- <input type="number" min="0" id="med_banco" name="med_banco" class="form-control form-control-sm" autocomplete="off" required> --}}
+                                            <select id="med_banco" class="custom-select custom-select-sm med_banco" name="med_banco">
+                                                <option value="" selected disabled>Seleccionar...</option>
+                                                @foreach ($bancos as $banco)
+                                                    <option value="{{ $banco->nombre }}">{{ $banco->nombre }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_cuenta">{{ __('Nº Cuenta') }}:<span class="dato_requerido">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="number" min="0" id="med_cuenta" name="med_cuenta" class="form-control form-control-sm" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 col-form-label" for="med_qr">{{ __('QR') }}:</label>
+                                        <div class="col-md-9" style="display: inline-flex;">
+                                            <input type="file" name="med_qr" id="med_qr" accept=".jpge,.jpg,image/png" class="form-control form-control-sm form-control-file med_qr" onchange="VerImagen('med_qr', 'img_material')">
+                                        </div>
+                                        <div class="col-md-12 text-center">
+                                            <small><span style="color: red;" id="error_med_nombre">(Tamaño máximo aprox. 2mb)</span></small>
+                                        </div>
+                                        <div class="col-md-12 text-center mt-2">
+                                            <img src="{{ asset('dist/img/default.png') }}" id="img_material" class="img_material" width="80px" style="border: 2px solid rgb(146, 144, 144); border-radius: 10px; box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-12 col-sm-12">
+                                    <div class="form-group row">
                                         <label class="col-md-3 col-form-label" for="med_celular">{{ __('Celular') }}:<span class="dato_requerido">*</span></label>
                                         <div class="col-md-9">
                                             <input type="number" min="0" id="med_celular" name="med_celular" class="form-control form-control-sm" autocomplete="off" placeholder="Celular" required>
@@ -110,13 +159,13 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label" for="med_direccion">{{ __('Dirección') }}:<span class="dato_requerido">*</span></label>
+                                        <label class="col-md-3 col-form-label" for="med_direccion">{{ __('Dirección') }}:</label>
                                         <div class="col-md-9">
                                             <input type="text" placeholder="Direccion" class="form-control form-control-sm" id="med_direccion" name="med_direccion" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label" for="med_departamento">{{ __('Departamento') }}:<span class="dato_requerido">*</span></label>
+                                        <label class="col-md-3 col-form-label" for="med_departamento">{{ __('Departamento') }}:</label>
                                         <div class="col-md-9">
                                             <select class="custom-select custom-select-sm" id="med_departamento" name="med_departamento" >
                                                 <option value="" selected="" disabled>SELECCIONAR...</option>
@@ -127,7 +176,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 col-form-label" for="med_municipio">{{ __('Municipio') }}:<span class="dato_requerido">*</span></label>
+                                        <label class="col-md-3 col-form-label" for="med_municipio">{{ __('Municipio') }}:</label>
                                         <div class="col-md-9">
                                             <select class="custom-select custom-select-sm" id="med_municipio" name="med_municipio" >
                                                 <option value="" selected="" disabled>SELECCIONAR...</option>
@@ -138,7 +187,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                        <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
                             <div class="row justify-content-center">
                                 <div class="col-xl-12 col-sm-12">
                                     <div class="form-group row">

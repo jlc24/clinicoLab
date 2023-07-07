@@ -68,11 +68,11 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="cli_ci_nit">C.I.:<span class="dato_requerido">*</span></label>
+                                            <label class="col-md-3 col-form-label" for="cli_ci_nit">C.I.:</label>
                                             <div class="col-md-4">
                                                 <input type="number" min="0" id="cli_ci_nit" name="cli_ci_nit" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I." onkeyup="Password()" required>
                                             </div>
-                                            <label class="col-md-1 col-form-label ml-0 pl-0" for="cli_ci_nit_exp">Exp.:<span class="dato_requerido">*</span></label>
+                                            <label class="col-md-1 col-form-label ml-0 pl-0" for="cli_ci_nit_exp">Exp.:</label>
                                             <div class="col-md-4">
                                                 <select class="custom-select custom-select-sm" id="cli_ci_nit_exp" name="cli_ci_nit_exp" required>
                                                     <option value="" selected="" disabled>SELECCIONAR...</option>
@@ -117,13 +117,13 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="cli_direccion">{{ __('Dirección') }}:<span class="dato_requerido">*</span></label>
+                                            <label class="col-md-3 col-form-label" for="cli_direccion">{{ __('Dirección') }}:</label>
                                             <div class="col-md-9">
                                                 <input type="text" placeholder="Direccion" class="form-control form-control-sm" id="cli_direccion" name="cli_direccion" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="cli_departamento">{{ __('Departamento') }}:<span class="dato_requerido">*</span></label>
+                                            <label class="col-md-3 col-form-label" for="cli_departamento">{{ __('Departamento') }}:</label>
                                             <div class="col-md-9">
                                                 <select class="custom-select custom-select-sm" id="cli_departamento" name="cli_departamento" >
                                                     <option value="" selected="" disabled>SELECCIONAR...</option>
@@ -134,7 +134,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 col-form-label" for="cli_municipio">{{ __('Municipio') }}:<span class="dato_requerido">*</span></label>
+                                            <label class="col-md-3 col-form-label" for="cli_municipio">{{ __('Municipio') }}:</label>
                                             <div class="col-md-9">
                                                 <select class="custom-select custom-select-sm" id="cli_municipio" name="cli_municipio" >
                                                     <option value="" selected="" disabled>SELECCIONAR...</option>
@@ -173,15 +173,19 @@
                                                 <input type="hidden" value="cliente" class="form-control form-control-sm" id="cli_rol" name="cli_rol" autocomplete="off" readonly>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
+                                        <div class="form-group row" hidden>
                                             <label class="col-md-3 col-form-label" for="cli_medico">{{ __('Medico') }}:</label>
-                                            <div class="col-md-9">
+                                            <div class="col-md-6">
                                                 <select class="custom-select custom-select-sm" id="cli_medico" name="cli_medico" >
                                                     <option value="" selected="">SELECCIONAR...</option>
-                                                    @foreach ($medicos as $medico)
-                                                        <option value="{{ $medico->id }}">{{ $medico->med_nombre }} {{ $medico->med_apellido_pat }} {{ $medico->med_apellido_mat }}</option>
-                                                    @endforeach
+                                                    
                                                 </select>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button class="btn btn-sm btn-outline-success btnMedicosReferesh" title="Actualizar Medicos"><i class="fas fa-refresh"></i></button>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button data-toggle="modal" data-target="#modal_crear_medico" class="btn btn-sm btn-outline-info btnAddMedico"><i class="fas fa-user-doctor">+</i></button>
                                             </div>
                                         </div>
                                     </div>

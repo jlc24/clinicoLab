@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('cli_nombre', 20);
             $table->string('cli_apellido_pat', 20);
             $table->string('cli_apellido_mat', 20)->nullable();
-            $table->string('cli_ci_nit', 10);
-            $table->string('cli_exp_ci', 10);
+            $table->string('cli_ci_nit', 10)->nullable();
+            $table->string('cli_exp_ci', 10)->nullable();
             $table->date('cli_fec_nac');
             $table->string('cli_genero', 10);
             $table->string('cli_correo', 255)->nullable();
@@ -27,8 +27,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('cli_usuario', 10);
             $table->string('cli_password', 255);
-            $table->unsignedBigInteger('dep_id');
-            $table->unsignedBigInteger('mun_id');
+            $table->unsignedBigInteger('dep_id')->nullable();
+            $table->unsignedBigInteger('mun_id')->nullable();
             $table->unsignedBigInteger('emp_id')->nullable();
             $table->unsignedBigInteger('med_id')->nullable();
             $table->timestamps();

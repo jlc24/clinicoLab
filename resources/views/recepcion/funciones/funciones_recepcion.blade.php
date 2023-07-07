@@ -346,6 +346,7 @@
             datos.append("caja_id", $("#rec_caja").val());
             datos.append("fac_id", $("#rec_factura").val());
             datos.append("det_id", $("#rec_est_id").val());
+            datos.append('med_id', $("#rec_medico_id").val());
             datos.append("estado", $("#rec_estado").val());
             
             $.ajax({
@@ -432,7 +433,7 @@
                         }
                     });
                 }
-            })
+            });
         });
         $("#checkMedico").on('change', function () {
             if (this.checked) {
@@ -448,7 +449,22 @@
                 $("#rec_medico_add").css({"pointer-events": "none", "opacity": "0.5"});
                 $("#rec_especialidad").val("");
             }
-        })
+        });
+
+        $(document).on('click', '#rec_medico_add', function() {
+            $.ajax({
+                url: '{{ route("countMedicos") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    $("#med_cod").val('MED' + (data+1));
+                    $("#med_estado").val("1");
+                    $("#med_rol").val("medico");
+                }
+            });
+        });
+
         $("#checkEmpresa").on('change', function () {
             if (this.checked) {
                 $("#rec_empresa_clave").prop("disabled", false);
@@ -462,7 +478,7 @@
                 $("#rec_empresa_nombre").val("");
                 $("#rec_empresa_add").css({"pointer-events": "none", "opacity": "0.5"});
             }
-        })
+        });
 
         $('#modal_crear_factura').on('shown.bs.modal', function () {
             $('#fac_importe').trigger('focus');

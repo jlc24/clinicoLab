@@ -62,8 +62,8 @@
                                             <td>{{ $medico->med_celular }}</td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group" aria-label="Button group">
-                                                    <button data-toggle="modal" data-target="#modal_actualizar_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-warning" ><i class="fas fa-user-edit"></i></button>
-                                                    <button data-toggle="modal" data-target="#modal_ver_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-info"><i class="fas fa-info-circle"></i></button>
+                                                    <button data-toggle="modal" data-target="#modal_actualizar_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-warning btnUpdateMedico" ><i class="fas fa-user-edit"></i></button>
+                                                    <button data-toggle="modal" data-target="#modal_ver_medico_{{ $medico->id }}" class="btn btn-sm btn-outline-info btnShowMedico"><i class="fas fa-info-circle"></i></button>
                                                     @if(Auth::user()->rol == 'admin')
                                                         <button data-toggle="modal" data-target="#modal_asginar_permiso" class="btn btn-sm btn-outline-success btnPermisoMedico" title="Asignar permisos"><i class="fas fa-cog"></i></button>
                                                     @endif
@@ -85,6 +85,8 @@
     @if(Auth::user()->rol == 'admin')
         @include('permiso.modal.modal_asignar_permisos')
     @endif
+    @include('medico.modal.modal_qr')
+    @include('medico.modal.modal_qr_show')
 @endsection
 
 @section('funciones')

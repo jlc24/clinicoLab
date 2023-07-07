@@ -1,5 +1,6 @@
 <script src="{{ asset('dist/js/libs/wizard/jquery.smartWizard.min.js') }}"></script>
 <script src="{{ asset('dist/js/libs/wizard/conf_smart_wizard.js') }}"></script>
+@include('medico.funciones.funciones_medico')
 <script type="text/javascript">
 $(document).ready(function() {
     $('#smartwizard_crear_client').smartWizard();
@@ -66,7 +67,7 @@ $(document).ready(function() {
             const nombre = $("#cli_nombre").val().substring(0, 2).toLowerCase();
             const ap_pat = $("#cli_apellido_pat").val().substring(0, 2).toLowerCase();
             const ap_mat = $("#cli_apellido_mat").val().substring(0, 2).toLowerCase();
-            const ci = extraercaracteres(4);
+            const ci = Math.floor(Math.random() * 8999) + 1000;
             const correo = `${nombre}${ap_pat}${ci}.${ap_mat}@gmail.com`;
             $("#cli_email").val(correo);
         } else {
@@ -97,6 +98,25 @@ $(document).ready(function() {
         $("#generar_correo_cli").prop('checked', false);
         $("#cli_email").prop('readonly', false);
     }
+    
+    function getMedicos() {
+        mostrarCargando();
+        $.ajax({
+            url: '{{ route("getMedicos") }}',
+            method:'GET',
+            dataType: 'json',
+            success: function(data) {
+                if (data.length !== 0) {
+                    $("#cli_medico").empty();
+                    $.each(data, function(index, medico) {
+                        var option = $("<option>").val(medico.id).text(medico.med_nombre + " " + medico.med_apellido_pat + " " + medico.med_apellido_mat);
+                        $("#cli_medico").append(option);
+                    });
+                    cerrarCargando();
+                }
+            }
+        });
+    }
 
     $(document).on('click', '.btnAddPaciente', function() {
         $.ajax({
@@ -104,20 +124,39 @@ $(document).ready(function() {
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                console.log(data);
                 $("#cli_cod").val('PA'+ (data+1));
                 $("#cli_estado").val("1");
                 $("#cli_rol").val("cliente");
             }
         });
-    })
+        getMedicos();
+    });
+
+    $(document).on('click', '.btnMedicosReferesh', function() {
+        getMedicos();
+    });
 
     $(document).on('click', '.btnRegisterClient', function() {
-        if ($("#cli_cod").val() == "" || $("#cli_nombre").val() == "" || $("#cli_apellido_pat").val() == "" || $("#cli_apellido_mat").val() == "" || $("#cli_ci_nit").val() == "" || $("#cli_ci_nit_exp").val() == "" || $("#cli_fec_nac").val() == "" || $("#cli_genero").val() == "" || $("#cli_email").val() == "" || $("#cli_direccion").val() == "" || $("#cli_celular").val() == "" || $("#cli_usuario").val() == "" || $("#cli_password").val() == "" || $("#cli_departamento").val() == "" || $("#cli_municipio").val() == "" || $("#cli_estado").val() == "" || $("#cli_rol").val() == "" ) {
-            console.log($("#cli_cod").val());
+        if ($("#cli_cod").val() == "" || $("#cli_nombre").val() == "" || $("#cli_apellido_pat").val() == "" || $("#cli_fec_nac").val() == "" || $("#cli_genero").val() == "" || $("#cli_genero").val() == null || $("#cli_email").val() == "" || $("#cli_celular").val() == "" || $("#cli_usuario").val() == "" || $("#cli_password").val() == "" || $("#cli_estado").val() == "" || $("#cli_rol").val() == "" ) {
+            var campovacio ="";
+            if ($("#cli_cod").val() == "") {
+                campovacio = "Codigo";
+            }else if ($("#cli_nombre").val() == "") {
+                campovacio = "Nombre";
+            }else if ($("#cli_apellido_pat").val() == "") {
+                campovacio = "Apellidos";
+            }else if ($("#cli_fec_nac").val() == "") {
+                campovacio = "Fecha de Nacimiento";
+            }else if ($("#cli_genero").val() == "" || $("#cli_genero").val() == null) {
+                campovacio = "Genero";
+            }else if ($("#cli_email").val() == "") {
+                campoVacio = "Correo";
+            }else if ($("#cli_celular").val() == "") {
+                campovacio = "Celular";
+            }
             Swal.fire({
                 title: 'Error!',
-                text: 'Algunos campos son requeridos',
+                text: 'El campo ' + campovacio + ' es requerido',
                 icon: 'error',
                 showConfirmButton: false,
                 timer: 2000
@@ -128,13 +167,16 @@ $(document).ready(function() {
             }else {
                 cli_medico = $("#cli_medico").val();
             }
+            var cli_ci_exp = $("#cli_ci_nit_exp").val() == null ? '' : $("#cli_ci_nit_exp").val();
+            var cli_dep = $("#cli_departamento").val() == null ? '' : $("#cli_departamento").val();
+            var cli_mun = $("#cli_municipio").val() == null ? '' : $("#cli_municipio").val();
             var datos = new FormData();
             datos.append('cli_cod', $("#cli_cod").val());
             datos.append('cli_nombre', $("#cli_nombre").val());
             datos.append('cli_apellido_pat', $("#cli_apellido_pat").val());
             datos.append('cli_apellido_mat', $("#cli_apellido_mat").val());
             datos.append('cli_ci_nit', $("#cli_ci_nit").val());
-            datos.append('cli_ci_nit_exp', $("#cli_ci_nit_exp").val());
+            datos.append('cli_ci_nit_exp', cli_ci_exp);
             datos.append('cli_fec_nac', $("#cli_fec_nac").val());
             datos.append('cli_genero', $("#cli_genero").val());
             datos.append('cli_email', $("#cli_email").val());
@@ -142,8 +184,8 @@ $(document).ready(function() {
             datos.append('cli_celular', $("#cli_celular").val());
             datos.append('cli_usuario', $("#cli_usuario").val());
             datos.append('cli_password', $("#cli_password").val());
-            datos.append('cli_departamento', $("#cli_departamento").val());
-            datos.append('cli_municipio', $("#cli_municipio").val());
+            datos.append('cli_departamento', cli_dep);
+            datos.append('cli_municipio', cli_mun);
             datos.append('cli_estado', $("#cli_estado").val());
             datos.append('cli_rol', $("#cli_rol").val());
             datos.append('med_id', cli_medico);
@@ -222,8 +264,8 @@ $(document).ready(function() {
                     $(".cli_mun").text(data[0].mun);
                     $(".cli_num_celular").text(data[0].cli_celular);
                     $(".cli_celular").attr('href', 'https://api.whatsapp.com/send?phone=591'+data[0].cli_celular);
-                    cerrarCargando();
                 }
+                cerrarCargando();
             }
         });
     }
@@ -534,7 +576,7 @@ function Password() {
     const nombre = $("#cli_nombre").val().substring(0, 1);
     const ap = $("#cli_apellido_pat").val().substring(0, 1);
     const am = $("#cli_apellido_mat").val().substring(0, 1);
-    const ci = $("#cli_ci_nit").val();
+    const ci = Math.floor(Math.random() * 899999) + 100000;
     const caracter = generateRandomString(3);
     const randomNum1 = Math.floor(Math.random() * 899) + 100;
     const outputStr = `${nombre}${ap}${am}.${ci}-${caracter}`;
@@ -586,7 +628,7 @@ function PasswordUp() {
     const nombre = $("#cli_nombre_update").val().substring(0, 1);
     const ap = $("#cli_apellido_pat_update").val().substring(0, 1);
     const am = $("#cli_apellido_mat_update").val().substring(0, 1);
-    const ci = $("#cli_ci_nit_update").val();
+    const ci = Math.floor(Math.random() * 899999) + 100000;
     const caracter = generateRandomString(3);
     const randomNum1 = Math.floor(Math.random() * 899) + 100;
     const newpass = `${nombre}${ap}${am}.${ci}-${caracter}`;

@@ -20,6 +20,10 @@ a:link, a:visited, a:active {
     max-height: 250px;
     overflow-y: auto;
     overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 99999999;
 }
 .ui-menu-item {
     display: block !important;

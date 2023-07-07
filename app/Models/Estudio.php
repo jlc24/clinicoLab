@@ -13,6 +13,8 @@ class Estudio extends Model
         'est_cod',
         'est_nombre',
         'est_descripcion',
+        'grupo_id',
+        'subgrupo_id',
         'est_precio',
         'umed_id',
         'est_moneda'

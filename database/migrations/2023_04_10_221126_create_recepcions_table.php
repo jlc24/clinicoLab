@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('caja_id');
             $table->unsignedBigInteger('fac_id');
             $table->unsignedBigInteger('det_id');
+            $table->unsignedBigInteger('med_id')->nullable();
             $table->string('estado', 15)->define('Pendiente');
             $table->string('rec_ruta_file', 255)->nullable();
             $table->timestamps();

@@ -25,7 +25,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="est_cod_update">{{ __('Clave') }}:</label>
+                                <label class="col-md-4 col-form-label" for="est_cod_update">{{ __('Clave') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-5" style="display: inline-flex;">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px; height: 31px;"><i class="fas fa-key"></i></div>
@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-xl-12 col-sm-12" >
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="est_nombre_update">{{ __('Nombre Estudio') }}: </label>
+                                <label class="col-md-4 col-form-label" for="est_nombre_update">{{ __('Nombre Estudio') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-8">
                                     <input type="text" value="{{ $detalle->estudio->est_nombre }}" id="est_nombre_update" name="est_nombre_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
                                 </div>
@@ -54,6 +54,40 @@
                                 <label class="col-md-4 col-form-label" for="est_descripcion_update">{{ __('Descripcion') }}:</label>
                                 <div class="col-md-8">
                                     <textarea class="form-control form-control-sm" name="est_descripcion_update" id="est_descripcion_update" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); ">{{ $detalle->estudio->est_descripcion }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-sm-12">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="est_grupos_update">{{ __('Grupo') }}:<span class="dato_requerido">*</span></label>
+                                <div class="col-md-8">
+                                    <select class="custom-select custom-select-sm" id="est_grupos_update" name="est_grupos_update" required>
+                                        <option value="" selected="" disabled>SELECCIONAR...</option>
+                                        @foreach ($grupos as $grupo)
+                                            <option value="{{ $grupo->id }}"
+                                                @if($grupo->id == $detalle->estudio->grupo_id)
+                                                    {{ 'selected' }}
+                                                @endif
+                                                >{{ $grupo->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-sm-12">
+                            <div class="form-group row">
+                                <label class="col-md-4 col-form-label" for="est_subgrupos_update">{{ __('Sub - Grupo') }}:</label>
+                                <div class="col-md-8">
+                                    <select class="custom-select custom-select-sm" id="est_subgrupos_update" name="est_subgrupos_update">
+                                        <option value="" selected="">SELECCIONAR...</option>
+                                        @foreach ($subgrupos as $subgrupo)
+                                            <option value="{{ $subgrupo->id }}"
+                                                @if($subgrupo->id == $detalle->estudio->subgrupo_id)
+                                                    {{ 'selected' }}
+                                                @endif
+                                                >{{ $subgrupo->nombre }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>

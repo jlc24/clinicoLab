@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('med_cod', 50)->unique();
             $table->string('med_nombre', 20);
             $table->string('med_apellido_pat', 20);
-            $table->string('med_apellido_mat', 20);
-            $table->string('med_ci_nit', 10);
-            $table->string('med_exp_ci', 10);
+            $table->string('med_apellido_mat', 20)->nullable();
+            $table->string('med_ci_nit', 10)->nullable();
+            $table->string('med_exp_ci', 10)->nullable();
             $table->string('med_genero', 10);
             $table->string('med_correo', 255)->nullable();
             $table->string('med_celular', 15)->nullable();
@@ -27,8 +27,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('med_usuario', 10);
             $table->string('med_password', 255);
-            $table->unsignedBigInteger('dep_id');
-            $table->unsignedBigInteger('mun_id');
+            $table->unsignedBigInteger('dep_id')->nullable();
+            $table->unsignedBigInteger('mun_id')->nullable();
+            $table->unsignedDecimal('med_convenio')->nullable();
+            $table->string('med_cuenta', 100)->nullable();
+            $table->string('med_banco', 150)->nullable();
+            $table->string('med_qr', 255)->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

@@ -17,17 +17,18 @@
                                     @endif width="150px" style="border-style: solid; border-radius: 50%">
                             </div>
                         </div>
-                        <div class="form-group row justify-content-center">
+                        <div class="form-group row ">
                             <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Codigo') }}:</h1>
                             <div class="col-xl-6 col-sm-6">
                                 <label class="col-form-label">{{ $medico->med_cod }}</label>
+                                <input type="hidden" name="med_id_show" id="med_id_show" class="med_id_show">
                             </div>
                             @if(Auth::user()->rol == 'admin')
                                 <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Usuario') }}:</h1>
                                 <div class="col-xl-6 col-sm-6">
                                     <label class="col-form-label">{{ $medico->med_correo }}</label>
                                 </div>
-                                <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Contraseña') }}:</h1>
+                                <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Password') }}:</h1>
                                 <div class="col-xl-6 col-sm-6">
                                     <label class="col-form-label">{{ $medico->med_password }}</label>
                                 </div>
@@ -41,6 +42,14 @@
                                     <label class="col-form-label">*******************</label>
                                 </div>
                             @endif
+                            <h1 class="col-xl-4 col-sm-4 col-form-label">{{ __('Estado') }}:</h1>
+                            <div class="col-xl-6 col-sm-6">
+                                @if($medico->user->estado == 1)
+                                    <span class="badge badge-success">ACTIVO</span>
+                                @else
+                                <span class="badge badge-danger">INACTIVO</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
                     <div class="col-xl-6 col-sm-6 pt-2 ml-1" style="border-style: solid; border-width: 1px; border-radius: 10px; border-color: #C6C8CA">
@@ -71,18 +80,56 @@
 
                             <h1 class="col-xl-3 col-sm-3 col-form-label">{{ __('Dep.') }}:</h1>
                             <div class="col-xl-9 col-sm-9">
-                                <label class="col-form-label">{{ $medico->departamento->nombre }}</label>
+                                <label class="col-form-label">
+                                    @if($medico->departamento !== null)
+                                        {{ $medico->departamento->nombre }}
+                                    @endif
+                                </label>
                             </div>
 
-                            <h1 class="col-xl-3 col-sm-3 col-form-label">{{ __('Municipio') }}:</h1>
-                            <div class="col-xl-9 col-sm-9">
-                                <label class="col-form-label">{{ $medico->municipio->nombre }}</label>
+                            <h1 class="col-xl-3 col-sm-12 col-form-label">{{ __('Municipio') }}:</h1>
+                            <div class="col-xl-9 col-sm-12">
+                                <label class="col-form-label">
+                                    @if($medico->municipio !== null)
+                                        {{ $medico->municipio->nombre }}
+                                    @endif
+                                </label>
                             </div>
 
-                            <h1 class="col-xl-3 col-sm-3 col-form-label">{{ __('Celular') }}:</h1>
-                            <div class="col-xl-9 col-sm-9">
+                            <h1 class="col-xl-3 col-sm-12 col-form-label">{{ __('Celular') }}:</h1>
+                            <div class="col-xl-9 col-sm-12">
                                 <label class="col-form-label">{{ $medico->med_celular }}</label>
                                 <label class="col-form-label"><a href="https://api.whatsapp.com/send?phone=591{{ $medico->med_celular }}" target="_blank" rel="noreferrer" style="color: #32C861" class="ml-4"><i class="fab fa-whatsapp fa-lg" ></i></a></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-sm-12 pt-2 mt-1" style="border-style: solid; border-width: 1px; border-radius: 10px; border-color: #C6C8CA; display: inline-flex">
+                        <div class="col-xl-7 col-sm-12">
+                            <div class="form-group row ">
+                                <h1 class="col-xl-5 col-sm-12 col-form-label">{{ __('Convenio') }}:</h1>
+                                <div class="col-xl-7 col-sm-12">
+                                    <label class="col-form-label">{{ $medico->med_convenio }} %</label>
+                                </div>
+                                <h1 class="col-xl-5 col-sm-12 col-form-label">{{ __('Banco') }}:</h1>
+                                <div class="col-xl-7 col-sm-12">
+                                    <label class="col-form-label">{{ $medico->med_banco }}</label>
+                                </div>
+                                <h1 class="col-xl-5 col-sm-12 col-form-label">{{ __('Cuenta') }}:</h1>
+                                <div class="col-xl-7 col-sm-12">
+                                    <label class="col-form-label">{{ $medico->med_cuenta }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-sm-12" style="display: inline-flex">
+                            <h1 class="col-xl-3 col-sm-12 col-form-label">{{ __('QR') }}:</h1>
+                            <div class="col-xl-8 col-sm-12 text-center" >
+                                <a href="javascript:void(0);" title="Ver Imagen" @if($medico->med_qr !== null) data-toggle="modal" data-target="#modal_qr_show" @endif  class="btnVerQr">
+                                    @if($medico->med_qr == null)
+                                        <img src="{{ asset('dist/img/default.png') }}" class="imageQR" id="imageQR" width="100px" style="border: 2px solid rgb(146, 144, 144); border-radius: 10px; box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);">
+                                    @else
+                                        <img src="{{ asset('storage/'.$medico->med_qr) }}" class="imageQR" id="imageQR" width="100px" style="border: 2px solid rgb(146, 144, 144); border-radius: 10px; box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);">
+                                    @endif
+                                </a>
                             </div>
                         </div>
                     </div>

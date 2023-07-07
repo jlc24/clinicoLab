@@ -111,7 +111,7 @@ $(function() {
             showNextButton: true, // show/hide a Next button
             showPreviousButton: true, // show/hide a Previous button
             position: 'bottom', // none/ top/ both bottom
-            extraHtml: `<button class="btn btn-success btnRegisterMedico" id="btnRegisterMedico" style="display: none;">Registrar</button>`
+            extraHtml: `<button class="btn btn-success btnRegisterMedico" id="btnRegisterMedico" data-dismiss="modal" style="display: none;">Registrar</button>`
         },
         anchor: {
             enableNavigation: true, // Enable/Disable anchor navigation 

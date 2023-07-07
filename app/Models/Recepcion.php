@@ -14,6 +14,7 @@ class Recepcion extends Model
         'fac_id',
         'caja_id',
         'det_id',
+        'med_id',
         'estado',
         'rec_ruta_file'
     ];

@@ -5,13 +5,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Catálogo</h1>
+                    <h1 class="m-0">{{ __('Catálogo') }}</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Inicio</a></li>
-                        <li class="breadcrumb-item"><a href="#">Catálogo</a></li>
-                        <li class="breadcrumb-item active">Estudio</li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Inicio') }}</a></li>
+                        <li class="breadcrumb-item"><a href="#">{{ __('Catálogo') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('Estudio') }}</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -24,25 +24,25 @@
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
-                                <a style="color: #fff;" href="#" data-toggle="modal"  data-target="#modal_crear_estudio" title="Agregar estudio">
+                                <a style="color: #fff;" href="#" data-toggle="modal"  data-target="#modal_crear_estudio" title="Agregar estudio" class="btnAddEstudio">
                                     <i class="far fa-plus-square"></i>
-                                </a>Estudios
+                                </a>{{ __('Estudios') }}
                             </h4>
                         </div>
                         <div class="card-body ">
                             <div class="row">
                                 <div class="col-xl-8 col-sm-8">
-                                    <h4>Lista de Estudios o Análisis registrados en el Sistema</h4>
+                                    <h4>{{ __('Lista de Estudios o Análisis registrados en el Sistema') }}</h4>
                                 </div>
                             </div>
                             <div class="row table-responsive-lg">
                                 <table class="table table-bordered table-hover tabla_estudios" id="tabla_estudios">
                                     <thead>
                                         <th>#</th>
-                                        <th>Clave</th>
-                                        <th>Nombre</th>
-                                        <th hidden>Precio</th>
-                                        <th>Estado</th>
+                                        <th>{{ __('Clave') }}</th>
+                                        <th>{{ __('Nombre') }}</th>
+                                        <th hidden>{{ __('Precio') }}</th>
+                                        <th>{{ __('Estado') }}</th>
                                         <th>Op</th>
                                     </thead>
                                     <tbody>
@@ -89,6 +89,8 @@
     @include('aspecto.modal.modal_crear_aspecto')
     @include('estudio.modal.modal_config_parametro')
     @include('estudio.modal.modal_agregar_material')
+    @include('estudio.modal.modal_crear_grupo')
+    @include('estudio.modal.modal_crear_subgrupo')
 @endsection
 
 @section('funciones')

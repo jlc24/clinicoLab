@@ -26,6 +26,10 @@ class Medico extends Model
         'med_password',
         'dep_id',
         'mun_id',
+        'med_convenio',
+        'med_cuenta',
+        'med_banco',
+        'med_qr'
     ];
 
     public function user()

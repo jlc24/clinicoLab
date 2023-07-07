@@ -5,8 +5,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="author" content="{{ $config->nombre }}_{{ $config->nit }}_{{ $paciente->factura }}">
-        <meta name="description" content="Factura realizado en {{ $config->nombre }}">
-        <meta name="keywords" content="Resultado, Estudio, Análisis, Pruebas, Factura">
+        <meta name="description" content="Recibo realizado en {{ $config->nombre }}">
+        <meta name="keywords" content="Resultado, Estudio, Análisis, Pruebas, Recibo">
         <meta name="copyright" content="Copyright &copy; {{ date('Y') }}-{{ $config->nombre }}">
         <!-- Bootstrap CSS -->
         {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous"> --}}
@@ -103,7 +103,7 @@
             }
 
         </style>
-        <title>Factura</title>
+        <title>Recibo</title>
     </head>
     <body>
         <div class="row">
@@ -139,7 +139,7 @@
             </div>
         </div>
         
-        <h2 class="text-center">{{ __('FACTURA') }}</h2>
+        <h2 class="text-center">{{ __('RECIBO') }}</h2>
         <h4 class="text-center"><strong>Nº: </strong>{{ $paciente->num_factura }}</h4>
         <div class="row">
             <div class="col-xs-11" style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); margin-left: 20px;">

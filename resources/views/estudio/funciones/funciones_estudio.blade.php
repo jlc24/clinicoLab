@@ -59,6 +59,136 @@
         $("#btnCloseAddComponente").on('click', function() {
             $("#formulario_crear_componentes").trigger('reset');
         });
+        $('#modal_crear_grupo').on('shown.bs.modal', function () {
+            $('#grupos_nombre').trigger('focus');
+        });
+        $("#btnCloseAddGrupo").on('click', function() {
+            $("#grupos_nombre").val('');
+        });
+        $('#modal_crear_subgrupo').on('shown.bs.modal', function () {
+            $('#subgrupos_nombre').trigger('focus');
+        });
+        $("#btnCloseAddSubGrupo").on('click', function() {
+            $("#subgrupos_nombre").val('');
+        });
+
+        function getGrupo() {
+            mostrarCargando()
+            $.ajax({
+                url: '{{ route("getGrupos") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data){
+                    console.log(data);
+                    if (data.length !== 0) {
+                        $("#est_grupo").empty();
+                        $.each(data, function(index, grupo) {
+                            var option = $("<option>").val(grupo.id).text(grupo.nombre);
+                            $("#est_grupo").append(option);
+                        });
+                    }
+                    cerrarCargando();
+                }
+            });
+        }
+
+        function getSubgrupo() {
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("getSubgrupos") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    if (data.length !== 0) {
+                        $("#est_subgrupo").empty();
+                        $.each(data, function(indez, subgrupo) {
+                            var option = $("<option>").val(subgrupo.id).text(subgrupo.nombre);
+                            $("#est_subgrupo").append(option);
+                        })
+                    }
+                    cerrarCargando();
+                }
+            });
+        }
+
+        $(document).on('click', '.btnAddEstudio', function() {
+            getGrupo();
+            getSubgrupo();
+        });
+
+        $(document).on('click', '#btnRegisterGrupo', function() {
+            var datos = new FormData();
+            datos.append('grupos_nombre', $("#grupos_nombre").val());
+            $.ajax({
+                url: '{{ route("grupo.store") }}',
+                method: "POST",
+                data: datos,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    Swal.fire({
+                        title: '¡Exito!',
+                        text: 'Grupo registrado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    $("#grupos_nombre").val('');
+                    getGrupo();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Se ha producido un error.',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        });
+
+        $(document).on('click', '#btnRegisterSubGrupo', function() {
+            var datos = new FormData();
+            datos.append('subgrupos_nombre', $("#subgrupos_nombre").val());
+            $.ajax({
+                url: '{{ route("subgrupo.store") }}',
+                method: "POST",
+                data: datos,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    Swal.fire({
+                        title: '¡Exito!',
+                        text: 'Sub Grupo registrado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    $("#subgrupos_nombre").val('');
+                    getSubgrupo();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Se ha producido un error.',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        });
+
         $("#generar_clave_est").on('change', function() {
             if ($(this).prop('checked')) {
                 let cadena = document.getElementById("est_nombre").value;
@@ -90,6 +220,8 @@
                 datos.append('est_cod', $("#est_cod").val());
                 datos.append('est_nombre', $("#est_nombre").val());
                 datos.append('est_descripcion', $("#est_descripcion").val());
+                datos.append('est_grupo', $("#est_grupo").val());
+                datos.append('est_subgrupo', $("#est_subgrupo").val());
                 datos.append('est_precio', $("#est_precio").val());
                 datos.append('est_moneda', $("#est_moneda").val());
                 datos.append('est_muestra', $("#est_muestra").val());

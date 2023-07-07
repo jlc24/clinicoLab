@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banco;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use App\Models\Departamento;
+use App\Models\Grupo;
 use App\Models\Medico;
 use App\Models\Municipio;
 use App\Models\Permiso;
 use App\Models\PermisoUser;
+use App\Models\Subgrupo;
 use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +36,8 @@ class ClienteController extends Controller
             'clientes' => $clientes,
             'countpac' => Cliente::count(),
             'municipios' => Municipio::all(),
-            'medicos' => Medico::all()
+            'medicos' => Medico::all(),
+            'bancos' => Banco::all()
         ]);
     }
 
@@ -76,6 +80,12 @@ class ClienteController extends Controller
         return response()->json($cliente);
     }
 
+    public function getMedicos()
+    {
+        $medicos = Medico::orderByDesc('id')->get();
+        return response()->json($medicos);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -93,16 +103,10 @@ class ClienteController extends Controller
             'cli_cod' => 'required|unique:clientes|max:10',
             'cli_nombre' => 'required|max:20',
             'cli_apellido_pat' => 'required|max:20',
-            'cli_apellido_mat' => 'max:20',
-            'cli_ci_nit' => 'required',
-            'cli_ci_nit_exp' => 'required|max:10',
             'cli_fec_nac' => 'required|date',
             'cli_genero' => 'required|max:10',
             'cli_email' => 'required|email|max:255',
-            'cli_direccion' => 'max:255',
             'cli_celular' => 'required|max:15',
-            'cli_departamento' => 'required',
-            'cli_municipio' => 'required',
             'cli_usuario' => 'required|max:10',
             'cli_password' => 'required',
             'cli_estado' => 'required',
@@ -148,8 +152,8 @@ class ClienteController extends Controller
     {
         $clientes = DB::table('clientes as c')
                     ->join('users as u', 'u.id', '=', 'c.user_id')
-                    ->join('departamentos as d', 'd.id', '=', 'c.dep_id')
-                    ->join('municipios as m', 'm.id', '=', 'c.mun_id')
+                    ->leftJoin('departamentos as d', 'd.id', '=', 'c.dep_id')
+                    ->leftJoin('municipios as m', 'm.id', '=', 'c.mun_id')
                     ->leftJoin('medicos as med', 'med.id', '=', 'c.med_id')
                     ->select('c.*', 'u.estado', 'm.nombre as mun', 'd.nombre as dep', 'med.med_nombre', 'med.med_apellido_pat', 'med.med_apellido_mat')
                     ->where('c.id', '=', $id)
@@ -208,16 +212,9 @@ class ClienteController extends Controller
         $request->validate([
             'cli_nombre_update' => 'required|max:20',
             'cli_apellido_pat_update' => 'required|max:20',
-            'cli_apellido_mat_update' => 'max:20',
-            'cli_ci_nit_update' => 'required',
-            'cli_ci_nit_exp_update' => 'required|max:10',
             'cli_fec_nac_update' => 'required|date',
             'cli_genero_update' => 'required|max:10',
-            'cli_direccion_update' => 'max:255',
             'cli_celular_update' => 'required|max:15',
-            'cli_departamento_update' => 'required',
-            'cli_municipio_update' => 'required',
-            'cli_usuario_update' => 'required|max:10',
             'cli_rol_update' => 'required'
         ]);
         

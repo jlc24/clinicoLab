@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('est_descripcion', 255)->nullable();
             $table->unsignedDecimal('est_precio')->nullable();
             $table->string('est_moneda', 5)->nullable();
+            $table->unsignedBigInteger('grupo_id')->nullable();
+            $table->unsignedBigInteger('subgrupo_id')->nullable();
             $table->timestamps();
         });
     }

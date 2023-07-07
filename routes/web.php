@@ -22,6 +22,7 @@ use App\Http\Controllers\DpComponenteController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\EstudioController;
 use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\GrupoController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\IndicationController;
 use App\Http\Controllers\MaterialController;
@@ -39,6 +40,7 @@ use App\Http\Controllers\RecepcionController;
 use App\Http\Controllers\RecipienteController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ResultController;
+use App\Http\Controllers\SubgrupoController;
 use App\Http\Controllers\UMedidaController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UsuarioController;
@@ -79,9 +81,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/clientes', [ClienteController::class, 'index'])->name('cliente');
         Route::post('/clientes', [ClienteController::class, 'store'])->name('cliente.store');
         Route::get('/clientes/{id}', [ClienteController::class, 'show'])->name('cliente.show')->middleware('ajax');
-        Route::post('/clientes/{id}', [ClienteController::class, 'update'])->name('cliente.update')->middleware('ajax');
+        Route::post('/clientes/{id}', [ClienteController::class, 'update'])->name('cliente.update');
 
         Route::get('/countClientes', [ClienteController::class, 'countClientes'])->name('countClientes');
+        Route::get('/getMedicos', [ClienteController::class, 'getMedicos'])->name('getMedicos');
     
         //Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
         Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
@@ -93,7 +96,9 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/medicos', [MedicoController::class, 'index'])->name('medico');
         Route::post('/medicos', [MedicoController::class, 'store'])->name('medico.store');
+        Route::get('/medicos/{id}', [MedicoController::class, 'show'])->name('medico.show');
         Route::post('/medicos/{id}', [MedicoController::class, 'update'])->name('medico.update');
+        Route::post('/updateQR/{id}', [MedicoController::class, 'updateQR'])->name('medico.updateQR');
 
         Route::get('/countMedicos', [MedicoController::class, 'countMedicos'])->name('countMedicos');
     
@@ -140,6 +145,8 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/getDetalle/{id}', [EstudioController::class, 'getDetalle'])->name('getDetalle');
         Route::get('/getAllMaterials', [EstudioController::class, 'getAllMaterials'])->name('getAllMaterials');
+        Route::get('/getGrupos', [EstudioController::class, 'getGrupos'])->name('getGrupos');
+        Route::get('/getSubgrupos', [EstudioController::class, 'getSubgrupos'])->name('getSubgrupos');
     
         Route::post('/detmaterials', [DetalleMaterialController::class, 'store'])->name('detmaterial.store');
         Route::post('/detmaterials/{id}', [DetalleMaterialController::class, 'update'])->name('detmaterial.update');
@@ -148,6 +155,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/getMaterialEstudio/{id}', [DetalleMaterialController::class, 'getMaterialEstudio'])->name('getMaterialEstudio');
     
         Route::get('/tabla_procedimiento/{id}', [EstudioController::class, 'tabla_procedimiento'])->name('tabla_procedimiento');
+
+        Route::post('/grupos', [GrupoController::class, 'store'])->name('grupo.store');
+
+        Route::post('/subgrupos', [SubgrupoController::class, 'store'])->name('subgrupo.store');
     
         Route::get('/cultivos', [CultivoController::class, 'index'])->name('cultivo');
     

@@ -53,7 +53,7 @@
                 const nombre = $("#med_nombre").val().substring(0, 2).toLowerCase();
                 const ap_pat = $("#med_apellido_pat").val().substring(0, 2).toLowerCase();
                 const ap_mat = $("#med_apellido_mat").val().substring(0, 2).toLowerCase();
-                const ci = extraercaracteres(4);
+                const ci = Math.floor(Math.random() * 8999) + 1000;
                 const correo = `${nombre}${ap_pat}${ci}.${ap_mat}@gmail.com`;
                 $("#med_email").val(correo);
             } else {
@@ -72,6 +72,10 @@
             $("#med_ci_nit_exp").val("");
             $("#med_genero").val("");
             $("#med_especialidad").val("");
+            $("#med_convenio").val("");
+            $("#med_banco").val("");
+            $("#med_cuenta").val("");
+            $("#med_qr").val("");
             $("#med_email").val("");
             $("#med_direccion").val("");
             $("#med_celular").val("");
@@ -93,14 +97,14 @@
                 success: function(data) {
                     console.log(data);
                     $("#med_cod").val('MED' + (data+1));
-                    $("#med_estado").val("medico")
-                    $("#med_rol").val("1")
+                    $("#med_estado").val("1");
+                    $("#med_rol").val("medico");
                 }
             });
         });
 
         $(document).on('click', '.btnRegisterMedico', function() {
-            if ($("#med_cod").val() == "" || $("#med_nombre").val() == "" || $("#med_apellido_pat").val() == "" || $("#med_apellido_mat").val() == "" || $("#med_ci_nit").val() == "" || $("#med_ci_nit_exp").val() == "" || $("#med_genero").val() == "" || $("#med_email").val() == "" || $("#med_direccion").val() == "" || $("#med_celular").val() == "" || $("#med_usuario").val() == "" || $("#med_password").val() == "" || $("#med_departamento").val() == "" || $("#med_municipio").val() == "" || $("#med_estado").val() == "" || $("#med_rol").val() == "" ) {
+            if ($("#med_cod").val() == "" || $("#med_nombre").val() == "" || $("#med_apellido_pat").val() == "" || $("#med_genero").val() == "" || $("#med_genero").val() == null || $("#med_convenio").val() == "" || $("#med_banco").val() == "" || $("#med_cuenta").val() == "" || $("#med_email").val() == "" || $("#med_celular").val() == "" || $("#med_usuario").val() == "" || $("#med_password").val() == "" || $("#med_estado").val() == "" || $("#med_rol").val() == "" ) {
                 Swal.fire({
                     title: 'Error!',
                     text: 'Algunos campos son requeridos',
@@ -109,22 +113,30 @@
                     timer: 2000
                 });
             }else{
+                var med_exp = $("#med_ci_nit_exp").val() == null ? '' : $("#med_ci_nit_exp").val();
+                var med_dep = $("#med_departamento").val() == null ? '' : $("#med_departamento").val();
+                var med_mun = $("#med_municipio").val() == null ? '' : $("#med_municipio").val();
+                var fileData = $("#med_qr").prop("files")[0];
                 var datos = new FormData();
                 datos.append('med_cod', $("#med_cod").val());
                 datos.append('med_nombre', $("#med_nombre").val());
                 datos.append('med_apellido_pat', $("#med_apellido_pat").val());
                 datos.append('med_apellido_mat', $("#med_apellido_mat").val());
                 datos.append('med_ci_nit', $("#med_ci_nit").val());
-                datos.append('med_ci_nit_exp', $("#med_ci_nit_exp").val());
+                datos.append('med_ci_nit_exp', med_exp);
                 datos.append('med_genero', $("#med_genero").val());
                 datos.append('med_especialidad', $("#med_especialidad").val());
+                datos.append('med_convenio', $("#med_convenio").val());
+                datos.append('med_banco', $("#med_banco").val());
+                datos.append('med_cuenta', $("#med_cuenta").val());
+                datos.append('med_qr', fileData);
                 datos.append('med_email', $("#med_email").val());
                 datos.append('med_direccion', $("#med_direccion").val());
                 datos.append('med_celular', $("#med_celular").val());
                 datos.append('med_usuario', $("#med_usuario").val());
                 datos.append('med_password', $("#med_password").val());
-                datos.append('med_departamento', $("#med_departamento").val());
-                datos.append('med_municipio', $("#med_municipio").val());
+                datos.append('med_departamento', med_dep);
+                datos.append('med_municipio', med_mun);
                 datos.append('med_estado', $("#med_estado").val());
                 datos.append('med_rol', $("#med_rol").val());
 
@@ -155,6 +167,7 @@
                         }else{
                             limpiarMed();
                             $('#smartwizard_crear_medico').smartWizard("reset");
+                            getMedicos();
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -306,6 +319,102 @@
                 updatePermiso(datos, permiso_id, user_id);
             }
         });
+
+        $(document).on('click', '.btnUpdateMedico', function() {
+            var med_id = $(this).closest('tr').find('td:eq(0)').text();
+            $(".med_id_update").val(med_id);
+        })
+
+        function showQR(id) {
+            $.ajax({
+                url: '{{ route("medico.show", ":id") }}'.replace(":id", id),
+                type:'GET',
+                success :function(data){
+                    var rutaImagen = 'storage/' + data.med_qr;
+                    $(".img_qr_update").attr("src", rutaImagen);
+                    if (data.med_qr == null) {
+                        $(".img_qr_update").attr("src", '{{ asset('dist/img/default.png') }}');
+                    }else{
+                        $(".img_qr_update").attr("src", rutaImagen);
+                    }
+                }
+            });
+        }
+        $(document).on('click', '.btnCloseShowQR', function() {
+            $(".med_qr_update").val("");
+            $('.btnUpdateQR').prop('disabled', true);
+            $('.btnRefreshQR').prop('disabled', true);
+        });
+
+        $(document).on('click', '.med_qr_modal', function() {
+            var med_id = $(".med_id_update").val();
+            $(".med_id_qr").val(med_id);
+            showQR(med_id);
+        });
+
+        const logoActual = $('.img_qr_update').attr('src');
+        $(document).on('click', '.btnRefreshQR', function() {
+            $(".img_qr_update").attr("src", logoActual);
+            $(".med_qr_update").val("");
+            $('.btnUpdateQR').prop('disabled', true);
+            $(this).prop('disabled', true);
+        });
+
+        $(document).on('click', '.btnShowMedico', function() {
+            var med_id = $(this).closest('tr').find('td:eq(0)').text();
+            $(".med_id_show").val(med_id);
+        });
+
+        $(document).on('click', '.btnVerQr', function() {
+            var qr = $(this).find('.imageQR').attr('src');
+            $(".QRshow").attr("src", qr);
+        });
+        $(document).on('change', '.med_qr_update', function() {
+            if ($(".med_qr_update")[0].files[0]) {
+                $('.btnUpdateQR').prop('disabled', false);
+                $('.btnRefreshQR').prop('disabled', false);
+            }else{
+                $('.btnUpdateQR').prop('disabled', true);
+                $('.btnRefreshQR').prop('disabled', true);
+            }
+        });
+
+        $(document).on('click', '.btnUpdateQR', function() {
+            var med_id = $('.med_id_qr').val();
+            var fileQR =  $(".med_qr_update").prop("files")[0];
+            var datos = new FormData();
+            datos.append('med_qr_update', fileQR);
+            $.ajax({
+                url: '{{ route("medico.updateQR", ":id") }}'.replace(":id", med_id),
+                method: "POST",
+                data: datos,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    Swal.fire({
+                        title: '¡Exito!',
+                        text: 'QR actualizado',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                    
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Se ha producido un error.',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        });
     });
 
     function UsuarioMed() {
@@ -328,7 +437,7 @@
         const nombre = $("#med_nombre").val().substring(0, 1);
         const ap = $("#med_apellido_pat").val().substring(0, 1);
         const am = $("#med_apellido_mat").val().substring(0, 1);
-        const ci = $("#med_ci_nit").val();
+        const ci = Math.floor(Math.random() * 899999) + 100000;
         const caracter = generateRandomStringMed(3);
         const randomNum1 = Math.floor(Math.random() * 899) + 100;
         const outputStr = `${nombre}${ap}${am}.${ci}-${caracter}`;

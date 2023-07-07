@@ -6,11 +6,13 @@ use App\Models\Componente;
 use App\Models\Detalle;
 use App\Models\DetalleProcedimiento;
 use App\Models\Estudio;
+use App\Models\Grupo;
 use App\Models\Indication;
 use App\Models\Material;
 use App\Models\Metodologia;
 use App\Models\Muestra;
 use App\Models\Recipiente;
+use App\Models\Subgrupo;
 use App\Models\UMedida;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -32,7 +34,9 @@ class EstudioController extends Controller
             'metodos' => Metodologia::all(),
             'unidades' => UMedida::all(),
             'detalleprocedimientos' => DetalleProcedimiento::all(),
-            'componentes' => Componente::all()
+            'componentes' => Componente::all(),
+            'grupos' => Grupo::all(),
+            'subgrupos' => Subgrupo::all()
         ]);
     }
 
@@ -80,6 +84,17 @@ class EstudioController extends Controller
         return response()->json($material);
     }
 
+    public function getGrupos()
+    {
+        $grupos = Grupo::orderByDesc('id')->get();
+        return response()->json($grupos);
+    }
+
+    public function getSubgrupos()
+    {
+        $subgrupos = Subgrupo::orderByDesc('id')->get();
+        return response()->json($subgrupos);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -97,9 +112,9 @@ class EstudioController extends Controller
         $validator = Validator::make($request->all(), [
             'est_cod' => 'required|unique:estudios|max:10',
             'est_nombre' => 'required|max:255',
-            'est_descripcion' => 'max:255',
             'est_muestra' => 'required',
             'est_precio' => 'required|decimal:2',
+            'est_grupo' => 'required'
         ]);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
@@ -110,7 +125,9 @@ class EstudioController extends Controller
             'est_nombre' => $request->input('est_nombre'),
             'est_descripcion' => $request->input('est_descripcion'),
             'est_precio' => $request->input('est_precio'),
-            'est_moneda' => $request->input('est_moneda')
+            'est_moneda' => $request->input('est_moneda'),
+            'grupo_id' => $request->input('est_grupo'),
+            'subgrupo_id' => $request->input('est_subgrupo')
         ]);
 
         Detalle::create([
@@ -146,16 +163,12 @@ class EstudioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            
+        $request->validate([
             'est_nombre_update' => 'required|max:255',
-            'est_descripcion_update' => 'max:255',
             'est_muestra_update' => 'required',
-            'est_precio_update' => 'required|decimal:2'
-        ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
-        }
+            'est_precio_update' => 'required|decimal:2',
+            'est_grupos_update' => 'required'
+        ]);        
 
         $estudio = Estudio::find($id);
         $estudio->update([
@@ -163,7 +176,9 @@ class EstudioController extends Controller
             'est_nombre' => $request->input('est_nombre_update'),
             'est_descripcion' => $request->input('est_descripcion_update'),
             'est_precio' => $request->input('est_precio_update'),
-            'est_moneda' => $request->input('est_moneda_update')
+            'est_moneda' => $request->input('est_moneda_update'),
+            'grupo_id' => $request->input('est_grupos_update'),
+            'subgrupo_id' => $request->input('est_subgrupos_update')
         ]);
 
         $detalle = Detalle::where('estudio_id', '=', $id)->first();

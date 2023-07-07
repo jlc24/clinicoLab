@@ -30,7 +30,7 @@
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
                                     <input type="hidden" value="{{ $cliente->id }}" name="cli_id_update" id="cli_id_update">
-                                    <input type="text" value="{{ $cliente->cli_nombre }}" id="cli_nombre_update" name="cli_nombre_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioUp(); PasswordUp(); generarCorreoUp()" required>
+                                    <input type="text" value="{{ $cliente->cli_nombre }}" id="cli_nombre_update" name="cli_nombre_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
-                                    <input type="text" value="{{ $cliente->cli_apellido_pat }}" id="cli_apellido_pat_update" name="cli_apellido_pat_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioUp(); PasswordUp(); generarCorreoUp()" required>
+                                    <input type="text" value="{{ $cliente->cli_apellido_pat }}" id="cli_apellido_pat_update" name="cli_apellido_pat_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                 </div>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fa-solid fa-user"></i></div>
                                     </div>
-                                    <input type="text" value="{{ $cliente->cli_apellido_mat }}" id="cli_apellido_mat_update" name="cli_apellido_mat_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioUp(); PasswordUp(); generarCorreoUp()" >
+                                    <input type="text" value="{{ $cliente->cli_apellido_mat }}" id="cli_apellido_mat_update" name="cli_apellido_mat_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" >
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="cli_ci_nit_update">C.I.: </label>
                                 <div class="col-md-9">
-                                    <input type="number" min="0" value="{{ $cliente->cli_ci_nit }}" id="cli_ci_nit_update" name="cli_ci_nit_update" class="form-control form-control-sm" autocomplete="off"  onkeyup="PasswordUp(); generarCorreoUp()" required>
+                                    <input type="number" min="0" value="{{ $cliente->cli_ci_nit }}" id="cli_ci_nit_update" name="cli_ci_nit_update" class="form-control form-control-sm" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -70,7 +70,8 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="cli_ci_nit_exp_update">Exp.:</label>
                                 <div class="col-md-9">
-                                    <select class="custom-select custom-select-sm" id="cli_ci_nit_exp_update" name="cli_ci_nit_exp_update" required>
+                                    <select class="custom-select custom-select-sm" id="cli_ci_nit_exp_update" name="cli_ci_nit_exp_update" >
+                                        <option value="">Seleccionar...</option>
                                         @foreach ($departamentos as $departamento)
                                             <option value="{{ $departamento->nombre }}"
                                                 @if($departamento->nombre == $cliente->cli_exp_ci)
@@ -114,6 +115,7 @@
                                 <label class="col-md-4 p-0 col-form-label" for="cli_genero_update">{{ __('Género') }}: </label>
                                 <div class="col-md-8">
                                     <select class="custom-select custom-select-sm" id="cli_genero_update" name="cli_genero_update" required>
+                                        
                                         @if($cliente->cli_genero == 'MASCULINO')
                                             <option value="{{ $cliente->cli_genero }}" selected>{{ $cliente->cli_genero }}</option>
                                             <option value="FEMENINO">FEMENINO</option>
@@ -153,7 +155,8 @@
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="cli_departamento_update">{{ __('Departamento') }}:</label>
                                 <div class="col-md-12">
-                                    <select class="custom-select custom-select-sm" id="cli_departamento_update" name="cli_departamento_update" required>
+                                    <select class="custom-select custom-select-sm" id="cli_departamento_update" name="cli_departamento_update">
+                                        <option value="">Seleccionar...</option>
                                         @foreach ($departamentos as $departamento)
                                             <option value="{{ $departamento->id }}"
                                                 @if($departamento->id == $cliente->dep_id)
@@ -169,7 +172,8 @@
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="cli_municipio_update">{{ __('Municipio') }}:</label>
                                 <div class="col-md-12">
-                                    <select class="custom-select custom-select-sm" id="cli_municipio_update" name="cli_municipio_update" required>
+                                    <select class="custom-select custom-select-sm" id="cli_municipio_update" name="cli_municipio_update">
+                                        <option value="">Seleccionar...</option>
                                         @foreach ($municipios as $municipio)
                                             <option value="{{ $municipio->id }}"
                                                 @if($municipio->id == $cliente->mun_id)
@@ -182,7 +186,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" hidden>
                         <div class="col-xl-6 col-sm-6">
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="cli_email_update">{{ __('Email') }}:</label>
@@ -212,6 +216,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-xl-6 col-sm-6">
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="cli_medico_update">{{ __('Medico') }}:</label>

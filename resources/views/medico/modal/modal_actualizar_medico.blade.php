@@ -30,6 +30,7 @@
                                         <div class="input-group-text"><i class="fa-solid fa-user-doctor"></i></div>
                                     </div>
                                     <input type="text" value="{{ $medico->med_nombre }}" id="med_nombre_update" name="med_nombre_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); UsuarioMed(); PasswordMed()" required>
+                                    <input type="hidden" name="med_id_update" id="med_id_update" class="med_id_update">
                                 </div>
                             </div>
                         </div>
@@ -61,7 +62,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="med_ci_nit_update">C.I.: </label>
                                 <div class="col-md-9">
-                                    <input type="number" value="{{ $medico->med_ci_nit }}" min="0" id="med_ci_nit_update" name="med_ci_nit_update" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onkeyup="PasswordMed()" required>
+                                    <input type="number" value="{{ $medico->med_ci_nit }}" min="0" id="med_ci_nit_update" name="med_ci_nit_update" class="form-control form-control-sm" autocomplete="off" placeholder="Carnet C.I."  onkeyup="PasswordMed()">
                                 </div>
                             </div>
                         </div>
@@ -69,7 +70,8 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="med_ci_nit_exp_update">Exp.:</label>
                                 <div class="col-md-9">
-                                    <select class="custom-select custom-select-sm" id="med_ci_nit_exp_update" name="med_ci_nit_exp_update" required>
+                                    <select class="custom-select custom-select-sm" id="med_ci_nit_exp_update" name="med_ci_nit_exp_update">
+                                        <option value="">Seleccionar...</option>
                                         @foreach ($departamentos as $departamento)
                                             <option value="{{ $departamento->nombre }}"
                                                 @if($departamento->nombre == $medico->med_exp_ci)
@@ -122,7 +124,7 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="med_especialidad_update">{{ __('Especialidad') }}: </label>
                                 <div class="col-md-8">
-                                    <input type="text" value="{{ $medico->med_especialidad }}" id="med_especialidad_update" name="med_especialidad_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                    <input type="text" value="{{ $medico->med_especialidad }}" id="med_especialidad_update" name="med_especialidad_update" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" >
                                 </div>
                             </div>
                         </div>
@@ -138,9 +140,10 @@
                         </div>
                         <div class="col-xl-3 col-sm-3">
                             <div class="form-group row">
-                                <label class="col-md-12 col-form-label" for="cli_departamento_update">{{ __('Departamento') }}:</label>
+                                <label class="col-md-12 col-form-label" for="med_departamento_update">{{ __('Departamento') }}:</label>
                                 <div class="col-md-12">
-                                    <select class="custom-select custom-select-sm" id="cli_departamento_update" name="cli_departamento_update" required>
+                                    <select class="custom-select custom-select-sm" id="med_departamento_update" name="med_departamento_update" >
+                                        <option value="">Seleccionar...</option>
                                         @foreach ($departamentos as $departamento)
                                             <option value="{{ $departamento->id }}"
                                                 @if($departamento->id == $medico->dep_id)
@@ -154,9 +157,10 @@
                         </div>
                         <div class="col-xl-3 col-sm-3">
                             <div class="form-group row">
-                                <label class="col-md-12 col-form-label" for="cli_municipio_update">{{ __('Municipio') }}:</label>
+                                <label class="col-md-12 col-form-label" for="med_municipio_update">{{ __('Municipio') }}:</label>
                                 <div class="col-md-12">
-                                    <select class="custom-select custom-select-sm" id="cli_municipio_update" name="cli_municipio_update" required>
+                                    <select class="custom-select custom-select-sm" id="med_municipio_update" name="med_municipio_update" >
+                                        <option value="">Seleccionar...</option>
                                         @foreach ($municipios as $municipio)
                                             <option value="{{ $municipio->id }}"
                                                 @if($municipio->id == $medico->mun_id)
@@ -169,7 +173,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" hidden>
                         <div class="col-xl-6 col-sm-6">
                             <div class="form-group row">
                                 <label class="col-md-12 col-form-label" for="med_email_update">{{ __('Email') }}:</label>
@@ -210,6 +214,44 @@
                                     <input type="hidden" value="medico" class="form-control form-control-sm" id="med_rol_update" name="med_rol_update" autocomplete="off" readonly>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-5 col-sm-5">
+                            <div class="form-group row">
+                                <label class="col-md-5 col-form-label" for="med_convenio_update">{{ __('Convenio') }} (%):</label>
+                                <div class="col-md-5">
+                                    <input type="number" value="{{ $medico->med_convenio }}" min="0" step="0.1" id="med_convenio_update" name="med_convenio_update" class="form-control form-control-sm" autocomplete="off" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-7 col-sm-7" >
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="med_banco_update">{{ __('Banco') }}: </label>
+                                <div class="col-md-9">
+                                    <select id="med_banco_update" class="custom-select custom-select-sm med_banco_update" name="med_banco_update">
+                                        <option value="" selected disabled>Seleccionar...</option>
+                                        @foreach ($bancos as $banco)
+                                            <option value="{{ $banco->nombre }}"
+                                                @if($banco->nombre == $medico->med_banco)
+                                                    {{ 'selected' }}
+                                                @endif
+                                                >{{ $banco->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-sm-5">
+                            <div class="form-group row">
+                                <label class="col-md-5 col-form-label" for="med_cuenta_update">{{ __('Cuenta') }}: </label>
+                                <div class="col-md-7">
+                                    <input type="number" value="{{ $medico->med_cuenta }}" min="0" id="med_cuenta_update" name="med_cuenta_update" class="form-control form-control-sm" autocomplete="off" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-sm-2">
+                            <a data-toggle="modal" data-target="#modal_cambiar_qr" class="btn btn-sm btn-outline-warning med_qr_modal" title="Cambiar QR">QR</a>
                         </div>
                     </div>
                 </div>
