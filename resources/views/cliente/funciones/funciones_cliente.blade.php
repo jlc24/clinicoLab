@@ -112,8 +112,8 @@ $(document).ready(function() {
                         var option = $("<option>").val(medico.id).text(medico.med_nombre + " " + medico.med_apellido_pat + " " + medico.med_apellido_mat);
                         $("#cli_medico").append(option);
                     });
-                    cerrarCargando();
                 }
+                cerrarCargando();
             }
         });
     }
