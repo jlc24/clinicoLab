@@ -157,8 +157,7 @@ class RecepcionController extends Controller
                                 'estudios.est_precio', 
                                 'muestras.nombre as muestra', 
                                 'indications.descripcion as indicacion',
-                                'estudios.est_moneda',
-                                DB::raw("DATE_FORMAT(r.created_at, '%d/%m/%Y') AS fecha"))
+                                'estudios.est_moneda')
                         ->where('recepcions.fac_id', $id)
                         ->get();
         return response()->json($estudios);
@@ -188,7 +187,6 @@ class RecepcionController extends Controller
             'caja_id' => $request->input('caja_id'),
             'fac_id' => $request->input('fac_id'),
             'det_id' => $request->input('det_id'),
-            'med_id' => $request->input('med_id'),
             'estado' => 'PENDIENTE',
         ]);
 

@@ -186,7 +186,7 @@
                         </li>
                     @endif
                     @php
-                        $activeRoutesCaptura = [ 'recepcion', 'result', 'historyViewRecepcion' ];
+                        $activeRoutesCaptura = [ 'recepcion', 'result', 'historyViewRecepcion', 'prueba' ];
                     @endphp
                     <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesCaptura) ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesCaptura) ? 'active' : '' }}">
@@ -211,9 +211,15 @@
                             </li>
                             @if(Auth::user()->rol =='admin')
                                 <li class="nav-item px-2">
+                                    <a href="{{ route('prueba') }}" class="nav-link {{ Request::is('pruebas') ? 'active' : '' }}">
+                                        <i class="nav-icon fa-solid fas fa-poll-h"></i>
+                                        <p>{{ __('Resultados por Pruebas') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
                                     <a href="{{ route('result') }}" class="nav-link {{ Request::is('results') ? 'active' : '' }}">
                                         <i class="nav-icon fa-solid fas fa-poll-h"></i>
-                                        <p>{{ __('Resultados') }}</p>
+                                        <p>{{ __('Resultados por Paciente') }}</p>
                                     </a>
                                 </li>
                             @endif
@@ -330,7 +336,7 @@
                             <li class="nav-item px-2">
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon ">R</i>
-                                    <p>{{ __('esultados') }}</p>
+                                    <p>{{ __('eporte Económico') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item px-2">

@@ -40,6 +40,15 @@
         $(element).prop('checked', true);
     }
     $(document).ready(function() {
+        $('#tabla_resultados tbody').empty().append('<td colspan="7" class="text-center" style="border: 1px solid #BAECCA;">No hay datos recepcionados</td>');
+        var hoy = new Date();
+        $("#rec_fecha_inicio").val(hoy.toISOString().split('T')[0]);
+        $("#rec_fecha_final").val(hoy.toISOString().split('T')[0]);
+        $("#rec_fecha_inicio").focus();
+        $("#pendiente").prop('checked', true);
+
+        SearchFechas();
+
         $("#rec_paciente_clave").focus();
         $('#rec_paciente_clave').autocomplete({
             source: function(request, response) {

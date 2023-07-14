@@ -14,9 +14,9 @@ class ReportController extends Controller
     {
         $user = Auth::user();
         if ($user->rol == 'admin') {
-            $cajas = Caja::orderBy('updated_at', 'desc')->get();
+            $cajas = Caja::where('caja_estado', '=', 0)->orderBy('updated_at', 'desc')->get();
         }else if ($user->rol == 'usuario') {
-            $cajas = Caja::where('user_id', '=', $user->id)->orderBy('updated_at', 'desc')->get();
+            $cajas = Caja::where([['user_id', '=', $user->id], ['caja_estado', '=', 0]])->orderBy('updated_at', 'desc')->get();
         }
         return view('reportes.reportCaja', [
             'cajas' => $cajas

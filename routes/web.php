@@ -36,6 +36,7 @@ use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\PermisoUserController;
 use App\Http\Controllers\ProcedimientoController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\RecepcionController;
 use App\Http\Controllers\RecipienteController;
 use App\Http\Controllers\ReportController;
@@ -288,6 +289,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/results', [ResultController::class, 'index'])->name('result');
             Route::post('/results', [ResultController::class, 'store'])->name('result.store');
             Route::post('/results/{id}', [ResultController::class, 'update'])->name('result.update')->middleware('ajax');
+
+            Route::get('/pruebas', [PruebaController::class, 'index'])->name('prueba');
+
+            Route::get('/getResultsPruebas', [PruebaController::class, 'getResultsPruebas']);
+            Route::get('/getPrueba/{id}', [PruebaController::class, 'getPrueba'])->name('getPrueba');
+            Route::get('/getPruebaPacientes/{id}', [PruebaController::class, 'getPruebaPacientes'])->name('getPruebaPacientes');
             
             Route::get('/permisos', [PermisoController::class, 'index'])->name('permiso');
             Route::post('/permisos', [PermisoController::class, 'store'])->name('permiso.store');

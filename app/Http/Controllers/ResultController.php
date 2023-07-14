@@ -278,6 +278,11 @@ class ResultController extends Controller
         $result = Result::find($id);
         $result->resultado = $request->input('resultado');
         $result->umed_id = $request->input('umed_id');
+        if ($request->input('resultado') !== null) {
+            $result->estado = 1;
+        }else{
+            $result->estado = 0 ;
+        }
         $result->save();
     }
 

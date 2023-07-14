@@ -45,8 +45,9 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>{{ __('Usuario') }}</th>
-                                                <th>{{ __('Fecha') }}</th>
-                                                <th>{{ __('total') }}</th>
+                                                <th>{{ __('Fecha Inicio') }}</th>
+                                                <th>{{ __('Fecha Fin') }}</th>
+                                                <th>{{ __('Total') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -54,9 +55,9 @@
                                                 <tr>
                                                     <td>Caja {{ $caja->id }}</td>
                                                     <td>{{ $caja->user->usuario->usuario_nombre }}</td>
+                                                    <td>{{ $caja->created_at }}</td>
                                                     <td>{{ $caja->updated_at }}</td>
                                                     <td class="text-right">{{ $caja->caja_monto_final }}</td>
-                                                    
                                                 </tr>
                                             @endforeach
                                         </tbody>

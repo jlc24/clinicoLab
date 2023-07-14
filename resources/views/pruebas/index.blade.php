@@ -5,13 +5,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">{{ __('Captura') }}</h1>
+                    <h1 class="m-0">{{ __('Capturas') }}</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Inicio') }}</a></li>
-                        <li class="breadcrumb-item"><a href="#">{{ __('Captura') }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('Resultados - Paciente') }}</li>
+                        <li class="breadcrumb-item"><a href="#">{{ __('Capturas') }}</a></li>
+                        <li class="breadcrumb-item active">{{ __('Resultados - Prueba') }}</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -20,7 +20,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-3 col-sm-12">
+                <div class="col-xl-3 col-sm-12" hidden>
                     <div class="card">
                         <div class="card-header" style="background-color: #E8F8ED; height: 40px;">
                             <h4 class="page-title">
@@ -114,22 +114,24 @@
                                 </div>
                             </div>
                             <div id="form_buscar_fechas">
-                                <div class="row justify-content-center pt-3 mb-4">
-                                    <div class="col-xl-5 col-sm-5">
+                                <div class="row justify-content-center mb-2">
+                                    <div class="col-xl-6 col-sm-6">
+                                        <label class="col-md-6" for="rec_fecha_inicio">{{ __('Fecha Inicial') }}:</label>
                                         <div class="form-group row">
                                             <div class="col-md-12 " style="display: inline-flex;">
                                                 <input type="date" id="rec_fecha_inicio" name="rec_fecha_inicio" class="form-control form-control-sm" autocomplete="off" required>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-5 col-sm-5">
+                                    <div class="col-xl-6 col-sm-6">
                                         <div class="form-group row">
+                                            <label class="col-md-6" for="rec_fecha_final">{{ __('Fecha Final') }}:</label>
                                             <div class="col-md-12 " style="display: inline-flex;">
                                                 <input type="date" id="rec_fecha_final" name="rec_fecha_final" class="form-control form-control-sm" autocomplete="off" required>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-2 col-sm-2">
+                                    <div class="col-xl-2 col-sm-2" hidden>
                                         <div class="form-group row">
                                             <button class="btn btn-info btn-sm" id="btnBuscarFechas">Buscar</button>
                                         </div>
@@ -173,28 +175,35 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xl-12 col-sm-12">
+                
                     <div class="card">
-                        <div class="card-header" style="background-color: #fff; padding-top: 15px">
-                            <h4>{{ __('Pacientes Recepcionados') }}</h4>
+                        <div class="card-header" style="background-color: #fff; height: 50px;">
+                            <div class="row">
+                                <div class="col-xl-6 col-sm-6">
+                                    <h4>{{ __('Pruebas Recepcionadas') }}</h4>
+                                </div>
+                                <div class="col-xl-6 col-sm-6" style="display: inline-flex">
+                                    <label class="col-md-5 text-right" for="searchPruebas">Buscar:</label>
+                                    <div class="col-md-6">
+                                        <input type="text" name="searchPruebas" id="searchPruebas" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="car-body">
                             <div class="row m-1">
-                                @include('resultado.tablas.tabla_resultados')
+                                @include('pruebas.tablas.tabla_resultado_pruebas')
                             </div>
                         </div>
                     </div>
-                </div>
+                
             </div>
         </div>
     </section>
 
-    @include('resultado.modal.modal_resultados')
-    @include('resultado.modal.modal_ver_parametro')
-    @include('cliente.modal.modal_ver_resultadopdf')
-    @include('confirmacion.modal_confirmacion')
+    @include('pruebas.modal.modal_resultado_prueba')
 @endsection
 
 @section('funciones')
-    @include('resultado.funciones.funciones_resultado')
+    @include('pruebas.funciones.funcion_resultado_pruebas')
 @endsection

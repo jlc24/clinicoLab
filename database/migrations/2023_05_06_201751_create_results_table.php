@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ca_id');           // aspecto
             $table->string('resultado', 255)->nullable();   // resultado
             $table->unsignedBigInteger('umed_id')->nullable();
+            $table->unsignedBigInteger('estado');
             $table->timestamps();
 
             $table->foreign('fac_id')->references('id')->on('facturas');
