@@ -216,12 +216,13 @@
                     timer: 2000
                 });
             }else{
+                $subgrupo = $("#est_subgrupo").val() == null ? '' : $("#est_subgrupo").val();
                 var datos = new FormData();
                 datos.append('est_cod', $("#est_cod").val());
                 datos.append('est_nombre', $("#est_nombre").val());
                 datos.append('est_descripcion', $("#est_descripcion").val());
                 datos.append('est_grupo', $("#est_grupo").val());
-                datos.append('est_subgrupo', $("#est_subgrupo").val());
+                datos.append('est_subgrupo', $subgrupo);
                 datos.append('est_precio', $("#est_precio").val());
                 datos.append('est_moneda', $("#est_moneda").val());
                 datos.append('est_muestra', $("#est_muestra").val());
