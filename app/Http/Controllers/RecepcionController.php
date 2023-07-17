@@ -211,6 +211,7 @@ class RecepcionController extends Controller
                 'dp_id' => $row->dp_id,
                 'dpc_id' => $row->dpc_id,
                 'ca_id' => $row->ca_id,
+                'estado' => 0
             ];
         }
         Result::insert($records);
