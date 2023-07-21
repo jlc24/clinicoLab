@@ -82,6 +82,8 @@
                     console.log(data);
                     if (data.length !== 0) {
                         $("#est_grupo").empty();
+                        var emptyOption = $("<option>").val("").text("Seleccionar...");
+                        $("#est_grupo").append(emptyOption);
                         $.each(data, function(index, grupo) {
                             var option = $("<option>").val(grupo.id).text(grupo.nombre);
                             $("#est_grupo").append(option);
@@ -102,6 +104,8 @@
                     console.log(data);
                     if (data.length !== 0) {
                         $("#est_subgrupo").empty();
+                        var emptyOption = $("<option>").val("").text("Seleccionar...");
+                        $("#est_subgrupo").append(emptyOption);
                         $.each(data, function(indez, subgrupo) {
                             var option = $("<option>").val(subgrupo.id).text(subgrupo.nombre);
                             $("#est_subgrupo").append(option);

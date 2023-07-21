@@ -58,14 +58,11 @@
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_grupo">{{ __('Grupo') }}:<span class="dato_requerido">*</span></label>
-                                <div class="col-md-5">
+                                <div class="col-md-6">
                                     <select class="custom-select custom-select-sm" id="est_grupo" name="est_grupo" required>
                                         <option value="" selected="" disabled>SELECCIONAR...</option>
                                         
                                     </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a class="btn btn-sm btn-outline-success btnGruporefresh" title="Actualizar Grupo"><i class="fas fa-refresh"></i></a>
                                 </div>
                                 <div class="col-md-2">
                                     <a data-toggle="modal" data-target="#modal_crear_grupo" class="btn btn-sm btn-outline-info btnAddGrupo" title="Nuevo Grupo"><i class="fas fa-th"> +</i></a>
@@ -75,14 +72,11 @@
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_subgrupo">{{ __('Sub - Grupo') }}:</label>
-                                <div class="col-md-5">
+                                <div class="col-md-6">
                                     <select class="custom-select custom-select-sm" id="est_subgrupo" name="est_subgrupo" required>
                                         <option value="" selected="" disabled>SELECCIONAR...</option>
                                         
                                     </select>
-                                </div>
-                                <div class="col-md-1">
-                                    <a class="btn btn-sm btn-outline-success btnSubGruporefresh" title="Actualizar SubGrupo"><i class="fas fa-refresh"></i></a>
                                 </div>
                                 <div class="col-md-2">
                                     <a data-toggle="modal" data-target="#modal_crear_subgrupo" class="btn btn-sm btn-outline-info btnAddSubGrupo" title="Nuevo SubGrupo"><i class="fas fa-th"> +</i></a>
@@ -92,7 +86,7 @@
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_muestra">{{ __('Tipo de Muestra') }}:<span class="dato_requerido">*</span></label>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <select class="custom-select custom-select-sm" id="est_muestra" name="est_muestra" required>
                                         <option value="" selected="" disabled>SELECCIONAR...</option>
                                         @foreach ($muestras as $muestra)
@@ -100,12 +94,15 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="col-md-2">
+                                    <a data-toggle="modal" data-target="#modal_crear_muestra" class="btn btn-sm btn-outline-info btnAddMuestra" title="Nuevo Muestra"><i class="fas fa-th"> +</i></a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_recipiente">{{ __('Recipiente') }}: </label>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <select class="custom-select custom-select-sm" id="est_recipiente" name="est_recipiente" >
                                         <option value="" selected="">SELECCIONAR...</option>
                                         @foreach ($recipientes as $recipiente)
@@ -113,18 +110,24 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="col-md-2">
+                                    <a data-toggle="modal" data-target="#modal_crear_recipiente" class="btn btn-sm btn-outline-info btnAddRecipiente" title="Nuevo Recipiente"><i class="fas fa-th"> +</i></a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_indicaciones">{{ __('Indicaciones') }}:<span class="dato_requerido">*</span></label>
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <select class="custom-select custom-select-sm" id="est_indicaciones" name="est_indicaciones" >
                                         <option value="" selected="">SELECCIONAR...</option>
                                         @foreach ($indicaciones as $indicacion)
                                             <option value="{{ $indicacion->id }}">{{ $indicacion->descripcion }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <a data-toggle="modal" data-target="#modal_crear_indicacion" class="btn btn-sm btn-outline-info btnAddIndicacion" title="Nuevo Indicacion"><i class="fas fa-th"> +</i></a>
                                 </div>
                             </div>
                         </div>

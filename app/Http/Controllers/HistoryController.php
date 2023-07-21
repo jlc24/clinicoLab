@@ -94,23 +94,23 @@ class HistoryController extends Controller
                                 DB::raw("DATE_FORMAT(r.created_at, '%d/%m/%Y') AS fecha"),
                                 'e.est_nombre', 'e.est_cod', 'r.estado')
                             ->orderBy('fecha');
-                            if ($fecha) {
-                                $recepcion->whereDate('r.created_at',  $fecha);
-                            }
+        if ($fecha) {
+            $recepcion->whereDate('r.created_at',  $fecha);
+        }
 
-                            if ($estudio) {
-                                $recepcion->where('e.id', '=', $estudio);
-                            }
-                            
-                            if ($caja) {
-                                $recepcion->where('c.id', $caja);
-                            }
-                            
-                            if ($usuario) {
-                                $recepcion->where('u.id', $usuario);
-                            }
-                            
-                            $recepcion = $recepcion->get();
+        if ($estudio) {
+            $recepcion->where('e.id', '=', $estudio);
+        }
+        
+        if ($caja) {
+            $recepcion->where('c.id', $caja);
+        }
+        
+        if ($usuario) {
+            $recepcion->where('u.id', $usuario);
+        }
+        
+        $recepcion = $recepcion->get();
 
         }elseif ($user->rol == 'usuario' || $user->rol == 'medico') {
             $recepcion = DB::table('recepcions as r')

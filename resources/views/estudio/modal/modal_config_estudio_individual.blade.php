@@ -44,9 +44,6 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button id="btnEditEst" class="btn btn-success">Actualizar</button>
-            </div>
         </div>
     </div>
 </div>

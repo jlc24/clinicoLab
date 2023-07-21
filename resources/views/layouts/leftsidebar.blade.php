@@ -310,7 +310,7 @@
                         </ul>
                     </li>
                     @php
-                        $activeRoutesReport = [ 'reporte.caja', 'reporte.estudio' ];
+                        $activeRoutesReport = [ 'reporte.caja', 'reporte.estudio', 'reporte.material', 'reporte.economico' ];
                     @endphp
                     <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesReport) ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesReport) ? 'active' : '' }}">
@@ -328,13 +328,13 @@
                                 </a>
                             </li>
                             <li class="nav-item px-2">
-                                <a href="#" class="nav-link">
+                                <a href="{{ route('reporte.material') }}" class="nav-link {{ Request::is('reportes/materiales') ? 'active' : '' }}">
                                     <i class="nav-icon ">M</i>
                                     <p>{{ __('aterial') }}</p>
                                 </a>
                             </li>
                             <li class="nav-item px-2">
-                                <a href="#" class="nav-link">
+                                <a href="{{ route('reporte.economico') }}" class="nav-link {{ Request::is('reportes/economicos') ? 'active' : '' }}">
                                     <i class="nav-icon ">R</i>
                                     <p>{{ __('eporte Económico') }}</p>
                                 </a>

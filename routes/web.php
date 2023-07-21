@@ -320,7 +320,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/historyRecepcion', [HistoryController::class, 'historyRecepcion']);
 
         Route::get('/reportes/cajas', [ReportController::class, 'reporteCaja'])->name('reporte.caja');
-        Route::get('/reportes/estudios', [ReportController::class, 'reporteEstudio'])->name('reporte.estudio');
+        Route::get('/reportes/estudios', [ReportController::class, 'indexEstudio'])->name('reporte.estudio');
+        Route::get('/getReportEstudio', [ReportController::class, 'getReportEstudio'])->name('getReportEstudio');
+        Route::get('/reportes/materiales', [ReportController::class, 'reporteMaterial'])->name('reporte.material');
+        Route::get('/reportes/economicos', [ReportController::class, 'reporteEconomico'])->name('reporte.economico');
     });
     
     Route::middleware('role:cliente')->group(function () {

@@ -23,34 +23,66 @@ class ReportController extends Controller
         ]);
     }
 
-    public function reporteEstudio()
+    public function indexEstudio()
+    {
+        return view('reportes.reportEstudio');
+    }
+
+    public function getReportEstudio(Request $request)
     {
         $user = Auth::user();
+        $fechaIn = $request->input('i');
+        $fechaFin = $request->input('f');
         if ($user->rol == 'admin') {
             $recepcions = DB::table('recepcions as r')
                             ->join('detalles as d', 'd.id', '=', 'r.det_id')
                             ->join('estudios as e', 'd.estudio_id', '=', 'e.id')
-                            ->select('e.est_cod', 'e.est_nombre', 
+                            ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
+                            ->join('facturas as f', 'f.id', '=', 'r.fac_id')
+                            ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
+                            ->select('g.nombre as grupo', 'sg.nombre as subgrupo', 'd.id as estudio', 'e.est_cod', 'e.est_nombre', 'e.est_precio', 
                             DB::raw('COUNT(*) as cantidad'), 
-                            DB::raw('(COUNT(*) * e.est_precio) as total'))
-                            ->groupBy('e.est_cod', 'e.est_nombre', 'e.est_precio')
-                            ->get();
+                            DB::raw('(COUNT(*) * e.est_precio) as total'), 'e.est_moneda')
+                            ->groupBy('g.nombre', 'sg.nombre', 'e.est_cod', 'e.est_nombre', 'e.est_precio', 'e.est_moneda', 'd.id');
+            if ($fechaIn !== null && $fechaFin !== null) {
+                $recepcions->whereBetween(DB::raw('DATE(f.created_at)'), [$fechaIn, $fechaFin]);
+            }
+
+            $recepcions = $recepcions->get();
         }else {
             $recepcions = DB::table('recepcions as r')
                             ->join('detalles as d', 'd.id', '=', 'r.det_id')
                             ->join('estudios as e', 'd.estudio_id', '=', 'e.id')
+                            ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
+                            ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
+                            ->join('facturas as f', 'f.id', '=', 'r.fac_id')
                             ->join('cajas as c', 'c.id', '=', 'r.caja_id')
                             ->join('users as u', 'u.id', '=', 'c.user_id')
-                            ->select('e.est_cod', 'e.est_nombre', 
+                            ->select('g.nombre as grupo', 'sg.nombre as subgrupo', 'd.id as estudio', 'e.est_cod', 'e.est_nombre', 'e.est_precio', 
                             DB::raw('COUNT(*) as cantidad'),
-                            DB::raw('(COUNT(*) * e.est_precio) as total'))
+                            DB::raw('(COUNT(*) * e.est_precio) as total'), 'e.est_moneda')
                             ->where('u.id', '=', $user->id)
-                            ->groupBy('e.est_cod', 'e.est_nombre', 'e.est_precio')
-                            ->get();
+                            ->groupBy('g.nombre', 'sg.nombre', 'e.est_cod', 'e.est_nombre', 'e.est_precio', 'e.est_moneda', 'd.id');
+            if ($fechaIn !== null && $fechaFin !== null) {
+                $recepcions->whereBetween(DB::raw('DATE(f.created_at)'), [$fechaIn, $fechaFin]);
+            }
+            $recepcions = $recepcions->get();
         }
 
-        return view('reportes.reportEstudio', [
-            'recepcions' => $recepcions
-        ]);
+        return response()->json($recepcions);
+    }
+
+    public function reporteMaterial()
+    {
+        $user = Auth::user();
+        
+        return view('reportes.reporteMaterial');
+    }
+
+    public function reporteEconomico()
+    {
+        $user = Auth::user();
+
+        return view('reportes.reporteEconomico');
     }
 }

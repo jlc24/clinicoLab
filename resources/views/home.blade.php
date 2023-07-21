@@ -62,7 +62,7 @@
                         <div class="inner">
                             <h3>65</h3>
         
-                            <p>Recpciones</p>
+                            <p>Recepciones</p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-pie-graph"></i>
