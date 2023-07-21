@@ -45,7 +45,7 @@
         fechaIn = fechaIn.split("/").reverse().join("-");
         fechaFin = fechaFin.split("/").reverse().join("-");
 
-        getReportEstudio(fechaIn, fechaFin);
+        //getReportEstudio(fechaIn, fechaFin);
 
         function getReportEstudio(inicio, fin) {
             $.ajax({
