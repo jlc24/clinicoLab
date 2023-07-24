@@ -69,49 +69,70 @@
 
         $("#btnRegisterMaterial").on('click', function(event) {
             event.preventDefault();
-            var fileData = $("#mat_imagen").prop("files")[0];
-            var estado = '0';
-            var datos = new FormData();
-            datos.append('mat_cod', $("#mat_cod").val());
-            datos.append('mat_nombre', $("#mat_nombre").val());
-            datos.append('mat_descripcion', $("#mat_descripcion").val());
-            datos.append('cat_id', $("#mat_categoria").val());
-            datos.append('mat_imagen', fileData);
-            datos.append('mat_ventas', 0);
-            datos.append('mat_estado', estado);
-
-            $.ajax({
-                url: '{{ route("material.store") }}',
-                type: 'POST',
-                data: datos,
-                processData: false,
-                contentType: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(response) {
-                    Swal.fire({
-                        title: '¡Éxito!',
-                        text: 'Dato registrado correctamente',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    //setTimeout(function(){
-                        window.location.href = '{{ route('material') }}';
-                    //}, 1000);
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
+            if ($("#mat_cod").val() == '' || $("#mat_nombre").val() == '' || $("#mat_categoria").val() == '' || $("#mat_categoria").val() == null) {
+                let vacio = '';
+                if ($("#mat_cod").val() == '') {
+                    vacio = 'CODIGO';
+                }else if ($("#mat_nombre").val() == '') {
+                    vacio = 'NOMBRE';
+                }else if ($("#mat_categoria").val() == '') {
+                    vacio = 'CATEGORIA';
+                }else if ($("#mat_categoria").val() == null) {
+                    vacio = 'CATEGORIA';
                 }
-            });
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'El campo ' + vacio + ' es requerido',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                $("#mat_nombre").trigger('focus');
+            }else{
+                var fileData = $("#mat_imagen").prop("files")[0];
+                var estado = '0';
+                var datos = new FormData();
+                datos.append('mat_cod', $("#mat_cod").val());
+                datos.append('mat_nombre', $("#mat_nombre").val());
+                datos.append('mat_descripcion', $("#mat_descripcion").val());
+                datos.append('cat_id', $("#mat_categoria").val());
+                datos.append('mat_imagen', fileData);
+                datos.append('mat_ventas', 0);
+                datos.append('mat_estado', estado);
+    
+                $.ajax({
+                    url: '{{ route("material.store") }}',
+                    type: 'POST',
+                    data: datos,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            title: '¡Éxito!',
+                            text: 'Dato registrado correctamente',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        //setTimeout(function(){
+                            window.location.href = '{{ route('material') }}';
+                        //}, 1000);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            }
         });
         
         function updateEstado(id, estado, valor) {

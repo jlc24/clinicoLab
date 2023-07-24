@@ -21,13 +21,13 @@
                 <div class="col-xl-12 col-sm-12">
                     <form class="form-horizontal" id="formulario_materiales">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label ui-front" for="mat_cod">{{ __('Cod.') }}:</label>
+                            <label class="col-md-3 col-form-label ui-front" for="mat_cod">{{ __('Cod.') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
                                 <input type="text" placeholder="Codigo Material" id="mat_cod" name="mat_cod" class="form-control form-control-sm mat_cod" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="mat_nombre">{{ __('Nombre') }}:</label>
+                            <label class="col-md-3 col-form-label" for="mat_nombre">{{ __('Nombre') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
                                 <input type="text" placeholder="Nombre Material" id="mat_nombre" name="mat_nombre" class="form-control form-control-sm mat_nombre" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                             </div>
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="mat_categoria">{{ __('Categoria') }}:</label>
+                            <label class="col-md-3 col-form-label" for="mat_categoria">{{ __('Categoria') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
                                 <select id="mat_categoria" name="mat_categoria" class="custom-select custom-select-sm mat_categoria" style="border-radius: 5px 0px 0px 5px;" >
                                     <option value="" selected>Seleccionar...</option>
