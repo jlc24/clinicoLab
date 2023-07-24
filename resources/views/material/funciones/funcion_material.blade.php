@@ -270,94 +270,136 @@
                     cancelButtonText: 'Cambiar imagen'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var datos = new FormData();
-                        datos.append('mat_cod', $(".mat_cod_update").val());
-                        datos.append('mat_nombre', $(".mat_nombre_update").val());
-                        datos.append('mat_descripcion', $(".mat_descripcion_update").val());
-                        datos.append('cat_id', $(".mat_categoria_update").val());
-                        
-                        // for (const [key, value] of datos) {
-                        //     console.log(key, '- '+value);
-                        // };
-
-                        $.ajax({
-                            url: '{{ route("material.update", ":id") }}'.replace(":id", mat_id),
-                            type: 'POST',
-                            data: datos,
-                            contentType: false,
-                            processData: false,
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function(response) {
-                                Swal.fire({
-                                    title: '¡Éxito!',
-                                    text: 'Dato actualizado correctamente',
-                                    icon: 'success',
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                });
-                                //setTimeout(function(){
-                                    window.location.href = '{{ route('material') }}';
-                                //}, 1000);
-                            },
-                            error: function (xhr, textStatus, errorThrown) {
-                                console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                                Swal.fire({
-                                    title: 'Oops...',
-                                    text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
-                                    icon: 'error',
-                                    showConfirmButton: false,
-                                    timer: 2000
-                                });
+                        if ($("#mat_cod_update").val() == '' || $("#mat_nombre_update").val() == '' || $("#mat_categoria_update").val() == '' || $("#mat_categoria").val() == null) {
+                            let vacio = '';
+                            if ($("#mat_cod_update").val() == '') {
+                                vacio = 'CODIGO';
+                            }else if ($("#mat_nombre_update").val() == '') {
+                                vacio = 'NOMBRE';
+                            }else if ($("#mat_categoria_update").val() == '') {
+                                vacio = 'CATEGORIA';
+                            }else if ($("#mat_categoria_update").val() == null) {
+                                vacio = 'CATEGORIA';
                             }
-                        });
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'El campo ' + vacio + ' es requerido',
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                            $("#mat_nombre_update").trigger('focus');
+                        }else{
+                            var datos = new FormData();
+                            datos.append('mat_cod', $(".mat_cod_update").val());
+                            datos.append('mat_nombre', $(".mat_nombre_update").val());
+                            datos.append('mat_descripcion', $(".mat_descripcion_update").val());
+                            datos.append('cat_id', $(".mat_categoria_update").val());
+                            
+                            // for (const [key, value] of datos) {
+                            //     console.log(key, '- '+value);
+                            // };
+    
+                            $.ajax({
+                                url: '{{ route("material.update", ":id") }}'.replace(":id", mat_id),
+                                type: 'POST',
+                                data: datos,
+                                contentType: false,
+                                processData: false,
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function(response) {
+                                    Swal.fire({
+                                        title: '¡Éxito!',
+                                        text: 'Dato actualizado correctamente',
+                                        icon: 'success',
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    });
+                                    //setTimeout(function(){
+                                        window.location.href = '{{ route('material') }}';
+                                    //}, 1000);
+                                },
+                                error: function (xhr, textStatus, errorThrown) {
+                                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                                    Swal.fire({
+                                        title: 'Oops...',
+                                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                                        icon: 'error',
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    });
+                                }
+                            });
+                        }
                     }
                 });
             }else{
-                var datos = new FormData();
-                datos.append('mat_cod', $(".mat_cod_update").val());
-                datos.append('mat_nombre', $(".mat_nombre_update").val());
-                datos.append('mat_descripcion', $(".mat_descripcion_update").val());
-                datos.append('cat_id', $(".mat_categoria_update").val());
-                datos.append('mat_imagen', imagenFile);
-                
-                // for (const [key, value] of datos) {
-                //     console.log(key, '- '+value);
-                // };
-
-                $.ajax({
-                    url: '{{ route("material.update", ":id") }}'.replace(":id", mat_id),
-                    type: 'POST',
-                    data: datos,
-                    contentType: false,
-                    processData: false,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            title: '¡Éxito!',
-                            text: 'Dato actualizado correctamente',
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                        //setTimeout(function(){
-                            window.location.href = '{{ route('material') }}';
-                        //}, 1000);
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                        Swal.fire({
-                            title: 'Oops...',
-                            text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
-                            icon: 'error',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
+                if ($("#mat_cod_update").val() == '' || $("#mat_nombre_update").val() == '' || $("#mat_categoria_update").val() == '' || $("#mat_categoria").val() == null) {
+                    let vacio = '';
+                    if ($("#mat_cod_update").val() == '') {
+                        vacio = 'CODIGO';
+                    }else if ($("#mat_nombre_update").val() == '') {
+                        vacio = 'NOMBRE';
+                    }else if ($("#mat_categoria_update").val() == '') {
+                        vacio = 'CATEGORIA';
+                    }else if ($("#mat_categoria_update").val() == null) {
+                        vacio = 'CATEGORIA';
                     }
-                });
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'El campo ' + vacio + ' es requerido',
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    $("#mat_nombre_update").trigger('focus');
+                }else{
+                    var datos = new FormData();
+                    datos.append('mat_cod', $(".mat_cod_update").val());
+                    datos.append('mat_nombre', $(".mat_nombre_update").val());
+                    datos.append('mat_descripcion', $(".mat_descripcion_update").val());
+                    datos.append('cat_id', $(".mat_categoria_update").val());
+                    datos.append('mat_imagen', imagenFile);
+                    
+                    // for (const [key, value] of datos) {
+                    //     console.log(key, '- '+value);
+                    // };
+    
+                    $.ajax({
+                        url: '{{ route("material.update", ":id") }}'.replace(":id", mat_id),
+                        type: 'POST',
+                        data: datos,
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: '¡Éxito!',
+                                text: 'Dato actualizado correctamente',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                            //setTimeout(function(){
+                                window.location.href = '{{ route('material') }}';
+                            //}, 1000);
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                            Swal.fire({
+                                title: 'Oops...',
+                                text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        }
+                    });
+                }
             }
         });
 

@@ -21,14 +21,14 @@
                 <div class="col-xl-12 col-sm-12">
                     <form class="form-horizontal" id="formulario_materiales">
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label ui-front" for="mat_cod_update">{{ __('Cod.') }}:</label>
+                            <label class="col-md-3 col-form-label ui-front" for="mat_cod_update">{{ __('Cod.') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
                                 <input type="text" id="mat_cod_update" name="mat_cod_update" class="form-control form-control-sm mat_cod_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                                 <input type="hidden" name="mat_id_update" id="mat_id_update" class="mat_id_update">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="mat_nombre_update">{{ __('Nombre') }}:</label>
+                            <label class="col-md-3 col-form-label" for="mat_nombre_update">{{ __('Nombre') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
                                 <input type="text" id="mat_nombre_update" name="mat_nombre_update" class="form-control form-control-sm mat_nombre_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
                             </div>
@@ -40,7 +40,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 col-form-label" for="mat_categoria_update">{{ __('Categoria') }}:</label>
+                            <label class="col-md-3 col-form-label" for="mat_categoria_update">{{ __('Categoria') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
                                 <select id="mat_categoria_update" name="mat_categoria_update" class="custom-select custom-select-sm mat_categoria_update" >
                                     <option value="" selected>Seleccionar...</option>
