@@ -217,7 +217,7 @@
                         dataType: 'json',
                     });
         }
-        $(".btnEditarMaterial").on('click', function() {
+        $(document).on('click', '.btnEditarMaterial', function() {
             var id = $(this).closest('tr').find('td:eq(0)').text();
             getMaterial(id).then(function(data_mat) {
                 $(".mat_id_update").val(data_mat.id);
@@ -377,7 +377,7 @@
             });
         }
 
-        $(".btnAbastecerMaterial").on('click', function() {
+        $(document).on('click', '.btnAbastecerMaterial', function() {
             var id = $(this).closest('tr').find('td:eq(0)').text();
             getMaterial(id).then(function(data) {
                 $(".mat_id_abastecer").val(data.id);
@@ -413,7 +413,7 @@
             });
         }
 
-        $(".btnRegistrarCompra").on('click', function(event) {
+        $(document).on('click', '.btnRegistrarCompra', function(event) {
             event.preventDefault();
             if ($(".mat_unidad_abastecer").val() == "" || $(".mat_cantidad_abastecer").val() == 0 || $(".mat_fecha_elab_abastecer").val() == "" || $(".mat_fecha_venc_abastecer").val() == "" || $(".mat_precio_compra_abastecer").val() ==  "" || $(".mat_precio_compra_abastecer").val() == 0 || $(".mat_tipo_pago_abastecer").val() == "") {
                 Swal.fire({
@@ -560,7 +560,7 @@
             });
         }
         
-        $(".btnVerMaterial").on('click', function() {
+        $(document).on('click', '.btnVerMaterial', function() {
             var id = $(this).closest('tr').find('td:eq(0)').text();
             VerModal(id);
             getComprasMaterial(id);
