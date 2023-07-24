@@ -49,7 +49,7 @@
                                             <td>{{ $material->id }}</td>
                                             <td>{{ $material->mat_nombre }}</td>
                                             <td>{{ $material->mat_descripcion }}</td>
-                                            <td>{{ $material->categoria->nombre }}</td>
+                                            <td>{{ ($material->categoria->nombre == null ? '' : $material->categoria->nombre) }}</td>
                                             <td>{{ $material->mat_cantidad - $material->mat_ventas }}</td>
                                             <td class="text-center">
                                                 @if($material->mat_estado == '1')
