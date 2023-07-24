@@ -380,7 +380,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xl-12 col-sm-12" id="tabla_grupos" hidden>
+                                <div class="col-xl-12 col-sm-12" id="tabla_grupos">
                                     <table class="table table-sm table-bordered table-hover table-responsive-sm">
                                         <thead  style="background-color: #BDD7EE">
                                             <th style="width: 20%">Grupo:</th>

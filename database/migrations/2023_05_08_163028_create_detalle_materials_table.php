@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('detalle_materials', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('det_id');
+            $table->unsignedBigInteger('ca_id');
             $table->unsignedBigInteger('mat_id');
             $table->unsignedDecimal('cantidad')->nullable();
             $table->unsignedBigInteger('umed_id')->nullable();
             $table->unsignedDecimal('precio_total', 8, 4)->nullable();
             $table->timestamps();
 
-            $table->foreign('det_id')->references('id')->on('detalles');
+            $table->foreign('ca_id')->references('id')->on('componente_aspectos');
             $table->foreign('mat_id')->references('id')->on('materials');
             $table->foreign('umed_id')->references('id')->on('u_medidas');
         });

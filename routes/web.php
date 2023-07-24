@@ -102,6 +102,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/updateQR/{id}', [MedicoController::class, 'updateQR'])->name('medico.updateQR');
 
         Route::get('/countMedicos', [MedicoController::class, 'countMedicos'])->name('countMedicos');
+        Route::get('/getMedicosEstudio/{id}', [MedicoController::class, 'getMedicosEstudio'])->name('getMedicosEstudio');
     
         Route::get('/cajas', [CajaController::class, 'index'])->name('caja');
         Route::post('/cajas', [CajaController::class, 'store'])->name('caja');

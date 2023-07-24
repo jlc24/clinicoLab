@@ -66,8 +66,8 @@
                                                         @if ($detalle->tipo == 'HABILITADO')
                                                             <button data-id="{{ $detalle->id }}" data-nombre="{{ $detalle->estudio->est_nombre }}" data-toggle="modal" data-target="#modal_configurar_estudio_individual_{{ $detalle->id }}" class="btn btn-sm btn-outline-info btn-detalle-indi-id" title="Configurar Estudio Individual"><i class="fas fa-cog"></i></button>
                                                             @include('estudio.modal.modal_config_estudio_individual')
-                                                            <button data-toggle="modal" data-target="#modal_agregar_material" class="btn btn-sm btn-outline-primary btn-add-material-estudio" title="Agregar Material"><i class="fas fa-book"></i></button>
-                                                            <button href="javascript:void(0);" class="btn btn-sm btn-outline-danger btn-delete-estudio" title="Elimnar estudio"><i class="fas fa-trash-alt"></i></button>
+                                                            {{-- <button data-toggle="modal" data-target="#modal_agregar_material" class="btn btn-sm btn-outline-primary btn-add-material-estudio" title="Agregar Material"><i class="fas fa-book"></i></button>
+                                                            <button href="javascript:void(0);" class="btn btn-sm btn-outline-danger btn-delete-estudio" title="Elimnar estudio"><i class="fas fa-trash-alt"></i></button> --}}
                                                         @endif
                                                     </div>
                                                 </td>

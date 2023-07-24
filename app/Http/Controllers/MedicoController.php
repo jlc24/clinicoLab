@@ -10,6 +10,7 @@ use App\Models\Municipio;
 use App\Models\Permiso;
 use App\Models\PermisoUser;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -31,6 +32,22 @@ class MedicoController extends Controller
             'permisos' => Permiso::all(),
             'bancos' => Banco::all(),
         ]);
+    }
+
+    public function getMedicosEstudio($id)
+    {
+        $medicos = DB::table('medicos as med')
+                        ->join('facturas as f', 'f.med_id', '=', 'med.id')
+                        ->join('recepcions as r', 'f.id', '=', 'r.fac_id')
+                        ->join('detalles as d', 'r.det_id', '=', 'd.id')
+                        ->join('estudios as e', 'e.id', '=', 'd.estudio_id')
+                        ->select('med.id', DB::raw("CONCAT(med.med_nombre, ' ', 
+                                            med.med_apellido_pat, ' ', 
+                                            med.med_apellido_mat) AS nombre"), 'med.med_convenio', DB::raw('COUNT(*) as cantidad'), 'e.est_nombre')
+                        ->where('d.id', '=', $id)
+                        ->groupBy('med.id', 'nombre', 'med.med_convenio', 'e.est_nombre')
+                        ->get();
+        return response()->json($medicos);
     }
 
     public function countMedicos()
