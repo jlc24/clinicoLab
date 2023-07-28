@@ -159,12 +159,6 @@
                             <td><strong>{{ __('Hora') }}:</strong></td>
                             <td>{{ date('H:i', time()) }}</td>
                         </tr>
-                        @if($paciente->nombre_med != null)
-                            <tr>
-                                <td><strong>{{ __('Medico') }}:</strong></td>
-                                <td colspan="5">{{ $paciente->nombre_med }}</td>
-                            </tr>
-                        @endif
                     </tbody>
                 </table>
             </div>

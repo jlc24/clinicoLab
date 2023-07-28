@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 use App\Models\Medico;
+use App\Models\Recepcion;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -29,8 +30,14 @@ class HomeController extends Controller
     {
         $contcli = Cliente::count();
         $contmed = Medico::count();
+        $contrecep = Recepcion::count();
         $contUser = User::whereIn('rol', ['admin', 'usuario'])->count();
-        return view('home', ['contcli' => $contcli, 'contmed' => $contmed, 'contUser' => $contUser]);
+        return view('home', [
+            'contcli' => $contcli,
+            'contmed' => $contmed,
+            'contrecep' => $contrecep,
+            'contUser' => $contUser
+        ]);
     }
 
     // public function ejemplo()
