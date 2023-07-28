@@ -28,6 +28,7 @@
                                             <div class="col-md-12">
                                                 <input type="text" id="asp_nombre" name="asp_nombre" class="form-control form-control-sm asp_nombre" autocomplete="off" placeholder="Nombre Prueba" required>
                                                 <input type="hidden" name="dp_comp_id" id="dp_comp_id" class="dp_comp_id">
+                                                <input type="hidden" name="est_dp_comp_id" id="est_dp_comp_id" class="est_dp_comp_id">
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +69,7 @@
                                 </div>
                             </div>
                             <div class="row justify-content-center">
-                                <div class="col-xl-10 col-sm-12 ">
+                                <div class="col-xl-12 col-sm-12 ">
                                     <table class="table table-sm mb-0 pb-0">
                                         <thead style="background-color: #BAECCA;">
                                             <th width="50px"></th>
@@ -76,10 +77,11 @@
                                             <th width="180px">Prueba</th>
                                             <th class="text-center" width="100px">Unidad</th>
                                             <th class="text-center">Parámetro</th>
+                                            <th class="text-center">Material</th>
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="col-xl-10 col-sm-12 table-responsive table-borderless" style="height: 420px">
+                                <div class="col-xl-12 col-sm-12 table-responsive table-borderless" style="height: 420px">
                                     <table class="table table-sm table-hover tabla_dpc_parametro" id="tabla_dpc_parametro" >
                                         
                                         <tbody>

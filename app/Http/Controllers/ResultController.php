@@ -225,18 +225,6 @@ class ResultController extends Controller
         $recepcion = Recepcion::find($id);
         $recepcion->estado = $request->input('res_estado');
         $recepcion->save();
-
-        $mat_ests = DB::table('detalle_materials as dm')
-                        ->join('materials as m', 'dm.mat_id', '=', 'm.id')
-                        ->select('dm.*', 'm.mat_nombre', 'm.mat_precio_compra', 'm.mat_cantidad')
-                        ->where('dm.det_id', '=', $recepcion->det_id)
-                        ->where('m.mat_estado', '=', '1')
-                        ->get();
-        foreach ($mat_ests as $mat_est) {
-            $material = Material::find($mat_est->mat_id);
-            $material->mat_ventas = $mat_est->cantidad + $material->mat_ventas;
-            $material->save();
-        }
     }
     /**
      * Show the form for creating a new resource.
@@ -278,12 +266,47 @@ class ResultController extends Controller
         $result = Result::find($id);
         $result->resultado = $request->input('resultado');
         $result->umed_id = $request->input('umed_id');
-        if ($request->input('resultado') !== null) {
-            $result->estado = 1;
-        }else{
-            $result->estado = 0 ;
-        }
         $result->save();
+        
+        if ($result->estado === 0) {
+            $mat_ests = DB::table('detalle_materials as dm')
+                            ->join('materials as m', 'dm.mat_id', '=', 'm.id')
+                            ->select('dm.*', 'm.mat_nombre', 'm.mat_precio_compra', 'm.mat_cantidad')
+                            ->where('dm.ca_id', '=', $result->ca_id)
+                            ->where('m.mat_estado', '=', '1')
+                            ->get();
+            foreach ($mat_ests as $mat_est) {
+                $material = Material::find($mat_est->mat_id);
+                $material->mat_ventas = $mat_est->cantidad + $material->mat_ventas;
+                $material->save();
+            }
+            $result->estado = 1;
+            $result->save();
+        }
+    }
+
+    public function updateEstadoPrueba(Request $request, $id)
+    {
+        if ($request->input('pruebaEstado') !== null) {
+            $result = Result::find($id);
+            $result->resultado = null;
+            $result->umed_id = null;
+            $result->estado = 0;
+            $result->save();
+            
+            $mat_ests = DB::table('detalle_materials as dm')
+                            ->join('materials as m', 'dm.mat_id', '=', 'm.id')
+                            ->select('dm.*', 'm.mat_nombre', 'm.mat_precio_compra', 'm.mat_cantidad')
+                            ->where('dm.ca_id', '=', $result->ca_id)
+                            ->where('m.mat_estado', '=', '1')
+                            ->get();
+            foreach ($mat_ests as $mat_est) {
+                $material = Material::find($mat_est->mat_id);
+                $material->mat_ventas = $material->mat_ventas - $mat_est->cantidad;
+                $material->save();
+            }
+
+        }
     }
 
     /**

@@ -29,9 +29,9 @@
                 <form id="formulario_comprar_material" class="formulario_comprar_material">
                     <div class="row justify-content-center">
                         <div class="col-xl-2 col-sm-2">
-                            <label class="col-md-12 col-form-label" for="mat_unidad_abastecer">{{ __('Unidad') }}:</label>
+                            <label class="col-md-12 col-form-label" for="mat_unidad_abastecer">{{ __('Unidad') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-12">
-                                <select id="mat_unidad_abastecer" name="mat_unidad_abastecer" class="custom-select custom-select-sm " >
+                                <select id="mat_unidad_abastecer" name="mat_unidad_abastecer" class="custom-select custom-select-sm mat_unidad_abastecer" >
                                     <option value="" selected>Seleccionar...</option>
                                     @foreach ($medidas as $medida)
                                         <option value="{{ $medida->id }}">{{ $medida->unidad }}</option>
@@ -40,19 +40,19 @@
                             </div>
                         </div>
                         <div class="col-xl-2 col-sm-2">
-                            <label class="col-md-12 col-form-label" for="mat_cantidad_abastecer">{{ __('Cantidad') }}:</label>
+                            <label class="col-md-12 col-form-label" for="mat_cantidad_abastecer">{{ __('Cantidad') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-12">
                                 <input type="number" value="0" id="mat_cantidad_abastecer" name="mat_cantidad_abastecer" class="form-control form-control-sm mat_cantidad_abastecer" onkeyup="calcularPrecioCantidad('#mat_cantidad_abastecer', '#mat_precio_compra_abastecer', '#mat_precio_unitario_abastecer')" onchange="calcularPrecioCantidad('#mat_cantidad_abastecer', '#mat_precio_compra_abastecer', '#mat_precio_unitario_abastecer')" required>
                             </div>
                         </div>
                         <div class="col-xl-2 col-sm-2">
-                            <label class="col-md-12 col-form-label" for="mat_precio_compra_abastecer">{{ __('P. Compra') }}:</label>
+                            <label class="col-md-12 col-form-label" for="mat_precio_compra_abastecer">{{ __('P. Compra') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-12">
                                 <input type="number" value="0.00" id="mat_precio_compra_abastecer" name="mat_precio_compra_abastecer" class="form-control form-control-sm mat_precio_compra_abastecer" onkeyup="calcularPrecioCantidad('#mat_cantidad_abastecer', '#mat_precio_compra_abastecer', '#mat_precio_unitario_abastecer')" onchange="calcularPrecioCantidad('#mat_cantidad_abastecer', '#mat_precio_compra_abastecer', '#mat_precio_unitario_abastecer')" required>
                             </div>
                         </div>
                         <div class="col-xl-2 col-sm-2">
-                            <label class="col-md-12 col-form-label" for="mat_precio_unitario_abastecer">{{ __('P. Unitario') }}:</label>
+                            <label class="col-md-12 col-form-label" for="mat_precio_unitario_abastecer">{{ __('P. Unitario') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-12">
                                 <input type="number" value="0.00" id="mat_precio_unitario_abastecer" name="mat_precio_unitario_abastecer" class="form-control form-control-sm mat_precio_unitario_abastecer" readonly>
                             </div>
@@ -61,22 +61,22 @@
                             <div class="col-xl-12 col-sm-12" style="display: inline-flex;">
                                 <label class="col-md-5 col-form-label" for="mat_fecha_elab_abastecer">{{ __('Fecha Elab.') }}:</label>
                                 <div class="col-md-7">
-                                    <input type="date" id="mat_fecha_elab_abastecer" name="mat_fecha_elab_abastecer" class="form-control form-control-sm">
+                                    <input type="date" id="mat_fecha_elab_abastecer" name="mat_fecha_elab_abastecer" class="form-control form-control-sm mat_fecha_elab_abastecer">
                                 </div>
                             </div>
                             <div class="col-xl-12 col-sm-12" style="display: inline-flex;">
                                 <label class="col-md-5 col-form-label" for="mat_fecha_venc_abastecer">{{ __('Fecha Ven.') }}:</label>
                                 <div class="col-md-7">
-                                    <input type="date" id="mat_fecha_venc_abastecer" name="mat_fecha_venc_abastecer" class="form-control form-control-sm">
+                                    <input type="date" id="mat_fecha_venc_abastecer" name="mat_fecha_venc_abastecer" class="form-control form-control-sm mat_fecha_venc_abastecer">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-xl-3 col-sm-3">
-                            <label class="col-md-12 col-form-label" for="mat_tipo_pago_abastecer">{{ __('Tipo Compra') }}:</label>
+                            <label class="col-md-12 col-form-label" for="mat_tipo_pago_abastecer">{{ __('Tipo Compra') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-12">
-                                <select id="mat_tipo_pago_abastecer" name="mat_tipo_pago_abastecer" class="custom-select custom-select-sm" style="border-radius: 5px 0px 0px 5px;" >
+                                <select id="mat_tipo_pago_abastecer" name="mat_tipo_pago_abastecer" class="custom-select custom-select-sm mat_tipo_pago_abastecer" style="border-radius: 5px 0px 0px 5px;" >
                                     <option value="" selected>Seleccionar...</option>
                                     <option value="EFECTIVO" >EFECTIVO</option>
                                     <option value="CHEQUE" >CHEQUE</option>
@@ -87,7 +87,7 @@
                         <div class="col-xl-3 col-sm-3">
                             <label class="col-md-12 col-form-label" for="mat_proveedor_abastecer">{{ __('Proveedor') }}:</label>
                             <div class="col-md-12">
-                                <select id="mat_proveedor_abastecer" name="mat_proveedor_abastecer" class="custom-select custom-select-sm" style="border-radius: 5px 0px 0px 5px;" >
+                                <select id="mat_proveedor_abastecer" name="mat_proveedor_abastecer" class="custom-select custom-select-sm mat_proveedor_abastecer" style="border-radius: 5px 0px 0px 5px;" >
                                     <option value="" selected>Seleccionar...</option>
                                     @foreach ($proveedores as $proveedor)
                                         <option value="{{ $proveedor->id }}">{{ $proveedor->empresa->emp_nombre }}</option>
@@ -96,9 +96,9 @@
                             </div>
                         </div>
                         <div class="col-xl-6 col-sm-6">
-                            <label class="col-md-12 col-form-label" for="mat_observacion_abastecer">{{ __('Observacion') }}:</label>
+                            <label class="col-md-12 col-form-label" for="mat_observacion_abastecer">{{ __('Observacion') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-12">
-                                <textarea name="mat_observacion_abastecer" id="mat_observacion_abastecer" rows="3" class="form-control form-control-sm"></textarea>
+                                <textarea name="mat_observacion_abastecer" id="mat_observacion_abastecer" rows="3" class="form-control form-control-sm mat_observacion_abastecer"></textarea>
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,8 @@
                                     <th>{{ __('Precio Compra(Bs)') }}</th>
                                     <th>{{ __('Precio Unitario(Bs)') }}</th>
                                     <th>{{ __('Fecha Vencimiento') }}</th>
-                                    <th>Op</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Op</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal_editar_estudio_{{ $detalle->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal_editar_estudio_{{ $detalle->id }}Label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #32C861; color: #fff">
+            <div class="modal-header" style="background-color: #FFC107; color: #000">
                 <h1 class="modal-title fs-5" id="modal_editar_estudio_{{ $detalle->id }}Label"><strong>{{ __('Modificar Estudio o Análisis') }}</strong></h1>
                 <button type="button" id="btnCloseUpEstudio" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>

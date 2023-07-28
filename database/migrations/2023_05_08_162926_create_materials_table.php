@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->string('mat_cod', 100);
+            $table->string('mat_cod', 100)->nullable();
             $table->string('mat_nombre', 100);
             $table->string('mat_descripcion', 255)->nullable();
             $table->string('mat_imagen', 255)->nullable();

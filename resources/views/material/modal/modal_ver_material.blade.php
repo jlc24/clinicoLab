@@ -11,17 +11,28 @@
                         <img src="" id="show_img_material" class="show_img_material" width="180px"  style="border: 2px solid rgb(146, 144, 144); border-radius: 10px; box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);">
                     </div>
                     <div class="col-xl-6 col-sm-6">
-                        <div class="form-group row">
+                        <div class="form-group row" hidden>
                             <label class="col-md-4 col-form-label" for="show_mat_cod">{{ __('Cod.') }}:</label>
                             <div class="col-md-8">
                                 <input type="text" id="show_mat_cod" name="show_mat_cod" class="form-control form-control-sm show_mat_cod" autocomplete="off" readonly>
-                                <input type="hidden" name="show_mat_id" id="show_mat_id" class="show_mat_id">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label" for="show_mat_categoria">{{ __('Categoría') }}:</label>
+                            <div class="col-md-6">
+                                <select id="show_mat_categoria" name="show_mat_categoria" class="custom-select show_mat_categoria" disabled>
+                                    <option value="" selected>Seleccionar...</option>
+                                    @foreach ($categorias as $categoria)
+                                        <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label" for="show_mat_nombre">{{ __('Nombre') }}:</label>
                             <div class="col-md-8">
                                 <input type="text" id="show_mat_nombre" name="show_mat_nombre" class="form-control form-control-sm show_mat_nombre" autocomplete="off" readonly>
+                                <input type="hidden" name="show_mat_id" id="show_mat_id" class="show_mat_id">
                             </div>
                         </div>
                         <div class="form-group row">

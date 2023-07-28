@@ -7,6 +7,7 @@ use App\Models\Compra;
 use App\Models\Material;
 use App\Models\UMedida;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CompraController extends Controller
 {
@@ -96,10 +97,40 @@ class CompraController extends Controller
         return response()->json($compras);
     }
 
+    public function getAllComprasMaterial($id)
+    {
+        $compra = Compra::select('id', 'mat_id', 'comp_cantidad', DB::raw("DATE_FORMAT(comp_elaboracion, '%d/%m/%Y') as elaboracion"), DB::raw("DATE_FORMAT(comp_vencimiento, '%d/%m/%Y') as vencimiento"), 'comp_estado', 'umed_id', 'comp_precio_compra', 'comp_precio_unitario', 'comp_ventas')
+                        ->where([
+                            ['mat_id', '=', $id]
+                        ])
+                        ->orderBy('comp_vencimiento', 'desc')
+                        ->get();
+        
+        $umed_ids = $compra->pluck('umed_id')->toArray();
+
+        // Obtenemos los valores de unidad de medida correspondientes
+        $unidades = [];
+        foreach ($umed_ids as $umed_id) {
+            $unidad = UMedida::find($umed_id);
+            if (!$unidad) {
+                $unidad = '';
+            } else {
+                $unidad = $unidad->unidad;
+            }
+            $unidades[] = $unidad;
+        }
+
+        // Añadimos los valores de unidad de medida a cada objeto de compra
+        foreach ($compra as $key => $value) {
+            $value->unidad = $unidades[$key];
+        }
+
+        return response()->json($compra);
+    }
     public function getComprasMaterial($id)
     {
         $fechaActual = date("Y-m-d");
-        $compra = Compra::select('id', 'mat_id', 'comp_cantidad', 'comp_vencimiento', 'comp_estado', 'umed_id', 'comp_precio_compra', 'comp_precio_unitario', 'comp_ventas')
+        $compra = Compra::select('id', 'mat_id', 'comp_cantidad', DB::raw("DATE_FORMAT(comp_vencimiento, '%d/%m/%Y') as vencimiento"), 'comp_estado', 'umed_id', 'comp_precio_compra', 'comp_precio_unitario', 'comp_ventas')
                         ->where([
                             ['mat_id', '=', $id],
                             ['comp_vencimiento', '>=', $fechaActual],
@@ -139,7 +170,29 @@ class CompraController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            
+            'comp_fecha_elaboracion_update' => 'date',
+            'comp_fecha_vencimiento_update' => 'date',
+            'umed_id_update' => 'integer',
+            'comp_cantidad_update' => 'integer',
+            'comp_precio_compra_update' => 'decimal:2',
+            'comp_precio_unitario_update' => 'decimal:2',
+            'comp_tipo_update' => 'string|max:50',
+            'comp_observacion_update' => 'string|max:255'
+        ]);
+
+        $compra = Compra::find($id);
+        $compra->comp_elaboracion = $request->input('comp_fecha_elaboracion_update');
+        $compra->comp_vencimiento = $request->input('comp_fecha_vencimiento_update');
+        $compra->umed_id = $request->input('umed_id_update');
+        $compra->comp_cantidad = $request->input('comp_cantidad_update');
+        $compra->comp_precio_compra = $request->input('comp_precio_compra_update');
+        $compra->comp_precio_unitario = $request->input('comp_precio_unitario_update');
+        $compra->comp_tipo = $request->input('comp_tipo_update');
+        $compra->prov_id = $request->input('prov_id_update');
+        $compra->comp_observacion = $request->input('comp_observacion_update');
+        $compra->save();
     }
 
     public function updateVencimientoCompra($id)
@@ -155,5 +208,11 @@ class CompraController extends Controller
             $compra->comp_estado = '5';
             $compra->save();
         }
+    }
+
+    public function destroy($id)
+    {
+        $compra = Compra::find($id);
+        $compra->delete();
     }
 }

@@ -156,11 +156,13 @@
             </div>
         </div>
         <br>
-
+        <br>
+        <br>
         <div class="row">
             <div class="col-xs-11" style="margin-left: 0px;">
                 @php
                     $resultados = $results->groupBy('componente')->toArray();
+
                     $chunkSize = ceil(count($resultados) / 2);
                     $chunks = array_chunk($resultados, $chunkSize, true);
                 @endphp
@@ -229,62 +231,111 @@
                 <!-- Divide el array $results en dos partes -->
                 @php
                     $resultsArray = $results->toArray();
-                    $chunks = array_chunk($resultsArray, ceil(count($resultsArray) / 2));
+                    $mostrarTablaResumida = count($resultsArray) > 10;
                 @endphp
-
-                    <table class="table-descripcion" style="width: 600px; margin-left: 50px;">
-                        <tbody>
-                            <tr>
-                                <td class="text-center" colspan="2" style="color: chocolate; border-right: none; border-left: none; border-top: none;"><strong>{{ $estudio->est_nombre }}</strong></td>
-                            </tr>
-                            <tr style="border: none;">
-                                <td style="margin: 0px; padding: 0px; width: auto;">
-                                    <table class="text-center">
-                                        <thead class="text-center">
-                                            <tr style="font-size: 15px;">
-                                                <th class="text-center" style="width: 100px; color: orange; border-top: none; border-left: none;">PRUEBA</th>
-                                                <th class="text-center" style="width: 100px; color: orange; border-top: none;">VALOR</th>
-                                                <th class="text-center" style="width: 100px; color: orange; border-top: none; border-right: none;">REFERENCIA</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($chunks[0] as $result)
-                                                <tr>
-                                                    <td style="color: red; border-left: none;">{{ $result->aspecto }}</td>
-                                                    <td style="font-size: 10px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $result->resultado }} {{ $result->umed_id }}</strong></td>
-                                                    <td style="color: blue; border-right: none;">{{ $result->referencia }}</td>
+                
+                    @if($mostrarTablaResumida)
+                        @php
+                            $chunks = array_chunk($resultsArray, ceil(count($resultsArray) / 2));
+                        @endphp
+                        <table class="table-descripcion" style="width: 600px; margin-left: 50px;">
+                            <tbody>
+                                <tr>
+                                    <td class="text-center" colspan="2" style="color: chocolate; border-right: none; border-left: none; border-top: none;"><strong>{{ $estudio->est_nombre }}</strong></td>
+                                </tr>
+                                <tr style="border: none;">
+                                    <td style="margin: 0px; padding: 0px; width: auto;">
+                                        <table class="text-center">
+                                            <thead class="text-center">
+                                                <tr style="font-size: 15px;">
+                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none; border-left: none;">PRUEBA</th>
+                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none;">VALOR</th>
+                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none; border-right: none;">REFERENCIA</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </td>
-                                <td style="margin: 0px; padding: 0px; width: auto;">
-                                    <table class="text-center">
-                                        <thead class="text-center">
-                                            <tr style="font-size: 15px;">
-                                                <th class="text-center" style="width: 100px; color: orange; border-top: none; border-left: none;">PRUEBA</th>
-                                                <th class="text-center" style="width: 100px; color: orange; border-top: none;">VALOR</th>
-                                                <th class="text-center" style="width: 100px; color: orange; border-top: none; border-right: none;">REFERENCIA</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($chunks[1] as $result)
-                                                <tr>
-                                                    <td style="color: red; border-left: none;">{{ $result->aspecto }}</td>
-                                                    <td style="font-size: 10px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $result->resultado }} {{ $result->umed_id }}</strong></td>
-                                                    <td style="color: blue; border-right: none;">{{ $result->referencia }}</td>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($chunks[0] as $result)
+                                                    <tr>
+                                                        <td style="color: red; border-left: none;">{{ $result->aspecto }}</td>
+                                                        <td style="font-size: 10px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $result->resultado }} {{ $result->umed_id }}</strong></td>
+                                                        <td style="color: blue; border-right: none;">{{ $result->referencia }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td style="margin: 0px; padding: 0px; width: auto;">
+                                        <table class="text-center">
+                                            <thead class="text-center">
+                                                <tr style="font-size: 15px;">
+                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none; border-left: none;">PRUEBA</th>
+                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none;">VALOR</th>
+                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none; border-right: none;">REFERENCIA</th>
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($chunks[1] as $result)
+                                                    <tr>
+                                                        <td style="color: red; border-left: none;">{{ $result->aspecto }}</td>
+                                                        <td style="font-size: 10px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $result->resultado }} {{ $result->umed_id }}</strong></td>
+                                                        <td style="color: blue; border-right: none;">{{ $result->referencia }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @else
+                        @php
+                            $chunks = array_chunk($resultsArray, ceil(count($resultsArray)));
+                        @endphp
+                        <table class="table-descripcion" style="width: 600px; margin-left: 50px;">
+                            <tbody>
+                                <tr>
+                                    <td class="text-left" style="color: brown; font-size: 25px; width: 30%; padding-left: 5px;"><strong>GRUPO:</strong></td>
+                                    <td class="text-left" style="color: chocolate; font-size: 25px; padding-left: 5px;"><strong>{{ $estudio->grupo }}</strong></td>
+                                </tr>
+                                @if($estudio->subgrupo !== null)
+                                    <tr>
+                                        <td class="text-left" style="color: brown; font-size: 25px; width: 30%; padding-left: 5px;"><strong>SUBGRUPO:</strong></td>
+                                        <td class="text-left" style="color: chocolate; font-size: 25px; padding-left: 5px;"><strong>{{ $estudio->subgrupo }}</strong></td>
+                                    </tr>
+                                @endif
+                                <tr>
+                                    <td class="text-left" style="color: brown; font-size: 25px; width: 30%; padding-left: 5px;"><strong>ESTUDIO:</strong></td>
+                                    <td class="text-left" style="color: chocolate; font-size: 25px; padding-left: 5px;"><strong>{{ $estudio->est_nombre }}</strong></td>
+                                </tr>
+                                <tr style="border: none;">
+                                    <td colspan="2" style="margin: 0px; padding: 0px; width: 100%; ">
+                                        <table class="text-center" style="width: 100%">
+                                            <thead class="text-center">
+                                                <tr style="font-size: 25px;">
+                                                    <th class="text-center" style="width: 30%; color: orange; none; font-size: 20px;">PRUEBA</th>
+                                                    <th class="text-center" style="width: 30%; color: orange; font-size: 20px;">VALOR</th>
+                                                    <th class="text-center" style="width: 40%; color: orange; none; font-size: 20px;">REFERENCIA</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($chunks[0] as $result)
+                                                    <tr style="font-size: 25px;">
+                                                        <td style="color: red; font-size: 20px;">{{ $result->aspecto }}</td>
+                                                        <td style="font-size: 20px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $result->resultado }}</strong></td>
+                                                        <td style="color: blue; font-size: 20px;">{{ $result->referencia }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @endif
                 @endif
             </div>
         </div><br>
-        <br>
+        <br><br>
         <p class="text-center" style="font-family: Arial, sans-serif; font-size: 15px;">Puedes verificar los resultados de tu análisis clínico en nuestro sitio web: {{ $config->web }}</p>
         <p style="margin-left: 150px; font-family: Arial, sans-serif; font-size: 15px">Usuario:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $paciente->cli_correo }}</strong></p>
         <p style="margin-left: 150px; font-family: Arial, sans-serif; font-size: 15px">Contraseña:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $paciente->cli_password }}</strong></p>

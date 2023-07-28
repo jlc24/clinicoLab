@@ -34,4 +34,9 @@ class ComponenteAspecto extends Model
     {
         return $this->hasMany(Parametro::class);
     }
+
+    public function detallematerials()
+    {
+        return $this->hasMany(DetalleMaterial::class);
+    }
 }

@@ -54,8 +54,5 @@ class Detalle extends Model
         return $this->hasMany(DetalleProcedimiento::class, 'det_id');
     }
 
-    public function detallematerials()
-    {
-        return $this->hasMany(DetalleMaterial::class, 'det_id');
-    }
+    
 }

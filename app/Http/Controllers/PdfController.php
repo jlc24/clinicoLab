@@ -190,7 +190,7 @@ class PdfController extends Controller
         $paciente = DB::table('clientes as c')
                     ->join('facturas as f', 'f.cli_id', '=', 'c.id')
                     ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
-                    ->leftjoin('medicos as m', 'm.id', '=', 'c.med_id')
+                    ->leftjoin('medicos as m', 'm.id', '=', 'f.med_id')
                     ->select('f.id as factura', 'f.fac_total', 'r.id as rec_id', 'r.rec_ruta_file', 'c.cli_fec_nac', 'c.*', 'c.id as cli_id', 'c.cli_password',
                             DB::raw("CONCAT(c.cli_nombre, ' ', 
                                             c.cli_apellido_pat, ' ', 
@@ -212,10 +212,12 @@ class PdfController extends Controller
             
             $estudio = DB::table('detalles as d')
                         ->join('estudios as e', 'e.id', '=', 'd.estudio_id')
+                        ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
+                        ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
                         ->join('recepcions as r', 'r.det_id', '=', 'd.id')
                         ->join('facturas as f', 'f.id', '=', 'r.fac_id')
                         ->join('clientes as c', 'f.cli_id', '=', 'c.id')
-                        ->select('e.id as est_id', 'e.est_nombre')
+                        ->select('e.id as est_id', 'e.est_nombre', 'g.nombre as grupo', 'sg.nombre as subgrupo')
                         ->where('r.id', '=', $paciente->rec_id)
                         ->first();
     
@@ -229,7 +231,7 @@ class PdfController extends Controller
                         ->join('parametros as p', 'p.ca_id', '=', 'ca.id')
                         ->join('aspectos as a', 'ca.asp_id', '=', 'a.id')
                         ->select('c.nombre as componente' , 'a.nombre as aspecto', 'res.resultado', 'res.umed_id', 'p.referencia')
-                        ->where('r.id', '=', $paciente->rec_id)
+                        ->where([['r.id', '=', $paciente->rec_id], ['res.resultado', '!=', null]])
                         ->groupBy('c.nombre', 'a.nombre', 'res.resultado', 'res.umed_id', 'p.referencia')
                         ->get();
     

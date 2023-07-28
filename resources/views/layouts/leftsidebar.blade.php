@@ -219,6 +219,12 @@
                                 <li class="nav-item px-2">
                                     <a href="{{ route('result') }}" class="nav-link {{ Request::is('results') ? 'active' : '' }}">
                                         <i class="nav-icon fa-solid fas fa-poll-h"></i>
+                                        <p>{{ __('Resultados por Estudio') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item px-2">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon fa-solid fas fa-poll-h"></i>
                                         <p>{{ __('Resultados por Paciente') }}</p>
                                     </a>
                                 </li>
@@ -250,13 +256,13 @@
                                         <p>{{ __('Facturas') }}</p>
                                     </a>
                                 </li>
-                                <li class="nav-item px-2">
+                                <li class="nav-item px-2" hidden>
                                     <a href="#" class="nav-link">
                                         <i class="nav-icon fa-solid fa-user-doctor"></i>
                                         <p>{{ __('Corte de Caja') }}</p>
                                     </a>
                                 </li>
-                                <li class="nav-item px-2">
+                                <li class="nav-item px-2" hidden>
                                     <a href="#" class="nav-link">
                                         <i class="fas fa-square-root-alt nav-icon"></i>
                                         <p>{{ __('Fórmulas') }}</p>

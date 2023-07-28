@@ -727,7 +727,6 @@
         });
 
         $(document).on('click', '.btn-res-pendiente', function() {
-            
             var rec_id = $(this).closest('tr').find('td:eq(0)').text();
             $(".rec_id").val(rec_id);
         });

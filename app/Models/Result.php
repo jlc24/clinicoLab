@@ -16,6 +16,7 @@ class Result extends Model
         'dp_id',
         'dpc_id',
         'ca_id',
+        'det_mat_id',
         'resultado',
         'umed_id'
     ];

@@ -14,7 +14,8 @@
                                 <form id="form_search_material">
                                     <input type="text" id="search_material" name="search_material" class="form-control form-control-sm search_material" autocomplete="off" placeholder="Nombre Material" required>
                                 </form>
-                                <input type="hidden" name="detmat_det_id" id="detmat_det_id" class="detmat_det_id">
+                                <input type="hidden" name="detmat_ca_id" id="detmat_ca_id" class="detmat_ca_id">
+                                <input type="hidden" name="est_detmat_ca_id" id="est_detmat_ca_id" class="est_detmat_ca_id">
                             </div>
                         </div>
                         <div class="row">
@@ -66,19 +67,21 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="col-xl-12 col-sm-12 mb-0 pb-0">
-                                <table class="table table-sm table-bordered">
-                                    <tfoot class="table-primary">
-                                        <tr style="vertical-align: middle;">
-                                            <td width="60px">{{ __('Estudio') }} </td>
-                                            <td width="100px" class="text-right cld-precio-estudio"></td>
-                                            <td width="30px">Bs</td>
-                                            <td class="text-right">{{ __('Total') }} </td>
-                                            <td width="100px" class="text-right cld-precio" ></td>
-                                            <td width="30px">Bs</td>
-                                        </tr>
+                        </div><hr>
+                        <div class="row justify-content-center">
+                            <div class="col-xl-12 col-sm-12 ">
+                                <table class="table table-sm table-borderless mb-0 pb-0">
+                                    <tfoot >
                                         <tr>
-                                            <td colspan="6" class="text-right cld-precio-literal" ></td>
+                                            <td class="text-center" style="width: 30%">
+                                                <button class="btn btn-sm btn-outline-info btnPruebaAnterior" title="Anterior" hidden><i class="fas fa-arrow-circle-left fa-2x"></i></button>
+                                            </td>
+                                            <td class="text-center" colspan="4">
+                                                <button class="btn btn-sm btn-info btnPruebaActual" title="Actual"><i class="fas fa-bars fa-2x"></i></button>
+                                            </td>
+                                            <td class="text-center" style="width: 30%">
+                                                <button class="btn btn-sm btn-outline-info btnPruebaSiguiente" title="Siguiente"><i class="fas fa-arrow-circle-right fa-2x"></i></button>
+                                            </td>
                                         </tr>
                                     </tfoot>
                                 </table>

@@ -194,12 +194,8 @@
                                         '</select>'+
                                     '</td>'+
                                     '<td class="text-center">'+
-                                        '<div class="form-group clearfix">'+
-                                            '<div class="icheck-success d-inline">'+
-                                                '<input type="checkbox" id="checkboxSuccess2" ' + (value.estado == 1 ? 'checked' : '') + ' disabled >'+
-                                                '<label for="checkboxSuccess2">'+
-                                                '</label>'+
-                                            '</div>'+
+                                        '<div class="btn-group" role="group" aria-label="Button group">'+
+                                            (value.estado == 1 ? '<button class="btn btn-sm btn-success" title="Resultado"><i class="fas fa-check-circle"></i></button><button class="btn btn-sm btn-outline-danger btnEstado" title="Elminar Resultado"><i class="fas fa-times"></i></button>' : '')+
                                         '</div>'+
                                     '</td>'+
                                 '</tr>'
@@ -281,6 +277,38 @@
             datos.append('resultado', resultado);
             datos.append('umed_id', umed);
             upResults(id, datos);
+        });
+
+        $(document).on('click', '.btnEstado', function() {
+            var res_id = $(this).closest("tr").find("td:eq(0)").text();
+            var datos = new FormData();
+            datos.append('pruebaEstado', 'lab');
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("updateEstadoPrueba", ":id") }}'.replace(":id", res_id),
+                type:'POST',
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    var ca_id = $(".res_ca_id").val();
+                    getPruebaPacientes(ca_id);
+                    cerrarCargando();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
         });
 
     });

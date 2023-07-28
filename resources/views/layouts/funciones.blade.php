@@ -1,63 +1,63 @@
 <script type="text/javascript">
-    // var timeout_result;
-	// function show_wpcp_message(smessage) {
-	// 	if (smessage !== "") {
-	// 		var smessage_text = '<span>Alert: </span>'+smessage;
-	// 		document.getElementById("wpcp-error-message").innerHTML = smessage_text;
-	// 		document.getElementById("wpcp-error-message").className = "msgmsg-box-wpcp warning-wpcp showme";
-	// 		clearTimeout(timeout_result);
-	// 		timeout_result = setTimeout(hide_message, 3000);
-	// 	}
-	// }
-	// function hide_message() {
-	// 	document.getElementById("wpcp-error-message").className = "msgmsg-box-wpcp warning-wpcp hideme";
-	// }
-    // function disableEnterKey(e){
-    //     var elemtype = e.target.tagName;
-    //     elemtype = elemtype.toUpperCase();
-    //     if (elemtype == "TEXT" || elemtype == "TEXTAREA" || elemtype == "INPUT" || elemtype == "PASSWORD" || elemtype == "SELECT" || elemtype == "OPTION" || elemtype == "EMBED") {
-    //         elemtype = 'TEXT';
-    //     }
-    //     if (e.ctrlKey) {
-    //         var key;
-    //         if(window.event)
-    //             key = window.event.keyCode;     //IE
-    //         else
-    //             key = e.which;     //firefox (97)
-    //         //if (key != 17) alert(key);
-    //         if (elemtype!= 'TEXT' && (key == 97 || key == 65 || key == 67 || key == 99 || key == 88 || key == 120 || key == 26 || key == 85  || key == 86 || key == 83 || key == 43 || key == 73 || key == 69 || key == 101 || key == 80 || key == 112)) {
-    //             if(wccp_free_iscontenteditable(e)) return true;
-    //             show_wpcp_message('Acceso denegado, por motivos de seguridad se deshabilitó esa función');
-    //             return false;
-    //         }else
-    //             return true;
-    //     }
-    // }
+    var timeout_result;
+	function show_wpcp_message(smessage) {
+		if (smessage !== "") {
+			var smessage_text = '<span>Alert: </span>'+smessage;
+			document.getElementById("wpcp-error-message").innerHTML = smessage_text;
+			document.getElementById("wpcp-error-message").className = "msgmsg-box-wpcp warning-wpcp showme";
+			clearTimeout(timeout_result);
+			timeout_result = setTimeout(hide_message, 3000);
+		}
+	}
+	function hide_message() {
+		document.getElementById("wpcp-error-message").className = "msgmsg-box-wpcp warning-wpcp hideme";
+	}
+    function disableEnterKey(e){
+        var elemtype = e.target.tagName;
+        elemtype = elemtype.toUpperCase();
+        if (elemtype == "TEXT" || elemtype == "TEXTAREA" || elemtype == "INPUT" || elemtype == "PASSWORD" || elemtype == "SELECT" || elemtype == "OPTION" || elemtype == "EMBED") {
+            elemtype = 'TEXT';
+        }
+        if (e.ctrlKey) {
+            var key;
+            if(window.event)
+                key = window.event.keyCode;     //IE
+            else
+                key = e.which;     //firefox (97)
+            //if (key != 17) alert(key);
+            if (elemtype!= 'TEXT' && (key == 97 || key == 65 || key == 88 || key == 120 || key == 26 || key == 85  || key == 86 || key == 83 || key == 43 || key == 73 || key == 69 || key == 101 || key == 80 || key == 112)) {
+                if(wccp_free_iscontenteditable(e)) return true;
+                show_wpcp_message('Acceso denegado, por motivos de seguridad se deshabilitó esa función');
+                return false;
+            }else
+                return true;
+        }
+    }
 
-    // /*For contenteditable tags*/
-    // function wccp_free_iscontenteditable(e) {
-    //     var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
-    //     var target = e.target || e.srcElement;
-    //     var elemtype = e.target.nodeName;
-    //     elemtype = elemtype.toUpperCase();
-    //     var iscontenteditable = "false";
-    //     if(typeof target.getAttribute!="undefined" ) iscontenteditable = target.getAttribute("contenteditable"); // Return true or false as string
-    //     if(typeof target.isContentEditable!="undefined" ) iscontenteditable2 = target.isContentEditable; // Return true or false as boolean
-    //     if(target.parentElement.isContentEditable) iscontenteditable2 = true;
-    //     if (iscontenteditable == "true" || iscontenteditable2 == true)
-    //     {
-    //         if(typeof target.style!="undefined" ) target.style.cursor = "text";
-    //         return true;
-    //     }
-    // }
+    /*For contenteditable tags*/
+    function wccp_free_iscontenteditable(e) {
+        var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
+        var target = e.target || e.srcElement;
+        var elemtype = e.target.nodeName;
+        elemtype = elemtype.toUpperCase();
+        var iscontenteditable = "false";
+        if(typeof target.getAttribute!="undefined" ) iscontenteditable = target.getAttribute("contenteditable"); // Return true or false as string
+        if(typeof target.isContentEditable!="undefined" ) iscontenteditable2 = target.isContentEditable; // Return true or false as boolean
+        if(target.parentElement.isContentEditable) iscontenteditable2 = true;
+        if (iscontenteditable == "true" || iscontenteditable2 == true)
+        {
+            if(typeof target.style!="undefined" ) target.style.cursor = "text";
+            return true;
+        }
+    }
 
-    // document.onkeydown = disableEnterKey;
+    document.onkeydown = disableEnterKey;
 
-    // document.ondragstart = function() { return false;}
-	// function nocontext(e) {
-	//    return false;
-	// }
-	// document.oncontextmenu = nocontext;
+    document.ondragstart = function() { return false;}
+	function nocontext(e) {
+	   return false;
+	}
+	document.oncontextmenu = nocontext;
 
     $(window).on('load', function() {
         $('#loader-wrapper').fadeOut('slow');

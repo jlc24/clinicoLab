@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('dp_id');            // procedimiento
             $table->unsignedBigInteger('dpc_id');           // componente
             $table->unsignedBigInteger('ca_id');            //aspecto
-            $table->unsignedBigInteger('det_mat_id');       // detalle_materials->ca_materials
             $table->string('resultado', 255)->nullable();   // resultado
             $table->unsignedBigInteger('umed_id')->nullable();
             $table->unsignedBigInteger('estado');

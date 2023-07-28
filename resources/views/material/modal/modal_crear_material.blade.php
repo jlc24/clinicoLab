@@ -20,7 +20,7 @@
                 @endif
                 <div class="col-xl-12 col-sm-12">
                     <form class="form-horizontal" id="formulario_materiales">
-                        <div class="form-group row">
+                        <div class="form-group row" hidden>
                             <label class="col-md-3 col-form-label ui-front" for="mat_cod">{{ __('Cod.') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
                                 <input type="text" placeholder="Codigo Material" id="mat_cod" name="mat_cod" class="form-control form-control-sm mat_cod" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>

@@ -414,11 +414,16 @@
         $(document).on('click', '.btn-detalle-indi-id', function() {
             var valor = $(this).closest('tr').find('td:eq(0)').text();
             var nombre = $(this).closest('tr').find('td:eq(2)').text();
+            mostrarCargando();
             $(".proc_est_id").val(valor);
             $(".proc_est_nombre").val(nombre);
             $(".proc_est_tipo_estudio").val('individual');
+            $(".estudioTitulo").text("Configuracion: " + nombre);
             cargarTablaDetalleProcedimiento(valor);
             getComponenteEstudio(valor);
+            setTimeout(() => {
+                cerrarCargando();
+            }, 500);
         });
 
         function updateEstadoDetProc(dato_id, datos) {
@@ -918,6 +923,7 @@
                                         '</select>'+
                                     '</td>'+
                                     '<td class="text-center"><a data-toggle="modal" data-target="#modal_config_parametro" class="btn btn-sm ' + (value.cant_parametros == 0 ? 'btn-outline-warning' : 'btn-outline-success') + '  btn-conf-parametro" title="Agregar Parametro"><i class="fas fa-star-of-life"></i></a></td>'+
+                                    '<td class="text-center"><button data-toggle="modal" data-target="#modal_agregar_material" class="btn btn-sm ' + (value.cant_materials == 0 ? 'btn-outline-secondary' : 'btn-outline-primary') + ' btn-add-material-prueba" title="Agregar Material"><i class="fas fa-book"></i></button></td>'+
                                 '</tr>');
                         });
                     }else {
@@ -997,8 +1003,14 @@
                     showConfirmButton: false,
                     timer: 1000
                 });
+                $(".asp_nombre").val("");
+                tablaAspectos();
+                $(".asp_nombre").trigger("focus");
             } else {
                 addAspecto(dp_comp_id, 'aspqd', asp_id);
+                $(".asp_nombre").val("");
+                tablaAspectos();
+                $(".asp_nombre").trigger("focus");
             }
         });
 
@@ -1379,7 +1391,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
                     if (data.length != 0) {
                         $('.tabla_material_estudio tbody').empty();
                         $.each(data, function(index, value) {
@@ -1417,22 +1428,100 @@
                 }
             });
         }
+        let pruebasData = [];
+        let currentPruebaIndex = 0;
 
-        $(".btn-add-material-estudio").on('click', function() {
+        $(document).on('click', '.btn-add-material-prueba', function() {
             var id_det_est = $(this).closest('tr').find('td:eq(0)').text();
-            var est_nombre = $(this).closest('tr').find('td:eq(2)').text();
-            var precio_est = $(this).closest('tr').find('td:eq(3)').text();
-            $(".modal_agregar_materialLabel").text('Agregar Materiales: ' + est_nombre);
-            $(".detmat_det_id").val(id_det_est);
-            $(".cld-precio-estudio").text(precio_est);
-            mostrarCargando();
+            var comp_id = $(".dp_comp_id").val();
+            $(".detmat_ca_id").val(id_det_est);
+            $(".est_detmat_ca_id").val(comp_id);
+            
             getAllMaterial();
             getMaterialEstudio(id_det_est);
+            pruebas($(".est_detmat_ca_id").val());
             setTimeout(function(){
                 sumPrecioMaterials();
-                cerrarCargando();
             }, 500);
         });
+
+        //---------------------Evento de Siguiente y Anterior en el modal----------------------------
+
+        function pruebas(valor) {
+            $.ajax({
+                url: '{{ route("getDPCAspecto",":id") }}'.replace(":id", valor),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    pruebasData = data;
+                    const pruebaId = document.querySelector('.detmat_ca_id').value;
+                    
+                    const index = pruebasData.findIndex(prueba => prueba.id === parseInt(pruebaId));
+                    
+                    if (index !== -1) {
+                        currentPruebaIndex = index;
+                        if (currentPruebaIndex == 0) {
+                            verificarAnterior();
+                        }else{
+                            verificarSiguiente();
+                        }
+                        
+                        mostrarModal(currentPruebaIndex);
+                    } else {
+                        console.log('No se encontró la prueba con el ID proporcionado en pruebasData.');
+                    }
+                }
+            });
+        }
+        function verificarAnterior() {
+            if (currentPruebaIndex == 0) {
+                $(".btnPruebaAnterior").prop('hidden', true);
+                $(".btnPruebaSiguiente").prop('hidden', false);
+            }else{
+                $(".btnPruebaAnterior").prop('hidden', false);
+                $(".btnPruebaSiguiente").prop('hidden', false);
+            }
+        }
+
+        function verificarSiguiente() {
+            if (currentPruebaIndex == pruebasData.length - 1) {
+                $(".btnPruebaSiguiente").prop('hidden', true);
+                $(".btnPruebaAnterior").prop('hidden', false);
+            }else{
+                $(".btnPruebaSiguiente").prop('hidden', false);
+                $(".btnPruebaAnterior").prop('hidden', false);
+            }
+        }
+
+        document.querySelector('.btnPruebaAnterior').addEventListener('click', () => {
+            if (currentPruebaIndex > 0) {
+                currentPruebaIndex--;
+                verificarAnterior();
+                mostrarModal(currentPruebaIndex);
+            }
+        });
+
+        document.querySelector('.btnPruebaSiguiente').addEventListener('click', () => {
+            if (currentPruebaIndex < pruebasData.length - 1) {
+                currentPruebaIndex++;
+                verificarSiguiente();
+                mostrarModal(currentPruebaIndex);
+            }
+        });
+        function mostrarModal(index) {
+            mostrarCargando();
+            setTimeout(() => {
+                const prueba = pruebasData[index];
+                $(".detmat_ca_id").val(prueba.id);
+                $(".modal_agregar_materialLabel").text('Agregar Materiales: ' + prueba.nombre);
+                console.log(prueba);
+                getMaterialEstudio($(".detmat_ca_id").val());
+                cerrarCargando();
+                
+            }, 500);
+        }
+
+        //-----------------------------------------------------------------------------------------------
 
         function addDetMat(det_id, datos) {
             mostrarCargando();
@@ -1446,7 +1535,9 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
+                    var dp_comp_id = $(".dp_comp_id").val();
                     getMaterialEstudio(det_id);
+                    tablaAspectoParametro(dp_comp_id);
                     cerrarCargando();
                 },
                 error: function (xhr, textStatus, errorThrown) {
@@ -1464,7 +1555,7 @@
 
         $(document).on('click', '.btn-use-material', function() {
             var mat_id = $(this).closest('tr').find('td:eq(0)').text();
-            var det_id = $(".detmat_det_id").val();
+            var ca_id = $(".detmat_ca_id").val();
             var umed_id = $(this).closest('tr').find('td:eq(4)').text();
 
             var valorNombre = $(this).closest('tr').find('td:eq(2)').text();
@@ -1481,10 +1572,10 @@
                 });
             } else {
                 var datos = new FormData();
-                datos.append('det_id', det_id);
+                datos.append('ca_id', ca_id);
                 datos.append('mat_id', mat_id);
                 datos.append('umed_id', umed_id);
-                addDetMat(det_id, datos);
+                addDetMat(ca_id, datos);
             }
         });
 
@@ -1497,7 +1588,9 @@
                     "_token": "{{ csrf_token() }}"
                 },
                 success: function() {
+                    var dp_comp_id = $(".dp_comp_id").val();
                     getMaterialEstudio(det_id);
+                    tablaAspectoParametro(dp_comp_id);
                     setTimeout(function(){
                         sumPrecioMaterials();
                         cerrarCargando();
@@ -1518,9 +1611,8 @@
 
         $(document).on('click', '.btn-delete-det-mat', function() {
             var det_mat_id = $(this).closest('tr').find('td:eq(0)').text();
-            var det_id = $(".detmat_det_id").val();
+            var det_id = $(".detmat_ca_id").val();
             delDetMat(det_mat_id, det_id);
-            
         });
 
         function upDetMat(id, datos, det_id) {
@@ -1552,7 +1644,7 @@
         }
 
         $(document).on('change', '.detmat_unidad', function() {
-            var det_id = $(".detmat_det_id").val();
+            var det_id = $(".detmat_ca_id").val();
             var det_mat_id = $(this).closest('tr').find('td:eq(0)').text();
             var mat_id = $(this).closest('tr').find('td:eq(1)').text();
             var unidad_id = $(this).val();
@@ -1583,7 +1675,7 @@
         });
 
         $(document).on('change', '.detmat_cantidad', function() {
-            var det_id = $(".detmat_det_id").val();
+            var det_id = $(".detmat_ca_id").val();
             var det_mat_id = $(this).closest('tr').find('td:eq(0)').text();
             var mat_id = $(this).closest('tr').find('td:eq(1)').text();
             var unidad_id = $(this).closest('tr').find('td:eq(5) select').val();
@@ -1624,32 +1716,32 @@
             //console.log(suma.toFixed(4));
             $(".cld-precio").text(suma.toFixed(4));
             $(".cld-precio-literal").text('Son '+convertirNumeroALetras(suma.toFixed(2)));
-            var id = $(".detmat_det_id").val();
-            var datos = new FormData();
-            datos.append('precio_est', suma.toFixed(2));
-            $.ajax({
-                url: '{{ route("updatePrecioEstudio", ":id") }}'.replace(':id', id),
-                type: 'POST',
-                data: datos,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (response) {
-                    console.log('hecho');
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-            });
+            // var id = $(".detmat_ca_id").val();
+            // var datos = new FormData();
+            // datos.append('precio_est', suma.toFixed(2));
+            // $.ajax({
+            //     url: '{{ route("updatePrecioEstudio", ":id") }}'.replace(':id', id),
+            //     type: 'POST',
+            //     data: datos,
+            //     contentType: false,
+            //     processData: false,
+            //     headers: {
+            //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //     },
+            //     success: function (response) {
+            //         console.log('hecho');
+            //     },
+            //     error: function (xhr, textStatus, errorThrown) {
+            //         console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+            //         Swal.fire({
+            //             title: 'Oops...',
+            //             text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+            //             icon: 'error',
+            //             showConfirmButton: false,
+            //             timer: 2000
+            //         });
+            //     }
+            // });
         }
 
         function convertirNumeroALetras(numero) {
@@ -1719,6 +1811,8 @@
             return resultado.trim();
         }
 
+
+        
 
     });
 </script>

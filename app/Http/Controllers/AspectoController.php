@@ -30,7 +30,8 @@ class AspectoController extends Controller
                         ->join('dp_componentes as dpc', 'ca.dpcomp_id', '=', 'dpc.id')
                         ->join('aspectos as a', 'ca.asp_id', '=', 'a.id')
                         ->select('ca.id', 'a.nombre', 'ca.umed_id',
-                        DB::raw('(SELECT COUNT(*) FROM parametros WHERE ca_id = ca.id) as cant_parametros'))
+                        DB::raw('(SELECT COUNT(*) FROM parametros WHERE ca_id = ca.id) as cant_parametros'),
+                        DB::raw('(SELECT COUNT(*) FROM detalle_materials WHERE ca_id = ca.id) as cant_materials'))
                         ->where('dpc.id', '=', $id)
                         ->distinct()
                         ->get();

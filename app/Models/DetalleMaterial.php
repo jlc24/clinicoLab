@@ -10,16 +10,16 @@ class DetalleMaterial extends Model
     use HasFactory;
 
     protected $fillable = [
-        'det_id',
+        'ca_id',
         'mat_id',
         'cantidad',
         'umed_id',
         'precio_total'
     ];
 
-    public function detalle()
+    public function componenteaspecto()
     {
-        return $this->belongsTo(Detalle::class, 'det_id');
+        return $this->belongsTo(Detalle::class, 'ca_id');
     }
 
     public function material()

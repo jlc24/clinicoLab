@@ -39,13 +39,13 @@ class MaterialController extends Controller
     {
         if ($request->hasFile('mat_imagen')) {
             $request->validate([
-                'mat_cod' => 'required|string|max:100',
+                //'mat_cod' => 'required|string|max:100',
                 'mat_nombre' => 'required|string|max:255',
                 'mat_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
 
             $material = Material::create([
-                'mat_cod' => $request->input('mat_cod'),
+                //'mat_cod' => $request->input('mat_cod'),
                 'mat_nombre' => $request->input('mat_nombre'),
                 'mat_descripcion' => $request->input('mat_descripcion'),
                 'mat_ventas' => '0',
@@ -63,12 +63,12 @@ class MaterialController extends Controller
             $rutaImagen = $rutaCarpetaDestino.$nombreArchivo;
         }else{
             $request->validate([
-                'mat_cod' => 'required|string|max:100',
+                //'mat_cod' => 'required|string|max:100',
                 'mat_nombre' => 'required|string|max:255',
             ]);
 
             $material = Material::create([
-                'mat_cod' => $request->input('mat_cod'),
+                //'mat_cod' => $request->input('mat_cod'),
                 'mat_nombre' => $request->input('mat_nombre'),
                 'mat_descripcion' => $request->input('mat_descripcion'),
                 'mat_ventas' => '0',
@@ -108,14 +108,14 @@ class MaterialController extends Controller
     {
         if ($request->hasFile('mat_imagen')) {
             $request->validate([
-                'mat_cod' => 'required|string|max:100',
+                //'mat_cod' => 'required|string|max:100',
                 'mat_nombre' => 'required|string|max:255',
                 'mat_imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
 
             $material = Material::find($id);
             $material->update([
-                'mat_cod' => $request->input('mat_cod'),
+                //'mat_cod' => $request->input('mat_cod'),
                 'mat_nombre' => $request->input('mat_nombre'),
                 'mat_descripcion' => $request->input('mat_descripcion'),
                 'cat_id' => $request->input('cat_id'),
@@ -133,13 +133,13 @@ class MaterialController extends Controller
             $materialImagen->save();
         }else{
             $request->validate([
-                'mat_cod' => 'required|string|max:100',
+                //'mat_cod' => 'required|string|max:100',
                 'mat_nombre' => 'required|string|max:255'
             ]);
 
             $material = Material::find($id);
             $material->update([
-                'mat_cod' => $request->input('mat_cod'),
+                //'mat_cod' => $request->input('mat_cod'),
                 'mat_nombre' => $request->input('mat_nombre'),
                 'mat_descripcion' => $request->input('mat_descripcion'),
                 'cat_id' => $request->input('cat_id'),

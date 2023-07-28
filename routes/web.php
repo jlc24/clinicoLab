@@ -277,7 +277,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/compras', [CompraController::class, 'store'])->name('compra.store');
             Route::get('/compras/{id}', [CompraController::class, 'edit'])->name('compra.edit');
             Route::post('/compras/{id}', [CompraController::class, 'update'])->name('compra.update');
+            Route::delete('/compras/{id}', [CompraController::class, 'destroy'])->name('compra.delete');
         
+            Route::get('/getAllComprasMaterial/{id}', [CompraController::class, 'getAllComprasMaterial'])->name('getAllComprasMaterial');
             Route::get('/getComprasMaterial/{id}', [CompraController::class, 'getComprasMaterial'])->name('getComprasMaterial');
             Route::get('/updateCompEstado/{id}', [CompraController::class, 'updateCompEstado'])->name('updateCompEstado');
             Route::get('/updateVencimientoCompra/{id}', [CompraController::class, 'updateVencimientoCompra'])->name('updateVencimientoCompra');
@@ -290,6 +292,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/results', [ResultController::class, 'index'])->name('result');
             Route::post('/results', [ResultController::class, 'store'])->name('result.store');
             Route::post('/results/{id}', [ResultController::class, 'update'])->name('result.update')->middleware('ajax');
+            Route::post('/updateEstadoPrueba/{id}', [ResultController::class, 'updateEstadoPrueba'])->name('updateEstadoPrueba')->middleware('ajax');
 
             Route::get('/pruebas', [PruebaController::class, 'index'])->name('prueba');
 

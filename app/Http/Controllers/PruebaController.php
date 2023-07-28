@@ -33,7 +33,7 @@ class PruebaController extends Controller
                         ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
                         ->select('ca.id as numero', 'a.nombre as prueba','e.est_nombre as estudio', 'sg.nombre as subgrupo', 'g.nombre as grupo', 'r.estado as estado')
                         ->distinct()
-                        ->where('res.estado', '=', $estado)
+                        ->where([['res.estado', '=', $estado], ['r.estado', '=', $estado]])
                         ->whereBetween(DB::raw('DATE(r.created_at)'), [$fechaIni, $fechaFin])
                         ->get();
         }else{

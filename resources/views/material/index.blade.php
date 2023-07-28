@@ -81,6 +81,7 @@
     @include('material.modal.modal_actualizar_material')
     @include('material.modal.modal_cambio_moneda')
     @include('material.modal.modal_abastecer_material')
+    @include('material.modal.modal_editar_compra')
     @include('material.modal.modal_ver_material')
 @endsection
 
