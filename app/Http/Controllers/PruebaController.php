@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UMedida;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -33,7 +34,8 @@ class PruebaController extends Controller
                         ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
                         ->select('ca.id as numero', 'a.nombre as prueba','e.est_nombre as estudio', 'sg.nombre as subgrupo', 'g.nombre as grupo', 'r.estado as estado')
                         ->distinct()
-                        ->where([['res.estado', '=', $estado], ['r.estado', '=', $estado]])
+                        ->where('res.estado', '=', $estado)
+                        ->orderBy('res.updated_at', 'desc')
                         ->whereBetween(DB::raw('DATE(r.created_at)'), [$fechaIni, $fechaFin])
                         ->get();
         }else{
@@ -49,6 +51,8 @@ class PruebaController extends Controller
                         ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
                         ->select('ca.id as numero', 'a.nombre as prueba','e.est_nombre as estudio', 'sg.nombre as subgrupo', 'g.nombre as grupo', 'r.estado as estado')
                         ->distinct()
+                        ->where('res.estado', '=', $estado)
+                        ->orderBy('res.updated_at', 'desc')
                         ->whereBetween(DB::raw('DATE(r.created_at)'), [$fechaIni, $fechaFin])
                         ->get();
         }
@@ -84,11 +88,27 @@ class PruebaController extends Controller
                         ->join('detalles as d', 'r.det_id', '=', 'd.id')
                         ->join('estudios as e', 'd.estudio_id', '=', 'e.id')
                         ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
+                        ->leftJoin('parametros as p', 'p.id', '=', 'res.param_id')
                         ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
-                        ->select('res.id', 'c.cli_cod', 'res.resultado', 'res.umed_id', 'res.estado')
+                        ->select('res.id', 'c.cli_cod', 'c.cli_genero', 'c.cli_fec_nac', 'res.resultado', 'res.umed_id', 'res.estado', 'p.id as parametro')
                         ->where([['res.ca_id', '=', $id], ['r.estado', '=', 'PENDIENTE']])
                         ->orderBy('c.id')
                         ->get();
+        foreach ($pacientes as $paciente) {
+            $fecha_nac = new DateTime($paciente->cli_fec_nac);
+            $hoy = new DateTime();
+            $diferencia = $hoy->diff($fecha_nac);
+            $edad = $hoy->diff($fecha_nac)->y;
+            
+            $paciente->cli_edad = $edad;
+            if ($diferencia->y >= 1) {
+                $paciente->cli_tiempo = ($diferencia->y === 1 ? " AÑO" : " AÑOS");
+            } elseif ($diferencia->m >= 1) {
+                $paciente->cli_tiempo = ($diferencia->m === 1 ? " MES" : " MESES");
+            } else {
+                $paciente->cli_tiempo = ($diferencia->d === 1 ? " DÍA" : " DÍAS");
+            }
+        }
         return response()->json($pacientes);
     }
 }

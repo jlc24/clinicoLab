@@ -6,6 +6,10 @@
                 <button type="button" id="btnCloseSaveResult" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <input type="hidden" name="res_fac_id" id="res_fac_id" class="res_fac_id">
+                <input type="hidden" name="res_rec_id" id="res_rec_id" class="res_rec_id">
+                <input type="hidden" name="res_cli_id" id="res_cli_id" class="res_cli_id">
+                <input type="hidden" name="res_det_id" id="res_det_id" class="res_det_id">
                 <div class="row">
                     <div class="col-xl-12 col-sm-12 " style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
                         <div class="row">
@@ -15,9 +19,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <h1 class="col-form-label res_cli_nombre" id="res_cli_nombre"></h1>
-                                    <input type="hidden" name="res_fac_id" id="res_fac_id" class="res_fac_id">
-                                    <input type="hidden" name="res_rec_id" id="res_rec_id" class="res_rec_id">
-                                    <input type="hidden" name="res_cli_id" id="res_cli_id" class="res_cli_id">
+                                    
                                 </div>
                             </div>
                             <div class="col-xl-5 col-sm-12" style="display: inline-flex">
@@ -48,37 +50,15 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xl-12 col-sm-12 divReferencia" style="display: none;">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="res_cli_referencias">{{ __('Referencias') }}: </label>
-                                </div>
-                                <div class="col-md-10">
-                                    <h1 class="col-form-label res_cli_referencias" id="res_cli_referencias"></h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xl-12 col-sm-12 divObservacion" style="display: none;">
-                                <div class="col-md-2">
-                                    <label class="col-form-label" for="res_cli_observacion">{{ __('Observacion') }}: </label>
-                                </div>
-                                <div class="col-md-10">
-                                    <h1 class="col-form-label res_cli_observacion" id="res_cli_observacion"></h1>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-xl-7 col-sm-12" style="display: inline-flex;">
                                 <div class="col-md-3">
                                     <label class="col-form-label" for="res_est_nombre">{{ __('Estudio') }}: </label>
                                 </div>
                                 <div class="col-md-9">
                                     <h1 class="col-form-label res_est_nombre" id="res_est_nombre"></h1>
-                                    <input type="hidden" name="res_det_id" id="res_det_id" class="res_det_id">
                                 </div>
                             </div>
                             <div class="col-xl-5 col-sm-12" style="display: inline-flex">
-                                
                             </div>
                         </div>
                     </div>
@@ -136,6 +116,18 @@
 
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-sm-12 " style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);">
+                        <div class="row pt-4 justify-content-center">
+                            <div class="col-xl-2 col-sm-2">
+                                <label class="col-form-label" for="res_cli_observacion">{{ __('OBSERVACION') }}:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <textarea class="form-control form-control-sm res_cli_observacion" name="res_cli_observacion" id="res_cli_observacion" rows="3" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); ">NINGUNA</textarea><br>
                             </div>
                         </div>
                     </div>

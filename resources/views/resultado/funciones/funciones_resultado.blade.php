@@ -173,6 +173,7 @@
                                 html += '<td style="border: 1px solid #C6C8CA;">'+
                                             '<div class="btn-group" role="group" aria-label="Button group">'+
                                                 '<button data-toggle="modal" data-target="#exampleModal" class="btn btn-sm btn-outline-info btn-imprimir-resultados" title="Imprimir resultado" target="_blank" rel="noopener noreferrer"><i class="fas fa-print"></i></button>'+
+                                                //'<a class="btn btn-sm btn-outline-info btnVerResultado">Ver</a>'+
                                             '</div>'+
                                         '</td>';
                             }
@@ -330,13 +331,10 @@
                     $(".res_cli_genero").text(data[0].cli_genero);
                     $(".res_est_nombre").text(data[0].est_nombre);
                     $(".res_det_id").val(data[0].det_id);
-                    if (data[0].fac_observacion !== null) {
-                        $(".divObservacion").css('display', 'inline-flex');
-                        $(".res_cli_observacion").text(data[0].fac_observacion);
-                    }
-                    if (data[0].fac_referencia !== null) {
-                        $(".divReferencia").css('display', 'inline-flex');
-                        $(".res_cli_referencia").text(data[0].fac_referencia);
+                    if (data[0].rec_observacion == null) {
+                        $('.res_cli_observacion').val("")
+                    }else{
+                        $(".res_cli_observacion").val(data[0].rec_observacion);
                     }
                     setTimeout(function(){
                         getProcedimientoRes($(".res_det_id").val());
@@ -416,18 +414,14 @@
                                     '<td hidden>' + value.id + '</td>'+ //id de results
                                     '<td hidden>' + value.ca_id + '</td>'+ //id de aspectos
                                     '<td width="180px">' + value.nombre + '</td>'+
-                                    '<td width="100px"><input type="text" value="' + (value.resultado == null ? '' : value.resultado) + '" class="form-control form-control-sm resultado-final" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"></td>'+
+                                    '<td width="100px"><input type="text" value="' + (value.resultado == null ? '' : value.resultado) + '" class="form-control form-control-sm resultado-final" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" readonly></td>'+
                                     '<td width="100px">'+
-                                        '<select class="custom-select custom-select-sm res_aspecto_unidad" name="res_aspecto_unidad" id="res_aspecto_unidad">'+
+                                        '<select class="custom-select custom-select-sm res_aspecto_unidad" name="res_aspecto_unidad" id="res_aspecto_unidad" disabled>'+
                                             '<option value="" >Seleccionar...</option>'+
                                             optionList +
                                         '</select>'+
                                     '</td>'+
-                                    '<td class="text-center">'+
-                                        '<div class="btn-group">'+
-                                            '<a data-toggle="modal" data-target="#modal_ver_parametro" class="btn btn-sm ' + (value.cant_parametros == 0 ? 'btn-outline-warning' : 'btn-outline-success') + '  btn-ver-parametro" title="Ver Parametro" ' + (value.cant_parametros == 0 ? 'disabled' : '') + '><i class="fas fa-star-of-life"></i></a>'+
-                                        '</div>'+
-                                    '</td>'+
+                                    '<td class="text-center">' + (value.referencia == null ? '' : value.referencia) + '</td>'+
                                 '</tr>'
                             );
                         });
@@ -577,6 +571,44 @@
             datos.append('umed_id', umed);
             upResults(id, datos);
         });
+
+        $(document).on('change', '.res_cli_observacion', function() {
+            var rec_id = $(".res_rec_id").val();
+            var datos = new FormData();
+            datos.append('rec_observacion', $(".res_cli_observacion").val());
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("updateObservacion", ":id") }}'.replace(":id", rec_id),
+                type: 'POST',
+                data: datos,
+                contentType: false,
+                processData: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    $.ajax({
+                        url: '{{ route("result.show", ":id") }}'.replace(":id", rec_id),
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            $(".res_cli_observacion").val(data.rec_observacion);
+                        }
+                    });
+                    cerrarCargando();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            });
+        })
 
         function updateEstadoRecepcion(rec_id, datos) {
             $.ajax({
@@ -788,5 +820,9 @@
             PdfResultado(rec_id);
         });
     
+        $(document).on('click', '.btnVerResultado', function() {
+            var rec_id = $(this).closest('tr').find('td:eq(0)').text();
+            window.open('{{ route("resultado.pdf", ":id") }}'.replace(":id", rec_id), '_blank');
+        });
     });
 </script>

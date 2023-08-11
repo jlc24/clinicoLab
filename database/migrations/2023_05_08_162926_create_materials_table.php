@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('mat_nombre', 100);
             $table->string('mat_descripcion', 255)->nullable();
             $table->string('mat_imagen', 255)->nullable();
+            $table->unsignedSmallInteger('mat_vida_util')->nullable();
+            $table->unsignedDecimal('mat_depreciacion', 8, 2)->nullable();
             $table->unsignedBigInteger('umed_id')->nullable();
             $table->unsignedBigInteger('mat_cantidad')->nullable();
             $table->unsignedBigInteger('mat_cantidad_minima')->nullable();

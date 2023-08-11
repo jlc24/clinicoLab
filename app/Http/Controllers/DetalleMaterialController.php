@@ -13,7 +13,8 @@ class DetalleMaterialController extends Controller
     {
         $mat_est = DB::table('detalle_materials as dm')
                         ->join('materials as m', 'dm.mat_id', '=', 'm.id')
-                        ->select('dm.*', 'm.mat_nombre', 'm.mat_precio_compra', 'm.mat_cantidad')
+                        ->join('u_medidas as um', 'um.id', '=', 'm.umed_id')
+                        ->select('dm.*', 'm.mat_nombre', 'm.mat_precio_compra', 'm.mat_cantidad', 'um.unidad')
                         ->where('dm.ca_id', '=', $id)
                         ->where('m.mat_estado', '=', '1')
                         ->get();

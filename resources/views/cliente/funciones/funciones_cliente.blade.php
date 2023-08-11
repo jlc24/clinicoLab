@@ -193,6 +193,7 @@ $(document).ready(function() {
             // for (const [key, value] of datos) {
             //     console.log(key, '- '+value);
             // };
+            mostrarCargando();
             $.ajax({
                 url: '{{ route("cliente.store") }}',
                 type: 'POST',
@@ -203,6 +204,7 @@ $(document).ready(function() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(data) {
+                    cerrarCargando();
                     Swal.fire({
                         title: '¡Exito!',
                         text: 'Paciente registrado',
@@ -221,6 +223,7 @@ $(document).ready(function() {
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    cerrarCargando();
                     Swal.fire({
                         title: 'Oops...',
                         text: 'Se ha producido un error.',
@@ -228,6 +231,7 @@ $(document).ready(function() {
                         showConfirmButton: false,
                         timer: 2000
                     });
+                    
                 }
             });
         }
@@ -410,6 +414,16 @@ $(document).ready(function() {
                     $('.tabla-facturas-cliente tbody').empty().append('<td colspan="7" class="text-center fila_vacia">No hay datos recepcionados</td>');
                 }
                 cerrarCargando();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Se ha producido un error.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
             }
         });
     }
@@ -475,6 +489,16 @@ $(document).ready(function() {
                         });
                     }, 500);
                 }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Se ha producido un error.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
             }
         });
     }
@@ -544,6 +568,16 @@ $(document).ready(function() {
                         });
                     }, 500);
                 }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Se ha producido un error.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
             }
         });
     }
@@ -552,6 +586,36 @@ $(document).ready(function() {
         var rec_id = $(this).closest('tr').find('td:eq(0)').text();
         $(".exampleModalLabel").text("Resultados");
         PdfResultado(rec_id);
+    });
+
+    $(document).on('click', '.btnGenerarQR', function() {
+        let cli_id = $(this).closest("tr").find("td:eq(0)").text();
+        mostrarCargando();
+        $.ajax({
+            url: '{{ route("generarQR", ":id") }}'.replace(":id", cli_id),
+            type: 'GET',
+            success : function(){
+                cerrarCargando();
+                Swal.fire({
+                    title: '¡Exito!',
+                    text: 'QR generado correctamente',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                location.reload();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                Swal.fire({
+                    title: 'Oops...',
+                    text: 'Se ha producido un error.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+        });
     });
 });
 

@@ -34,7 +34,7 @@
                             <table class="table table-bordered table-sm table-hover table-responsive-sm tabla_materiales" id="tabla_materiales">
                                 <thead style="text-align: center;">
                                     <tr>
-                                        <th>#</th>
+                                        <th hidden>#</th>
                                         <th>{{ __('Nombre') }}</th>
                                         <th>{{ __('Descripción') }}</th>
                                         <th>{{ __('Categoría') }}</th>
@@ -46,7 +46,7 @@
                                 <tbody>
                                     @foreach ($materiales as $material)
                                         <tr>
-                                            <td>{{ $material->id }}</td>
+                                            <td hidden>{{ $material->id }}</td>
                                             <td>{{ $material->mat_nombre }}</td>
                                             <td>{{ $material->mat_descripcion }}</td>
                                             <td>{{ $material->categoria->nombre }}</td>

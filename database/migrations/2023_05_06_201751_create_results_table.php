@@ -18,9 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('det_id');           // estudio
             $table->unsignedBigInteger('dp_id');            // procedimiento
             $table->unsignedBigInteger('dpc_id');           // componente
-            $table->unsignedBigInteger('ca_id');            //aspecto
+            $table->unsignedBigInteger('ca_id');            // aspecto
+            $table->unsignedBigInteger('param_id');         // parametro a usar
             $table->string('resultado', 255)->nullable();   // resultado
-            $table->unsignedBigInteger('umed_id')->nullable();
+            $table->unsignedBigInteger('umed_id')->nullable(); // unidad de medida
             $table->unsignedBigInteger('estado');
             $table->timestamps();
 

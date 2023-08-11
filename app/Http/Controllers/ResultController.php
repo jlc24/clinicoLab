@@ -6,6 +6,7 @@ use App\Models\Cliente;
 use App\Models\Material;
 use App\Models\Recepcion;
 use App\Models\Result;
+use App\Models\ResultDetallematerial;
 use App\Models\UMedida;
 use DateTime;
 use Illuminate\Http\Request;
@@ -19,6 +20,13 @@ class ResultController extends Controller
     public function index()
     {
         return view('resultado.index', [
+            'unidades' => UMedida::all()
+        ]);
+    }
+
+    public function resultPaciente()
+    {
+        return view('resultado.paciente',[
             'unidades' => UMedida::all()
         ]);
     }
@@ -81,7 +89,7 @@ class ResultController extends Controller
                                 'estudios.est_nombre as estudio', 
                                 'estudios.est_cod as codigo', 
                                 'recepcions.estado as estado')
-                        ->where('clientes.id', '=', $term)
+                        ->where([['clientes.id', '=', $term], ['recepcions.estado', '=', $estado]])
                         ->get();
         }
         return response()->json($recepcion);
@@ -123,7 +131,7 @@ class ResultController extends Controller
                                 'estudios.est_nombre as estudio', 
                                 'estudios.est_cod as codigo', 
                                 'recepcions.estado as estado')
-                        ->where('estudios.id', $term)
+                        ->where([['recepcions.estado', '=', $estado],['estudios.id', $term]])
                         ->get();
         }
         return response()->json($recepcion);
@@ -167,6 +175,7 @@ class ResultController extends Controller
                                 'estudios.est_nombre as estudio', 
                                 'estudios.est_cod as codigo', 
                                 'recepcions.estado as estado')
+                        ->where('recepcions.estado', '=', $estado)
                         ->whereBetween(DB::raw('DATE(recepcions.created_at)'), [$fechaIni, $fechaFin])
                         ->get();
         }
@@ -183,7 +192,7 @@ class ResultController extends Controller
                             ->select('f.id as fac_id', 'r.id as rec_id','c.id as cli_id', DB::raw("CONCAT(c.cli_nombre, ' ', 
                                                     c.cli_apellido_pat, ' ', 
                                                     c.cli_apellido_mat) AS nombre"), 'c.cli_fec_nac',
-                                    DB::raw("DATE_FORMAT(r.created_at, '%d/%m/%Y') AS fecha"), 'c.cli_genero', 'f.fac_observacion', 'f.fac_referencia', 'e.est_nombre', 'd.id as det_id', 'r.estado')
+                                    DB::raw("DATE_FORMAT(r.created_at, '%d/%m/%Y') AS fecha"), 'c.cli_genero', 'f.fac_observacion', 'f.fac_referencia', 'e.est_nombre', 'd.id as det_id', 'r.estado', 'r.rec_observacion')
                             ->where('r.id', '=', $id)
                             ->get();
         
@@ -205,10 +214,11 @@ class ResultController extends Controller
         $dpc_id = $request->input('c');
         $dpaspecto = DB::table('componente_aspectos as ca')
                         ->join('results as res', 'res.ca_id', '=', 'ca.id')
+                        ->leftJoin('parametros as p', 'p.id', '=', 'res.param_id')
                         ->join('dp_componentes as dpc', 'ca.dpcomp_id', '=', 'dpc.id')
                         ->join('aspectos as a', 'ca.asp_id', '=', 'a.id')
                         ->select('res.id', 'res.fac_id', 'res.rec_id', 'res.det_id', 'res.dp_id', 'res.dpc_id' , 'res.ca_id', 'a.nombre', 'res.resultado', 'res.umed_id',
-                        DB::raw('(SELECT COUNT(*) FROM parametros WHERE ca_id = ca.id) as cant_parametros'))
+                        DB::raw('(SELECT COUNT(*) FROM parametros WHERE ca_id = ca.id) as cant_parametros'), 'p.referencia')
                         ->where([
                             ['res.fac_id', '=', $fac_id], 
                             ['res.rec_id', '=', $rec_id], 
@@ -225,6 +235,20 @@ class ResultController extends Controller
         $recepcion = Recepcion::find($id);
         $recepcion->estado = $request->input('res_estado');
         $recepcion->save();
+
+        $paciente = DB::table('clientes as c')
+                    ->join('facturas as f', 'f.cli_id', 'c.id')
+                    ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
+                    ->select('c.*')
+                    ->where('r.id', '=', $recepcion->id)
+                    ->first();
+        
+        $randomNumber = mt_rand(1000000, 9999999);
+
+        $recCodigo = $recepcion->id.$paciente->cli_cod.$randomNumber;
+        $recfile = Recepcion::find($id);
+        $recfile->rec_codigo = $recCodigo;
+        $recfile->save();
     }
     /**
      * Show the form for creating a new resource.
@@ -245,9 +269,10 @@ class ResultController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Result $result)
+    public function show($id)
     {
-        //
+        $recepcion = Recepcion::find($id);
+        return response()->json($recepcion);
     }
 
     /**
@@ -264,6 +289,7 @@ class ResultController extends Controller
     public function update(Request $request, $id)
     {
         $result = Result::find($id);
+        $result->param_id = $request->input('parametro');
         $result->resultado = $request->input('resultado');
         $result->umed_id = $request->input('umed_id');
         $result->save();
@@ -279,7 +305,18 @@ class ResultController extends Controller
                 $material = Material::find($mat_est->mat_id);
                 $material->mat_ventas = $mat_est->cantidad + $material->mat_ventas;
                 $material->save();
+
+                ResultDetallematerial::create([
+                    'result_id' => $result->id,
+                    'detmat_id' => $mat_est->id,
+                    'ca_id' => $mat_est->ca_id,
+                    'mat_id' =>$mat_est->mat_id,
+                    'cantidad' =>$mat_est->cantidad,
+                    'umed_id' => $mat_est->umed_id,
+                    'precio_total' => $mat_est->precio_total
+                ]);
             }
+
             $result->estado = 1;
             $result->save();
         }
@@ -289,6 +326,7 @@ class ResultController extends Controller
     {
         if ($request->input('pruebaEstado') !== null) {
             $result = Result::find($id);
+            $result->param_id = null;
             $result->resultado = null;
             $result->umed_id = null;
             $result->estado = 0;
@@ -305,8 +343,18 @@ class ResultController extends Controller
                 $material->mat_ventas = $material->mat_ventas - $mat_est->cantidad;
                 $material->save();
             }
+            
+            $resultDetmat = ResultDetallematerial::where('result_id', '=', $result->id);
+            $resultDetmat->delete();
 
         }
+    }
+
+    public function updateObservacion(Request $request, $id)
+    {
+        $recepcion = Recepcion::find($id);
+        $recepcion->rec_observacion = $request->input('rec_observacion');
+        $recepcion->save();
     }
 
     /**

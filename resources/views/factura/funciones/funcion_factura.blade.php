@@ -120,7 +120,7 @@
                                     type: 'GET',
                                     dataType: 'json',
                                     success: function(data) {
-                                        if (data.rec_ruta_file !== null) {
+                                        if (data.fac_ruta_file !== null) {
                                             cerrarCargando();
                                             Swal.fire({
                                                 title: 'Documento generado',
@@ -130,7 +130,7 @@
                                                 timer: 2000
                                             });
                                             setTimeout(() => {
-                                                window.location.href = '{{ route('factura') }}';
+                                                window.location.href = "{{ route('factura') }}";
                                             }, 2000);
                                         }else{
                                             $.ajax({
@@ -146,7 +146,7 @@
                                                         timer: 2000
                                                     });
                                                     setTimeout(() => {
-                                                        window.location.href = '{{ route('resultado') }}';
+                                                        window.location.href = "{{ route('factura') }}";
                                                     }, 2000);
                                                 },
                                                 error: function(response) {

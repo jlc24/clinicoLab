@@ -166,7 +166,6 @@
         }
 
         function getPruebaPacientes(id) {
-            mostrarCargando();
             $.ajax({
                 url: '{{ route("getPruebaPacientes", ":id") }}'.replace(":id", id),
                 type: 'GET',
@@ -181,19 +180,48 @@
                                 var isSelected = {{ $unidad->id }} === umedid ? 'selected' : '' ;
                                 optionList += '<option value="{{ $unidad->id }}" '+ isSelected + '>{{ $unidad->unidad }}</option>';
                             @endforeach
+
+                            var cliGenero = value.cli_genero;
+                            var cliEdad = value.cli_edad;
+                            var cliTiempo = value.cli_tiempo;
+
+                            var parametroId = null;
+
+                            var $tablaResultadoParametro = $('.tabla_resultado_parametro tbody');
+                            var numFilas = $tablaResultadoParametro.find('tr').length;
+
+                            if (numFilas === 1) {
+                                parametroId = $tablaResultadoParametro.find('td:eq(0)').text();
+                            } else {
+                                $('.tabla_resultado_parametro tbody tr').each(function() {
+                                    var referencia = $(this).find('td:eq(1)').text();
+                                    var genero = $(this).find('td:eq(2)').text();
+                                    var edadInicial = parseInt($(this).find('td:eq(3)').text());
+                                    var edadFinal = parseInt($(this).find('td:eq(4)').text());
+                                    var tiempo = $(this).find('td:eq(5)').text();
+
+                                    if (cliGenero.trim() === genero.trim() && (cliEdad >= edadInicial && cliEdad <= edadFinal) && cliTiempo.trim() === tiempo.trim()) {
+                                        parametroId = $(this).find('td:eq(0)').text();
+                                        return false;
+                                    }
+                                });
+                            }
                             $('.tabla_pacientes_resultado tbody').append(
                                 '<tr>'+
                                     '<td hidden>' + value.id + '</td>'+ //id de results
-                                    '<td width="30px"></td>'+ //id de results
-                                    '<td width="150px">' + value.cli_cod + '</td>'+ //
-                                    '<td width="100px"><input type="text" value="' + (value.resultado == null ? '' : value.resultado) + '" class="form-control form-control-sm resultado-final" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"></td>'+
+                                    '<td width="100px">' + value.cli_cod + '</td>'+ //
+                                    '<td width="130px">' + value.cli_genero + '</td>'+ //
+                                    '<td width="70px">' + value.cli_edad + '</td>'+ //
+                                    '<td >' + value.cli_tiempo + '</td>'+ //
+                                    '<td width="100px" class="res_parametro" hidden>' + (parametroId !== null ? parametroId : '') + '</td>'+ //id de results
+                                    '<td width="150px"><input type="text" value="' + (value.resultado == null ? '' : value.resultado) + '" class="form-control form-control-sm resultado-final" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"></td>'+
                                     '<td width="100px">'+
                                         '<select class="custom-select custom-select-sm res_aspecto_unidad" name="res_aspecto_unidad" id="res_aspecto_unidad">'+
                                             '<option value="" >Seleccionar...</option>'+
                                             optionList +
                                         '</select>'+
                                     '</td>'+
-                                    '<td class="text-center">'+
+                                    '<td class="text-center" width="70px">'+
                                         '<div class="btn-group" role="group" aria-label="Button group">'+
                                             (value.estado == 1 ? '<button class="btn btn-sm btn-success" title="Resultado"><i class="fas fa-check-circle"></i></button><button class="btn btn-sm btn-outline-danger btnEstado" title="Elminar Resultado"><i class="fas fa-times"></i></button>' : '')+
                                         '</div>'+
@@ -201,7 +229,6 @@
                                 '</tr>'
                             );
                         });
-                        cerrarCargando();
                     }else {
                         $('.tabla_pacientes_resultado tbody').empty().append('<td colspan="5" class="text-center">No hay datos recepcionados</td>');
                     }
@@ -215,7 +242,23 @@
                 type: 'GET',
                 dataType: 'json',
                 success:function (data) {
-                    $(".nombre_referencia").text(data[0].referencia);
+                    if (data.length != 0) {
+                        $('.tabla_resultado_parametro tbody').empty();
+                        $.each(data, function(index, value) {
+                            $('.tabla_resultado_parametro tbody').append(
+                                '<tr>'+
+                                    '<td width="30px" hidden><strong>' + value.id + '</strong></td>'+ //id de results
+                                    '<td width="200px"><strong>' + value.referencia + '</strong></td>'+ 
+                                    '<td><strong>' + (value.genero == null ? '' : value.genero) + '</strong></td>'+
+                                    '<td width="50px"><strong>' + (value.edad_inicial == null ? '' : value.edad_inicial) + '</strong></td>'+
+                                    '<td width="50px"><strong>' + (value.edad_inicial == null ? '' : value.edad_final) + '</strong></td>'+
+                                    '<td><strong>' + (value.tiempo == null ? '' : value.tiempo) + '</strong></td>'+
+                                '</tr>'
+                            );
+                        });
+                    }else {
+                        $('.tabla_resultado_parametro tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                    }
                 }
             });
         }
@@ -225,9 +268,13 @@
             $(".res_ca_id").val(ca_id);
             var prueba = $(this).closest('tr').find('td:eq(1)').text();
             $(".nombrePrueba").text(' '+prueba);
+            mostrarCargando();
             getPrueba(ca_id);
             getParametro(ca_id);
-            getPruebaPacientes(ca_id);
+            setTimeout(() => {
+                getPruebaPacientes(ca_id);
+                cerrarCargando();
+            }, 500);
         });
         
         function upResults(id, datos) {
@@ -261,9 +308,11 @@
 
         $(document).on('change', '.resultado-final', function() {
             var id = $(this).closest('tr').find('td:eq(0)').text();
-            var resultado = $(this).closest('tr').find("td:eq(3) input").val();
-            var umed = $(this).closest('tr').find('td:eq(4) select').val();
+            var param_id = $(this).closest("tr").find("td:eq(5)").text();
+            var resultado = $(this).closest('tr').find("td:eq(6) input").val();
+            var umed = $(this).closest('tr').find('td:eq(7) select').val();
             var datos = new FormData();
+            datos.append('parametro', param_id);
             datos.append('resultado', resultado);
             datos.append('umed_id', umed);
             upResults(id, datos);
@@ -271,9 +320,11 @@
 
         $(document).on('change', '.res_aspecto_unidad', function() {
             var id = $(this).closest('tr').find('td:eq(0)').text();
-            var resultado = $(this).closest('tr').find("td:eq(3) input").val();
-            var umed = $(this).closest('tr').find('td:eq(4) select').val();
+            var param_id = $(this).closest("tr").find("td:eq(5)").text();
+            var resultado = $(this).closest('tr').find("td:eq(6) input").val();
+            var umed = $(this).closest('tr').find('td:eq(7) select').val();
             var datos = new FormData();
+            datos.append('parametro', param_id);
             datos.append('resultado', resultado);
             datos.append('umed_id', umed);
             upResults(id, datos);
@@ -310,6 +361,5 @@
                 }
             });
         });
-
     });
 </script>

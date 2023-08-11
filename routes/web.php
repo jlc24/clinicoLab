@@ -90,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
         //Route::get('/clientes/{id}', [ClienteController::class, 'clientes'])->name('clientes');
         Route::get('/datos/{id}', [ClienteController::class, 'datos'])->name('datos');
         Route::get('/getEstudioClienteRecepcion/{id}', [ClienteController::class, 'getEstudioClienteRecepcion'])->name('getEstudioClienteRecepcion');
+        Route::get('/generarQR/{id}', [ClienteController::class, 'generarQR'])->name('generarQR');
     
         Route::get('/empresas', [EmpresaController::class, 'index'])->name('empresa');
         Route::post('/empresas', [EmpresaController::class, 'store'])->name('empresa');
@@ -289,12 +290,16 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/buscar_recepcion_fechas', [ResultController::class, 'buscarRecepcionFechas']);
             Route::get('/getDPCAspectoResult', [ResultController::class, 'getDPCAspectoResult']);
             
-            Route::get('/results', [ResultController::class, 'index'])->name('result');
+            Route::get('/resultados/estudios', [ResultController::class, 'index'])->name('resultado.estudio');
+            Route::get('/resultados/pruebas', [PruebaController::class, 'index'])->name('resultado.prueba');
+            Route::get('/resultados/pacientes', [ResultController::class, 'resultPaciente'])->name('resultado.paciente');
+
             Route::post('/results', [ResultController::class, 'store'])->name('result.store');
             Route::post('/results/{id}', [ResultController::class, 'update'])->name('result.update')->middleware('ajax');
+            Route::get('/results/{id}', [ResultController::class, 'show'])->name('result.show')->middleware('ajax');
             Route::post('/updateEstadoPrueba/{id}', [ResultController::class, 'updateEstadoPrueba'])->name('updateEstadoPrueba')->middleware('ajax');
+            Route::post('/updateObservacion/{id}', [ResultController::class, 'updateObservacion'])->name('updateObservacion')->middleware('ajax');
 
-            Route::get('/pruebas', [PruebaController::class, 'index'])->name('prueba');
 
             Route::get('/getResultsPruebas', [PruebaController::class, 'getResultsPruebas']);
             Route::get('/getPrueba/{id}', [PruebaController::class, 'getPrueba'])->name('getPrueba');

@@ -48,7 +48,26 @@
                                     </div>
                                 </div>
                             </div><br>
-                            <div class="row">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-11 col-sm 12">
+                                    <table class="table table-bordered table-sm table-hover table-responsive-sm tabla_reporte_estudios" id="tabla_reporte_estudios">
+                                        <thead style="text-align: center;">
+                                            <tr>
+                                                <th>{{ __('Codigo') }}</th>
+                                                <th>{{ __('Estudio') }}</th>
+                                                <th>{{ __('Cantidad') }}</th>
+                                                <th>{{ __('Precio total') }}</th>
+                                                <th>{{ __('Material') }}</th>
+                                                <th>{{ __('Precio Material') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            {{-- <div class="row">
                                 <div class="col-xl-12 col-sm-12" id="tabla_grupos_subgrupos">
                                     <table class="table table-sm table-bordered table-responsive-sm">
                                         <thead  style="background-color: #BDD7EE">
@@ -588,7 +607,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

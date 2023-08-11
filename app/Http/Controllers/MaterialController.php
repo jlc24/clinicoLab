@@ -17,7 +17,7 @@ class MaterialController extends Controller
     public function index()
     {
         return view('material.index', [
-            'materiales' => Material::all(),
+            'materiales' => Material::orderBy('mat_estado', 'desc')->get(),
             'medidas' => UMedida::all(),
             'proveedores' => Provider::all(),
             'categorias' => Categoria::all(),
@@ -51,6 +51,8 @@ class MaterialController extends Controller
                 'mat_ventas' => '0',
                 'mat_estado' => '0',
                 'cat_id' => $request->input('cat_id'),
+                'mat_vida_util' => $request->input('mat_vida_util'),
+                'mat_depreciacion' => $request->input('mat_depreciacion')
             ]);
 
             $imagen = $request->file('mat_imagen');
@@ -74,6 +76,8 @@ class MaterialController extends Controller
                 'mat_ventas' => '0',
                 'mat_estado' => '0',
                 'cat_id' => $request->input('cat_id'),
+                'mat_vida_util' => $request->input('mat_vida_util'),
+                'mat_depreciacion' => $request->input('mat_depreciacion')
             ]);
 
             $rutaImagen = null;
@@ -119,6 +123,8 @@ class MaterialController extends Controller
                 'mat_nombre' => $request->input('mat_nombre'),
                 'mat_descripcion' => $request->input('mat_descripcion'),
                 'cat_id' => $request->input('cat_id'),
+                'mat_vida_util' => $request->input('mat_vida_util'),
+                'mat_depreciacion' => $request->input('mat_depreciacion')
             ]);
             $imagen = $request->file('mat_imagen');
             $nombreArchivo = time().'_'.$imagen->getClientOriginalName();
@@ -143,6 +149,8 @@ class MaterialController extends Controller
                 'mat_nombre' => $request->input('mat_nombre'),
                 'mat_descripcion' => $request->input('mat_descripcion'),
                 'cat_id' => $request->input('cat_id'),
+                'mat_vida_util' => $request->input('mat_vida_util'),
+                'mat_depreciacion' => $request->input('mat_depreciacion')
             ]);
         }
     }

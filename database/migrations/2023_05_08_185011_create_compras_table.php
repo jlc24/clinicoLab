@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('compras', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('mat_id');
+            $table->string('comp_codigo', 50)->nullable();
             $table->date('comp_elaboracion')->nullable();
             $table->date('comp_vencimiento')->nullable();
+            $table->unsignedSmallInteger('comp_vida_util')->nullable();
+            $table->unsignedDecimal('comp_depreciacion', 8, 2)->nullable();
             $table->unsignedBigInteger('umed_id');
             $table->unsignedBigInteger('comp_cantidad');
             $table->decimal('comp_precio_compra');

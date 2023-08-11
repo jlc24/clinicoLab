@@ -68,8 +68,12 @@
                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#modal_ver_resultado" id="btnVerResultados" class="btn btn-sm btn-outline-success btnVerResultados" title="Ver resultados"><i class="fas fa-eye"></i></a>
                                                     <a href="javascript:void(0);" data-toggle="modal" data-target="#modal_ver_factura" id="btnVerFacturas" class="btn btn-sm btn-outline-primary btnVerFacturas" title="Ver Facturas"><i class="fas fa-file-archive"></i></a>
                                                     {{-- <a href="javascript:void(0);" id="btnVerReporte" class="btn btn-sm btn-outline-secondary" title="ver Reporte"><i class="fas fa-file"></i></a> --}}
+                                                    @if($cliente->cli_qr === null)
+                                                        <button class="btn btn-sm btn-outline-secondary btnGenerarQR" title="Generar QR"><i class="fas fa-qrcode"></i></button>
+                                                    @endif
                                                 </div>
                                             </td>
+                                            
                                             @include('cliente.modal.modal_actualizar_cliente')
                                             
                                         </tr>

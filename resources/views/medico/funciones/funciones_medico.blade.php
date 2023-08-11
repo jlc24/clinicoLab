@@ -218,7 +218,7 @@
 
         function getMedico(id) {
             $.ajax({
-                url: '{{ route("getMedico", ":id") }}'.replace(":id", id),
+                url: '{{ route("medico.show", ":id") }}'.replace(":id", id),
                 type: 'GET',
                 dataType: 'json',
                 success: function (data) {

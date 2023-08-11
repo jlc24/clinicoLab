@@ -49,6 +49,23 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group row" id="vidaUtil" hidden>
+                            <label class="col-md-3 col-form-label" for="mat_vida_util">{{ __('Vida Util') }}:<span class="dato_requerido">*</span></label>
+                            <div class="col-md-9" style="display: inline-flex;">
+                                <input type="number" placeholder="AÑOS" id="mat_vida_util" name="mat_vida_util" class="form-control form-control-sm mat_vida_util" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <div class="form-group row" id="depreciacion" hidden>
+                            <label class="col-md-3 col-form-label" for="mat_depreciacion">{{ __('Depreciacion') }}:<span class="dato_requerido">*</span></label>
+                            <div class="col-md-5">
+                                <input type="number" min="0" step="0.01" id="mat_depreciacion" name="mat_depreciacion" class="form-control form-control-sm mat_depreciacion" autocomplete="off" required>
+                            </div>
+                            <div class="col-md-4">
+                                <select id="mat_categoria" name="mat_categoria" class="custom-select custom-select-sm mat_categoria" style="border-radius: 5px 0px 0px 5px;" disabled>
+                                    <option value="%" selected>%</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="mat_imagen">{{ __('Imagen') }}:</label>
                             <div class="col-md-9" style="display: inline-flex;">

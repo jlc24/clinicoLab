@@ -21,8 +21,11 @@ class CompraController extends Controller
     {
         $request->validate([
             'mat_id' => 'integer',
+            'comp_codigo' => 'string|max:50',
             'comp_fecha_elaboracion' => 'date',
             'comp_fecha_vencimiento' => 'date',
+            'comp_vida_util' => 'integer',
+            'comp_depreciacion' => 'decimal:2',
             'umed_id' => 'integer',
             'comp_cantidad' => 'integer',
             'comp_precio_compra' => 'decimal:2',
@@ -33,8 +36,11 @@ class CompraController extends Controller
 
         Compra::create([
             'mat_id' => $request->input('mat_id'),
+            'comp_codigo' => $request->input('comp_codigo'),
             'comp_elaboracion' => $request->input('comp_elaboracion'),
             'comp_vencimiento' => $request->input('comp_vencimiento'),
+            'comp_vida_util' => $request->input('comp_vida_util'),
+            'comp_depreciacion' => $request->input('comp_depreciacion'),
             'umed_id' => $request->input('umed_id'),
             'comp_cantidad' => $request->input('comp_cantidad'),
             'comp_precio_compra' => $request->input('comp_precio_compra'),
@@ -171,9 +177,11 @@ class CompraController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            
+            'comp_codigo_update' => 'string|max:50',
             'comp_fecha_elaboracion_update' => 'date',
             'comp_fecha_vencimiento_update' => 'date',
+            'comp_vida_util_update' => 'integer',
+            'comp_depreciacion_update' => 'decimal:2',
             'umed_id_update' => 'integer',
             'comp_cantidad_update' => 'integer',
             'comp_precio_compra_update' => 'decimal:2',
@@ -183,8 +191,11 @@ class CompraController extends Controller
         ]);
 
         $compra = Compra::find($id);
+        $compra->comp_codigo = $request->input('comp_codigo_update');
         $compra->comp_elaboracion = $request->input('comp_fecha_elaboracion_update');
         $compra->comp_vencimiento = $request->input('comp_fecha_vencimiento_update');
+        $compra->comp_vida_util = $request->input('comp_vida_util_udpate');
+        $compra->comp_depreciacion = $request->input('comp_depreciacion_update');
         $compra->umed_id = $request->input('umed_id_update');
         $compra->comp_cantidad = $request->input('comp_cantidad_update');
         $compra->comp_precio_compra = $request->input('comp_precio_compra_update');

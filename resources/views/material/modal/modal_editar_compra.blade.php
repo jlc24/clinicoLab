@@ -22,6 +22,24 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
+                    <div class="col-xl-5 col-sm-5">
+                        <label class="col-md-12 col-form-label" for="mat_cod_compra_abastecer_update">{{ __('Codigo') }}:<span class="dato_requerido">*</span></label>
+                        <div class="col-md-12">
+                            <input type="text" placeholder="ej: 7001105-STAT-FAX-4700" id="mat_cod_compra_abastecer_update" name="mat_cod_compra_abastecer_update" class="form-control form-control-sm mat_cod_compra_abastecer_update" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" autocomplete="off" required>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-3 compVidaUtil" hidden>
+                        <label class="col-md-12 col-form-label" for="mat_vida_util_abastecer_equipo_update">{{ __('Vida Util') }}:<span class="dato_requerido">*</span></label>
+                        <div class="col-md-12">
+                            <input type="number" min="0" step="1" id="mat_vida_util_abastecer_equipo_update" name="mat_vida_util_abastecer_equipo_update" class="form-control form-control-sm mat_vida_util_abastecer_equipo_update" readonly>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-sm-4 compDepreciacion" hidden>
+                        <label class="col-md-12 col-form-label" for="mat_depreciacion_abastecer_equipo_update">{{ __('Depreciacion') }}:<span class="dato_requerido">*</span></label>
+                        <div class="col-md-12">
+                            <input type="number"  id="mat_depreciacion_abastecer_equipo_update" name="mat_depreciacion_abastecer_equipo_update" class="form-control form-control-sm mat_depreciacion_abastecer_equipo_update" readonly>
+                        </div>
+                    </div>
                     <div class="col-xl-3 col-sm-3">
                         <label class="col-md-12 col-form-label" for="mat_unidad_abastecer_update">{{ __('Unidad') }}:<span class="dato_requerido">*</span></label>
                         <div class="col-md-12">
@@ -94,7 +112,7 @@
                     <div class="col-xl-12 col-sm-12">
                         <label class="col-md-12 col-form-label" for="mat_observacion_abastecer_update">{{ __('Observacion') }}:<span class="dato_requerido">*</span></label>
                         <div class="col-md-12">
-                            <textarea name="mat_observacion_abastecer_update" id="mat_observacion_abastecer_update" rows="2" class="form-control form-control-sm mat_observacion_abastecer_update"></textarea>
+                            <textarea name="mat_observacion_abastecer_update" id="mat_observacion_abastecer_update" rows="2" class="form-control form-control-sm mat_observacion_abastecer_update" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"></textarea>
                         </div>
                     </div>
                 </div>

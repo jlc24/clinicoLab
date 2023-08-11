@@ -11,8 +11,11 @@ class Compra extends Model
 
     protected $fillable = [
         'mat_id',
+        'comp_codigo',
         'comp_elaboracion',
         'comp_vencimiento',
+        'comp_vida_util',
+        'comp_depreciacion',
         'umed_id',
         'comp_cantidad',
         'comp_precio_compra',

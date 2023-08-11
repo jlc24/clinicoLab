@@ -23,7 +23,9 @@
 
             .encabezado td {
                 padding: 0px;
-                font-size: 10px;
+                font-size: 13px;
+                align-items: flex-start;
+                align-content: flex-start;
             }
 
             .custom-table {
@@ -32,6 +34,7 @@
                 max-width: 800px;
                 margin: auto;
                 font-family: Arial, sans-serif;
+                padding: 10px 0 0 10px;
             }
 
             .custom-table th,
@@ -64,7 +67,7 @@
             }
 
             .table-descripcion tbody tr:nth-of-type(odd) {
-                background-color: #E9F0FE;
+                background-color: #fff;
             }
 
             .table-descripcion tbody tr:nth-of-type(even) {
@@ -82,83 +85,88 @@
                 margin: 0px;
                 padding: 0px;
             }
+            .marca-de-agua {
+                position: absolute;
+                top: 50%; /* Ajusta la posición vertical de la marca de agua */
+                left: 50%; /* Ajusta la posición horizontal de la marca de agua */
+                transform: translate(-50%, -50%); /* Centra la marca de agua */
+                opacity: 0.1; /* Ajusta la opacidad de la marca de agua */
+                z-index: 999; /* Asegúrate de que la marca de agua aparezca encima del contenido */
+            }
+            .marca-de-agua img {
+                max-width: 400px;
+                width: auto;
+            }
         </style>
         <title>RESULTADO DE ESTUDIO</title>
     </head>
     <body>
-        <div class="row">
-            <div class="col-xl-11" >
-                <div class="text-right" style="width: 300px; height: auto; background-color: #fff; padding: 5px; border: 1px solid white; display: inline-block; margin-left: 50px;">
-                    @if($config->logo == null)
-                        <img src="{{ asset('dist/img/default.png') }}" alt="" width="100px">
-                    @else
-                        <img src="{{ asset($config->logo) }}" alt="" width="80px" height="80px" style="border-radius: 50%;">
-                    @endif
-                </div>
-                <div style="width: 300px; height: auto; background-color: #fff; padding: 5px; border: 1px solid white; display: inline-block;">
-                    <table class="encabezado">
-                        <tbody>
-                            <tr>
-                                <td>{{ $config->nombre }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $config->nit }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $config->telefono }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ $config->direccion }}</td>
-                            </tr>
-                            <tr>
-                                <td style="text-transform: uppercase;">{{ $config->departamento }} - {{ $config->pais }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
         
-        <h3 class="text-center">{{ __('RESULTADO') }}</h3>
         <div class="row">
-            <div class="col-xs-11" style="border: 1px solid #b2b3b4; border-radius: 5px; box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3); margin-left: 20px;">
-                <table class="custom-table">
-                    <tbody>
-                        <tr>
-                            <td><strong>{{ __('Codigo') }}:</strong></td>
-                            <td>{{ $paciente->rec_id }}{{ $paciente->cli_cod }}{{ $paciente->cli_ci_nit }}</td>
-                            <td><strong>{{ __('Fecha Toma') }}:</strong></td>
-                            <td>{{ $paciente->fecha }}</td>
-                            <td><strong>{{ __('Hora') }}:</strong></td>
-                            <td>{{ $paciente->hora }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>{{ __('Paciente') }}:</strong></td>
-                            <td>{{ $paciente->nombre }}</td>
-                            <td><strong>{{ __('Edad') }}:</strong></td>
-                            <td>{{ $paciente->edad }} años</td>
-                            <td><strong>{{ __('Género') }}:</strong></td>
-                            <td>{{ $paciente->cli_genero }}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>{{ __('Medico') }}:</strong></td>
-                            <td>@if($paciente->nombre_med !== null)
-                                {{ $paciente->nombre_med }}
-                                @endif
-                            </td>
-                            <td><strong>{{ __('Fecha Resultado') }}:</strong></td>
-                            <td>{{ $paciente->fecha_update }}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-xl-11" style="display: inline">
+                <div class="col-xl-3" style="display: inline">
+                    <div class="" style="width: 100px; height: auto; background-color: #fff; padding: 5px; border: 1px solid #fff; display: inline-block;">
+                        @if($config->logo == null)
+                            <img src="{{ asset('dist/img/default.png') }}" alt="" width="100px">
+                        @else
+                            <img src="{{ asset($config->logo) }}" alt="" width="100px" style="border-radius: 50%;">
+                        @endif
+                    </div>
+                </div>
+                <div class="col-xl-5" style="display: inline">
+                    <div style="width: 500px; height: auto; background-color: #fff; padding: 5px; border: 1px solid #fff; display: inline-block;">
+                        <p>Direccion: <span style="white-space: nowrap; text-transform: capitalize;">{{ $config->direccion }}</span></p>  
+                        <p>Teléfono(s): <span style="color: #2c90e2">{{ $config->telefono }}</span></p>
+                        <p>Pag. Web: <span style="color: #2c90e2">{{ $config->web }}</span></p>
+                    </div>
+                </div>
             </div>
         </div>
-        <br>
-        <br>
-        <br>
-        <div class="row">
+        <div class="row" style="border: 1px solid #000; border-radius: 10px;" >
+            <div class="marca-de-agua">
+                <img src="{{ asset($config->logo) }}" alt="Marca de Agua">
+            </div>
+            <table class="custom-table">
+                <tbody>
+                    <tr>
+                        <td style="color: #2c90e2"><strong>{{ __('Paciente') }}:</strong></td>
+                        <td>{{ $paciente->nombre }}</td>
+                        <td style="color: #2c90e2"><strong>{{ __('Edad') }}:</strong></td>
+                        <td>{{ $paciente->edad }} {{ $paciente->cli_tiempo }}</td>
+                        
+                        <td rowspan="4">
+                            @if($paciente->cli_qr != null)
+                                <img src="{{ asset('storage/'.$paciente->cli_qr) }}" alt="" width="80px">
+                            @endif
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="color: #2c90e2"><strong>{{ __('Género') }}:</strong></td>
+                        <td>{{ $paciente->cli_genero }}</td>
+                        <td style="color: #2c90e2"><strong>{{ __('Codigo Paciente') }}:</strong></td>
+                        <td>{{ $paciente->rec_codigo }}</td>
+                        
+                        
+                    </tr>
+                    <tr>
+                        <td style="color: #2c90e2"><strong>{{ __('Institución') }}:</strong></td>
+                        <td>{{ $config->nombre }}</td>
+                        <td style="color: #2c90e2"><strong>{{ __('Solicitud') }}:</strong></td>
+                        <td>CL{{ $paciente->rec_id }}{{ $paciente->cli_ci_nit }}</td>
+                        
+                    </tr>
+                    <tr>
+                        <td style="color: #2c90e2"><strong>{{ __('Medico') }}:</strong></td>
+                        <td>@if($paciente->nombre_med !== null)
+                            {{ $paciente->nombre_med }}
+                            @endif
+                        </td>
+                        <td style="color: #2c90e2"><strong>{{ __('Muestra') }}:</strong></td>
+                        <td>{{ $paciente->muestra }}</td>
+                    </tr>
+                </tbody>
+            </table><br>
+            <h4 class="text-center" style="color: #2c90e2">{{ __('ANALISIS SOLICITADO') }}</h4>
             <div class="col-xs-11" style="margin-left: 0px;">
                 @php
                     $resultados = $results->groupBy('componente')->toArray();
@@ -166,12 +174,12 @@
                     $chunkSize = ceil(count($resultados) / 2);
                     $chunks = array_chunk($resultados, $chunkSize, true);
                 @endphp
-                
+                {{-- {{ dd($resultados) }} --}}
                 @if(count($chunks) > 1)
                     <table class="table-descripcion" style="margin-left: 50px;">
                         <tbody>
                             <tr>
-                                <td class="text-center" colspan="2" style="color: chocolate;"><strong>{{ $estudio->est_nombre }}</strong></td>
+                                <td class="text-center" colspan="2" style="color: #2c90e2;"><strong>{{ $estudio->est_nombre }}</strong></td>
                             </tr>
                             <tr style="border: none;">
                                 <td style="margin: 0px; padding: 0px; width: auto;">
@@ -179,20 +187,42 @@
                                         <table class="text-center">
                                             <thead class="text-center">
                                                 <tr>
-                                                    <th colspan="3" style="border-right: none; border-top: none; border-left: none;">&nbsp;&nbsp;&nbsp;{{ $componente }}</th>
+                                                    <th colspan="3" style="border-right: none; border-top: none; border-left: none; color: #2c90e2;">&nbsp;&nbsp;&nbsp;{{ $componente }}</th>
                                                 </tr>
                                                 <tr style="font-size: 15px;">
-                                                    <th class="text-center" style="width: 100px; color: orange; border-left: none;">PRUEBA</th>
-                                                    <th class="text-center" style="width: 100px; color: orange;">VALOR</th>
-                                                    <th class="text-center" style="width: 100px; color: orange; border-right: none;">REFERENCIA</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-left: none;">PRUEBA</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2;">VALOR</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-right: none;">REFERENCIA</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($resultados as $resultado)
                                                     <tr>
-                                                        <td style="color: red; border-left: none;">{{ $resultado->aspecto }}</td>
-                                                        <td style="font-size: 10px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $resultado->resultado }} {{ $resultado->umed_id }}</strong></td>
-                                                        <td style="color: blue; border-right: none;">{{ $resultado->referencia }}</td>
+                                                        <td style="border-left: none;">{{ $resultado->aspecto }}</td>
+                                                        {{-- <td style="font-size: 10px;"><strong>{{ $resultado->resultado }} {{ $resultado->unidad }}</strong></td> --}}
+                                                        <td style="font-size: 10px;">
+                                                            @if ($resultado->valor_inicial === null)
+                                                                @php
+                                                                    $resultadoReferencia = strtoupper(trim($resultado->referencia));
+                                                                    $resultadoResultado = strtoupper(trim($resultado->resultado));
+                                                                    $isInReferencia = in_array($resultadoResultado, explode(' ', $resultadoReferencia));
+                                                                @endphp
+                                                                <strong style="color: {{ $isInReferencia ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @else
+                                                                @php
+                                                                    $valorInicial = (float) $resultado->valor_inicial;
+                                                                    $valorFinal = (float) $resultado->valor_final;
+                                                                    $resultadoNumero = (float) $resultado->resultado;
+                                                                    $isInRange = $resultadoNumero >= $valorInicial && $resultadoNumero <= $valorFinal;
+                                                                @endphp
+                                                                <strong style="color: {{ $isInRange ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @endif
+                                                        </td>
+                                                        <td style="border-right: none;">{{ $resultado->referencia }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -204,20 +234,42 @@
                                         <table class="text-center">
                                             <thead class="text-center">
                                                 <tr>
-                                                    <th colspan="3" style="border-right: none; border-top: none; border-left: none;">&nbsp;&nbsp;&nbsp;{{ $componente }}</th>
+                                                    <th colspan="3" style="border-right: none; border-top: none; border-left: none; color: #2c90e2">&nbsp;&nbsp;&nbsp;{{ $componente }}</th>
                                                 </tr>
                                                 <tr style="font-size: 15px;">
-                                                    <th class="text-center" style="width: 100px; color: orange; border-left: none;">PRUEBA</th>
-                                                    <th class="text-center" style="width: 100px; color: orange;">VALOR</th>
-                                                    <th class="text-center" style="width: 100px; color: orange; border-right: none;">REFERENCIA</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-left: none;">PRUEBA</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2;">VALOR</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-right: none;">REFERENCIA</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($resultados as $resultado)
                                                     <tr>
-                                                        <td style="color: red; border-left: none;">{{ $resultado->aspecto }}</td>
-                                                        <td style="font-size: 10px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $resultado->resultado }} {{ $resultado->umed_id }}</strong></td>
-                                                        <td style="color: blue; border-right: none;">{{ $resultado->referencia }}</td>
+                                                        <td style="border-left: none;">{{ $resultado->aspecto }}</td>
+                                                        {{-- <td style="font-size: 10px; "><strong>{{ $resultado->resultado }} {{ $resultado->unidad }}</strong></td> --}}
+                                                        <td style="font-size: 10px;">
+                                                            @if ($resultado->valor_inicial === null)
+                                                                @php
+                                                                    $resultadoReferencia = strtoupper(trim($resultado->referencia));
+                                                                    $resultadoResultado = strtoupper(trim($resultado->resultado));
+                                                                    $isInReferencia = in_array($resultadoResultado, explode(' ', $resultadoReferencia));
+                                                                @endphp
+                                                                <strong style="color: {{ $isInReferencia ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @else
+                                                                @php
+                                                                    $valorInicial = (float) $resultado->valor_inicial;
+                                                                    $valorFinal = (float) $resultado->valor_final;
+                                                                    $resultadoNumero = (float) $resultado->resultado;
+                                                                    $isInRange = $resultadoNumero >= $valorInicial && $resultadoNumero <= $valorFinal;
+                                                                @endphp
+                                                                <strong style="color: {{ $isInRange ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @endif
+                                                        </td>
+                                                        <td style="border-right: none;">{{ $resultado->referencia }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -241,24 +293,46 @@
                         <table class="table-descripcion" style="width: 600px; margin-left: 50px;">
                             <tbody>
                                 <tr>
-                                    <td class="text-center" colspan="2" style="color: chocolate; border-right: none; border-left: none; border-top: none;"><strong>{{ $estudio->est_nombre }}</strong></td>
+                                    <td class="text-center" colspan="2" style="color: #2c90e2; border-right: none; border-left: none; border-top: none;"><strong>{{ $estudio->est_nombre }}</strong></td>
                                 </tr>
                                 <tr style="border: none;">
                                     <td style="margin: 0px; padding: 0px; width: auto;">
                                         <table class="text-center">
                                             <thead class="text-center">
                                                 <tr style="font-size: 15px;">
-                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none; border-left: none;">PRUEBA</th>
-                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none;">VALOR</th>
-                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none; border-right: none;">REFERENCIA</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-top: none; border-left: none;">PRUEBA</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-top: none;">VALOR</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-top: none; border-right: none;">REFERENCIA</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($chunks[0] as $result)
+                                                @foreach ($chunks[0] as $resultado)
                                                     <tr>
-                                                        <td style="color: red; border-left: none;">{{ $result->aspecto }}</td>
-                                                        <td style="font-size: 10px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $result->resultado }} {{ $result->umed_id }}</strong></td>
-                                                        <td style="color: blue; border-right: none;">{{ $result->referencia }}</td>
+                                                        <td style="border-left: none;">{{ $resultado->aspecto }}</td>
+                                                        {{-- <td style="font-size: 10px;"><strong>{{ $result->resultado }} {{ $result->unidad }}</strong></td> --}}
+                                                        <td style="font-size: 10px;">
+                                                            @if ($resultado->valor_inicial === null)
+                                                                @php
+                                                                    $resultadoReferencia = strtoupper(trim($resultado->referencia));
+                                                                    $resultadoResultado = strtoupper(trim($resultado->resultado));
+                                                                    $isInReferencia = in_array($resultadoResultado, explode(' ', $resultadoReferencia));
+                                                                @endphp
+                                                                <strong style="color: {{ $isInReferencia ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @else
+                                                                @php
+                                                                    $valorInicial = (float) $resultado->valor_inicial;
+                                                                    $valorFinal = (float) $resultado->valor_final;
+                                                                    $resultadoNumero = (float) $resultado->resultado;
+                                                                    $isInRange = $resultadoNumero >= $valorInicial && $resultadoNumero <= $valorFinal;
+                                                                @endphp
+                                                                <strong style="color: {{ $isInRange ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @endif
+                                                        </td>
+                                                        <td style="border-right: none;">{{ $resultado->referencia }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -268,17 +342,39 @@
                                         <table class="text-center">
                                             <thead class="text-center">
                                                 <tr style="font-size: 15px;">
-                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none; border-left: none;">PRUEBA</th>
-                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none;">VALOR</th>
-                                                    <th class="text-center" style="width: 100px; color: orange; border-top: none; border-right: none;">REFERENCIA</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-top: none; border-left: none;">PRUEBA</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-top: none;">VALOR</th>
+                                                    <th class="text-center" style="width: 100px; color: #2c90e2; border-top: none; border-right: none;">REFERENCIA</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($chunks[1] as $result)
+                                                @foreach ($chunks[1] as $resultado)
                                                     <tr>
-                                                        <td style="color: red; border-left: none;">{{ $result->aspecto }}</td>
-                                                        <td style="font-size: 10px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $result->resultado }} {{ $result->umed_id }}</strong></td>
-                                                        <td style="color: blue; border-right: none;">{{ $result->referencia }}</td>
+                                                        <td style="border-left: none;">{{ $resultado->aspecto }}</td>
+                                                        {{-- <td style="font-size: 10px;"><strong>{{ $result->resultado }} {{ $result->unidad }}</strong></td> --}}
+                                                        <td style="font-size: 10px;">
+                                                            @if ($resultado->valor_inicial === null)
+                                                                @php
+                                                                    $resultadoReferencia = strtoupper(trim($resultado->referencia));
+                                                                    $resultadoResultado = strtoupper(trim($resultado->resultado));
+                                                                    $isInReferencia = in_array($resultadoResultado, explode(' ', $resultadoReferencia));
+                                                                @endphp
+                                                                <strong style="color: {{ $isInReferencia ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @else
+                                                                @php
+                                                                    $valorInicial = (float) $resultado->valor_inicial;
+                                                                    $valorFinal = (float) $resultado->valor_final;
+                                                                    $resultadoNumero = (float) $resultado->resultado;
+                                                                    $isInRange = $resultadoNumero >= $valorInicial && $resultadoNumero <= $valorFinal;
+                                                                @endphp
+                                                                <strong style="color: {{ $isInRange ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @endif
+                                                        </td>
+                                                        <td style="border-right: none;">{{ $resultado->referencia }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -291,38 +387,53 @@
                         @php
                             $chunks = array_chunk($resultsArray, ceil(count($resultsArray)));
                         @endphp
-                        <table class="table-descripcion" style="width: 600px; margin-left: 50px;">
+                        <table class="table-descripcion" style="width: 690px; margin-left: 10px;">
                             <tbody>
                                 <tr>
-                                    <td class="text-left" style="color: brown; font-size: 25px; width: 30%; padding-left: 5px;"><strong>GRUPO:</strong></td>
-                                    <td class="text-left" style="color: chocolate; font-size: 25px; padding-left: 5px;"><strong>{{ $estudio->grupo }}</strong></td>
-                                </tr>
-                                @if($estudio->subgrupo !== null)
-                                    <tr>
-                                        <td class="text-left" style="color: brown; font-size: 25px; width: 30%; padding-left: 5px;"><strong>SUBGRUPO:</strong></td>
-                                        <td class="text-left" style="color: chocolate; font-size: 25px; padding-left: 5px;"><strong>{{ $estudio->subgrupo }}</strong></td>
-                                    </tr>
-                                @endif
-                                <tr>
-                                    <td class="text-left" style="color: brown; font-size: 25px; width: 30%; padding-left: 5px;"><strong>ESTUDIO:</strong></td>
-                                    <td class="text-left" style="color: chocolate; font-size: 25px; padding-left: 5px;"><strong>{{ $estudio->est_nombre }}</strong></td>
+                                    <td class="text-center" style="color: #2c90e2; font-size: 15px; padding-left: 5px;"><strong>{{ $estudio->est_nombre }}</strong></td>
                                 </tr>
                                 <tr style="border: none;">
-                                    <td colspan="2" style="margin: 0px; padding: 0px; width: 100%; ">
+                                    <td style="margin: 0px; padding: 0px; width: 100%;">
                                         <table class="text-center" style="width: 100%">
                                             <thead class="text-center">
                                                 <tr style="font-size: 25px;">
-                                                    <th class="text-center" style="width: 30%; color: orange; none; font-size: 20px;">PRUEBA</th>
-                                                    <th class="text-center" style="width: 30%; color: orange; font-size: 20px;">VALOR</th>
-                                                    <th class="text-center" style="width: 40%; color: orange; none; font-size: 20px;">REFERENCIA</th>
+                                                    <th class="text-center" style="width: 30%; color: #2c90e2; border-top: none; border-left: none; font-size: 15px;">PRUEBA</th>
+                                                    <th class="text-center" style="width: 30%; color: #2c90e2; border-top: none; font-size: 15px;">RESULTADO</th>
+                                                    <th class="text-center" style="width: 40%; color: #2c90e2; border-top: none; font-size: 15px;">REFERENCIA</th>
+                                                    <th class="text-center" style="width: 40%; color: #2c90e2; border-top: none; font-size: 15px;">METODO</th>
+                                                    <th class="text-center" style="width: 40%; color: #2c90e2; border-top: none; border-right: none; font-size: 15px;">MUESTRA</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($chunks[0] as $result)
-                                                    <tr style="font-size: 25px;">
-                                                        <td style="color: red; font-size: 20px;">{{ $result->aspecto }}</td>
-                                                        <td style="font-size: 20px; font-family: 'Times New Roman', Times, serif;"><strong>{{ $result->resultado }}</strong></td>
-                                                        <td style="color: blue; font-size: 20px;">{{ $result->referencia }}</td>
+                                                @foreach ($chunks[0] as $resultado)
+                                                    <tr>
+                                                        <td style="font-size: 13px; border-left: none; border-bottom: none;">{{ $resultado->aspecto }}</td>
+                                                        {{-- <td style="font-size: 13px; border-bottom: none;"><strong>{{ $result->resultado }} {{ $result->unidad }}</strong></td> --}}
+                                                        <td style="font-size: 13px; border-bottom: none;">
+                                                            @if ($resultado->valor_inicial === null)
+                                                                @php
+                                                                    $resultadoReferencia = strtoupper(trim($resultado->referencia));
+                                                                    $resultadoResultado = strtoupper(trim($resultado->resultado));
+                                                                    $isInReferencia = in_array($resultadoResultado, explode(' ', $resultadoReferencia));
+                                                                @endphp
+                                                                <strong style="color: {{ $isInReferencia ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @else
+                                                                @php
+                                                                    $valorInicial = (float) $resultado->valor_inicial;
+                                                                    $valorFinal = (float) $resultado->valor_final;
+                                                                    $resultadoNumero = (float) $resultado->resultado;
+                                                                    $isInRange = $resultadoNumero >= $valorInicial && $resultadoNumero <= $valorFinal;
+                                                                @endphp
+                                                                <strong style="color: {{ $isInRange ? 'black' : 'red' }}">
+                                                                    {{ $resultado->resultado }} {{ $resultado->unidad }}
+                                                                </strong>
+                                                            @endif
+                                                        </td>
+                                                        <td style="font-size: 13px; border-bottom: none;">{{ $resultado->referencia }}</td>
+                                                        <td style="border-bottom: none;">{{ $resultado->procedimiento }}</td>
+                                                        <td style="border-right: none; border-bottom: none;">{{ $paciente->muestra }}</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -334,12 +445,42 @@
                     @endif
                 @endif
             </div>
-        </div><br>
-        <br><br>
-        <p class="text-center" style="font-family: Arial, sans-serif; font-size: 15px;">Puedes verificar los resultados de tu análisis clínico en nuestro sitio web: {{ $config->web }}</p>
-        <p style="margin-left: 150px; font-family: Arial, sans-serif; font-size: 15px">Usuario:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $paciente->cli_correo }}</strong></p>
-        <p style="margin-left: 150px; font-family: Arial, sans-serif; font-size: 15px">Contraseña:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ $paciente->cli_password }}</strong></p>
-        <br><br><br><br><br><br><br>
-        <p class="text-center">Firma del Medico</p>
+            <div class="row">
+                
+            </div>
+            <table class="custom-table" style="padding-bottom: 10px;">
+                <tbody><br>
+                    <tr>
+                        <td style="color: #2c90e2; width: 20%;"><strong>{{ __('Observaciones') }}:</strong></td>
+                        <td colspan="2" rowspan="2" style="vertical-align: top;">{{ $paciente->rec_observacion }}</td>
+                    </tr>
+                    <tr>
+                        <td style="color: #2c90e2"></td>
+                    </tr>
+                    <tr>
+                        <td style="color: #2c90e2"><strong>{{ __('Fecha Muestra') }}:</strong></td>
+                        <td>{{ $paciente->fecha }} {{ $paciente->hora }}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td style="color: #2c90e2"><strong>{{ __('Fecha Entrega') }}:</strong></td>
+                        <td>{{ $paciente->fecha_update }} {{ $paciente->hora_update }}</td>
+                        <td></td>
+                    </tr>
+                    <br><br><br><br>
+                    <br><br><br><br>
+                    <tr>
+                        <td colspan="3" style="text-align: center">{{ Auth::user()->usuario->usuario_nombre }} {{ Auth::user()->usuario->usuario_apellido_pat }} {{ Auth::user()->usuario->usuario_apellido_mat }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="text-align: center">{{ __('Responsable Análisis') }}</td>
+                    </tr>
+                    <br><br>
+                    <tr>
+                        <td colspan="3"><p><strong>NOTA: </strong>EL DOCUMENTO REFLEJA LOS RESULTADOS DE ANÁLISIS CLINICOS DEL PACIENTE. EL USO ILÍCITO DE ÉSTA SERÁ SANCIONADA DE ACUERDO A LA LEY, PARA SU VALIDACIÓN ESCANEAR CÓDIGO QR O DIRIGIRSE AL SITIO WEB.</p></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>

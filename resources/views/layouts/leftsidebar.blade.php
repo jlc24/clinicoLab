@@ -102,13 +102,13 @@
                                         <p>{{ __('Antibiogramas') }}</p>
                                     </a>
                                 </li>
-                                <li class="nav-item px-2">
+                                <li class="nav-item px-2" hidden>
                                     <a href="{{ route('bacteria') }}" class="nav-link {{ Request::is('bacterias') ? 'active' : '' }}">
                                         <i class="nav-icon fas fa-bacteria"></i>
                                         <p>{{ __('Bacterias') }}</p>
                                     </a>
                                 </li>
-                                <li class="nav-item px-2">
+                                <li class="nav-item px-2" hidden>
                                     <a href="{{ route('cultivo') }}" class="nav-link {{ Request::is('cultivos') ? 'active' : '' }}">
                                         <i class="nav-icon fas fa-vial"></i>
                                         <p>{{ __('Cultivos') }}</p>
@@ -186,7 +186,7 @@
                         </li>
                     @endif
                     @php
-                        $activeRoutesCaptura = [ 'recepcion', 'result', 'historyViewRecepcion', 'prueba' ];
+                        $activeRoutesCaptura = [ 'recepcion', 'historyViewRecepcion', 'resultado.prueba', 'resultado.estudio', 'resultado.paciente'  ];
                     @endphp
                     <li class="nav-item {{ in_array(Route::currentRouteName(), $activeRoutesCaptura) ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ in_array(Route::currentRouteName(), $activeRoutesCaptura) ? 'active' : '' }}">
@@ -211,19 +211,19 @@
                             </li>
                             @if(Auth::user()->rol =='admin')
                                 <li class="nav-item px-2">
-                                    <a href="{{ route('prueba') }}" class="nav-link {{ Request::is('pruebas') ? 'active' : '' }}">
+                                    <a href="{{ route('resultado.prueba') }}" class="nav-link {{ Request::is('resultados/pruebas') ? 'active' : '' }}">
                                         <i class="nav-icon fa-solid fas fa-poll-h"></i>
                                         <p>{{ __('Resultados por Pruebas') }}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item px-2">
-                                    <a href="{{ route('result') }}" class="nav-link {{ Request::is('results') ? 'active' : '' }}">
+                                    <a href="{{ route('resultado.estudio') }}" class="nav-link {{ Request::is('resultados/estudios') ? 'active' : '' }}">
                                         <i class="nav-icon fa-solid fas fa-poll-h"></i>
                                         <p>{{ __('Resultados por Estudio') }}</p>
                                     </a>
                                 </li>
-                                <li class="nav-item px-2">
-                                    <a href="#" class="nav-link">
+                                <li class="nav-item px-2" hidden>
+                                    <a href="{{ route('resultado.paciente') }}" class="nav-link {{ Request::is('resultados/pacientes') ? 'active' : '' }}">
                                         <i class="nav-icon fa-solid fas fa-poll-h"></i>
                                         <p>{{ __('Resultados por Paciente') }}</p>
                                     </a>
@@ -333,13 +333,13 @@
                                     <p>{{ __('ajas') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item px-2">
+                            <li class="nav-item px-2" hidden>
                                 <a href="{{ route('reporte.material') }}" class="nav-link {{ Request::is('reportes/materiales') ? 'active' : '' }}">
                                     <i class="nav-icon ">M</i>
                                     <p>{{ __('aterial') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item px-2">
+                            <li class="nav-item px-2" hidden>
                                 <a href="{{ route('reporte.economico') }}" class="nav-link {{ Request::is('reportes/economicos') ? 'active' : '' }}">
                                     <i class="nav-icon ">R</i>
                                     <p>{{ __('eporte Económico') }}</p>
@@ -351,13 +351,13 @@
                                     <p>{{ __('studios') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item px-2">
+                            <li class="nav-item px-2" hidden>
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon ">G</i>
                                     <p>{{ __('enerales') }}</p>
                                 </a>
                             </li>
-                            <li class="nav-item px-2">
+                            <li class="nav-item px-2" hidden>
                                 <a href="#" class="nav-link">
                                     <i class="nav-icon fas fa-book"></i>
                                     <p>{{ __('Lista de reportes') }}</p>

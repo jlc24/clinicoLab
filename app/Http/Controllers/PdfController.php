@@ -43,6 +43,14 @@ class PdfController extends Controller
             $hoy = new DateTime();
             $edad = $hoy->diff($fecha_nac)->y;
             $paciente->edad = $edad;
+            $diferencia = $hoy->diff($fecha_nac);
+            if ($diferencia->y >= 1) {
+                $paciente->cli_tiempo = ($diferencia->y === 1 ? " AÑO" : " AÑOS");
+            } elseif ($diferencia->m >= 1) {
+                $paciente->cli_tiempo = ($diferencia->m === 1 ? " MES" : " MESES");
+            } else {
+                $paciente->cli_tiempo = ($diferencia->d === 1 ? " DÍA" : " DÍAS");
+            }
             
             $estudios = DB::table('detalles as d')
                         ->join('estudios as e', 'e.id', '=', 'd.estudio_id')
@@ -190,6 +198,8 @@ class PdfController extends Controller
         $paciente = DB::table('clientes as c')
                     ->join('facturas as f', 'f.cli_id', '=', 'c.id')
                     ->join('recepcions as r', 'r.fac_id', '=', 'f.id')
+                    ->join('detalles as d', 'd.id', '=', 'r.det_id')
+                    ->join('muestras as mu', 'mu.id', '=', 'd.muestra_id')
                     ->leftjoin('medicos as m', 'm.id', '=', 'f.med_id')
                     ->select('f.id as factura', 'f.fac_total', 'r.id as rec_id', 'r.rec_ruta_file', 'c.cli_fec_nac', 'c.*', 'c.id as cli_id', 'c.cli_password',
                             DB::raw("CONCAT(c.cli_nombre, ' ', 
@@ -197,10 +207,11 @@ class PdfController extends Controller
                                             c.cli_apellido_mat) AS nombre"), 
                             DB::raw("DATE_FORMAT(r.created_at, '%d/%m/%Y') as fecha"),
                             DB::raw("DATE_FORMAT(r.updated_at, '%d/%m/%Y') as fecha_update"),
+                            DB::raw("DATE_FORMAT(r.updated_at, '%H:%i') as hora_update"),
                             DB::raw("DATE_FORMAT(r.created_at, '%H:%i') as hora"), 
                             DB::raw("CONCAT(m.med_nombre, ' ', 
                                             m.med_apellido_pat, ' ', 
-                                            m.med_apellido_mat) AS nombre_med"))
+                                            m.med_apellido_mat) AS nombre_med"), 'mu.nombre as muestra', 'r.rec_codigo', 'r.rec_observacion')
                     ->where('r.id', '=', $id)
                     ->first();
         
@@ -209,6 +220,14 @@ class PdfController extends Controller
             $hoy = new DateTime();
             $edad = $hoy->diff($fecha_nac)->y;
             $paciente->edad = $edad;
+            $diferencia = $hoy->diff($fecha_nac);
+            if ($diferencia->y >= 1) {
+                $paciente->cli_tiempo = ($diferencia->y === 1 ? " AÑO" : " AÑOS");
+            } elseif ($diferencia->m >= 1) {
+                $paciente->cli_tiempo = ($diferencia->m === 1 ? " MES" : " MESES");
+            } else {
+                $paciente->cli_tiempo = ($diferencia->d === 1 ? " DÍA" : " DÍAS");
+            }
             
             $estudio = DB::table('detalles as d')
                         ->join('estudios as e', 'e.id', '=', 'd.estudio_id')
@@ -225,14 +244,16 @@ class PdfController extends Controller
                         ->join('recepcions as r', 'res.rec_id', '=', 'r.id')
                         ->join('detalles as d', 'res.det_id', '=', 'd.id')
                         ->join('detalle_procedimientos as dp', 'res.dp_id', '=', 'dp.id')
+                        ->join('procedimientos as pr', 'pr.id', '=', 'dp.proc_id')
                         ->join('dp_componentes as dpc', 'res.dpc_id', '=', 'dpc.id')
                         ->join('componentes as c', 'dpc.comp_id', '=', 'c.id')
                         ->join('componente_aspectos as ca', 'res.ca_id', '=', 'ca.id')
-                        ->join('parametros as p', 'p.ca_id', '=', 'ca.id')
+                        ->join('parametros as p', 'p.id', '=', 'res.param_id')
                         ->join('aspectos as a', 'ca.asp_id', '=', 'a.id')
-                        ->select('c.nombre as componente' , 'a.nombre as aspecto', 'res.resultado', 'res.umed_id', 'p.referencia')
+                        ->leftJoin('u_medidas as um', 'um.id', '=', 'res.umed_id')
+                        ->select('c.nombre as componente' , 'a.nombre as aspecto', 'res.resultado', 'um.unidad', 'p.valor_inicial', 'p.valor_final', 'p.referencia', 'pr.nombre as procedimiento')
                         ->where([['r.id', '=', $paciente->rec_id], ['res.resultado', '!=', null]])
-                        ->groupBy('c.nombre', 'a.nombre', 'res.resultado', 'res.umed_id', 'p.referencia')
+                        ->groupBy('c.nombre', 'a.nombre', 'res.resultado', 'um.unidad', 'p.valor_inicial', 'p.valor_final', 'p.referencia', 'pr.nombre')
                         ->get();
     
             // $factura = $paciente->factura;
@@ -271,24 +292,24 @@ class PdfController extends Controller
                  ]
             ]);
     
-            // $pdf = Pdf::loadView('resultado.pdf.resultado', [
-            //     'config' => $config, 
-            //     'paciente' => $paciente,
-            //     'estudio' => $estudio,
-            //     'results' => $results
-            // ]);
-
-            $html = view('resultado.pdf.resultado', [
-                'config' => $config,
+            $pdf = Pdf::loadView('resultado.pdf.resultado', [
+                'config' => $config, 
                 'paciente' => $paciente,
                 'estudio' => $estudio,
                 'results' => $results
-            ])->render();
+            ]);
 
-            $dompdf = new Dompdf($options);
-            $dompdf->loadHtml($html);
+            // $html = view('resultado.pdf.resultado', [
+            //     'config' => $config,
+            //     'paciente' => $paciente,
+            //     'estudio' => $estudio,
+            //     'results' => $results
+            // ])->render();
+
+            // $dompdf = new Dompdf($options);
+            // $dompdf->loadHtml($html);
                 
-            $dompdf->render();
+            // $dompdf->render();
             
             $date = now()->format('Ymd');
             $filename = "resultados_".$id.$date.$id.".pdf";
@@ -299,25 +320,23 @@ class PdfController extends Controller
             }
             $newdirectory = str_replace("public/", "", $directory);
             $ruta = $newdirectory.$filename;
-            $recCodigo = $paciente->rec_id.$paciente->cli_cod.$paciente->cli_ci_nit;
             
-            // $pdf->getDomPDF()->setOptions($options);
-            // $pdf->render();
-            // $pdf->save(storage_path('app/'.$directory.$filename));
+            $pdf->getDomPDF()->setOptions($options);
+            $pdf->render();
+            $pdf->save(storage_path('app/'.$directory.$filename));
             $file_path = storage_path('app/'.$directory.$filename);
-            file_put_contents($file_path, $dompdf->output());
+            file_put_contents($file_path, $pdf->output());
 
             if (file_exists($file_path)) {
                 $recfile = Recepcion::find($id);
-                $recfile->rec_codigo = $recCodigo;
                 $recfile->rec_ruta_file = $ruta;
                 $recfile->save();
 
                 return response()->json($recfile);
             }else{
                 return false;
-            }
-            // return $pdf->stream('resultados.pdf');
+            } 
+            //return $pdf->stream('resultados.pdf');
         }
         
     }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('det_id');
             $table->string('estado', 15)->define('Pendiente');
             $table->string('rec_ruta_file', 255)->nullable();
+            $table->string('rec_observacion', 255)->nullable();
             $table->timestamps();
 
             $table->foreign('caja_id')->references('id')->on('cajas');

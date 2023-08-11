@@ -27,6 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('cli_usuario', 10);
             $table->string('cli_password', 255);
+            $table->string('cli_qr', 255)->nullable();
             $table->unsignedBigInteger('dep_id')->nullable();
             $table->unsignedBigInteger('mun_id')->nullable();
             $table->unsignedBigInteger('emp_id')->nullable();

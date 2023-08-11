@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Banco;
 use App\Models\Cliente;
+use App\Models\Configuration;
 use Illuminate\Http\Request;
 use App\Models\Departamento;
 use App\Models\Grupo;
@@ -16,6 +17,8 @@ use App\Models\User;
 use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ClienteController extends Controller
 {
@@ -124,7 +127,7 @@ class ClienteController extends Controller
         ]);
         
         // Crear registro de cliente y asociarlo con el usuario creado anteriormente
-        Cliente::create([
+        $paciente = Cliente::create([
             'cli_cod' => $request->input('cli_cod'),
             'cli_nombre' => $request->input('cli_nombre'),
             'cli_apellido_pat' => $request->input('cli_apellido_pat'),
@@ -143,6 +146,103 @@ class ClienteController extends Controller
             'med_id' => $request->input('med_id'),
             'user_id' => $user->id
         ]);
+
+        $config = Configuration::first();
+
+        $randomNumber = mt_rand(1000000, 9999999);
+
+        $id = $paciente->id;
+        $codigo = $paciente->cli_cod;
+        $carnet = $randomNumber;
+        $email = $paciente->cli_correo;
+        $usuario = $paciente->cli_usuario;
+        $pass = $paciente->cli_password;
+        $web = $config->web;
+        $logo = $config->logo;
+        $fecha = now()->format('Ymd');
+
+        $qrdata = [
+            'Correo' => $email,
+            'Usuario' => $usuario,
+            'Contrasena' => $pass,
+            'Sitio WEB' => $web
+        ];
+
+        $qrCode = QrCode::format('png')
+                        ->size(400)
+                        ->merge(public_path($logo), 0.5, true)
+                        ->generate(json_encode($qrdata));
+
+        $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.png";
+        $directorio = "public/pacienteQR/".$id."/";
+
+        if (!Storage::exists($directorio)) {
+            Storage::makeDirectory($directorio);
+        }
+
+        $directorioRuta = str_replace("public/", "", $directorio);
+        $ruta = $directorioRuta.$qrname;
+
+        $qrCodePath = storage_path('app/'.$directorio . $qrname);
+        file_put_contents($qrCodePath, $qrCode);
+
+        if (file_exists($qrCodePath)) {
+            $paceinteQR = Cliente::find($paciente->id);
+            $paceinteQR->cli_qr = $ruta;
+            $paceinteQR->save();
+        }else{
+            return false;
+        }
+
+    }
+
+    public function generarQR($id)
+    {
+        $paciente = Cliente::find($id);
+        $config = Configuration::first();
+
+        $id = $paciente->id;
+        $codigo = $paciente->cli_cod;
+        $carnet = $paciente->cli_ci_nit;
+        $email = $paciente->cli_correo;
+        $usuario = $paciente->cli_usuario;
+        $pass = $paciente->cli_password;
+        $web = $config->web;
+        $logo = $config->logo;
+        $fecha = now()->format('Ymd');
+
+        $qrdata = [
+            'Correo' => $email,
+            'Usuario' => $usuario,
+            'Contrasena' => $pass,
+            'Sitio WEB' => $web
+        ];
+
+        $qrCode = QrCode::format('png')
+                        ->size(400)
+                        //->merge(public_path($logo), 0.25, true)
+                        ->generate(json_encode($qrdata));
+
+        $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.png";
+        $directorio = "public/pacienteQR/".$id."/";
+
+        if (!Storage::exists($directorio)) {
+            Storage::makeDirectory($directorio);
+        }
+
+        $directorioRuta = str_replace("public/", "", $directorio);
+        $ruta = $directorioRuta.$qrname;
+
+        $qrCodePath = storage_path('app/'.$directorio . $qrname);
+        file_put_contents($qrCodePath, $qrCode);
+
+        if (file_exists($qrCodePath)) {
+            $paceinteQR = Cliente::find($paciente->id);
+            $paceinteQR->cli_qr = $ruta;
+            $paceinteQR->save();
+        }else{
+            return false;
+        }
     }
 
     /**
@@ -218,8 +318,8 @@ class ClienteController extends Controller
             'cli_rol_update' => 'required'
         ]);
         
-        $cliente = Cliente::find($id);
-        $cliente->update([
+        $paciente = Cliente::find($id);
+        $paciente->update([
             'cli_cod' => $request->input('cli_cod_update'),
             'cli_nombre' => $request->input('cli_nombre_update'),
             'cli_apellido_pat' => $request->input('cli_apellido_pat_update'),
@@ -234,6 +334,51 @@ class ClienteController extends Controller
             'mun_id' => $request->input('cli_municipio_update'),
             'med_id' => $request->input('cli_medico_update')
         ]);
+
+        $config = Configuration::first();
+
+        $id = $paciente->id;
+        $codigo = $paciente->cli_cod;
+        $carnet = $paciente->cli_ci_nit;
+        $email = $paciente->cli_correo;
+        $usuario = $paciente->cli_usuario;
+        $pass = $paciente->cli_password;
+        $web = $config->web;
+        $logo = $config->logo;
+        $fecha = now()->format('Ymd');
+
+        $qrdata = [
+            'Correo' => $email,
+            'Usuario' => $usuario,
+            'Contrasena' => $pass,
+            'Sitio WEB' => $web
+        ];
+
+        $qrCode = QrCode::format('png')
+                        ->size(400)
+                        ->merge(public_path($logo), 0.5, true)
+                        ->generate(json_encode($qrdata));
+
+        $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.png";
+        $directorio = "public/pacienteQR/".$id."/";
+
+        if (!Storage::exists($directorio)) {
+            Storage::makeDirectory($directorio);
+        }
+
+        $directorioRuta = str_replace("public/", "", $directorio);
+        $ruta = $directorioRuta.$qrname;
+
+        $qrCodePath = storage_path('app/'.$directorio . $qrname);
+        file_put_contents($qrCodePath, $qrCode);
+
+        if (file_exists($qrCodePath)) {
+            $paceinteQR = Cliente::find($paciente->id);
+            $paceinteQR->cli_qr = $ruta;
+            $paceinteQR->save();
+        }else{
+            return false;
+        }
 
         return redirect()->route('cliente')->with('success', 'El registro se ha actualizado con éxito');
     }

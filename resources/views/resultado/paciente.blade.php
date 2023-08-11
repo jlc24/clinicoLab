@@ -11,7 +11,7 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Inicio') }}</a></li>
                         <li class="breadcrumb-item"><a href="#">{{ __('Captura') }}</a></li>
-                        <li class="breadcrumb-item active">{{ __('Resultados - Estudios') }}</li>
+                        <li class="breadcrumb-item active">{{ __('Resultados - Pacientes') }}</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->

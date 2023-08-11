@@ -40,10 +40,39 @@ class ReportController extends Controller
                             ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
                             ->join('facturas as f', 'f.id', '=', 'r.fac_id')
                             ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
-                            ->select('g.nombre as grupo', 'sg.nombre as subgrupo', 'd.id as estudio', 'e.est_cod', 'e.est_nombre', 'e.est_precio', 
-                            DB::raw('COUNT(*) as cantidad'), 
-                            DB::raw('(COUNT(*) * e.est_precio) as total'), 'e.est_moneda')
-                            ->groupBy('g.nombre', 'sg.nombre', 'e.est_cod', 'e.est_nombre', 'e.est_precio', 'e.est_moneda', 'd.id');
+                            ->leftJoinSub(function ($query) use ($fechaIn, $fechaFin) {
+                                $query->select('d.estudio_id', DB::raw('SUM(rdm.cantidad) AS cantidad_material'), DB::raw('SUM(rdm.precio_total) AS total_material'))
+                                    ->from('detalles AS d')
+                                    ->join('results AS rs', 'rs.det_id', '=', 'd.id')
+                                    ->join('result_detallematerials AS rdm', 'rdm.result_id', '=', 'rs.id')
+                                    ->whereBetween(DB::raw('DATE(rdm.updated_at)'), [$fechaIn, $fechaFin])
+                                    ->where([['rs.param_id', '!=', null], ['rs.resultado', '!=', null]])
+                                    ->groupBy('d.estudio_id');
+                            }, 'rdm', 'rdm.estudio_id', '=', 'e.id')
+                            ->select(
+                                'g.nombre AS grupo',
+                                'sg.nombre AS subgrupo',
+                                'd.id AS estudio',
+                                'e.est_cod',
+                                'e.est_nombre',
+                                'e.est_precio',
+                                DB::raw('COUNT(*) AS cantidad'),
+                                DB::raw('(COUNT(*) * e.est_precio) AS total'),
+                                'e.est_moneda',
+                                'rdm.cantidad_material',
+                                'rdm.total_material'
+                            )
+                            ->groupBy(
+                                'g.nombre',
+                                'sg.nombre',
+                                'e.est_cod',
+                                'e.est_nombre',
+                                'e.est_precio',
+                                'e.est_moneda',
+                                'rdm.cantidad_material',
+                                'rdm.total_material',
+                                'd.id'
+                            );
             if ($fechaIn !== null && $fechaFin !== null) {
                 $recepcions->whereBetween(DB::raw('DATE(f.created_at)'), [$fechaIn, $fechaFin]);
             }
@@ -70,6 +99,7 @@ class ReportController extends Controller
         }
 
         return response()->json($recepcions);
+        
     }
 
     public function reporteMaterial()

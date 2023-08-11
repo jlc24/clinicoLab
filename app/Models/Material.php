@@ -13,6 +13,8 @@ class Material extends Model
         'mat_nombre',
         'mat_descripcion',
         'mat_imagen',
+        'mat_vida_util',
+        'mat_depreciacion',
         'umed_id',
         'mat_cantidad',
         'mat_cantidad_minima',

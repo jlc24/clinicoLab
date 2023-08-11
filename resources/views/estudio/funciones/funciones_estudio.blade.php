@@ -1095,7 +1095,7 @@
                                         '<select class="custom-select custom-select-sm parametro_genero" name="parametro_genero" id="parametro_genero">'+
                                             '<option value="" >Genero...</option>'+
                                             '<option value="MASCULINO" ' + (value.genero === 'MASCULINO' ? 'selected' : '') + '>MASCULINO</option>'+
-                                            '<option value="FENEMINO" ' + (value.genero === 'FENEMINO' ? 'selected' : '') + '>FENEMINO</option>'+
+                                            '<option value="FEMENINO" ' + (value.genero === 'FEMENINO' ? 'selected' : '') + '>FEMENINO</option>'+
                                             '<option value="AMBOS" ' + (value.genero === 'AMBOS' ? 'selected' : '') + '>AMBOS</option>'+
                                         '</select>'+
                                     '</td>'+
@@ -1104,9 +1104,9 @@
                                     '<td>'+
                                         '<select class="custom-select custom-select-sm parametro_tiempo" name="parametro_tiempo" id="parametro_tiempo">'+
                                             '<option value="" >Tiempo...</option>'+
-                                            '<option value="AÑOS" ' + (value.genero === 'AÑOS' ? 'selected' : '') + '>AÑOS</option>'+
-                                            '<option value="MESES" ' + (value.genero === 'MESES' ? 'selected' : '') + '>MESES</option>'+
-                                            '<option value="DIAS" ' + (value.genero === 'DIAS' ? 'selected' : '') + '>DIAS</option>'+
+                                            '<option value="AÑOS" ' + (value.tiempo === 'AÑOS' ? 'selected' : '') + '>AÑOS</option>'+
+                                            '<option value="MESES" ' + (value.tiempo === 'MESES' ? 'selected' : '') + '>MESES</option>'+
+                                            '<option value="DIAS" ' + (value.tiempo === 'DIAS' ? 'selected' : '') + '>DIAS</option>'+
                                         '</select>'+
                                     '</td>'+
                                     '<td width="50px"><input type="number" value="' + (value.valor_inicial === null ? '0' : value.valor_inicial ) + '" class="form-control form-control-sm parametro_valor_inicial" name="parametro_valor_inicial" id="parametro_valor_inicial"></td>'+
@@ -1151,7 +1151,7 @@
                         '<select class="custom-select custom-select-sm parametro_genero" name="parametro_genero" id="parametro_genero">'+
                             '<option value="" >Genero...</option>'+
                             '<option value="MASCULINO">MASCULINO</option>'+
-                            '<option value="FENEMINO">FENEMINO</option>'+
+                            '<option value="FEMENINO">FEMENINO</option>'+
                             '<option value="AMBOS">AMBOS</option>'+
                         '</select>'+
                     '</td>'+
@@ -1408,13 +1408,13 @@
                                     '<td hidden>'+ value.mat_cantidad +'</td>'+
                                     '<td hidden>'+ value.mat_precio_compra +'</td>'+
                                     '<td width="80px">'+
-                                        '<select class="custom-select custom-select-sm detmat_unidad" name="detmat_unidad" id="detmat_unidad">'+
+                                        '<select class="custom-select custom-select-sm detmat_unidad" name="detmat_unidad" id="detmat_unidad" disabled>'+
                                             '<option value="" >Seleccionar...</option>'+
                                             optionList +
                                         '</select>'+
                                     '</td>'+
-                                    '<td width="80px"><input type="number" min="0" step="0.01" class="form-control form-control-sm detmat_cantidad" value="'+ (value.cantidad == null ? '': value.cantidad) +'""></td>'+
-                                    '<td width="100px" class="text-right detmat_precio_total" style="vertical-align: middle;">'+ (value.precio_total == null ? '' : value.precio_total) +'</td>'+
+                                    '<td width="80px"><input type="number" min="0" step="0.01" class="form-control form-control-sm detmat_cantidad" value="'+ (value.cantidad == null ? '': value.cantidad) +'" ></td>'+
+                                    '<td width="100px"><input type="number" min="0" step="0.01" class="form-control form-control-sm detmat_precio_total" value="'+ (value.precio_total == null ? '' : value.precio_total) +'"></td>'+
                                     '<td width="40px"><a class="btn btn-sm btn-outline-danger btn-delete-det-mat" title="Quitar"><i class="fas fa-minus-circle"></i></a></td>'+
                                 '</tr>'
                             );
@@ -1514,7 +1514,6 @@
                 const prueba = pruebasData[index];
                 $(".detmat_ca_id").val(prueba.id);
                 $(".modal_agregar_materialLabel").text('Agregar Materiales: ' + prueba.nombre);
-                console.log(prueba);
                 getMaterialEstudio($(".detmat_ca_id").val());
                 cerrarCargando();
                 
@@ -1556,6 +1555,7 @@
         $(document).on('click', '.btn-use-material', function() {
             var mat_id = $(this).closest('tr').find('td:eq(0)').text();
             var ca_id = $(".detmat_ca_id").val();
+            var unidad = $(this).closest("tr").find("td:eq(3)").text();
             var umed_id = $(this).closest('tr').find('td:eq(4)').text();
 
             var valorNombre = $(this).closest('tr').find('td:eq(2)').text();
@@ -1571,11 +1571,13 @@
                     timer: 1000
                 });
             } else {
-                var datos = new FormData();
-                datos.append('ca_id', ca_id);
-                datos.append('mat_id', mat_id);
-                datos.append('umed_id', umed_id);
-                addDetMat(ca_id, datos);
+                //if (unidad != '%') {
+                    var datos = new FormData();
+                    datos.append('ca_id', ca_id);
+                    datos.append('mat_id', mat_id);
+                    datos.append('umed_id', umed_id);
+                    addDetMat(ca_id, datos);
+                //}
             }
         });
 
@@ -1675,14 +1677,14 @@
         });
 
         $(document).on('change', '.detmat_cantidad', function() {
-            var det_id = $(".detmat_ca_id").val();
-            var det_mat_id = $(this).closest('tr').find('td:eq(0)').text();
-            var mat_id = $(this).closest('tr').find('td:eq(1)').text();
-            var unidad_id = $(this).closest('tr').find('td:eq(5) select').val();
-            var cantidad = $(this).closest('tr').find('td:eq(6) input').val();;
-            var precio_total = $(this).closest('tr').find('td:eq(7)').text();
+            let det_id = $(".detmat_ca_id").val();
+            let det_mat_id = $(this).closest('tr').find('td:eq(0)').text();
+            let mat_id = $(this).closest('tr').find('td:eq(1)').text();
+            let unidad_id = $(this).closest('tr').find('td:eq(5) select').val();
+            let cantidad = $(this).closest('tr').find('td:eq(6) input').val();;
+            let precio_total = $(this).closest('tr').find('td:eq(7) input').val();
 
-            var datos = new FormData();
+            let datos = new FormData();
             datos.append('det_id', det_id);
             datos.append('mat_id', mat_id);
             datos.append('cantidad', cantidad);
@@ -1693,11 +1695,37 @@
         });
 
         $(document).on('keyup', '.detmat_cantidad', function() {
-            var cantidad_total = $(this).closest('tr').find('td:eq(3)').text();
-            var precio_compra = $(this).closest('tr').find('td:eq(4)').text();
-            var cantidad = $(this).val();
-            var precio_total = ((cantidad * precio_compra)/cantidad_total);
-            $(this).closest('tr').find('td:eq(7)').text(precio_total);
+            let cantidad_total = $(this).closest('tr').find('td:eq(3)').text();
+            let precio_compra = $(this).closest('tr').find('td:eq(4)').text();
+            let cantidad = $(this).val();
+            let precio_total = ((cantidad * precio_compra)/cantidad_total);
+            $(this).closest('tr').find('td:eq(7) input').val(precio_total);
+            sumPrecioMaterials();
+        });
+
+        $(document).on('change', '.detmat_precio_total', function() {
+            let det_id = $(".detmat_ca_id").val();
+            let det_mat_id = $(this).closest('tr').find('td:eq(0)').text();
+            let mat_id = $(this).closest('tr').find('td:eq(1)').text();
+            let unidad_id = $(this).closest('tr').find('td:eq(5) select').val();
+            let cantidad = $(this).closest('tr').find('td:eq(6) input').val();;
+            let precio_total = $(this).closest('tr').find('td:eq(7) input').val();
+
+            let datos = new FormData();
+            datos.append('det_id', det_id);
+            datos.append('mat_id', mat_id);
+            datos.append('cantidad', cantidad);
+            datos.append('umed_id', unidad_id);
+            datos.append('precio_total', precio_total);
+            upDetMat(det_mat_id, datos, det_id);
+        });
+
+        $(document).on('keyup', '.detmat_precio_total', function() {
+            let cantidad_total = $(this).closest('tr').find('td:eq(3)').text();
+            let precio_compra = $(this).closest('tr').find('td:eq(4)').text();
+            let precio_total = $(this).val();
+            let cantidad = ((precio_total * cantidad_total)/precio_compra);
+            $(this).closest('tr').find('td:eq(6) input').val(cantidad);
             sumPrecioMaterials();
         });
 

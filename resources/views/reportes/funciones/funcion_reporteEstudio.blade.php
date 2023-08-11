@@ -24,7 +24,6 @@
         }, function(start, end, label) {
             $("#fecha").val(start.format('DD/MM/YYYY')+" - "+end.format('DD/MM/YYYY'));
             let daterange = $("#fecha").val();
-            console.log(daterange);
             
             let date = daterange.split(" - ");
 
@@ -34,11 +33,10 @@
             fechaIn = fechaIn.split("/").reverse().join("-");
             fechaFin = fechaFin.split("/").reverse().join("-");
 
-            //getReportEstudio(fechaIn, fechaFin);
+            getReportEstudio(fechaIn, fechaFin);
         });
 
         var daterange = $("#fecha").val();
-        console.log(daterange);
         var date = daterange.split(" - ");
         var fechaIn = date[0];
         var fechaFin = date[1];
@@ -46,112 +44,54 @@
         fechaIn = fechaIn.split("/").reverse().join("-");
         fechaFin = fechaFin.split("/").reverse().join("-");
 
-        //getReportEstudio(fechaIn, fechaFin);
+        getReportEstudio(fechaIn, fechaFin);
 
-        // function getReportEstudio(inicio, fin) {
-        //     mostrarCargando();
-        //     $.ajax({
-        //         url: '{{ route("getReportEstudio") }}' + '?i=' + inicio + '&f=' + fin,
-        //         type: 'GET',
-        //         dataType: 'json',
-        //         success: function (data) {
-        //             console.log(data);
-        //             if (data.length != 0) {
-        //                 if (data.subgrupo == null) {
-        //                     $("#tabla_grupos").prop('hidden', false);
-        //                     $('#tabla_grupos').empty();
-        //                     $.each(data, function(index, value) {
-        //                         $('#tabla_grupos').append(
-        //                             '<table class="table table-sm table-bordered table-hover table-responsive-sm">'+
-        //                                 '<thead  style="background-color: #BDD7EE">'+
-        //                                     '<th style="width: 20%">Grupo:</th>'+
-        //                                     '<th style="width: 80%">' + value.grupo + '</th>'+
-        //                                 '</thead>'+
-        //                                 '<tbody>'+
-        //                                     '<tr>'+
-        //                                         '<td colspan="2" style="background-color: #D9D9D9">'+
-        //                                             '<table class="table table-sm table-bordered table-responsive-sm" style="background-color: #fff">'+
-        //                                                 '<thead>'+
-        //                                                     '<th style="width: 40%"></th>'+
-        //                                                     '<th>Unidad</th>'+
-        //                                                     '<th>Med.</th>'+
-        //                                                     '<th>P. Unitario</th>'+
-        //                                                     '<th>Cantidad</th>'+
-        //                                                     '<th>P. total</th>'+
-        //                                                     '<th></th>'+
-        //                                                 '</thead>'+
-        //                                                 '<tbody class="tabla_estudios_material">'+
-        //                                                     '<tr>'+
-        //                                                         '<th colspan="7">Ingresos</th>'+
-        //                                                     '</tr>'+
-        //                                                     '<tr>'+
-        //                                                         '<th>' + value.est_nombre + ' ' + value.estudio +'</th>'+
-        //                                                         '<th class="text-right">1</th>'+
-        //                                                         '<th></th>'+
-        //                                                         '<th class="text-right">' + value.est_precio + '</th>'+
-        //                                                         '<th class="text-right">' + value.cantidad + '</th>'+
-        //                                                         '<th class="text-right">' + value.total + '</th>'+
-        //                                                         '<th>' + value.est_moneda + '</th>'+
-        //                                                     '</tr>'+
-        //                                                     '<tr>'+
-        //                                                         '<th colspan="7">Egresos</th>'+
-        //                                                     '</tr>'+
-        //                                                     '<tr>'+
-        //                                                         '<th class="text-center" colspan="7">Materiales y/o Herramientas</th>'+
-        //                                                     '</tr>'+
-        //                                                         $.ajax({
-        //                                                             url: '{{ route("getMaterialEstudio", ":id") }}'.replace(":id", value.estudio),
-        //                                                             type: 'GET',
-        //                                                             dataType: 'json',
-        //                                                             success: function(materiales) {
-        //                                                                 console.log(materiales);
-        //                                                                 if (materiales.length !== 0) {
-        //                                                                     $.each(materiales, function(index, est) {
-        //                                                                         $(".tabla_estudios_material").append(
-        //                                                                             '<tr>'+
-        //                                                                                 '<td>' + est.mat_nombre + ' ' + ' estudio: ' + value.estudio + '</td>'+
-        //                                                                                 '<td class="text-right">' + est.cantidad + '</td>'+
-        //                                                                                 '<td>Kg</td>'+
-        //                                                                                 '<td class="text-right">' + est.precio_total +'</td>'+
-        //                                                                                 '<td class="text-right">' + value.cantidad +'</td>'+
-        //                                                                                 '<td class="text-right">' + (est.precio_total * value.cantidad) + '</td>'+
-        //                                                                                 '<td>Bs</td>'+
-        //                                                                             '</tr>'
-        //                                                                         )
-        //                                                                     })
-        //                                                                     $(".tabla_estudios_material").append(
-        //                                                                         '<tr>'+
-        //                                                                             '<th colspan="5" class="text-center">Total</th>'+
-        //                                                                             '<th class="text-right">91,00</th>'+
-        //                                                                             '<th>Bs</th>'+
-        //                                                                         '</tr>'
-        //                                                                     )
-        //                                                                 }else {
-        //                                                                     $(".tabla_estudios_material").append('<tr><td colspan="7">Sin datos</td></tr>');
-        //                                                                 }
-        //                                                             }
-        //                                                         })+
-                                                            
-        //                                                 '</tbody>'+
-        //                                             '</table>'+
-        //                                         '</td>'+
-        //                                     '</tr>'+
-        //                                 '</tbody>'+
-        //                             '</table>'
-        //                         );
-        //                     });
-                            
-        //                 }
-        //             }else {
-        //                 $("#tabla_grupos_subgrupos").prop('hidden', true);
-        //                 $('#tabla_grupos_subgrupos').empty();
-        //                 $("#tabla_grupos").prop('hidden', true);
-        //                 $("#tabla_grupos").empty();
-        //             }
-        //             cerrarCargando();
-        //         }
-        //     });
-        // }
+        function getReportEstudio(inicio, fin) {
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("getReportEstudio") }}' + '?i=' + inicio + '&f=' + fin,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.length != 0) {
+                        var sumaCantidad = 0;
+                        var sumaTotal = 0;
+                        var sumaCantidadMaterial = 0;
+                        var sumaTotalMaterial = 0;
+                        $(".tabla_reporte_estudios tbody").empty();
+                        $.each(data, function (index, value) {
+                            $(".tabla_reporte_estudios tbody").append(
+                                '<tr>' +
+                                    '<td>' + value.est_cod + '</td>' +
+                                    '<td>' + value.est_nombre + '</td>' +
+                                    '<td class="text-right">' + value.cantidad + '</td>' +
+                                    '<td class="text-right">' + value.total + ' Bs</td>' +
+                                    '<td class="text-right">' + value.cantidad_material + '</td>' +
+                                    '<td class="text-right">' + value.total_material + ' Bs</td>' +
+                                '</tr>'
+                            );
+                            sumaCantidad += parseInt(value.cantidad);
+                            sumaTotal += parseFloat(value.total);
+                            sumaCantidadMaterial += parseFloat(value.cantidad_material);
+                            sumaTotalMaterial += parseFloat(value.total_material);
+                        });
+                        $(".tabla_reporte_estudios tbody").append(
+                            '<tr>' +
+                                '<td colspan="2" class="text-center"><strong>TOTAL</strong></td>' +
+                                '<td class="text-right"><strong>' + sumaCantidad + '</strong></td>' +
+                                '<td class="text-right"><strong>' + sumaTotal.toFixed(2) + ' Bs</strong></td>' +
+                                '<td class="text-right"><strong>' + sumaCantidadMaterial + '</strong></td>' +
+                                '<td class="text-right"><strong>' + sumaTotalMaterial.toFixed(4) + ' Bs</strong></td>' +
+                            '</tr>'
+                        );
+                        
+                    }else {
+                        $(".tabla_reporte_estudios tbody").empty().append("<td class='text-center' colspan='6'>No hay datos</td>");
+                    }
+                    cerrarCargando();
+                }
+            });
+        }
         // function getReportEstudio(inicio, fin) {
         //     mostrarCargando();
 
