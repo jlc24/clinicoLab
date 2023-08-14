@@ -170,7 +170,7 @@ class ClienteController extends Controller
 
         $qrCode = QrCode::format('png')
                         ->size(400)
-                        ->merge(public_path($logo), 0.5, true)
+                        //->merge(public_path($logo), 0.5, true)
                         ->generate(json_encode($qrdata));
 
         $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.png";
@@ -356,7 +356,7 @@ class ClienteController extends Controller
 
         $qrCode = QrCode::format('png')
                         ->size(400)
-                        ->merge(public_path($logo), 0.5, true)
+                        //->merge(public_path($logo), 0.5, true)
                         ->generate(json_encode($qrdata));
 
         $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.png";
