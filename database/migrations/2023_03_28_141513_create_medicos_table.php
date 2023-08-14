@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('medicos', function (Blueprint $table) {
             $table->id();
             $table->string('med_cod', 50)->unique();
-            $table->string('med_nombre', 20);
-            $table->string('med_apellido_pat', 20);
-            $table->string('med_apellido_mat', 20)->nullable();
+            $table->string('med_nombre', 50);
+            $table->string('med_apellido_pat', 50);
+            $table->string('med_apellido_mat', 50)->nullable();
             $table->string('med_ci_nit', 10)->nullable();
             $table->string('med_exp_ci', 10)->nullable();
             $table->string('med_genero', 10);

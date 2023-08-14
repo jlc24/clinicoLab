@@ -36,7 +36,7 @@ class ConfigurationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:50',
+            'nombre' => 'required|string|max:100',
             'nit' => 'required|string|max:20',
             'direccion' => 'required|string|max:255',
             'pais' => 'required|string|max:10',

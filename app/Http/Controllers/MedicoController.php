@@ -141,7 +141,7 @@ class MedicoController extends Controller
         }else{
             $request->validate([
                 'med_cod' => 'required|unique:medicos|max:10', 
-                'med_nombre' => 'required|max:20',
+                'med_nombre' => 'required|max:50',
                 'med_apellido_pat' => 'required|max:50',
                 'med_apellido_mat' => 'max:50',
                 'med_convenio' => 'required',
@@ -228,7 +228,7 @@ class MedicoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'med_nombre_update' => 'required|max:20',
+            'med_nombre_update' => 'required|max:50',
             'med_apellido_pat_update' => 'required|max:50',
             'med_genero_update' => 'required|max:10', 
             'med_celular_update' => 'required|max:15',

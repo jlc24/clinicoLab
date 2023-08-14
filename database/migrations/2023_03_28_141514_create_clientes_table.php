@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->string('cli_cod', 50)->unique();
-            $table->string('cli_nombre', 20);
-            $table->string('cli_apellido_pat', 20);
-            $table->string('cli_apellido_mat', 20)->nullable();
+            $table->string('cli_nombre', 50);
+            $table->string('cli_apellido_pat', 50);
+            $table->string('cli_apellido_mat', 50)->nullable();
             $table->string('cli_ci_nit', 10)->nullable();
             $table->string('cli_exp_ci', 10)->nullable();
             $table->date('cli_fec_nac');

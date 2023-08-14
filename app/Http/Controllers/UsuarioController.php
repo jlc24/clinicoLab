@@ -47,9 +47,9 @@ class UsuarioController extends Controller
     {
         $request->validate([
             'usuario_cod' => 'required|max:50',
-            'usuario_nombre' => 'required|max:20', 
-            'usuario_apellido_pat' => 'required|max:20', 
-            'usuario_apellido_mat' => 'max:20', 
+            'usuario_nombre' => 'required|max:50', 
+            'usuario_apellido_pat' => 'required|max:50', 
+            'usuario_apellido_mat' => 'max:50', 
             'usuario_ci_nit' => 'required|max:10', 
             'usuario_ci_nit_exp' => 'required|max:10', 
             'usuario_fec_nac' => 'date',

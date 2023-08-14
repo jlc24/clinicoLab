@@ -37,7 +37,7 @@ class EmpresaController extends Controller
     {
         $request->validate([
             'emp_cod' => 'required|unique:empresas|max:10',
-            'emp_nombre' => 'required|max:50',
+            'emp_nombre' => 'required|max:100',
             'emp_nit' => 'max:20',
             'emp_direccion' => 'required|max:255',
         ]);
