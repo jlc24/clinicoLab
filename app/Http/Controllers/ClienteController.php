@@ -168,12 +168,12 @@ class ClienteController extends Controller
             'Sitio WEB' => $web
         ];
 
-        $qrCode = QrCode::format('png')
+        $qrCode = QrCode::format('svg')
                         ->size(400)
                         //->merge(public_path($logo), 0.5, true)
                         ->generate(json_encode($qrdata));
 
-        $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.png";
+        $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.svg";
         $directorio = "public/pacienteQR/".$id."/";
 
         if (!Storage::exists($directorio)) {
@@ -218,12 +218,12 @@ class ClienteController extends Controller
             'Sitio WEB' => $web
         ];
 
-        $qrCode = QrCode::format('png')
+        $qrCode = QrCode::format('svg')
                         ->size(400)
                         //->merge(public_path($logo), 0.25, true)
                         ->generate(json_encode($qrdata));
 
-        $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.png";
+        $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.svg";
         $directorio = "public/pacienteQR/".$id."/";
 
         if (!Storage::exists($directorio)) {
@@ -354,12 +354,12 @@ class ClienteController extends Controller
             'Sitio WEB' => $web
         ];
 
-        $qrCode = QrCode::format('png')
+        $qrCode = QrCode::format('svg')
                         ->size(400)
                         //->merge(public_path($logo), 0.5, true)
                         ->generate(json_encode($qrdata));
 
-        $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.png";
+        $qrname = $fecha."_".$id.$codigo."_".$carnet."_QR.svg";
         $directorio = "public/pacienteQR/".$id."/";
 
         if (!Storage::exists($directorio)) {
