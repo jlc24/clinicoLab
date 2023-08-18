@@ -11,7 +11,9 @@ class UMedida extends Model
     use HasFactory;
 
     protected $fillable = [
-        'unidad', 
+        'categoria',
+        'nombre',
+        'unidad'
     ];
 
     public function detalles()

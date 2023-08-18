@@ -116,6 +116,7 @@
         function filtrarTabla(event) {
             const texto = event.target.value.toLowerCase(); 
             const filas = $tabla.querySelectorAll('tr'); 
+            const numColumnas = filas[0].children.length;
             let hayCoincidencias = false;
             filas.forEach((fila) => {
                 const contenidoFila = fila.textContent.toLowerCase(); 
@@ -132,7 +133,7 @@
                     filaNoData.setAttribute("id", "no-data-row");
                     const nuevaCelda = filaNoData.insertCell();
                     nuevaCelda.style.textAlign = 'center';
-                    nuevaCelda.colSpan = filas[0].children.length;
+                    nuevaCelda.colSpan = numColumnas;
                     nuevaCelda.textContent = 'No se encontraron datos';
                 }else{
                     filaNoData.style.display = '';
@@ -159,6 +160,31 @@
             imgMaterial.src = '{{ asset("dist/img/default.png") }}';
         }else{
             imgMaterial.src = URL.createObjectURL(inputImagen.files[0]);
+        }
+    }
+
+    function capitalize(input) {
+        let texto = input.val(); 
+        
+        if (texto.length > 0) {
+            texto = texto.charAt(0).toUpperCase() + texto.slice(1);
+            input.val(texto); 
+        }
+    }
+
+    function obligado(inputElement) {
+        if (inputElement.val() == "") {
+            inputElement.css('border', '2px solid #E91C2B');
+        } else {
+            inputElement.css('border', '2px solid #40CC6C');
+        }
+    }
+
+    function opcional(inputElement) {
+        if (inputElement.val() == "") {
+            inputElement.css('border', '');
+        } else {
+            inputElement.css('border', '2px solid #40CC6C');
         }
     }
 

@@ -245,16 +245,29 @@
                     if (data.length != 0) {
                         $('.tabla_resultado_parametro tbody').empty();
                         $.each(data, function(index, value) {
-                            $('.tabla_resultado_parametro tbody').append(
-                                '<tr>'+
-                                    '<td width="30px" hidden><strong>' + value.id + '</strong></td>'+ //id de results
-                                    '<td width="200px"><strong>' + value.referencia + '</strong></td>'+ 
-                                    '<td><strong>' + (value.genero == null ? '' : value.genero) + '</strong></td>'+
-                                    '<td width="50px"><strong>' + (value.edad_inicial == null ? '' : value.edad_inicial) + '</strong></td>'+
-                                    '<td width="50px"><strong>' + (value.edad_inicial == null ? '' : value.edad_final) + '</strong></td>'+
-                                    '<td><strong>' + (value.tiempo == null ? '' : value.tiempo) + '</strong></td>'+
-                                '</tr>'
-                            );
+                            if (value.genero != null) {
+                                $('.tabla_resultado_parametro tbody').append(
+                                    '<tr>'+
+                                        '<td width="30px" hidden><strong>' + value.id + '</strong></td>'+ //id de results
+                                        '<td width="200px"><strong>' + value.referencia + '</strong></td>'+ 
+                                        '<td><strong>' + value.genero + '</strong></td>'+
+                                        '<td width="50px"><strong>' + value.edad_inicial + '</strong></td>'+
+                                        '<td width="50px"><strong>' + value.edad_final + '</strong></td>'+
+                                        '<td><strong>' + value.tiempo + '</strong></td>'+
+                                    '</tr>'
+                                );
+                            }else{
+                                $('.tabla_resultado_parametro tbody').append(
+                                    '<tr>'+
+                                        '<td width="30px" hidden><strong>' + value.id + '</strong></td>'+ //id de results
+                                        '<td width="200px"><strong>' + value.referencia + '</strong></td>'+ 
+                                        '<td><strong>' + value.genero + '</strong></td>'+
+                                        '<td width="50px"><strong>' + value.edad_inicial + '</strong></td>'+
+                                        '<td width="50px"><strong>' + value.edad_final + '</strong></td>'+
+                                        '<td><strong>' + value.tiempo + '</strong></td>'+
+                                    '</tr>'
+                                );
+                            }
                         });
                     }else {
                         $('.tabla_resultado_parametro tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');

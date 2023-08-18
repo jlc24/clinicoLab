@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('u_medidas', function (Blueprint $table) {
             $table->id();
+            $table->string('categoria', 100);
+            $table->string('nombre', 100);
             $table->string('unidad', 50);
             $table->timestamps();
         });

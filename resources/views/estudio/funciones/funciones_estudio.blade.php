@@ -1,44 +1,71 @@
+@include('muestra.funciones.funcion_muestra')
+
 <script type="text/javascript">
     //para ESTUDIOS---------------------------------------
     //console.log('estas en estudios.funciones_estudios')
     $(document).ready(function(){
-        //filtroTabla('#search_estudio', '#tabla_estudios');
+        filtroTabla('#search_estudio', '#tabla_estudios');
         filtroTabla('#comp_nombre', '#tabla_componentes');
         filtroTabla('#proc_nombre', '#tabla_procedimiento');
         filtroTabla('#asp_nombre', '#tabla_aspectos');
         filtroTabla('#search_material', '#tabla_lista_materiales');
 
-        $("#tabla_estudios").dataTable({
-            responsive: true,
-            columnDefs: [],
-            "lengthMenu": [10, 20, 30, 100],
-            /* Disable initial sort */
-            "aaSorting": [],
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Registros del _START_ al _END_ de un total de _TOTAL_ ",
-                "sInfoEmpty": "Registros del 0 al 0 de un total de 0 ",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
-                },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        function getEstudios() {
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("getEstudios") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.length != 0) {
+                        $("#tabla_estudios tbody").empty();
+                        const grupos = {};
+                        data.forEach((estudio) => {
+                            if (!grupos[estudio.grupo]) {
+                                grupos[estudio.grupo] = {};
+                            }
+                            if (estudio.subgrupo !== null) {
+                                if (!grupos[estudio.grupo][estudio.subgrupo]) {
+                                    grupos[estudio.grupo][estudio.subgrupo] = [];
+                                }
+                                grupos[estudio.grupo][estudio.subgrupo].push(estudio);
+                            }else{
+                                if (!grupos[estudio.grupo][""]) {
+                                    grupos[estudio.grupo][""] = [];
+                                }
+                                grupos[estudio.grupo][""].push(estudio);
+                            }
+                        });
+    
+                        Object.entries(grupos).forEach(([grupo, subgrupos]) => {
+                            const grupoRow = `<tr style="background-color: #8CB8DC;"><td colspan="5"><strong>${grupo}</strong></td>`;
+                            $("#tabla_estudios tbody").append(grupoRow);
+                            Object.entries(subgrupos).forEach(([subgrupo, estudios]) => {
+                                if (subgrupo !== "") {
+                                    const subgrupoRow = `<tr style="background-color: #D3E4F3;"><td colspan="5"><strong>${subgrupo}</strong></td></tr>`;
+                                    $("#tabla_estudios tbody").append(subgrupoRow);
+                                }
+                                
+                                let cont = 1;
+                                estudios.forEach((estudio) => {
+                                    const tipo = estudio.tipo === 'HABILITADO' ? '<a href="javascript:void(0);" class="badge badge-success btn-tipo-individual" title="Tipo Estudio" style="font-size: 15px">Habilitado</a>' : '<a href="javascript:void(0);" class="badge badge-danger btn-tipo-estudio" title="Tipo Estudio" style="font-size: 15px">Deshabilitado</a>';
+                                    const botonTipo = estudio.tipo === 'HABILITADO' ? '<button data-toggle="modal" data-target="#modal_configurar_estudio_individual" class="btn btn-sm btn-outline-info btn-detalle-indi-id" title="Configurar Estudio Individual"><i class="fas fa-cog"></i></button>' : '';
+                                    const estudioRow = `<tr><td hidden>${estudio.id}</td><td class="text-right"><strong>${cont++}</strong></td><td>${estudio.est_cod}</td><td>${estudio.est_nombre}</td><td class="text-center">${tipo}</td><td><div class="btn-group">
+                                                                        <button data-toggle="modal" data-target="#modal_editar_estudio" class="btn btn-sm btn-outline-warning btnUpdateEstudio" title="Editar Estudio"><i class="fas fa-user-edit"></i></button>
+                                                                        ${botonTipo}</div></td></tr>`;
+                                    $("#tabla_estudios tbody").append(estudioRow);
+                                });
+                            });
+                        });
+                    }else{
+                        $("#tabla_estudios tbody").empty().append('<td colspan="5" class="text-center">No hay datos recepcionados</td>')
+                    }
+                    cerrarCargando();
                 }
-            }
-        });
+            });
+        }
+
+        getEstudios();
 
         $('#modal_crear_estudio').on('shown.bs.modal', function () {
             $('#est_nombre').trigger('focus');
@@ -64,12 +91,18 @@
         });
         $("#btnCloseAddGrupo").on('click', function() {
             $("#grupos_nombre").val('');
+            $("#grupos_nombre").css('border', '');
         });
         $('#modal_crear_subgrupo').on('shown.bs.modal', function () {
             $('#subgrupos_nombre').trigger('focus');
         });
         $("#btnCloseAddSubGrupo").on('click', function() {
             $("#subgrupos_nombre").val('');
+            $("#subgrupos_nombre").css('border', '');
+        });
+
+        $("#btnCloseAddMuestra").on('click', function(){
+            getMuestrasEstudio();
         });
 
         function getGrupo() {
@@ -79,7 +112,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data){
-                    console.log(data);
                     if (data.length !== 0) {
                         $("#est_grupo").empty();
                         var emptyOption = $("<option>").val("").text("Seleccionar...");
@@ -101,7 +133,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    console.log(data);
                     if (data.length !== 0) {
                         $("#est_subgrupo").empty();
                         var emptyOption = $("<option>").val("").text("Seleccionar...");
@@ -116,81 +147,136 @@
             });
         }
 
+        function getMuestrasEstudio() {
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("getMuestras") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: (data) => {
+                    if (data.length !== 0) {
+                        $("#est_muestra").empty();
+                        const emptyOption = `<option value="">Seleccionar...</option>`;
+                        $('#est_muestra').append(emptyOption);
+                        data.forEach((muestra) => {
+                            const option = `<option value="${muestra.id}">${muestra.nombre}</option>`;
+                            $("#est_muestra").append(option);
+                        });
+                    }
+                    cerrarCargando();
+                }
+            });
+        }
+
         $(document).on('click', '.btnAddEstudio', function() {
             getGrupo();
             getSubgrupo();
+            getMuestrasEstudio();
         });
 
         $(document).on('click', '#btnRegisterGrupo', function() {
-            var datos = new FormData();
-            datos.append('grupos_nombre', $("#grupos_nombre").val());
-            $.ajax({
-                url: '{{ route("grupo.store") }}',
-                method: "POST",
-                data: datos,
-                processData: false,
-                contentType: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data) {
-                    Swal.fire({
-                        title: '¡Exito!',
-                        text: 'Grupo registrado',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    $("#grupos_nombre").val('');
-                    getGrupo();
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'Se ha producido un error.',
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-            });
+            let vacio = "";
+            if ($("#grupos_nombre").val() == "") {
+                vacio = 'NOMBRE';
+                $("#grupos_nombre").css('border', '1px solid #E91C2B');
+                $('#grupos_nombre').trigger('focus');
+            }
+            if (vacio != "") {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'El campo ' + vacio + ' es requerido.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }else{
+                let datos = new FormData();
+                datos.append('grupos_nombre', $("#grupos_nombre").val());
+                $.ajax({
+                    url: '{{ route("grupo.store") }}',
+                    method: "POST",
+                    data: datos,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        Swal.fire({
+                            title: '¡Exito!',
+                            text: 'Grupo registrado',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        $("#grupos_nombre").val('');
+                        getGrupo();
+                        $('#modal_crear_grupo .btn-close').trigger('click');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'Se ha producido un error.',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            }
         });
 
         $(document).on('click', '#btnRegisterSubGrupo', function() {
-            var datos = new FormData();
-            datos.append('subgrupos_nombre', $("#subgrupos_nombre").val());
-            $.ajax({
-                url: '{{ route("subgrupo.store") }}',
-                method: "POST",
-                data: datos,
-                processData: false,
-                contentType: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data) {
-                    Swal.fire({
-                        title: '¡Exito!',
-                        text: 'Sub Grupo registrado',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                    $("#subgrupos_nombre").val('');
-                    getSubgrupo();
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'Se ha producido un error.',
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-            });
+            let vacio = "";
+            if ($("#subgrupos_nombre").val() == "") {
+                vacio = 'NOMBRE';
+                $("#subgrupos_nombre").css('border', '1px solid #E91C2B');
+                $('#subgrupos_nombre').trigger('focus');
+            }
+            if (vacio != "") {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'El campo ' + vacio + ' es requerido.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }else{
+                let datos = new FormData();
+                datos.append('subgrupos_nombre', $("#subgrupos_nombre").val());
+                $.ajax({
+                    url: '{{ route("subgrupo.store") }}',
+                    method: "POST",
+                    data: datos,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        Swal.fire({
+                            title: '¡Exito!',
+                            text: 'Sub Grupo registrado',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        $("#subgrupos_nombre").val('');
+                        getSubgrupo();
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'Se ha producido un error.',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            }
         });
 
         $("#generar_clave_est").on('change', function() {
@@ -203,18 +289,63 @@
                         clave += palabras[i].charAt(0);
                     }
                 }
+
+                let grupo = document.getElementById("est_grupo");
+                let subgrupo = document.getElementById("est_subgrupo");
+
+                function extraerCaracteres(valor) {
+                    let words = valor.split(" ");
+                    let result = "";
+
+                    if (words.length === 1) {
+                        result = valor.substring(0, 2);
+                    } else if (words.length >= 2) {
+                        result = words[0].charAt(0) + words[1].charAt(0);
+                    }
+
+                    return result;
+                }
+
+                let grupocod = extraerCaracteres(grupo.options[grupo.selectedIndex].text);
+                let subgrupocod = extraerCaracteres(subgrupo.options[subgrupo.selectedIndex].text);
+
+                clave = grupocod + subgrupocod + clave;
                 document.getElementById('est_cod').value = clave;
             } else {
                 document.getElementById('est_cod').value = '';
             }
         });
 
+        
+
         $('#btnRegisterEst').on('click', function(event) {
             event.preventDefault();
-            if ($("#est_cod").val() == "" || $("#est_nombre").val() == "" || $("#est_precio").val() == "" || $("#est_moneda").val() == "" || $("#est_muestra").val() == "" || $("#est_indicaciones").val() == "" ) {
+            let vacio = "";
+            if ($("#est_cod").val() == "") {
+                vacio = "CODIGO";
+            }
+            if ($("#est_nombre").val() == "") {
+                vacio = "NOMBRE ESTUDIO";
+            }
+            if ($("#est_grupos").val() == "" || $("#est_grupos").val() == null) {
+                vacio = "GRUPO";
+            }
+            if ($("#est_muestra").val() == "" || $("#est_muestra").val() == null) {
+                vacio = "MUESTRA";
+            }
+            if ($("#est_indicaciones").val() == "" || $("#est_indicaciones").val() == null) {
+                vacio = "INDICACIONES";
+            }
+            if ($("#est_precio").val() == "") {
+                vacio = "PRECIO";
+            }
+            if ($("#est_moneda").val() == "") {
+                vacio = "MONEDA";
+            }
+            if (vacio != "") {
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Algunos campos son requeridos',
+                    text: 'El campo ' + vacio + ' es requerido.',
                     icon: 'error',
                     showConfirmButton: false,
                     timer: 2000
@@ -234,7 +365,7 @@
                 datos.append('est_indicaciones', $("#est_indicaciones").val());
     
                 $.ajax({
-                    url: '{{ route("estudio") }}',
+                    url: '{{ route("estudio.store") }}',
                     type: 'POST',
                     data: datos,
                     processData: false,
@@ -250,7 +381,9 @@
                             showConfirmButton: false,
                             timer: 2000
                         });
-                        location.reload();
+                        $("#formulario_crear_estudio").trigger('reset');
+                        getEstudios();
+                        $('#modal_crear_estudio .btn-close').trigger('click');
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -295,7 +428,7 @@
                         showConfirmButton: false,
                         timer: 2000
                     });
-                    location.reload();
+                    getEstudios();
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -312,7 +445,7 @@
 
         $(document).on('click', '.btn-tipo-estudio', function() {
             var det_est_id = $(this).closest('tr').find('td:eq(0)').text();
-            var est_nombre = $(this).closest('tr').find('td:eq(2)').text();
+            var est_nombre = $(this).closest('tr').find('td:eq(3)').text();
             Swal.fire({
                 title: est_nombre,
                 text: '¿Habilitar estudio?',
@@ -334,7 +467,7 @@
 
         $(document).on('click', '.btn-tipo-individual', function() {
             var det_est_id = $(this).closest('tr').find('td:eq(0)').text();
-            var est_nombre = $(this).closest('tr').find('td:eq(2)').text();
+            var est_nombre = $(this).closest('tr').find('td:eq(3)').text();
             Swal.fire({
                 title: '¿Esta seguro?',
                 text: 'Si lo deshabilita no podrá usar el estudio para configura ni recepcionar.',
@@ -353,6 +486,115 @@
                 }
             });
         });
+
+        $(document).on('click', '.btnUpdateEstudio', function() {
+            let det_id = $(this).closest("tr").find("td:eq(0)").text();
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("estudio.edit", ":id") }}'.replace(":id", det_id),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $(".est_id_update").val(data[0].id);
+                    if (data[0].est_cod != null) {
+                        $(".est_cod_update").css('border', '2px solid #40CC6C');
+                        $(".est_cod_update").val(data[0].est_cod);
+                    }
+                    if (data[0].est_nombre != null) {
+                        $(".est_nombre_update").val(data[0].est_nombre);
+                        $(".est_nombre_update").css('border', '2px solid #40CC6C');
+                    }
+                    if (data[0].est_descripcion != null) {
+                        $(".est_descripcion_update").val(data[0].est_descripcion);
+                        $(".est_descripcion_update").css('border', '2px solid #40CC6C');
+                    }
+                    if (data[0].grupo_id != null) {
+                        $(".est_grupos_update").val(data[0].grupo_id);
+                        $(".est_grupos_update").css('border', '2px solid #40CC6C');
+                    }
+
+                    if (data[0].subgrupo_id != null) {
+                        $(".est_subgrupos_update").val(data[0].subgrupo_id);
+                        $(".est_subgrupos_update").css('border', '2px solid #40CC6C');
+                    }else{
+                        $(".est_subgrupos_update").val("");
+                        $(".est_subgrupos_update").css('border', '');
+                    }
+
+                    if (data[0].muestra_id != null) {
+                        $(".est_muestra_update").val(data[0].muestra_id);
+                        $(".est_muestra_update").css('border', '2px solid #40CC6C');
+                    }else{
+                        $(".est_muestra_update").val("");
+                        $(".est_muestra_update").css('border', '');
+                    }
+
+                    if (data[0].recipiente_id != null) {
+                        $(".est_recipiente_update").val(data[0].recipiente_id);
+                        $(".est_recipiente_update").css('border', '2px solid #40CC6C');
+                    }else{
+                        $(".est_recipiente_update").val("");
+                        $(".est_recipiente_update").css('border', '');
+                    }
+
+                    if (data[0].indicacion_id != null) {
+                        $(".est_indicaciones_update").val(data[0].indicacion_id);
+                        $(".est_indicaciones_update").css('border', '2px solid #40CC6C');
+                    }else{
+                        $(".est_indicaciones_update").val("");
+                        $(".est_indicaciones_update").css('border', '');
+                    }
+
+                    if (data[0].est_precio != null) {
+                        $(".est_precio_update").val(data[0].est_precio);
+                        $(".est_precio_update").css('border', '2px solid #40CC6C');
+                    }
+                    if (data[0].est_moneda != null) {
+                        $(".est_moneda_update").val(data[0].est_moneda);
+                        $(".est_moneda_update").css('border', '2px solid #40CC6C');
+                    }
+                    cerrarCargando();
+                }
+            });
+        });
+
+        $(document).on('click', '.btnEditEstudio', function() {
+            let det_id = $(".est_id_update").val();
+            if ($(".est_cod_update").val() == "" || $(".est_nombre_update").val() == "" || $(".est_grupos_update").val() == "" || $(".est_grupos_update").val() == null || $(".est_subgrupos_update").val() == "" || $(".est_subgrupos_update").val() == null || $(".est_muestra_update").val() == "" || $(".est_muestra_update").val() == null || $(".est_indicaciones_update").val() == "" || $(".est_indicaciones_update").val() == null || $(".est_precio_update").val() == "" || $(".est_moneda_update").val() == "") {
+                let vacio = "";
+                if ($(".est_cod_update").val() == "") {
+                    vacio = "CODIGO";
+                }
+                if ($(".est_nombre_update").val() == "") {
+                    vacio = "NOMBRE ESTUDIO";
+                }
+                if ($(".est_grupos_update").val() == "" || $(".est_grupos_update").val() == null) {
+                    vacio = "GRUPO";
+                }
+                if ($(".est_subgrupos_update").val() == "" || $(".est_subgrupos_update").val() == null) {
+                    vacio = "SUBGRUPO";
+                }
+                if ($(".est_muestra_update").val() == "" || $(".est_muestra_update").val() == null) {
+                    vacio = "MUESTRA";
+                }
+                if ($(".est_indicaciones_update").val() == "" || $(".est_indicaciones_update").val() == null) {
+                    vacio = "INDICACIONES";
+                }
+                if ($(".est_precio_update").val() == "") {
+                    vacio = "PRECIO";
+                }
+                if ($(".est_moneda_update").val() == "") {
+                    vacio = "MONEDA";
+                }
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'El campo ' + vacio + ' es requerido.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }
+        })
 
         function getDetalle(valor, tipo_est) {
             var id = valor;
@@ -413,7 +655,7 @@
 
         $(document).on('click', '.btn-detalle-indi-id', function() {
             var valor = $(this).closest('tr').find('td:eq(0)').text();
-            var nombre = $(this).closest('tr').find('td:eq(2)').text();
+            var nombre = $(this).closest('tr').find('td:eq(3)').text();
             mostrarCargando();
             $(".proc_est_id").val(valor);
             $(".proc_est_nombre").val(nombre);
@@ -499,7 +741,7 @@
         });
 
         $(document).on('click', '.btn-config', function() {
-            var det_id = $(this).data('id');
+            var det_id = $('.proc_est_id').val();
             getDetalle(det_id, 'individual');
         });
 
@@ -1085,53 +1327,85 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    if (data.length != 0) {
-                        $('.table_parametro tbody').empty();
-                        $.each(data, function(index, value) {
-                            $('.table_parametro tbody').append(
-                                '<tr>'+
-                                    '<td hidden>'+value.id+'</td>'+
-                                    '<td>'+
-                                        '<select class="custom-select custom-select-sm parametro_genero" name="parametro_genero" id="parametro_genero">'+
-                                            '<option value="" >Genero...</option>'+
-                                            '<option value="MASCULINO" ' + (value.genero === 'MASCULINO' ? 'selected' : '') + '>MASCULINO</option>'+
-                                            '<option value="FEMENINO" ' + (value.genero === 'FEMENINO' ? 'selected' : '') + '>FEMENINO</option>'+
-                                            '<option value="AMBOS" ' + (value.genero === 'AMBOS' ? 'selected' : '') + '>AMBOS</option>'+
-                                        '</select>'+
-                                    '</td>'+
-                                    '<td width="50px"><input type="number" value="' + (value.edad_inicial === null ? '0' : value.edad_inicial ) + '" class="form-control form-control-sm parametro_edad_inicial"></td>'+
-                                    '<td width="50px"><input type="number" value="' + (value.edad_final === null ? '0' : value.edad_final ) + '" class="form-control form-control-sm parametro_edad_final"></td>'+
-                                    '<td>'+
-                                        '<select class="custom-select custom-select-sm parametro_tiempo" name="parametro_tiempo" id="parametro_tiempo">'+
-                                            '<option value="" >Tiempo...</option>'+
-                                            '<option value="AÑOS" ' + (value.tiempo === 'AÑOS' ? 'selected' : '') + '>AÑOS</option>'+
-                                            '<option value="MESES" ' + (value.tiempo === 'MESES' ? 'selected' : '') + '>MESES</option>'+
-                                            '<option value="DIAS" ' + (value.tiempo === 'DIAS' ? 'selected' : '') + '>DIAS</option>'+
-                                        '</select>'+
-                                    '</td>'+
-                                    '<td width="50px"><input type="number" value="' + (value.valor_inicial === null ? '0' : value.valor_inicial ) + '" class="form-control form-control-sm parametro_valor_inicial" name="parametro_valor_inicial" id="parametro_valor_inicial"></td>'+
-                                    '<td width="50px"><input type="number" value="' + (value.valor_final === null ? '0' : value.valor_final ) + '"" class="form-control form-control-sm parametro_valor_final" name="parametro_valor_final" id="parametro_valor_final"></td>'+
-                                    '<td><input type="text" value="' + value.referencia + '"" class="form-control form-control-sm parametro_interpretacion" name="parametro_interpretacion" id="parametro_interpretacion"></td>'+
-                                    '<td>'+
-                                        '<div class="btn-group">'+
-                                            '<button type="button" class="btn btn-sm btn-outline-warning btn-edit-parametro"><i class="fas fa-edit"></i></button>'+
-                                            '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-parametro-id"><i class="fas fa-trash-alt"></i></button>'+
-                                        '</div>'+
-                                    '</td>'+
-                                '</tr>'
-                            );
+                    // if (data.length != 0) {
+                    //     $('.table_parametro tbody').empty();
+                    //     $.each(data, function(index, value) {
+                    //         $('.table_parametro tbody').append(
+                    //             '<tr>'+
+                    //                 '<td hidden>'+value.id+'</td>'+
+                    //                 '<td>'+
+                    //                     '<select class="custom-select custom-select-sm parametro_genero" name="parametro_genero" id="parametro_genero">'+
+                    //                         '<option value="" >Genero...</option>'+
+                    //                         '<option value="MASCULINO" ' + (value.genero === 'MASCULINO' ? 'selected' : '') + '>MASCULINO</option>'+
+                    //                         '<option value="FEMENINO" ' + (value.genero === 'FEMENINO' ? 'selected' : '') + '>FEMENINO</option>'+
+                    //                         '<option value="AMBOS" ' + (value.genero === 'AMBOS' ? 'selected' : '') + '>AMBOS</option>'+
+                    //                     '</select>'+
+                    //                 '</td>'+
+                    //                 '<td width="50px"><input type="number" value="' + (value.edad_inicial === null ? '0' : value.edad_inicial ) + '" class="form-control form-control-sm parametro_edad_inicial"></td>'+
+                    //                 '<td width="50px"><input type="number" value="' + (value.edad_final === null ? '0' : value.edad_final ) + '" class="form-control form-control-sm parametro_edad_final"></td>'+
+                    //                 '<td>'+
+                    //                     '<select class="custom-select custom-select-sm parametro_tiempo" name="parametro_tiempo" id="parametro_tiempo">'+
+                    //                         '<option value="" >Tiempo...</option>'+
+                    //                         '<option value="AÑOS" ' + (value.tiempo === 'AÑOS' ? 'selected' : '') + '>AÑOS</option>'+
+                    //                         '<option value="MESES" ' + (value.tiempo === 'MESES' ? 'selected' : '') + '>MESES</option>'+
+                    //                         '<option value="DIAS" ' + (value.tiempo === 'DIAS' ? 'selected' : '') + '>DIAS</option>'+
+                    //                     '</select>'+
+                    //                 '</td>'+
+                    //                 '<td width="50px"><input type="number" value="' + (value.valor_inicial === null ? '0' : value.valor_inicial ) + '" class="form-control form-control-sm parametro_valor_inicial" name="parametro_valor_inicial" id="parametro_valor_inicial"></td>'+
+                    //                 '<td width="50px"><input type="number" value="' + (value.valor_final === null ? '0' : value.valor_final ) + '"" class="form-control form-control-sm parametro_valor_final" name="parametro_valor_final" id="parametro_valor_final"></td>'+
+                    //                 '<td><input type="text" value="' + value.referencia + '"" class="form-control form-control-sm parametro_interpretacion" name="parametro_interpretacion" id="parametro_interpretacion"></td>'+
+                    //                 '<td>'+
+                    //                     '<div class="btn-group">'+
+                    //                         '<button type="button" class="btn btn-sm btn-outline-warning btn-edit-parametro"><i class="fas fa-edit"></i></button>'+
+                    //                         '<button type="button" class="btn btn-sm btn-outline-danger btn-delete-parametro-id"><i class="fas fa-trash-alt"></i></button>'+
+                    //                     '</div>'+
+                    //                 '</td>'+
+                    //             '</tr>'
+                    //         );
+                    //     });
+                    // }else {
+                    //     $('.table_parametro tbody').empty().append('<td colspan="9" class="text-center fila_vacia">No hay datos recepcionados</td>');
+                    // }
+                    if (data.length !== 0) {
+                        $(".tabla_parametros tbody").empty();
+                        const tabla = $("#tabla_parametros");
+
+                        data.forEach(item => {
+                            const newRow = $("<tr>");
+                            const idCell = $("<td>").attr('hidden', 'true').text(item.id);
+                            const caidCell = $("<td>").attr('hidden', 'true').text(item.ca_id);
+                            const generoCell = $("<td>").attr('width', '100px').text(item.genero !== null ? item.genero : '');
+                            const edadCell = $("<td>").addClass('text-center').attr('width', '100px').text(item.genero !== null ? item.edad_inicial+'-'+item.edad_final : '');
+                            const tiempoCell = $("<td>").addClass('text-center').attr('width', '80px').text(item.genero !== null ? item.tiempo : '');
+                            const valoresCell = $("<td>").addClass('text-center').attr('width', '100px').text(item.valor_inicial !== null ? item.valor_inicial+'-'+item.valor_final : '');
+                            const referenciaCell = $("<td>").text(item.referencia);
+                            const editarBtn = $("<button>").addClass("btn btn-warning btn-sm btn-edit-parametro");
+                            const editarIcon = $("<i>").addClass("fas fa-edit");
+                            editarBtn.append(editarIcon);
+                            const eliminarBtn = $("<button>").addClass("btn btn-danger btn-sm btn-delete-parametro-id");
+                            const eliminarIcon = $('<i>').addClass('fas fa-trash-alt');
+                            eliminarBtn.append(eliminarIcon);
+                            const divGroup = $('<div>').addClass('btn-group');
+                            divGroup.append(editarBtn, eliminarBtn);
+                            const opCell = $("<td>").addClass('text-center').attr('width', '100px').append(divGroup);
+
+                            newRow.append(idCell, caidCell, generoCell, edadCell, tiempoCell, valoresCell, referenciaCell, opCell);
+                            tabla.append(newRow);
                         });
-                    }else {
-                        $('.table_parametro tbody').empty().append('<td colspan="9" class="text-center fila_vacia">No hay datos recepcionados</td>');
+                    }else{
+                        $(".tabla_parametros tbody").empty().append('<td colspan="7" class="text-center">No hay datos recepcionados</td>')
                     }
                 }
             });
         }
 
         $(document).on('click', '.btn-conf-parametro', function() {
-            var id = $(this).closest('tr').find('td:eq(0)').text();
-            var aspecto_nombre = $(this).closest('tr').find('td:eq(2)').text();
-            var medida = $(this).closest('tr').find('td:eq(3) select option:selected').text();
+            let id = $(this).closest('tr').find('td:eq(0)').text();
+            let aspecto_nombre = $(this).closest('tr').find('td:eq(2)').text();
+            let medida = $(this).closest('tr').find('td:eq(3) select option:selected').text();
+            let umed_id = $(this).closest('tr').find('td:eq(3) select option:selected').val();
+            let comp_id = $(".dp_comp_id").val(); 
+            $(".est_ca_id").val(comp_id);
             if (medida == 'Seleccionar...') {
                 unidad =  "";
             }else{
@@ -1139,7 +1413,20 @@
             }
             $('.aspecto_nombre_parametro').text('Configurar Prueba: ' + aspecto_nombre + ' ' + unidad);
             $('.aspecto_id_parametro').val(id);
+            $('.parametro_unidad').val(umed_id);
+            if (umed_id != "") {
+                $('.parametro_unidad').css('border', '2px solid #40CC6C');
+                $(".parametro_unidad").attr('disabled', 'true');
+            }else{
+                $('.parametro_unidad').css('border', '');
+                $(".parametro_unidad").removeAttr('disabled');
+            }
+            $(".btn-save-parametro").prop('hidden', false);
+            camposVacios();
+            estadoGenero('readonly', true, 'disabled');
             getParametro(id);
+            pruebas('{{ route("getDPCAspecto",":id") }}', $(".est_ca_id").val(), '.aspecto_id_parametro', '.btnSiguientePrueba', '.btnAnteriorPrueba', 'parametro');
+            //pruebas('{{ route("getDPCAspecto",":id") }}', $(".est_detmat_ca_id").val(), ".detmat_ca_id", '.btnPruebaSiguiente', '.btnPruebaAnterior', 'material');
         });
 
         $(document).on('click', '.btnAddValores', function() {
@@ -1182,71 +1469,233 @@
             $(this).closest('tr').remove();
         });
 
-        $(document).on('click', '.btn-save-parametro', function() {
-            var ca_id = $(".aspecto_id_parametro").val();
-            var genero = $(this).closest('tr').find('td:eq(1) select').val();
-            var edad_inicial = $(this).closest('tr').find('td:eq(2) input').val();
-            var edad_final = $(this).closest('tr').find('td:eq(3) input').val();
-            var tiempo = $(this).closest('tr').find('td:eq(4) select').val();
-            var valor_inicial = $(this).closest('tr').find('td:eq(5) input').val();
-            var valor_final = $(this).closest('tr').find('td:eq(6) input').val();
-            var interpretacion = $(this).closest('tr').find('td:eq(7) input').val();
+        function clearParametros() {
+            $(".parametro_genero").val("");
+            $(".parametro_edad_inicial").val("");
+            $(".parametro_edad_final").val("");
+            $(".parametro_tiempo").val("");
+            $(".parametro_valor_inicial").val("");
+            $(".parametro_valor_final").val("");
+            $(".parametro_referencia").val("");
+        }
 
-            var datos = new FormData();
-            datos.append('ca_id', ca_id);
-            datos.append('genero', genero);
-            datos.append('edad_inicial', edad_inicial);
-            datos.append('edad_final', edad_final);
-            datos.append('tiempo', tiempo);
-            datos.append('valor_inicial', valor_inicial);
-            datos.append('valor_final', valor_final);
-            datos.append('referencia', interpretacion);
+        function estadoGenero(propiedad, estado, select) {
+            $("#parametro_edad_inicial").prop(propiedad, estado);
+            $("#parametro_edad_final").prop(propiedad, estado);
+            $("#parametro_tiempo").prop(select, estado);
+            $("#parametro_edad_inicial").css('border', '');
+            $("#parametro_edad_final").css('border', '');
+            $("#parametro_tiempo").css('border', '');
+            $("#parametro_edad_inicial").val('');
+            $("#parametro_edad_final").val('');
+            $("#parametro_tiempo").val('');
+        }
 
-            $.ajax({
-                url: '{{ route("parametros") }}',
-                type: 'POST',
-                data: datos,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function (response) {
-                    Swal.fire({
-                        title: 'Hecho',
-                        text: 'Parámetro registrado',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 1000
-                    });
-                    var id = $('.aspecto_id_parametro').val();
-                    getParametro(id);
-                    var dp_comp_id = $('.dp_comp_id').val();
-                    tablaAspectoParametro(dp_comp_id);
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
+        $(document).on('change', '.parametro_genero', function() {
+            if ($(this).val() !== "") {
+                estadoGenero('readonly', false, 'disabled');
+            }else{
+                estadoGenero('readonly', true, 'disabled');
+            }
+        });
+
+        $(document).on('click', '.btn-save-parametro', function(e) {
+            // var ca_id = $(".aspecto_id_parametro").val();
+            // var genero = $(this).closest('tr').find('td:eq(1) select').val();
+            // var edad_inicial = $(this).closest('tr').find('td:eq(2) input').val();
+            // var edad_final = $(this).closest('tr').find('td:eq(3) input').val();
+            // var tiempo = $(this).closest('tr').find('td:eq(4) select').val();
+            // var valor_inicial = $(this).closest('tr').find('td:eq(5) input').val();
+            // var valor_final = $(this).closest('tr').find('td:eq(6) input').val();
+            // var interpretacion = $(this).closest('tr').find('td:eq(7) input').val();
+            e.preventDefault();
+            let vacio = "";
+            if ($(".parametro_genero").val() !== "") {
+                if ($(".parametro_edad_inicial").val() === "") {
+                    vacio = 'EDAD INICIAL';
+                    $(".parametro_edad_inicial").css('border', '1px solid #E91C2B');
+                }else if ($(".parametro_edad_final").val() === "") {
+                    vacio = 'EDAD FINAL';
+                    $(".parametro_edad_final").css('border', '1px solid #E91C2B');
+                }else if ($(".parametro_tiempo").val() === "") {
+                    vacio = 'TIEMPO';
+                    $(".parametro_tiempo").css('border', '1px solid #E91C2B');
+                }else if ($('.parametro_valor_inicial').val() !== "") {
+                    if ($(".parametro_valor_final").val() === "") {
+                        vacio = 'VALOR FINAL';
+                        $(".parametro_valor_final").css('border', '1px solid #E91C2B');
+                    }else if ($(".parametro_referencia").val() === "") {
+                        vacio = 'REFERENCIA';
+                        $(".parametro_referencia").css('border', '1px solid #E91C2B');
+                    }
+                }else if ($(".parametro_referencia").val() === "") {
+                    vacio = 'REFERENCIA';
+                    $(".parametro_referencia").css('border', '1px solid #E91C2B');
                 }
-            });
+            }else if ($('.parametro_valor_inicial').val() !== "") {
+                if ($(".parametro_valor_final").val() === "") {
+                    vacio = 'VALOR FINAL';
+                    $(".parametro_valor_final").css('border', '1px solid #E91C2B');
+                }else if ($(".parametro_referencia").val() === "") {
+                    vacio = 'REFERENCIA';
+                    $(".parametro_referencia").css('border', '1px solid #E91C2B');
+                }
+            }else if ($(".parametro_referencia").val() === "") {
+                vacio = 'REFERENCIA';
+                $(".parametro_referencia").css('border', '1px solid #E91C2B');
+            }
+
+            if (vacio !== "") {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'El campo ' + vacio + ' es requerido.',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            }else{
+                let ca_id = $(".aspecto_id_parametro").val();
+                let genero = $(".parametro_genero").val();
+                let edad_inicial = $(".parametro_edad_inicial").val();
+                let edad_final = $(".parametro_edad_final").val();
+                let tiempo = $(".parametro_tiempo").val();
+                let valor_inicial = $(".parametro_valor_inicial").val();
+                let valor_final = $(".parametro_valor_final").val();
+                let unidad = $(".parametro_unidad").val();
+                let referencia = $(".parametro_referencia").val();
+    
+                var datos = new FormData();
+                datos.append('ca_id', ca_id);
+                datos.append('genero', genero);
+                datos.append('edad_inicial', edad_inicial);
+                datos.append('edad_final', edad_final);
+                datos.append('tiempo', tiempo);
+                datos.append('valor_inicial', valor_inicial);
+                datos.append('valor_final', valor_final);
+                datos.append('unidad', unidad);
+                datos.append('referencia', referencia);
+    
+                $.ajax({
+                    url: '{{ route("parametro.store") }}',
+                    type: 'POST',
+                    data: datos,
+                    contentType: false,
+                    processData: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (response) {
+                        Swal.fire({
+                            title: 'Hecho',
+                            text: 'Parámetro registrado',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                        camposVacios();
+                        var id = $('.aspecto_id_parametro').val();
+                        getParametro(id);
+                        var dp_comp_id = $('.dp_comp_id').val();
+                        tablaAspectoParametro(dp_comp_id);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
+            }
         });
 
         $(document).on('click', '.btn-edit-parametro', function() {
-            var ca_id = $(".aspecto_id_parametro").val();
-            var id = $(this).closest('tr').find('td:eq(0)').text();
-            var genero = $(this).closest('tr').find('td:eq(1) select').val();
-            var edad_inicial = $(this).closest('tr').find('td:eq(2) input').val();
-            var edad_final = $(this).closest('tr').find('td:eq(3) input').val();
-            var tiempo = $(this).closest('tr').find('td:eq(4) select').val();
-            var valor_inicial = $(this).closest('tr').find('td:eq(5) input').val();
-            var valor_final = $(this).closest('tr').find('td:eq(6) input').val();
-            var interpretacion = $(this).closest('tr').find('td:eq(7) input').val();
+            let param_id = $(this).closest("tr").find("td:eq(0)").text();
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("parametro.edit",":id") }}'.replace(":id", param_id),
+                type: 'GET',
+                dataType: "json",
+                success: function(data) {
+                    $(".parametro_id").val(data.id)
+                    $(".parametro_genero").val(data.genero);
+                    $(".parametro_genero").css('border', data.genero != null ? '2px solid #40CC6C' : '');
+                    $(".parametro_edad_inicial").val(data.edad_inicial);
+                    $(".parametro_edad_inicial").css('border', data.edad_inicial != null ? '2px solid #40CC6C' : '');
+                    $(".parametro_edad_final").val(data.edad_final);
+                    $(".parametro_edad_final").css('border', data.edad_final != null ? '2px solid #40CC6C' : '');
+                    $(".parametro_tiempo").val(data.tiempo);
+                    $(".parametro_tiempo").css('border', data.tiempo != null ? '2px solid #40CC6C' : '');
+                    $(".parametro_valor_inicial").val(data.valor_inicial);
+                    $(".parametro_valor_inicial").css('border', data.valor_inicial != null ? '2px solid #40CC6C' : '');
+                    $(".parametro_valor_final").val(data.valor_final);
+                    $(".parametro_valor_final").css('border', data.valor_final != null ? '2px solid #40CC6C' : '');
+                    $(".parametro_referencia").val(data.referencia);
+                    $(".parametro_referencia").css('border', data.referencia != null ? '2px solid #40CC6C' : '');
+                    $(".btn-edit-parametro-id").prop('hidden', false);
+                    $(".btn-clear-parametro").prop('hidden', false);
+                    $(".btn-save-parametro").prop('hidden', true);
+                    $(".btn-edit-parametro").attr('disabled', 'true');
+                    $(".btn-delete-parametro-id").attr('disabled', 'true');
+                    cerrarCargando();
+                }
+            });
+        });
+        function camposVacios() {
+            $(".parametro_id").val("")
+            $(".parametro_genero").val("");
+            $(".parametro_genero").css('border', '');
+            $(".parametro_edad_inicial").val("");
+            $(".parametro_edad_inicial").css('border', '');
+            $(".parametro_edad_final").val("");
+            $(".parametro_edad_final").css('border', '');
+            $(".parametro_tiempo").val("");
+            $(".parametro_tiempo").css('border', '');
+            $(".parametro_valor_inicial").val("");
+            $(".parametro_valor_inicial").css('border', '');
+            $(".parametro_valor_final").val("");
+            $(".parametro_valor_final").css('border', '');
+            $(".parametro_referencia").val("");
+            $(".parametro_referencia").css('border', '');
+            $(".btn-edit-parametro-id").prop('hidden', true);
+            $(".btn-clear-parametro").prop('hidden', true);
+            $(".btn-save-parametro").prop('hidden', false);
+        }
+
+        function limpiarParametros() {
+            camposVacios();
+            let ca_id = $(".aspecto_id_parametro").val();
+            getParametro(ca_id);
+        }
+
+        $(document).on('click', '.btn-clear-parametro', function() {
+            limpiarParametros();
+        });
+
+        $(document).on('click', '.btn-edit-parametro-id', function() {
+            // var ca_id = $(".aspecto_id_parametro").val();
+            // var id = $(this).closest('tr').find('td:eq(0)').text();
+            // var genero = $(this).closest('tr').find('td:eq(1) select').val();
+            // var edad_inicial = $(this).closest('tr').find('td:eq(2) input').val();
+            // var edad_final = $(this).closest('tr').find('td:eq(3) input').val();
+            // var tiempo = $(this).closest('tr').find('td:eq(4) select').val();
+            // var valor_inicial = $(this).closest('tr').find('td:eq(5) input').val();
+            // var valor_final = $(this).closest('tr').find('td:eq(6) input').val();
+            // var interpretacion = $(this).closest('tr').find('td:eq(7) input').val();
+
+            let ca_id = $(".aspecto_id_parametro").val();
+            let id = $(".parametro_id").val();
+            let genero = $(".parametro_genero").val();
+            let edad_inicial = $(".parametro_edad_inicial").val();
+            let edad_final = $(".parametro_edad_final").val();
+            let tiempo = $(".parametro_tiempo").val();
+            let valor_inicial = $(".parametro_valor_inicial").val();
+            let valor_final = $(".parametro_valor_final").val();
+            let unidad = $(".parametro_unidad").val();
+            let referencia = $(".parametro_referencia").val();
 
             var datos = new FormData();
             datos.append('ca_id', ca_id);
@@ -1256,10 +1705,11 @@
             datos.append('tiempo', tiempo);
             datos.append('valor_inicial', valor_inicial);
             datos.append('valor_final', valor_final);
-            datos.append('referencia', interpretacion);
+            datos.append('unidad', unidad);
+            datos.append('referencia', referencia);
 
             $.ajax({
-                url: '{{ route("parametros.update", ":id") }}'.replace(":id", id),
+                url: '{{ route("parametro.update", ":id") }}'.replace(":id", id),
                 type: 'POST',
                 data: datos,
                 contentType: false,
@@ -1275,8 +1725,7 @@
                         showConfirmButton: false,
                         timer: 1000
                     });
-                    var id = $('.aspecto_id_parametro').val();
-                    getParametro(id);
+                    limpiarParametros();
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -1294,7 +1743,7 @@
         $(document).on('click', '.btn-delete-parametro-id', function() {
             var id= $(this).closest('tr').find('td:eq(0)').text();
             $.ajax({
-                url: '{{ route("parametros.destroy", ":id") }}'.replace(":id", id),
+                url: '{{ route("parametro.destroy", ":id") }}'.replace(":id", id),
                 type: 'DELETE',
                 data: {
                     "_token": "{{ csrf_token() }}"
@@ -1307,8 +1756,7 @@
                         showConfirmButton: false,
                         timer: 1000
                     });
-                    var id = $('.aspecto_id_parametro').val();
-                    getParametro(id);
+                    limpiarParametros();
                     var dp_comp_id = $('.dp_comp_id').val();
                     tablaAspectoParametro(dp_comp_id);
                 },
@@ -1439,7 +1887,7 @@
             
             getAllMaterial();
             getMaterialEstudio(id_det_est);
-            pruebas($(".est_detmat_ca_id").val());
+            pruebas('{{ route("getDPCAspecto",":id") }}', $(".est_detmat_ca_id").val(), ".detmat_ca_id", '.btnPruebaSiguiente', '.btnPruebaAnterior', 'material');
             setTimeout(function(){
                 sumPrecioMaterials();
             }, 500);
@@ -1447,74 +1895,120 @@
 
         //---------------------Evento de Siguiente y Anterior en el modal----------------------------
 
-        function pruebas(valor) {
+        function pruebas(ruta, valor1, valor2, siguiente, anterior, modal) {
             $.ajax({
-                url: '{{ route("getDPCAspecto",":id") }}'.replace(":id", valor),
+                url: ruta.replace(":id", valor1),
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
+                    console.log(data);
                     pruebasData = data;
-                    const pruebaId = document.querySelector('.detmat_ca_id').value;
+                    const pruebaId = document.querySelector(valor2).value;
                     
                     const index = pruebasData.findIndex(prueba => prueba.id === parseInt(pruebaId));
                     
                     if (index !== -1) {
                         currentPruebaIndex = index;
                         if (currentPruebaIndex == 0) {
-                            verificarAnterior();
+                            verificarAnterior(anterior, siguiente);
                         }else{
-                            verificarSiguiente();
+                            verificarSiguiente(anterior, siguiente);
                         }
-                        
-                        mostrarModal(currentPruebaIndex);
+                        if (modal == 'material') {
+                            mostrarModalMaterial(currentPruebaIndex);
+                        }else if (modal == 'parametro'){
+                            mostrarModalParametro(currentPruebaIndex);
+                        }
                     } else {
                         console.log('No se encontró la prueba con el ID proporcionado en pruebasData.');
                     }
                 }
             });
         }
-        function verificarAnterior() {
+        
+        function verificarAnterior(anterior, siguiente) {
             if (currentPruebaIndex == 0) {
-                $(".btnPruebaAnterior").prop('hidden', true);
-                $(".btnPruebaSiguiente").prop('hidden', false);
+                $(anterior).prop('hidden', true);
+                $(siguiente).prop('hidden', false);
             }else{
-                $(".btnPruebaAnterior").prop('hidden', false);
-                $(".btnPruebaSiguiente").prop('hidden', false);
+                $(anterior).prop('hidden', false);
+                $(siguiente).prop('hidden', false);
             }
         }
 
-        function verificarSiguiente() {
+        function verificarSiguiente(anterior, siguiente) {
             if (currentPruebaIndex == pruebasData.length - 1) {
-                $(".btnPruebaSiguiente").prop('hidden', true);
-                $(".btnPruebaAnterior").prop('hidden', false);
+                $(siguiente).prop('hidden', true);
+                $(anterior).prop('hidden', false);
             }else{
-                $(".btnPruebaSiguiente").prop('hidden', false);
-                $(".btnPruebaAnterior").prop('hidden', false);
+                $(siguiente).prop('hidden', false);
+                $(anterior).prop('hidden', false);
             }
         }
-
+        //----------------------Para el modal MATERIAL--------------------------------
         document.querySelector('.btnPruebaAnterior').addEventListener('click', () => {
             if (currentPruebaIndex > 0) {
                 currentPruebaIndex--;
-                verificarAnterior();
-                mostrarModal(currentPruebaIndex);
+                verificarAnterior('.btnPruebaAnterior', '.btnPruebaSiguiente');
+                mostrarModalMaterial(currentPruebaIndex);
             }
         });
 
         document.querySelector('.btnPruebaSiguiente').addEventListener('click', () => {
             if (currentPruebaIndex < pruebasData.length - 1) {
                 currentPruebaIndex++;
-                verificarSiguiente();
-                mostrarModal(currentPruebaIndex);
+                verificarSiguiente('.btnPruebaAnterior', '.btnPruebaSiguiente');
+                mostrarModalMaterial(currentPruebaIndex);
             }
         });
-        function mostrarModal(index) {
+        function mostrarModalMaterial(index) {
             mostrarCargando();
             setTimeout(() => {
                 const prueba = pruebasData[index];
                 $(".detmat_ca_id").val(prueba.id);
                 $(".modal_agregar_materialLabel").text('Agregar Materiales: ' + prueba.nombre);
+                $(".search_material").val("");
+                getAllMaterial();
                 getMaterialEstudio($(".detmat_ca_id").val());
+                cerrarCargando();
+                
+            }, 500);
+        }
+
+        //----------------------Para el modal PARAMETRO------------------------------
+        document.querySelector('.btnAnteriorPrueba').addEventListener('click', () => {
+            if (currentPruebaIndex > 0) {
+                currentPruebaIndex--;
+                verificarAnterior('.btnAnteriorPrueba', '.btnSiguientePrueba');
+                mostrarModalParametro(currentPruebaIndex);
+            }
+        });
+
+        document.querySelector('.btnSiguientePrueba').addEventListener('click', () => {
+            if (currentPruebaIndex < pruebasData.length - 1) {
+                currentPruebaIndex++;
+                verificarSiguiente('.btnAnteriorPrueba', '.btnSiguientePrueba');
+                mostrarModalParametro(currentPruebaIndex);
+            }
+        });
+        function mostrarModalParametro(index) {
+            mostrarCargando();
+            setTimeout(() => {
+                const prueba = pruebasData[index];
+                $(".aspecto_id_parametro").val(prueba.id);
+                $(".aspecto_nombre_parametro").text('Configurar Parámetros: ' + prueba.nombre);
+                $(".parametro_unidad").val(prueba.umed_id);
+                if (prueba.umed_id !== null) {
+                    $('.parametro_unidad').css('border', '2px solid #40CC6C');
+                    $(".parametro_unidad").attr('disabled', 'true');
+                }else{
+                    $('.parametro_unidad').css('border', '');
+                    $(".parametro_unidad").removeAttr('disabled');
+                }
+                camposVacios();
+                estadoGenero('readonly', true, 'disabled');
+                $(".btn-save-parametro").prop('hidden', false);
+                getParametro($(".aspecto_id_parametro").val());
                 cerrarCargando();
                 
             }, 500);

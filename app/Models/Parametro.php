@@ -18,7 +18,6 @@ class Parametro extends Model
         'valor_inicial',
         'valor_final',
         'umed_id',
-        'cualitativo',
         'referencia'
     ];
 

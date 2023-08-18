@@ -40,6 +40,20 @@ class EstudioController extends Controller
         ]);
     }
 
+    public function getEstudios()
+    {
+        $estudios = DB::table('estudios as e')
+                        ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
+                        ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
+                        ->join('detalles as d', 'e.id', '=', 'd.estudio_id')
+                        ->select('d.id', 'e.est_cod', 'e.est_nombre', 'g.nombre as grupo', 'sg.nombre as subgrupo', 'd.tipo')
+                        ->orderBy('g.nombre', 'asc')
+                        ->orderBy('sg.nombre', 'asc')
+                        ->orderBy('e.est_nombre', 'asc')
+                        ->get();
+        return response()->json($estudios);
+    }
+
     public function getDetalle($id)
     {
         $estudio = Detalle::find($id);
@@ -62,6 +76,7 @@ class EstudioController extends Controller
     {
         $material = Material::where('mat_estado', '!=', 0)
                             ->whereRaw('mat_cantidad - mat_ventas != 0')
+                            ->orderby('mat_nombre')
                             ->get();
         $umed_ids = $material->pluck('umed_id')->toArray();
 
@@ -109,16 +124,13 @@ class EstudioController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'est_cod' => 'required|unique:estudios|max:10',
             'est_nombre' => 'required|max:255',
             'est_muestra' => 'required',
             'est_precio' => 'required|decimal:2',
             'est_grupo' => 'required'
         ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
-        }
 
         $estudio = Estudio::create([
             'est_cod' => $request->input('est_cod'),
@@ -153,9 +165,19 @@ class EstudioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Estudio $estudio)
+    public function edit($id)
     {
-        //
+        $estudio = DB::table('estudios as e')
+                    ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
+                    ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
+                    ->join('detalles as d', 'e.id', '=', 'd.estudio_id')
+                    ->join('muestras as m', 'm.id', '=', 'd.muestra_id')
+                    ->leftJoin('recipientes as r' , 'r.id', '=', 'd.recipiente_id')
+                    ->join('indications as i', 'i.id', '=', 'd.indicacion_id')
+                    ->select('e.*', 'd.muestra_id', 'd.recipiente_id', 'd.indicacion_id')
+                    ->where('d.id', '=', $id)
+                    ->get();
+        return response()->json($estudio);
     }
 
     /**

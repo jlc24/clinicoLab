@@ -1,4 +1,4 @@
-<div id="modal_crear_subgrupo" data-backdrop="static" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_crear_subgrupo-title" aria-hidden="true">
+<div id="modal_crear_subgrupo" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_crear_subgrupo-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" >
         <div class="modal-content">
             <div class="modal-header" style="background-color: #69A5FD; color: #fff">
@@ -25,14 +25,14 @@
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label" for="subgrupos_nombre">{{ __('Nombre') }}: </label>
                             <div class="col-md-8">
-                                <input type="text" id="subgrupos_nombre" name="subgrupos_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Subgrupo" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
+                                <input type="text" id="subgrupos_nombre" name="subgrupos_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Subgrupo" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); obligado($(this))" required>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="btnRegisterSubGrupo" class="btn btn-success" data-dismiss="modal">{{ __('Registrar') }}</button>
+                <button id="btnRegisterSubGrupo" class="btn btn-success">{{ __('Registrar') }}</button>
             </div>
         </div>
     </div>

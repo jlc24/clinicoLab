@@ -20,39 +20,41 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-7 col-sm-7">
+                <div class="col-xl-8 col-sm-12">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
-                                <a style="color: #fff;" href="#" data-toggle="modal"  data-target="#modal_crear_medida" title="Agregar unidad">
+                                <a style="color: #fff;" href="#" data-toggle="modal"  data-target="#modal_crear_medida" title="Agregar unidad" id="btnAddMedida">
                                     <i class="far fa-plus-square"></i>
                                 </a>{{ __('Unidades de Medida') }}
                             </h4>
                         </div>
                         <div class="card-body">
-                            <h3>{{ __('Lista de Unidades de Medida registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-sm table-bordered table-hover table-responsive-lg tabla_umedidas text-center" id="tabla_umedidas">
-                                <thead>
-                                    <th>#</th>
-                                    <th>{{ __('Unidad') }}</th>
-                                    <th>{{ __('Op') }}</th>
-                                </thead>
-                                <tbody>
-                                    @foreach ($medidas as $medida)
-                                        <tr>
-                                            <td>{{ $medida->id }}</td>
-                                            <td>{{ $medida->unidad }}</td>
-                                            <td>
-                                                <div class="btn-group" role="group" aria-label="Button group">
-                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_medida_{{ $medida->id }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
-                                                    @include('umedida.modal.modal_actualizar_umedida')
-                                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="{{ $medida->id }}" data-route="{{ route('umedida.destroy', $medida->id) }}"><i class="fas fa-trash-alt"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <h3>{{ __('Unidades de Medida registrados en el Sistema') }}</h3><hr>
+                            <div class="row justify-content-end">
+                                <div class="col-xl-6 col-sm-12 ">
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="buscarUmedidas">Buscar:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control form-control-sm" name="buscarUmedidas" id="buscarUmedidas">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-sm-12">
+                                <table class="table table-sm table-bordered table-hover table-responsive-sm" id="tabla_umedidas">
+                                    <thead style="background-color: #BAECCA;">
+                                        <th class="text-right" style="border: 1px solid #C6C8CA;">#</th>
+                                        <th style="border: 1px solid #C6C8CA;">{{ __('Nombre') }}</th>
+                                        <th class="text-center" style="border: 1px solid #C6C8CA;">{{ __('Unidad') }}</th>
+                                        <th class="text-center" style="border: 1px solid #C6C8CA;">{{ __('Op') }}</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td colspan="4" class="text-center">No se encontrados datos</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,6 +63,7 @@
     </section>
 
     @include('umedida.modal.modal_crear_umedida')
+    @include('umedida.modal.modal_actualizar_umedida')
 @endsection
 
 @section('funciones')

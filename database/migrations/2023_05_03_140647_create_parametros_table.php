@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('tiempo', 10)->nullable();
             $table->unsignedDecimal('valor_inicial')->nullable();
             $table->unsignedDecimal('valor_final')->nullable();
+            $table->unsignedBigInteger('umed_id')->nullable();
             $table->string('referencia')->nullable();
             $table->timestamps();
 

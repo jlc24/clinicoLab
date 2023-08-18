@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Parametro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ParametroController extends Controller
 {
@@ -17,7 +18,12 @@ class ParametroController extends Controller
 
     public function getParametro($id)
     {
-        $parametro = Parametro::where('ca_id', '=', $id)->get();
+        $parametro = DB::table('parametros as p')
+                        ->join('componente_aspectos as ca', 'ca.id', '=', 'p.ca_id')
+                        ->select('p.*', 'ca.umed_id')
+                        ->where('ca_id', '=', $id)
+                        ->get();
+        //$parametro = Parametro::where('ca_id', '=', $id)->get();
         return response()->json($parametro);
     }
 
@@ -46,6 +52,7 @@ class ParametroController extends Controller
             'tiempo' => $request->input('tiempo'),
             'valor_inicial' => $request->input('valor_inicial'),
             'valor_final' => $request->input('valor_final'),
+            'umed_id' => $request->input('unidad'),
             'referencia' => $request->input('referencia'),
         ]);
     }
@@ -61,9 +68,10 @@ class ParametroController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Parametro $parametro)
+    public function edit($id)
     {
-        //
+        $parametro = Parametro::find($id);
+        return response()->json($parametro);
     }
 
     /**
@@ -83,6 +91,7 @@ class ParametroController extends Controller
             'tiempo' => $request->input('tiempo'),
             'valor_inicial' => $request->input('valor_inicial'),
             'valor_final' => $request->input('valor_final'),
+            'umed_id' => $request->input('unidad'),
             'referencia' => $request->input('referencia'),
         ]);
     }

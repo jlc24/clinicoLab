@@ -1,7 +1,7 @@
 <div class="modal fade" id="modal_actualizar_medico_{{ $medico->id }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal_actualizar_medico_{{ $medico->id }}Label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #32C861; color: #fff">
+            <div class="modal-header" style="background-color: #FFC107; color: #000">
                 <h1 class="modal-title fs-5" id="modal_actualizar_medico_{{ $medico->id }}Label"><strong>{{ __('Modificar Medico') }}</strong></h1>
                 <button type="button" id="btnCloseUpMedic" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -256,7 +256,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" id="btnUpdateMed" class="btn btn-success">Modificar</button>
+                    <button type="submit" id="btnUpdateMed" class="btn btn-warning">Modificar</button>
                 </div>
             </form>
         </div>

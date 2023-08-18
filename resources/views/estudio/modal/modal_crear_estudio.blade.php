@@ -89,9 +89,7 @@
                                 <div class="col-md-6">
                                     <select class="custom-select custom-select-sm" id="est_muestra" name="est_muestra" required>
                                         <option value="" selected="" disabled>SELECCIONAR...</option>
-                                        @foreach ($muestras as $muestra)
-                                            <option value="{{ $muestra->id }}">{{ $muestra->nombre }}</option>
-                                        @endforeach
+                                        
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -149,7 +147,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button id="btnRegisterEst" class="btn btn-success">Registrar</button>
+                <button id="btnRegisterEst" class="btn btn-success">{{ __('Registrar') }}</button>
             </div>
         </div>
     </div>

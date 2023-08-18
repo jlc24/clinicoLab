@@ -20,7 +20,7 @@ class AspectoController extends Controller
 
     public function getAspectos()
     {
-        $aspecto = Aspecto::all();
+        $aspecto = Aspecto::orderby('nombre')->get();
         return response()->json($aspecto);
     }
 

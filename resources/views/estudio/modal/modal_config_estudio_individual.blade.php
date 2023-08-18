@@ -13,7 +13,7 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-12 col-sm-12 pt-1" style="background-color: #28A745;">
                         <label class="col-md-12 col-form-label" style="color: #fff">
-                            <a href="#" data-id="{{ $detalle->id }}" data-toggle="modal" data-target="#modal_crear_procedimiento" class="btn-config" title="Agregar procedimiento" style="color: #fff">
+                            <a href="#" data-toggle="modal" data-target="#modal_crear_procedimiento" class="btn-config" title="Agregar procedimiento" style="color: #fff">
                                 <i class="fas fa-plus-circle fa-lg"></i>
                             </a>{{ __(' Procedimientos') }}:
                         </label>

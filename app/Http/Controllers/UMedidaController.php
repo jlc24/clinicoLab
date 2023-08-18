@@ -17,6 +17,12 @@ class UMedidaController extends Controller
         ]);
     }
 
+    public function getUmedidas()
+    {
+        $medidas = UMedida::orderBy('categoria')->orderBy('nombre')->get();
+        return response()->json($medidas);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -31,14 +37,17 @@ class UMedidaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'medida_categoria' => 'required|max:100',
+            'medida_nombre' => 'required|max:100',
             'medida_unidad' => 'required|max:50'
         ]);
 
         UMedida::create([
+            'categoria' => $request->input('medida_categoria'),
+            'nombre' => $request->input('medida_nombre'),
             'unidad' => $request->input('medida_unidad')
         ]);
 
-        return redirect()->route('umedida')->with('success', 'El registro se ha creado con éxito');
     }
 
     /**
@@ -58,9 +67,10 @@ class UMedidaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UMedida $uMedida)
+    public function edit($id)
     {
-        //
+        $medida = UMedida::find($id);
+        return response()->json($medida);
     }
 
     /**
@@ -69,14 +79,16 @@ class UMedidaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'medida_categoria_update' => 'required|max:100',
+            'medida_nombre_update' => 'required|max:100',
             'medida_unidad_update' => 'required|max:50'
         ]);
 
         $medida = UMedida::find($id);
+        $medida->categoria = $request->input('medida_categoria_update');
+        $medida->nombre = $request->input('medida_nombre_update');
         $medida->unidad = $request->input('medida_unidad_update');
         $medida->save();
-
-        return redirect()->route('umedida')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**
@@ -86,7 +98,5 @@ class UMedidaController extends Controller
     {
         $medida = UMedida::find($id);
         $medida->delete();
-
-        return redirect()->route('umedida')->with('success', 'El registro se ha eliminado con éxito');
     }
 }

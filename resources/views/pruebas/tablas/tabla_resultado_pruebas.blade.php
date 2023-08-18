@@ -1,5 +1,5 @@
 <div class="col-xl-12 col-sm-12">
-    <table class="table table-bordered table-responsive-lg" id="tabla_resultados_pruebas" style="border: 1px solid #C6C8CA;">
+    <table class="table table-sm table-bordered table-responsive-lg" id="tabla_resultados_pruebas" style="border: 1px solid #C6C8CA;">
         <thead style="background-color: #BAECCA">
             <th style="border: 1px solid #C6C8CA;" hidden>#</th>
             <th style="border: 1px solid #C6C8CA;">Pruebas</th>

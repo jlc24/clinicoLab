@@ -24,35 +24,36 @@
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
-                                <a style="color: #fff;" href="#" data-toggle="modal"  data-target="#modal_crear_muestra" title="Agregar muestra">
+                                <a style="color: #fff;" href="#" data-toggle="modal" data-target="#modal_crear_muestra" title="Agregar muestra" id="btnAddMuestra">
                                     <i class="far fa-plus-square"></i>
                                 </a>{{ __('Tipos de Muestras') }}
                             </h4>
                         </div>
                         <div class="card-body">
-                            <h3>{{ __('Lista de Muestras registrados en el Sistema') }}</h3><hr>
+                            <div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <h3>{{ __('Muestras registradas en el Sistema') }}</h3><hr>
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <div class="col-xl-6 col-sm-12 ">
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="search_muestras">Buscar:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control form-control-sm" name="search_muestras" id="search_muestras">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_muestras" id="tabla_muestras">
-                                <thead>
-                                    <th>#</th>
-                                    <th>{{ __('Nombre') }}</th>
-                                    <th>{{ __('Descripción') }}</th>
-                                    <th>{{ __('Op') }}</th>
+                                <thead style="background-color: #BAECCA">
+                                    <th style="border: 1px solid #C6C8CA;" class="text-right">#</th>
+                                    <th style="border: 1px solid #C6C8CA;">{{ __('Nombre') }}</th>
+                                    <th style="border: 1px solid #C6C8CA;">{{ __('Descripción') }}</th>
+                                    <th style="border: 1px solid #C6C8CA;" class="text-center">{{ __('Op') }}</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($muestras as $muestra)
-                                        <tr>
-                                            <td>{{ $muestra->id }}</td>
-                                            <td>{{ $muestra->nombre }}</td>
-                                            <td>{{ $muestra->descripcion }}</td>
-                                            <td>
-                                                <div class="btn-group" role="group" aria-label="Button group">
-                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_muestra_{{ $muestra->id }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
-                                                    @include('muestra.modal.modal_actualizar_muestra')
-                                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="{{ $muestra->id }}" data-route="{{ route('muestra.destroy', $muestra->id) }}"><i class="fas fa-trash-alt"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -63,6 +64,7 @@
     </section>
 
     @include('muestra.modal.modal_crear_muestra')
+    @include('muestra.modal.modal_actualizar_muestra')
 @endsection
 
 @section('funciones')

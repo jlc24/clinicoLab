@@ -16,6 +16,12 @@ class MuestraController extends Controller
         return view('muestra.index', ['muestras' => $muestras]);
     }
 
+    public function getMuestras()
+    {
+        $muestras = Muestra::orderBy('id')->get();
+        return response()->json($muestras);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -38,8 +44,6 @@ class MuestraController extends Controller
             'nombre' => $request->input('muestra_nombre'),
             'descripcion' => $request->input('muestra_descripcion'),
         ]);
-
-        return redirect()->route('muestra')->with('success', 'El registro se ha creado con éxito');
     }
 
     /**
@@ -53,9 +57,10 @@ class MuestraController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Muestra $muestra)
+    public function edit($id)
     {
-        //
+        $muestra = Muestra::find($id);
+        return response()->json($muestra);
     }
 
     /**
@@ -72,8 +77,6 @@ class MuestraController extends Controller
         $muestra->nombre = $request->input('muestra_nombre_update');
         $muestra->descripcion = $request->input('muestra_descripcion_update');
         $muestra->save();
-        
-        return redirect()->route('muestra')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**
@@ -83,7 +86,5 @@ class MuestraController extends Controller
     {
         $muestra = Muestra::find($id);
         $muestra->delete();
-
-        return redirect()->route('muestra')->with('success', 'El registro se ha eliminado con éxito');
     }
 }
