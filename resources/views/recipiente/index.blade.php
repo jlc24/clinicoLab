@@ -30,32 +30,31 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <h3>{{ __('Lista de Recipientes registrados en el Sistema') }}</h3><hr>
+                            <div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <h3>{{ __('Recipientes registrados en el Sistema') }}</h3><hr>
+                                </div>
+                            </div>
+                        <div class="row justify-content-end">
+                            <div class="col-xl-6 col-sm-12 ">
+                                <div class="form-group row">
+                                    <label class="col-md-3" for="search_recipientes">Buscar:</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control form-control-sm" name="search_recipientes" id="search_recipientes">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                             <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_recipientes" id="tabla_recipientes">
                                 <thead>
-                                    <th>#</th>
-                                    <th>{{ __('Descripción') }}</th>
-                                    <th>{{ __('Op') }}</th>
+                                    <tr>
+                                        <th class="text-right">#</th>
+                                        <th>{{ __('Descripción') }}</th>
+                                        <th class="text-center">{{ __('Op') }}</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($recipientes as $recipiente)
-                                        <tr>
-                                            <td>{{ $recipiente->id }}</td>
-                                            <td>{{ $recipiente->descripcion }}</td>
-                                            <td>
-                                                <div class="btn-group" role="group" aria-label="Button group">
-                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_recipiente_{{ $recipiente->id }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
-                                                    @include('recipiente.modal.modal_actualizar_recipiente')
-                                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="{{ $recipiente->id }}" data-route="{{ route('recipiente.destroy', $recipiente->id) }}"><i class="fas fa-trash-alt"></i></button>
-                                                    {{-- <form action="{{ url('recipientes/'.$recipiente->id) }}" method="post">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <button href="#" type="submit" class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i></button>
-                                                    </form> --}}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -66,6 +65,7 @@
     </section>
 
     @include('recipiente.modal.modal_crear_recipiente')
+    @include('recipiente.modal.modal_actualizar_recipiente')
 @endsection
 
 @section('funciones')

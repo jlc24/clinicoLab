@@ -143,10 +143,10 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/detalleprocedimientos/{id}', [DetalleProcedimientoController::class, 'update'])->name('detalleprocedimiento.update');
     
         Route::get('/estudios', [EstudioController::class, 'index'])->name('estudio');
-        Route::get('/getEstudios', [EstudioController::class, 'getEstudios'])->name('getEstudios');
-        Route::post('/estudios', [EstudioController::class, 'store'])->name('estudio.store');
-        Route::get('/estudios/{id}', [EstudioController::class, 'edit'])->name('estudio.edit');
-        Route::post('/estudios/{id}', [EstudioController::class, 'update'])->name('estudio.update');
+        Route::get('/getEstudios', [EstudioController::class, 'getEstudios'])->name('getEstudios')->middleware('ajax');
+        Route::post('/estudios', [EstudioController::class, 'store'])->name('estudio.store')->middleware('ajax');
+        Route::get('/estudios/{id}', [EstudioController::class, 'edit'])->name('estudio.edit')->middleware('ajax');
+        Route::post('/estudios/{id}', [EstudioController::class, 'update'])->name('estudio.update')->middleware('ajax');
     
         Route::get('/getDetalle/{id}', [EstudioController::class, 'getDetalle'])->name('getDetalle');
         Route::get('/getAllMaterials', [EstudioController::class, 'getAllMaterials'])->name('getAllMaterials');
@@ -170,26 +170,32 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/bacterias', [BacteriaController::class, 'index'])->name('bacteria');
     
         Route::get('/indications', [IndicationController::class, 'index'])->name('indication');
-        Route::post('/indications', [IndicationController::class, 'store'])->name('indication');
-        Route::put('/indications/{id}', [IndicationController::class, 'update']);
-        Route::delete('/indications/{id}', [IndicationController::class, 'destroy'])->name('indication.destroy');
+        Route::get('/getIndications', [IndicationController::class, 'getIndications'])->name('getIndications')->middleware('ajax');
+        Route::post('/indications', [IndicationController::class, 'store'])->name('indication.store')->middleware('ajax');
+        Route::get('/indications/{id}', [IndicationController::class, 'edit'])->name('indication.edit')->middleware('ajax');
+        Route::post('/indications/{id}', [IndicationController::class, 'update'])->name('indication.update')->middleware('ajax');
+        Route::delete('/indications/{id}', [IndicationController::class, 'destroy'])->name('indication.destroy')->middleware('ajax');
     
         Route::get('/recipientes', [RecipienteController::class, 'index'])->name('recipiente');
-        Route::post('/recipientes', [RecipienteController::class, 'store'])->name('recipiente');
-        Route::put('/recipientes/{id}', [RecipienteController::class, 'update']);
-        Route::delete('/recipientes/{id}', [RecipienteController::class, 'destroy'])->name('recipiente.destroy');
+        Route::get('/getRecipientes', [RecipienteController::class, 'getRecipientes'])->name('getRecipientes')->middleware('ajax');
+        Route::post('/recipientes', [RecipienteController::class, 'store'])->name('recipiente.store')->middleware('ajax');
+        Route::get('/recipientes/{id}', [RecipienteController::class, 'edit'])->name('recipiente.edit')->middleware('ajax');
+        Route::post('/recipientes/{id}', [RecipienteController::class, 'update'])->name('recipiente.update')->middleware('ajax');
+        Route::delete('/recipientes/{id}', [RecipienteController::class, 'destroy'])->name('recipiente.destroy')->middleware('ajax');
     
         Route::get('/muestras', [MuestraController::class, 'index'])->name('muestra');
-        Route::get('/getMuestras', [MuestraController::class, 'getMuestras'])->name('getMuestras');
-        Route::post('/muestras', [MuestraController::class, 'store'])->name('muestra.store');
-        Route::get('/muestras/{id}', [MuestraController::class, 'edit'])->name('muestra.edit');
-        Route::post('/muestras/{id}', [MuestraController::class, 'update'])->name('muestra.update');
-        Route::delete('/muestras/{id}', [MuestraController::class, 'destroy'])->name('muestra.destroy');
+        Route::get('/getMuestras', [MuestraController::class, 'getMuestras'])->name('getMuestras')->middleware('ajax');
+        Route::post('/muestras', [MuestraController::class, 'store'])->name('muestra.store')->middleware('ajax');
+        Route::get('/muestras/{id}', [MuestraController::class, 'edit'])->name('muestra.edit')->middleware('ajax');
+        Route::post('/muestras/{id}', [MuestraController::class, 'update'])->name('muestra.update')->middleware('ajax');
+        Route::delete('/muestras/{id}', [MuestraController::class, 'destroy'])->name('muestra.destroy')->middleware('ajax');
     
         Route::get('/metodologias', [MetodologiaController::class, 'index'])->name('metodologia');
-        Route::post('/metodologias', [MetodologiaController::class, 'store'])->name('metodologia');
-        Route::put('/metodologias/{id}', [MetodologiaController::class, 'update']);
-        Route::delete('/metodologias/{id}', [MetodologiaController::class, 'destroy'])->name('metodologia.destroy');
+        Route::get('/getMetodologias', [MetodologiaController::class, 'getMetodologias'])->name('getMetodologias')->middleware('ajax');
+        Route::post('/metodologias', [MetodologiaController::class, 'store'])->name('metodologia.store')->middleware('ajax');
+        Route::get('/metodologias/{id}', [MetodologiaController::class, 'edit'])->name('metodologia.edit')->middleware('ajax');
+        Route::post('/metodologias/{id}', [MetodologiaController::class, 'update'])->name('metodologia.update')->middleware('ajax');
+        Route::delete('/metodologias/{id}', [MetodologiaController::class, 'destroy'])->name('metodologia.destroy')->middleware('ajax');
     
         Route::get('/procedimientos', [ProcedimientoController::class, 'index'])->name('procedimiento');
         Route::post('/procedimientos', [ProcedimientoController::class, 'store'])->name('procedimiento');
@@ -210,10 +216,10 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/umedidas', [UMedidaController::class, 'index'])->name('umedida');
         Route::get('/getUmedidas', [UMedidaController::class, 'getUmedidas'])->name('getUmedidas')->middleware('ajax');
-        Route::post('/umedidas', [UMedidaController::class, 'store'])->name('umedida.store');
-        Route::get('/umedidas/{id}', [UMedidaController::class, 'edit'])->name('umedida.edit');
-        Route::post('/umedidas/{id}', [UMedidaController::class, 'update'])->name('umedida.update');
-        Route::delete('/umedidas/{id}', [UMedidaController::class, 'destroy'])->name('umedida.destroy');
+        Route::post('/umedidas', [UMedidaController::class, 'store'])->name('umedida.store')->middleware('ajax');
+        Route::get('/umedidas/{id}', [UMedidaController::class, 'edit'])->name('umedida.edit')->middleware('ajax');
+        Route::post('/umedidas/{id}', [UMedidaController::class, 'update'])->name('umedida.update')->middleware('ajax');
+        Route::delete('/umedidas/{id}', [UMedidaController::class, 'destroy'])->name('umedida.destroy')->middleware('ajax');
     
         Route::get('/componentes', [ComponenteController::class, 'index'])->name('componente');
         Route::post('/componentes', [ComponenteController::class, 'store'])->name('componente');
@@ -268,15 +274,18 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/providers/{id}', [ProviderController::class, 'destroy'])->name('provider.destroy');
 
             Route::get('/categorias', [CategoriaController::class, 'index'])->name('categoria');
-            Route::post('/categorias', [CategoriaController::class, 'store'])->name('categoria.store');
-            Route::get('/categorias/{id}', [CategoriaController::class, 'edit'])->name('categoria.edit');
-            Route::post('/categorias/{id}', [CategoriaController::class, 'update'])->name('categoria.update');
-            Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy'])->name('categoria.destroy');
+            Route::get('/getCategorias', [CategoriaController::class, 'getCategorias'])->name('getCategorias')->middleware('ajax');
+            Route::post('/categorias', [CategoriaController::class, 'store'])->name('categoria.store')->middleware('ajax');
+            Route::get('/categorias/{id}', [CategoriaController::class, 'edit'])->name('categoria.edit')->middleware('ajax');
+            Route::post('/categorias/{id}', [CategoriaController::class, 'update'])->name('categoria.update')->middleware('ajax');
+            Route::delete('/categorias/{id}', [CategoriaController::class, 'destroy'])->name('categoria.destroy')->middleware('ajax');
         
             Route::get('/materials', [MaterialController::class, 'index'])->name('material');
-            Route::post('/materials', [MaterialController::class, 'store'])->name('material.store');
-            Route::get('/materials/{id}', [MaterialController::class, 'edit'])->name('material.edit');
-            Route::post('/materials/{id}', [MaterialController::class, 'update'])->name('material.update');
+            Route::get('/getMateriales', [MaterialController::class, 'getMateriales'])->name('getMateriales')->middleware('ajax');
+            Route::post('/materials', [MaterialController::class, 'store'])->name('material.store')->middleware('ajax');
+            Route::get('/materials/{id}', [MaterialController::class, 'edit'])->name('material.edit')->middleware('ajax');
+            Route::post('/materials/{id}', [MaterialController::class, 'update'])->name('material.update')->middleware('ajax');
+            Route::delete('/materials/{id}', [MaterialController::class, 'destroy'])->name('material.destroy')->middleware('ajax');
         
             Route::post('/updateMaterialEstado/{id}', [MaterialController::class, 'updateMaterialEstado'])->name('material.updateEstado');
             Route::post('/updateMaterialCompra/{id}', [MaterialController::class, 'updateMaterialCompra'])->name('updateMaterialCompra');

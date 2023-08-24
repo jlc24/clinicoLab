@@ -16,6 +16,11 @@ class IndicationController extends Controller
         return view('indication.index', ['indications' => $indications]);
     }
 
+    public function getIndications()
+    {
+        $indications = Indication::orderByDesc('id')->get();
+        return response()->json($indications);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -36,8 +41,6 @@ class IndicationController extends Controller
         Indication::create([
             'descripcion' => $request->input('indi_descripcion'),
         ]);
-
-        return redirect()->route('indication')->with('success', 'El registro se ha creado con éxito');
     }
 
     /**
@@ -51,9 +54,10 @@ class IndicationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Indication $indication)
+    public function edit($id)
     {
-        //
+        $indication = Indication::find($id);
+        return response()->json($indication);
     }
 
     /**
@@ -68,8 +72,6 @@ class IndicationController extends Controller
         $indication = Indication::find($id);
         $indication->descripcion = $request->input('indi_descripcion_update');
         $indication->save();
-
-        return redirect()->route('indication')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**
@@ -79,7 +81,5 @@ class IndicationController extends Controller
     {
         $indication = Indication::find($id);
         $indication->delete();
-
-        return response()->json(['success' => 'El registro se ha eliminado con éxito']);
     }
 }

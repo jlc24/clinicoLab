@@ -25,7 +25,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="medida_categoria">{{ __('Categoría') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-9">
-                                    <select id="medida_categoria" class="custom-select custom-select-sm medida_categoria" name="medida_categoria">
+                                    <select id="medida_categoria" class="custom-select custom-select-sm medida_categoria" name="medida_categoria" onchange="obligado($(this))">
                                         <option value="" selected disabled>Seleccionar...</option>
                                         <option value="Longitud">Longitud</option>
                                         <option value="Volumen">Volumen</option>
@@ -38,6 +38,7 @@
                                         <option value="Velocidad de sedimentación globular (VSG o VHS)">Velocidad de sedimentación globular (VSG o VHS)</option>
                                         <option value="Electrolitos y Sustancias Químicas">Electrolitos y Sustancias Químicas</option>
                                         <option value="Enzimas y Marcadores">Enzimas y Marcadores</option>
+                                        <option value="Otros">Otros</option>
                                     </select>
                                 </div>
                             </div>
@@ -48,7 +49,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="medida_nombre">{{ __('Nombre') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-9">
-                                    <input type="text" id="medida_nombre" name="medida_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre de medida" required>
+                                    <input type="text" id="medida_nombre" name="medida_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre de medida" onkeyup="obligado($(this))" required>
                                 </div>
                             </div>
                         </div>
@@ -58,7 +59,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="medida_unidad">{{ __('Unidad') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-9">
-                                    <input type="text" id="medida_unidad" name="medida_unidad" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: m, L, mg/dl, ml, mu" required>
+                                    <input type="text" id="medida_unidad" name="medida_unidad" class="form-control form-control-sm" autocomplete="off" placeholder="Ej: m, L, mg/dl, ml, mu" onkeyup="obligado($(this))" required>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +67,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button id="btnRegisterMed" class="btn btn-success" data-dismiss="modal">{{ __('Registrar') }}</button>
+                <button id="btnRegisterMed" class="btn btn-success">{{ __('Registrar') }}</button>
             </div>
         </div>
     </div>

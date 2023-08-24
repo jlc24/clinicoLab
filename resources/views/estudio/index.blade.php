@@ -79,6 +79,8 @@
     @include('estudio.modal.modal_crear_grupo')
     @include('estudio.modal.modal_crear_subgrupo')
     @include('muestra.modal.modal_crear_muestra')
+    @include('indication.modal.modal_crear_indications')
+    @include('recipiente.modal.modal_crear_recipiente')
 @endsection
 
 @section('funciones')

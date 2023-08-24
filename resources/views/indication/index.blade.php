@@ -30,27 +30,31 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <h3>{{ __('Lista de Indicaciones registrados en el Sistema') }}</h3><hr>
+                            <div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <h3>{{ __('Indicaciones registrados en el Sistema') }}</h3><hr>
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <div class="col-xl-6 col-sm-12 ">
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="search_indicaciones">Buscar:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control form-control-sm" name="search_indicaciones" id="search_indicaciones">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_indicaciones" id="tabla_indicaciones">
                                 <thead>
-                                    <th>#</th>
-                                    <th>{{ __('Descripcion') }}</th>
-                                    <th>{{ __('Op') }}</th>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>{{ __('Descripcion') }}</th>
+                                        <th class="text-center">{{ __('Op') }}</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($indications as $indication)
-                                        <tr>
-                                            <td>{{ $indication->id }}</td>
-                                            <td>{{ $indication->descripcion }}</td>
-                                            <td>
-                                                <div class="btn-group" role="group" aria-label="Button group">
-                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_indicacion_{{ $indication->id }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
-                                                    @include('indication.modal.modal_actualizar_indications')
-                                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="{{ $indication->id }}" data-route="{{ route('indication.destroy', $indication->id) }}"><i class="fas fa-trash-alt"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                    
                                 </tbody>
                             </table>
                         </div>
@@ -59,8 +63,9 @@
             </div>
         </div>
     </section>
-
+        
     @include('indication.modal.modal_crear_indications')
+    @include('indication.modal.modal_actualizar_indications')
 @endsection
 
 @section('funciones')

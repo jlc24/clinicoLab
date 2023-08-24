@@ -18,7 +18,7 @@ class MuestraController extends Controller
 
     public function getMuestras()
     {
-        $muestras = Muestra::orderBy('id')->get();
+        $muestras = Muestra::orderByDesc('id')->get();
         return response()->json($muestras);
     }
 

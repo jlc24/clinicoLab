@@ -30,28 +30,27 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <h3>{{ __('Lista de Categorías registrados en el Sistema') }}</h3><hr>
+                            <h3>{{ __('Categorías registrados en el Sistema') }}</h3><hr>
+                            <div class="row justify-content-end">
+                                <div class="col-xl-6 col-sm-12 ">
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="search_categorias">Buscar:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control form-control-sm" name="search_categorias" id="search_categorias">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_categorias" id="tabla_categorias">
-                                <thead style="text-align: center;">
+                                <thead >
                                     <tr>
-                                        <th>#</th>
+                                        <th class="text-right">#</th>
                                         <th>{{ __('Nombre') }}</th>
-                                        <th>Op</th>
+                                        <th class="text-center">Op</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($categorias as $categoria)
-                                        <tr>
-                                            <td>{{ $categoria->id }}</td>
-                                            <td>{{ $categoria->nombre }}</td>
-                                            <td class="text-center">
-                                                <div class="btn-group" role="group" aria-label="Button group">
-                                                    <button data-toggle="modal" data-target="#modal_actualizar_categoria" class="btn btn-sm btn-outline-warning btnEditarCategoria" id="btnEditarCategoria" title="Editar Categoria"><i class="fas fa-user-edit"></i></button>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete-categoria"><i class="fas fa-trash-alt"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>

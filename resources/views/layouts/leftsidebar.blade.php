@@ -135,7 +135,7 @@
                                 <li class="nav-item px-2">
                                     <a href="{{ route('muestra') }}" class="nav-link {{ Request::is('muestras') ? 'active' : '' }}">
                                         <i class="nav-icon fas fa-prescription-bottle"></i>
-                                        <p>{{ __('Tipos de Muestras') }}</p>
+                                        <p>{{ __('Muestras') }}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item px-2">

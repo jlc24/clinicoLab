@@ -19,14 +19,13 @@
                     </div>
                 @endif
 
-                <form action="{{ url('metodologias') }}" method="POST" class="form-horizontal" id="formulario_crear_metodo">
-                    @csrf
+                <form class="form-horizontal" id="formulario_crear_metodo">
                     <div class="row">
                         <div class="col-xl-12 col-sm-12" >
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="metodo_nombre">{{ __('Nombre') }}: </label>
+                                <label class="col-md-4 col-form-label" for="metodo_nombre">{{ __('Nombre') }}: <span class="dato_requerido">*</span> </label>
                                 <div class="col-md-8">
-                                    <input type="text" id="metodo_nombre" name="metodo_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre metodo" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
+                                    <input type="text" id="metodo_nombre" name="metodo_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre metodo" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); obligado($(this))" required>
                                 </div>
                             </div>
                         </div>
@@ -34,16 +33,16 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="metodo_descripcion">{{ __('Descripcion') }}:</label>
                                 <div class="col-md-8">
-                                    <textarea class="form-control form-control-sm" name="metodo_descripcion" id="metodo_descripcion" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); "></textarea>
+                                    <textarea class="form-control form-control-sm" name="metodo_descripcion" id="metodo_descripcion" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); opcional($(this))"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" id="btnRegisterMetodo" class="btn btn-success">{{ __('Registrar') }}</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnRegisterMetodo" class="btn btn-success">{{ __('Registrar') }}</button>
+            </div>
         </div>
     </div>
 </div>

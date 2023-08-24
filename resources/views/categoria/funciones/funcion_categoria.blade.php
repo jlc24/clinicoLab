@@ -1,5 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
+        filtroTabla('#search_categorias', '#tabla_categorias');
 
         $("#modal_crear_categoria").on('shown.bs.modal', function() {
             $("#cat_nombre").trigger('focus');
@@ -10,44 +11,54 @@
         $("#btnCloseAddCategoria").on('click', function() {
             $("#formulario_crear_categorias").trigger('reset');
         });
-
-        $("#tabla_categorias").dataTable({
-            responsive: true,
-            columnDefs: [],
-            "lengthMenu": [10, 20, 30, 100],
-            /* Disable initial sort */
-            "aaSorting": [],
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Registros del _START_ al _END_ de un total de _TOTAL_ ",
-                "sInfoEmpty": "Registros del 0 al 0 de un total de 0 ",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
+        function getCategorias() {
+            $.ajax({
+                url: '{{ route("getCategorias") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: (data) => {
+                    if (data.length != 0) {
+                        $("#tabla_categorias tbody").empty();
+                        let cont = 1;
+                        data.forEach((categoria) => {
+                            const categoriaRow = `<tr>
+                                                    <td hidden>${categoria.id}</td>
+                                                    <td class="text-right"><strong>${cont++}</strong></td>
+                                                    <td>${categoria.nombre}</td>
+                                                    <td class="text-center">
+                                                        <div class="btn-group">
+                                                            <button data-toggle="modal" data-target="#modal_actualizar_categoria" class="btn btn-sm btn-outline-warning btnEditCategoria" id="btnEditarCategoria" title="Editar Categoria"><i class="fas fa-user-edit"></i></button>
+                                                            <button type="button" class="btn btn-sm btn-outline-danger btnDeleteCategoria" title="Eliminar Categoria"><i class="fas fa-trash-alt"></i></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>`;
+                            $("#tabla_categorias tbody").append(categoriaRow);
+                        });
+                    }else{
+                        $("#tabla_categorias tbody").empty().append('<td colspan="4" class="text-center">No se encontraron datos</td>')
+                    }
                 },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
                 }
-            }
-        });
+            });
+        }
 
-        $("#btnRegisterCat").on('click', function() {
-            var nombre = $(".cat_nombre").val();
-            var patron = /^[a-zA-Z0-9\s]+$/;
+        getCategorias();
+
+        $(document).on('click', "#btnRegisterCat", (event) => {
+            event.preventDefault();
+            let nombre = $(".cat_nombre").val();
+            let patron = /^[a-zA-Z0-9\s]+$/;
             if (patron.test(nombre)) {
-                var datos = new FormData();
+                let datos = new FormData();
                 datos.append('nombre', nombre);
                 $.ajax({
                     url: '{{ route("categoria.store") }}',
@@ -66,9 +77,9 @@
                             showConfirmButton: false,
                             timer: 2000
                         });
-                        //setTimeout(function(){
-                            window.location.href = '{{ route('categoria') }}';
-                        //}, 1000);
+                        getCategorias();
+                        $("#formulario_crear_categorias").trigger('reset');
+                        $('#modal_crear_categoria .btn-close').trigger('click');
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -89,11 +100,14 @@
                     showConfirmButton: false,
                     timer: 2000
                 });
-                $(".cat_nombre").focus();
+                $(".cat_nombre").val("");
+                $(".cat_nombre").trigger('focus');
+                $(".cat_nombre").css('border', '');
             }
         })
 
-        function getCategoria(id) {
+        $(document).on('click', '.btnEditCategoria', function() {
+            var id = $(this).closest('tr').find('td:eq(0)').text();
             $.ajax({
                 url: '{{ route("categoria.edit", ":id") }}'.replace(":id", id),
                 type: "GET",
@@ -102,16 +116,13 @@
                     console.log(data.nombre);
                     $(".cat_id").val(data.id);
                     $(".cat_nombre_update").val(data.nombre);
+                    $(".cat_nombre_update").css('border', data.nombre != null ? '2px solid #40CC6C' : '');
                 }
             });
-        }
-
-        $(document).on('click', '.btnEditarCategoria', function() {
-            var id = $(this).closest('tr').find('td:eq(0)').text();
-            getCategoria(id);
         });
 
-        $("#btnUpdateCat").on('click', function() {
+        $(document).on('click', '.btnUpdateCategoria', (event) => {
+            event.preventDefault();
             var id = $(".cat_id").val();
             var nombre = $(".cat_nombre_update").val();
             var patron = /^[a-zA-Z0-9\s]+$/;
@@ -135,10 +146,8 @@
                             showConfirmButton: false,
                             timer: 2000
                         });
-                        setTimeout(function(){
-                            window.location.href = '{{ route('categoria') }}';
-                        }, 1000);
-                        
+                        getCategorias();
+                        $('#modal_actualizar_categoria .btn-close').trigger('click');
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -163,38 +172,47 @@
             }
         });
 
-        $(document).on('click', '.btn-delete-categoria', function() {
-            var id = $(this).closest('tr').find('td:eq(0)').text();
-            $.ajax({
-                url: '{{ route("categoria.destroy", ":id") }}'.replace(":id", id),
-                type: "DELETE",
-                data: {
-                    "_token": "{{ csrf_token() }}"
-                },
-                success: function (response) {
-                    Swal.fire({
-                        title: 'Hecho',
-                        text: 'Dato eliminado',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 1000
-                    });
-                    setTimeout(function(){
-                        window.location.href = '{{ route('categoria') }}';
-                    }, 1000);
-                },
-                error: function (xhr, textStatus, errorThrown) {
-                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
-                    Swal.fire({
-                        title: 'Oops...',
-                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
-                        icon: 'error',
-                        showConfirmButton: false,
-                        timer: 2000
+        $(document).on('click', '.btnDeleteCategoria', function() {
+            let id = $(this).closest('tr').find('td:eq(0)').text();
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¡No podrás revertir esto!',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, borrarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route("categoria.destroy", ":id") }}'.replace(":id", id),
+                        type: 'DELETE',
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: '¡Exito!',
+                                text: 'Categoria Eliminada',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 1000
+                            });
+                            getCategorias();
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                            Swal.fire({
+                                title: 'Oops...',
+                                text: 'Error en la solicitud: ' + textStatus + ', detalles: ' + errorThrown,
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        }
                     });
                 }
             });
         });
-        
     });
 </script>

@@ -25,7 +25,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="medida_categoria_update">{{ __('Categoría') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-9">
-                                    <select id="medida_categoria_update" class="custom-select custom-select-sm medida_categoria_update" name="medida_categoria_update">
+                                    <select id="medida_categoria_update" class="custom-select custom-select-sm medida_categoria_update" name="medida_categoria_update" onchange="obligado($(this))">
                                         <option value="" selected disabled>Seleccionar...</option>
                                         <option value="Longitud">Longitud</option>
                                         <option value="Volumen">Volumen</option>
@@ -38,6 +38,7 @@
                                         <option value="Velocidad de sedimentación globular (VSG o VHS)">Velocidad de sedimentación globular (VSG o VHS)</option>
                                         <option value="Electrolitos y Sustancias Químicas">Electrolitos y Sustancias Químicas</option>
                                         <option value="Enzimas y Marcadores">Enzimas y Marcadores</option>
+                                        <option value="Otros">Otros</option>
                                     </select>
                                     <input type="hidden" name="medida_id_update" id="medida_id_update" class="medida_id_update">
                                 </div>
@@ -49,7 +50,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="medida_nombre_update">{{ __('Nombre') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-9">
-                                    <input type="text" id="medida_nombre_update" name="medida_nombre_update" class="form-control form-control-sm medida_nombre_update" autocomplete="off" placeholder="Nombre de medida" required>
+                                    <input type="text" id="medida_nombre_update" name="medida_nombre_update" class="form-control form-control-sm medida_nombre_update" autocomplete="off" placeholder="Nombre de medida" onkeyup="obligado($(this))" required>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +60,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="medida_unidad_update">{{ __('Unidad') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-9">
-                                    <input type="text" id="medida_unidad_update" name="medida_unidad_update" class="form-control form-control-sm medida_unidad_update" autocomplete="off" required>
+                                    <input type="text" id="medida_unidad_update" name="medida_unidad_update" class="form-control form-control-sm medida_unidad_update" autocomplete="off" onkeyup="obligado($(this))" required>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +68,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button id="btnUpdateMedida" class="btn btn-warning btnUpdateMedida" data-dismiss="modal">{{ __('Actualizar') }}</button>
+                <button id="btnUpdateMedida" class="btn btn-warning btnUpdateMedida">{{ __('Actualizar') }}</button>
             </div>
         </div>
     </div>

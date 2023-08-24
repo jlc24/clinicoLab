@@ -16,6 +16,12 @@ class RecipienteController extends Controller
         return view('recipiente.index', [ 'recipientes' => $recipientes]);
     }
 
+    public function getRecipientes()
+    {
+        $recipientes = Recipiente::orderByDesc('id')->get();
+        return response()->json($recipientes);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -37,7 +43,6 @@ class RecipienteController extends Controller
             'nombre' => $request->input('reci_nombre'),
             'descripcion' => $request->input('reci_descripcion'),
         ]);
-        return redirect()->route('recipiente')->with('success', 'El registro se ha creado con éxito');
     }
 
     /**
@@ -51,9 +56,10 @@ class RecipienteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Recipiente $recipiente)
+    public function edit($id)
     {
-        //
+        $recipiente = Recipiente::find($id);
+        return response()->json($recipiente);
     }
 
     /**
@@ -68,8 +74,6 @@ class RecipienteController extends Controller
         $recipiente = Recipiente::find($id);
         $recipiente->descripcion = $request->input('reci_descripcion_update');
         $recipiente->save();
-        
-        return redirect()->route('recipiente')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**
@@ -79,6 +83,5 @@ class RecipienteController extends Controller
     {
         $recipiente = Recipiente::find($id);
         $recipiente->delete();
-        return response()->json(['success', 'El registro se ha eliminado con éxito']);
     }
 }

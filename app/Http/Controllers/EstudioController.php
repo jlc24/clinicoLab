@@ -149,9 +149,6 @@ class EstudioController extends Controller
             'indicacion_id' => $request->input('est_indicaciones'),
             'tipo' => 'DESHABILITADO'
         ]);
-
-        
-
     }
 
     /**
@@ -210,8 +207,6 @@ class EstudioController extends Controller
             'recipiente_id' => $request->input('est_recipiente_update'),
             'indicacion_id' => $request->input('est_indicaciones_update'),
         ]);
-
-        return redirect()->route('estudio')->with('success', 'El registro se ha actualizado con éxito');
     }
 
     /**

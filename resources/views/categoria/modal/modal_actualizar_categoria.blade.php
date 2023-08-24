@@ -19,7 +19,6 @@
                     </div>
                 @endif
                 <form class="form-horizontal" id="formulario_actualizar_categorias">
-                    
                     <div class="row">
                         <div class="col-xl-12 col-sm-12" >
                             <div class="form-group row">
@@ -32,13 +31,10 @@
                         </div>
                     </div>
                 </form>
-                    <div class="row">
-                        <div class="col-xl-12 col-sm-12 text-right">
-                            <button id="btnUpdateCat" class="btn btn-success">{{ __('Actualizar') }}</button>
-                        </div>
-                    </div>
-                </div>
-            
+            </div>
+            <div class="modal-footer">
+                <button id="btnUpdateCategoria" class="btn btn-success btnUpdateCategoria">{{ __('Actualizar') }}</button>
+            </div>
         </div>
     </div>
 </div>

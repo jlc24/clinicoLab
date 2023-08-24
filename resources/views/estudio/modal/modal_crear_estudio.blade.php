@@ -28,7 +28,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text" style=" border-radius: 5px 0px 0px 5px; height: 31px;"><i class="fas fa-key"></i></div>
                                     </div>
-                                    <input type="text" placeholder="Clave Estudio" id="est_cod" name="est_cod" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                    <input type="text" placeholder="Clave Estudio" id="est_cod" name="est_cod" class="form-control form-control-sm" autocomplete="off" style="text-transform: uppercase; border-radius: 0px 5px 5px 0px;" onkeyup="javascript:this.value=this.value.toUpperCase(); obligado($(this))" required>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check" style="padding-top: 5px; margin-left: 10px;">
@@ -43,7 +43,7 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_nombre">{{ __('Nombre Estudio') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-8">
-                                    <input type="text" id="est_nombre" name="est_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Estudio" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " required>
+                                    <input type="text" id="est_nombre" name="est_nombre" class="form-control form-control-sm" autocomplete="off" placeholder="Nombre Estudio" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); obligado($(this))" required>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_descripcion">{{ __('Descripcion') }}:</label>
                                 <div class="col-md-8">
-                                    <textarea class="form-control form-control-sm" name="est_descripcion" id="est_descripcion" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); "></textarea>
+                                    <textarea class="form-control form-control-sm" name="est_descripcion" id="est_descripcion" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); opcional($(this))"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_grupo">{{ __('Grupo') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-6">
-                                    <select class="custom-select custom-select-sm" id="est_grupo" name="est_grupo" required>
+                                    <select class="custom-select custom-select-sm" id="est_grupo" name="est_grupo" onchange="obligado($(this))" required>
                                         <option value="" selected="" disabled>SELECCIONAR...</option>
                                         
                                     </select>
@@ -73,7 +73,7 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_subgrupo">{{ __('Sub - Grupo') }}:</label>
                                 <div class="col-md-6">
-                                    <select class="custom-select custom-select-sm" id="est_subgrupo" name="est_subgrupo" required>
+                                    <select class="custom-select custom-select-sm" id="est_subgrupo" name="est_subgrupo" onchange="opcional($(this))" required>
                                         <option value="" selected="" disabled>SELECCIONAR...</option>
                                         
                                     </select>
@@ -87,7 +87,7 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_muestra">{{ __('Tipo de Muestra') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-6">
-                                    <select class="custom-select custom-select-sm" id="est_muestra" name="est_muestra" required>
+                                    <select class="custom-select custom-select-sm" id="est_muestra" name="est_muestra" onchange="obligado($(this))" required>
                                         <option value="" selected="" disabled>SELECCIONAR...</option>
                                         
                                     </select>
@@ -101,11 +101,9 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_recipiente">{{ __('Recipiente') }}: </label>
                                 <div class="col-md-6">
-                                    <select class="custom-select custom-select-sm" id="est_recipiente" name="est_recipiente" >
+                                    <select class="custom-select custom-select-sm est_recipiente" id="est_recipiente" name="est_recipiente" onchange="opcional($(this))" >
                                         <option value="" selected="">SELECCIONAR...</option>
-                                        @foreach ($recipientes as $recipiente)
-                                            <option value="{{ $recipiente->id }}">{{ $recipiente->descripcion }}</option>
-                                        @endforeach
+                                        
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -117,11 +115,9 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_indicaciones">{{ __('Indicaciones') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-6">
-                                    <select class="custom-select custom-select-sm" id="est_indicaciones" name="est_indicaciones" >
+                                    <select class="custom-select custom-select-sm est_indicaciones" id="est_indicaciones" name="est_indicaciones" onchange="obligado($(this))">
                                         <option value="" selected="">SELECCIONAR...</option>
-                                        @foreach ($indicaciones as $indicacion)
-                                            <option value="{{ $indicacion->id }}">{{ $indicacion->descripcion }}</option>
-                                        @endforeach
+                                        
                                     </select>
                                 </div>
                                 <div class="col-md-2">
@@ -133,10 +129,10 @@
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="est_precio">{{ __('Precio') }}:<span class="dato_requerido">*</span></label>
                                 <div class="col-md-5">
-                                    <input type="number" min="0" step="0.01" value="0.00" id="est_precio" name="est_precio" class="form-control form-control-sm" autocomplete="off" placeholder="Precio Estudio" required>
+                                    <input type="number" min="0" step="0.01" value="0.00" id="est_precio" name="est_precio" class="form-control form-control-sm" autocomplete="off" placeholder="Precio Estudio" onkeyup="obligado($(this))" onchange="obligado($(this))" required>
                                 </div>
                                 <div class="col-md-3">
-                                    <select class="custom-select custom-select-sm" id="est_moneda" name="est_moneda" required>
+                                    <select class="custom-select custom-select-sm" id="est_moneda" name="est_moneda" onchange="obligado($(this))" required>
                                         <option value="Bs" selected>Bs</option>
                                         <option value="$">$</option>
                                     </select>

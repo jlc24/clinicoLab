@@ -19,7 +19,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success : (data) => {
-                    console.log(data);
                     if (data.length !== null) {
                         $(".tabla_muestras tbody").empty();
                         let cont = 1
@@ -82,6 +81,12 @@
                             $("#muestra_descripcion").css('border','');
                             //document.querySelector('#modal_crear_muestra .btn-close').click();
                             $('#modal_crear_muestra .btn-close').trigger('click');
+                        }else{
+                            $("#formulario_crear_muestra").trigger('reset');
+                            $("#muestra_nombre").css('border', '');
+                            $("#muestra_descripcion").css('border','');
+                            //document.querySelector('#modal_crear_muestra .btn-close').click();
+                            $('#modal_crear_muestra .btn-close').trigger('click');
                         }
                     },
                     error: function (xhr, textStatus, errorThrown) {
@@ -105,7 +110,6 @@
                 type: 'GET',
                 dataType: 'json',
                 success: (data) => {
-                    console.log(data);
                     $(".muestra_id_update").val(data.id);
                     $(".muestra_nombre_update").val(data.nombre);
                     $(".muestra_nombre_update").css('border', data.nombre !== null ? '2px solid #40CC6C' : '');

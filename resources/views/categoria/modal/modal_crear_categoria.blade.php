@@ -22,9 +22,9 @@
                     <div class="row">
                         <div class="col-xl-12 col-sm-12" >
                             <div class="form-group row">
-                                <label class="col-md-4 col-form-label" for="cat_nombre">{{ __('Nombre') }}: </label>
+                                <label class="col-md-4 col-form-label" for="cat_nombre">{{ __('Nombre') }}: <span class="dato_requerido">*</span> </label>
                                 <div class="col-md-8">
-                                    <input type="text" id="cat_nombre" name="cat_nombre" class="form-control form-control-sm cat_nombre" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); " placeholder="Nombre Categoria" required>
+                                    <input type="text" id="cat_nombre" name="cat_nombre" class="form-control form-control-sm cat_nombre" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); obligado($(this))" placeholder="Nombre Categoria" required>
                                 </div>
                             </div>
                         </div>

@@ -20,7 +20,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-10 col-sm-12">
+                <div class="col-xl-12 col-sm-12">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
@@ -49,16 +49,22 @@
                                 </div>
                             </div><br>
                             <div class="row justify-content-center">
-                                <div class="col-xl-11 col-sm 12">
+                                <div class="col-xl-12 col-sm 12">
                                     <table class="table table-bordered table-sm table-hover table-responsive-sm tabla_reporte_estudios" id="tabla_reporte_estudios">
-                                        <thead style="text-align: center;">
+                                        <thead style="text-align: center; background-color: #BAECCA">
                                             <tr>
-                                                <th>{{ __('Codigo') }}</th>
-                                                <th>{{ __('Estudio') }}</th>
-                                                <th>{{ __('Cantidad') }}</th>
-                                                <th>{{ __('Precio total') }}</th>
-                                                <th>{{ __('Material') }}</th>
-                                                <th>{{ __('Precio Material') }}</th>
+                                                <th rowspan="2" style="vertical-align: middle; border: 1px solid #C6C8CA;">{{ __('Codigo') }}</th>
+                                                <th rowspan="2" style="vertical-align: middle; border: 1px solid #C6C8CA;">{{ __('Estudio') }}</th>
+                                                <th rowspan="2" style="vertical-align: middle; border: 1px solid #C6C8CA;">{{ __('Cantidad') }}</th>
+                                                <th rowspan="2" style="vertical-align: middle; border: 1px solid #C6C8CA;">{{ __('Precio total') }}</th>
+                                                <th colspan="3" style="border: 1px solid #C6C8CA;">{{ __('Material') }}</th>
+                                                <th rowspan="2" style="vertical-align: middle; border: 1px solid #C6C8CA;">{{ __('Total Material') }}</th>
+                                                <th rowspan="2" style="vertical-align: middle; border: 1px solid #C6C8CA;">{{ __('Total Estudio') }}</th>
+                                            </tr>
+                                            <tr>
+                                                <th style="border: 1px solid #C6C8CA;">Equipos</th>
+                                                <th style="border: 1px solid #C6C8CA;">Reactivos</th>
+                                                <th style="border: 1px solid #C6C8CA;">Otros</th>
                                             </tr>
                                         </thead>
                                         <tbody>

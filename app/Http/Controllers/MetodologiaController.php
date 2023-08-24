@@ -17,6 +17,12 @@ class MetodologiaController extends Controller
         ]);
     }
 
+    public function getMetodologias()
+    {
+        $metodologias = Metodologia::orderByDesc('id')->get();
+        return response()->json($metodologias);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -39,8 +45,6 @@ class MetodologiaController extends Controller
             'nombre' => $request->input('metodo_nombre'),
             'descripcion' => $request->input('metodo_descripcion'),
         ]);
-
-        return redirect()->route('metodologia')->with('success', 'El registro se ha creado con éxito');
     }
 
     /**
@@ -54,9 +58,10 @@ class MetodologiaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Metodologia $metodologia)
+    public function edit($id)
     {
-        //
+        $metodologia = Metodologia::find($id);
+        return response()->json($metodologia);
     }
 
     /**
@@ -73,8 +78,6 @@ class MetodologiaController extends Controller
         $metodo->nombre = $request->input('metodo_nombre_update');
         $metodo->descripcion = $request->input('metodo_descripcion_update');
         $metodo->save();
-
-        return redirect()->route('metodologia')->with('success', 'El registro se ha modificado con éxito');
     }
 
     /**
@@ -84,7 +87,5 @@ class MetodologiaController extends Controller
     {
         $metodo = Metodologia::find($id);
         $metodo->delete();
-
-        return redirect()->route('metodologia')->with('success', 'El registro se ha eliminado con éxito');
     }
 }

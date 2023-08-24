@@ -90,7 +90,7 @@ class PruebaController extends Controller
                         ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
                         ->leftJoin('parametros as p', 'p.id', '=', 'res.param_id')
                         ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
-                        ->select('res.id', 'c.cli_cod', 'c.cli_genero', 'c.cli_fec_nac', 'res.resultado', 'res.umed_id', 'res.estado', 'p.id as parametro')
+                        ->select('res.id', 'c.cli_cod', 'c.cli_genero', 'c.cli_fec_nac', 'res.resultado', 'res.umed_id', 'res.estado', 'p.id as parametro', 'ca.umed_id as caumed_id')
                         ->where([['res.ca_id', '=', $id], ['r.estado', '=', 'PENDIENTE']])
                         ->orderBy('c.id')
                         ->get();

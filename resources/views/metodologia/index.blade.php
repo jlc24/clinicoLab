@@ -20,7 +20,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-8 col-sm-8">
+                <div class="col-xl-10 col-sm-12">
                     <div class="card card-success">
                         <div class="card-header" style="padding-top: 15px;">
                             <h4 class="card-title">
@@ -30,31 +30,39 @@
                             </h4>
                         </div>
                         <div class="card-body">
-                            <h3>{{ __('Lista de Metodologías registrados en el Sistema') }}</h3><hr>
-                            <table class="table table-bordered table-sm table-hover table-responsive-lg text-center tabla_metodologias" id="tabla_metodologias">
-                                <thead>
-                                    <th>#</th>
-                                    <th>{{ __('Nombre') }}</th>
-                                    <th>{{ __('Descripción') }}</th>
-                                    <th>{{ __('Op') }}</th>
-                                </thead>
-                                <tbody>
-                                    @foreach ($metodos as $metodo)
-                                        <tr>
-                                            <td class="text-left">{{ $metodo->id }}</td>
-                                            <td class="text-left">{{ $metodo->nombre }}</td>
-                                            <td class="text-left">{{ $metodo->descripcion }}</td>
-                                            <td>
-                                                <div class="btn-group" role="group" aria-label="Button group">
-                                                    <a href="#" data-toggle="modal" data-target="#modal_actualizar_metodologia_{{ $metodo->id }}" class="btn btn-sm btn-outline-warning"><i class="fas fa-edit"></i></a>
-                                                    @include('metodologia.modal.modal_actualizar_metodologias')
-                                                    <button type="button" class="btn btn-sm btn-outline-danger btn-delete" data-id="{{ $metodo->id }}" data-route="{{ route('metodologia.destroy', $metodo->id) }}"><i class="fas fa-trash-alt"></i></button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <h3>{{ __('Metodologías registrados en el Sistema') }}</h3><hr>
+                                </div>
+                            </div>
+                            <div class="row justify-content-end">
+                                <div class="col-xl-6 col-sm-12 ">
+                                    <div class="form-group row">
+                                        <label class="col-md-3" for="buscarMetodos">Buscar:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control form-control-sm" name="buscarMetodos" id="buscarMetodos">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xl-12 col-sm-12">
+                                    <table class="table table-bordered table-sm table-hover table-responsive-lg tabla_metodologias" id="tabla_metodologias">
+                                        <thead style="background-color: #BAECCA">
+                                            <tr>
+                                                <th style="border: 1px solid #C6C8CA;" class="text-right">#</th>
+                                                <th style="border: 1px solid #C6C8CA;">{{ __('Nombre') }}</th>
+                                                <th style="border: 1px solid #C6C8CA;" class="text-center">{{ __('Descripción') }}</th>
+                                                <th style="border: 1px solid #C6C8CA;" class="text-center">{{ __('Op') }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -63,6 +71,7 @@
     </section>
 
     @include('metodologia.modal.modal_crear_metodologias')
+    @include('metodologia.modal.modal_actualizar_metodologias')
 @endsection
 
 @section('funciones')

@@ -8,6 +8,7 @@ use App\Models\Material;
 use App\Models\Provider;
 use App\Models\UMedida;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MaterialController extends Controller
 {
@@ -22,6 +23,16 @@ class MaterialController extends Controller
             'proveedores' => Provider::all(),
             'categorias' => Categoria::all(),
         ]);
+    }
+
+    public function getMateriales()
+    {
+        $materiales = DB::table('materials as m')
+                        ->join('categorias as c', 'c.id', '=', 'm.cat_id')
+                        ->select('m.*', 'c.nombre as cat_nombre')
+                        ->orderByDesc('mat_estado')
+                        ->get();
+        return response()->json($materiales);
     }
 
     /**
@@ -181,8 +192,9 @@ class MaterialController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Material $material)
+    public function destroy($id)
     {
-        //
+        $material = Material::find($id);
+        $material->delete();
     }
 }

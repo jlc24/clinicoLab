@@ -29,19 +29,19 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="mat_nombre">{{ __('Nombre') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
-                                <input type="text" placeholder="Nombre Material" id="mat_nombre" name="mat_nombre" class="form-control form-control-sm mat_nombre" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                <input type="text" placeholder="Nombre Material" id="mat_nombre" name="mat_nombre" class="form-control form-control-sm mat_nombre" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); obligado($(this))" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="mat_descripcion">{{ __('Descripción') }}:</label>
                             <div class="col-md-9" style="display: inline-flex;">
-                                <textarea name="mat_descripcion" id="mat_descripcion" rows="3" class="form-control form-control-sm mat_descripcion"></textarea>
+                                <textarea name="mat_descripcion" id="mat_descripcion" rows="3" class="form-control form-control-sm mat_descripcion" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); opcional($(this))"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="mat_categoria">{{ __('Categoria') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
-                                <select id="mat_categoria" name="mat_categoria" class="custom-select custom-select-sm mat_categoria" style="border-radius: 5px 0px 0px 5px;" >
+                                <select id="mat_categoria" name="mat_categoria" class="custom-select custom-select-sm mat_categoria" style="border-radius: 5px 0px 0px 5px;" onchange="obligado($(this))">
                                     <option value="" selected>Seleccionar...</option>
                                     @foreach ($categorias as $categoria)
                                         <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -52,16 +52,16 @@
                         <div class="form-group row" id="vidaUtil" hidden>
                             <label class="col-md-3 col-form-label" for="mat_vida_util">{{ __('Vida Util') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
-                                <input type="number" placeholder="AÑOS" id="mat_vida_util" name="mat_vida_util" class="form-control form-control-sm mat_vida_util" autocomplete="off" required>
+                                <input type="number" placeholder="AÑOS" id="mat_vida_util" name="mat_vida_util" class="form-control form-control-sm mat_vida_util" autocomplete="off" onkeyup="obligado($(this))" onchange="obligado($(this))" required>
                             </div>
                         </div>
                         <div class="form-group row" id="depreciacion" hidden>
                             <label class="col-md-3 col-form-label" for="mat_depreciacion">{{ __('Depreciacion') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-5">
-                                <input type="number" min="0" step="0.01" id="mat_depreciacion" name="mat_depreciacion" class="form-control form-control-sm mat_depreciacion" autocomplete="off" required>
+                                <input type="number" min="0" step="0.01" id="mat_depreciacion" name="mat_depreciacion" class="form-control form-control-sm mat_depreciacion" autocomplete="off" onkeyup="obligado($(this))" onchange="obligado($(this))" required>
                             </div>
                             <div class="col-md-4">
-                                <select id="mat_categoria" name="mat_categoria" class="custom-select custom-select-sm mat_categoria" style="border-radius: 5px 0px 0px 5px;" disabled>
+                                <select id="mat_categoria" name="mat_categoria" class="custom-select custom-select-sm mat_categoria" style="border-radius: 5px 0px 0px 5px;" onchange="obligado($(this))" disabled>
                                     <option value="%" selected>%</option>
                                 </select>
                             </div>

@@ -17,6 +17,12 @@ class CategoriaController extends Controller
         ]);
     }
 
+    public function getCategorias()
+    {
+        $categorias = Categoria::orderByDesc('id')->get();
+        return response()->json($categorias);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

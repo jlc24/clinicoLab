@@ -19,23 +19,22 @@
                     </div>
                 @endif
 
-                <form action="{{ url('indications') }}" method="POST" class="form-horizontal" id="formulario_crear_indicaciones">
-                    @csrf
+                <form class="form-horizontal" id="formulario_crear_indicaciones">
                     <div class="row">
                         <div class="col-xl-12 col-sm-12">
                             <div class="form-group row">
                                 <label class="col-md-4 col-form-label" for="indi_descripcion">{{ __('Descripcion') }}:</label>
                                 <div class="col-md-8">
-                                    <textarea class="form-control form-control-sm" name="indi_descripcion" id="indi_descripcion" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); "></textarea>
+                                    <textarea class="form-control form-control-sm" name="indi_descripcion" id="indi_descripcion" cols="35" rows="2" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); obligado($(this))"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" id="btnRegisterMed" class="btn btn-success">{{ __('Registrar') }}</button>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnRegisterIndicacion" class="btn btn-success">{{ __('Registrar') }}</button>
+            </div>
         </div>
     </div>
 </div>

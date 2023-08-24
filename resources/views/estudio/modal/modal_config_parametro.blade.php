@@ -112,7 +112,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="row justify-content-center mt-3">
+                <div class="row justify-content-center mt-3" hidden>
                     <div class="col-xl-4 col-sm-4 text-right">
                         <button class="btn btn-sm btn-outline-info btnAnteriorPrueba" title="Anterior"><i class="fas fa-arrow-alt-circle-left fa-2x"></i></button>
                     </div>

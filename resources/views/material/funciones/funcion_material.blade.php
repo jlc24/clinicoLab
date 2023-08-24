@@ -7,43 +7,67 @@
         $("#modal_abastecer_material").on('shown.bs.modal', function() {
             $("#mat_cod_compra_abastecer").trigger('focus');
         });
-        $("#btnCloseAddMaterial").on('click', function() {
+
+        function resetAddMaterial() {
             $("#formulario_materiales").trigger('reset');
             const imgMaterial = document.getElementById('img_material');
             imgMaterial.src = '{{ asset("dist/img/default.png") }}';
+            $("#mat_nombre").css('border', '');
+            $("#mat_descripcion").css('border', '');
+            $("#mat_categoria").css('border', '');
+            $("#mat_vida_util").css('border', '');
+            $("#mat_depreciacion").css('border', '');
+        }
+        $("#btnCloseAddMaterial").on('click', function() {
+            resetAddMaterial();
         });
 
-        $("#tabla_materiales").dataTable({
-            responsive: true,
-            columnDefs: [],
-            "lengthMenu": [10, 20, 30, 100],
-            /* Disable initial sort */
-            "aaSorting": [],
-            "language": {
-                "sProcessing": "Procesando...",
-                "sLengthMenu": "Mostrar _MENU_ registros",
-                "sZeroRecords": "No se encontraron resultados",
-                "sEmptyTable": "Ningún dato disponible en esta tabla",
-                "sInfo": "Registros del _START_ al _END_ de un total de _TOTAL_ ",
-                "sInfoEmpty": "Registros del 0 al 0 de un total de 0 ",
-                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                "sInfoPostFix": "",
-                "sSearch": "Buscar:",
-                "sUrl": "",
-                "sInfoThousands": ",",
-                "sLoadingRecords": "Cargando...",
-                "oPaginate": {
-                    "sFirst": "Primero",
-                    "sLast": "Último",
-                    "sNext": "Siguiente",
-                    "sPrevious": "Anterior"
+        function getMateriales() {
+            $.ajax({
+                url: '{{ route("getMateriales") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: (data) => {
+                    if (data.length != 0) {
+                        $("#tabla_materiales tbody").empty();
+                        data.forEach(material => {
+                            const estado = material.mat_estado == 1 ? '<button class="btn btn-sm btn-success btn-inactivo">ACTIVO</button>' : '<button class="btn btn-sm btn-danger btn-activo">INACTIVO</button>';
+                            const materialRow = `<tr>
+                                                    <td hidden>${material.id}</td>
+                                                    <td>${material.mat_nombre}</td>
+                                                    <td>${material.mat_descripcion}</td>
+                                                    <td>${material.cat_nombre}</td>
+                                                    <td>${material.mat_cantidad - material.mat_ventas}</td>
+                                                    <td class="text-center">${estado}</td>
+                                                    <td class="text-center">
+                                                        <div class="btn-group">
+                                                            <button data-toggle="modal" data-target="#modal_actualizar_material" class="btn btn-sm btn-outline-warning btnEditarMaterial" id="btnEditarMaterial" title="Editar Material"><i class="fas fa-user-edit"></i></button>
+                                                            <button data-toggle="modal" data-target="#modal_abastecer_material" class="btn btn-sm btn-outline-success btnAbastecerMaterial" id="btnAbastecerMaterial" title="Abastecer Material"><i class="fas fa-warehouse"></i></button>
+                                                            <button data-toggle="modal" data-target="#modal_ver_material" class="btn btn-sm btn-outline-info btnVerMaterial" id="btnVerMaterial" title="Ver Material"><i class="fas fa-eye"></i></button>
+                                                            <button class="btn btn-sm btn-outline-danger btnDeleteMaterial" title="Elminar material"><i class="fas fa-trash-alt"></i></button>
+                                                        </div>
+                                                    </td>
+                                                </tr>`;
+                            $("#tabla_materiales tbody").append(materialRow);
+                        });
+                    }else{
+                        $("#tabla_materiales tbody").empty().append('<td colspan="7" class="text-center">No se encontraron resultados</td>')
+                    }
                 },
-                "oAria": {
-                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                    Swal.fire({
+                        title: 'Oops...',
+                        text: 'Error en la solicitud: '+ textStatus+ ', detalles: '+ errorThrown,
+                        icon: 'error',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
                 }
-            }
-        });
+            });
+        }
+
+        getMateriales();
         
         $("#mat_id_moneda").on('change', function() {
             if ($(this).val() === 'sus') {
@@ -91,21 +115,29 @@
             }
         });
 
-        $("#btnRegisterMaterial").on('click', function(event) {
+        $(document).on('click', '#btnRegisterMaterial', (event) => {
             event.preventDefault();
-            if ($("#mat_nombre").val() == '' || $("#mat_categoria").val() == '' || $("#mat_categoria").val() == null || $("#mat_vida_util").val() == "" || $("#mat_depreciacion").val() == "") {
-                let vacio = '';
-                if ($("#mat_nombre").val() == '') {
-                    vacio = 'NOMBRE';
-                }else if ($("#mat_categoria").val() == '') {
-                    vacio = 'CATEGORIA';
-                }else if ($("#mat_categoria").val() == null) {
-                    vacio = 'CATEGORIA';
-                }else if ($("#mat_categoria").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_vida_util").val() == "") {
-                    vacio = 'VIDA UTIL';
-                }else if ($("#mat_categoria").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_depreciacion").val() == "") {
-                    vacio = 'DEPRECIACION';
-                }
+            let vacio = '';
+            if ($("#mat_nombre").val() == '') {
+                vacio = 'NOMBRE';
+                $("#mat_nombre").trigger('focus');
+                $("#mat_nombre").css('border', '1px solid #E91C2B');
+            }else if ($("#mat_categoria").val() == '') {
+                vacio = 'CATEGORIA';
+                $("#mat_categoria").trigger('focus');
+                $("#mat_categoria").css('border', '1px solid #E91C2B');
+            }else if ($("#mat_categoria").val() == null) {
+                vacio = 'CATEGORIA';
+            }else if ($("#mat_categoria").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_vida_util").val() == "") {
+                vacio = 'VIDA UTIL';
+                $("#mat_vida_util").trigger('focus');
+                $("#mat_vida_util").css('border', '1px solid #E91C2B');
+            }else if ($("#mat_categoria").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_depreciacion").val() == "") {
+                vacio = 'DEPRECIACION';
+                $("#mat_depreciacion").trigger('focus');
+                $("#mat_depreciacion").css('border', '1px solid #E91C2B');
+            }
+            if (vacio != "") {
                 Swal.fire({
                     title: 'Error!',
                     text: 'El campo ' + vacio + ' es requerido',
@@ -113,7 +145,6 @@
                     showConfirmButton: false,
                     timer: 2000
                 });
-                $("#mat_nombre").trigger('focus');
             }else{
                 var fileData = $("#mat_imagen").prop("files")[0];
                 var estado = '0';
@@ -140,14 +171,14 @@
                     success: function(response) {
                         Swal.fire({
                             title: '¡Éxito!',
-                            text: 'Dato registrado correctamente',
+                            text: 'Material registrado',
                             icon: 'success',
                             showConfirmButton: false,
                             timer: 2000
                         });
-                        //setTimeout(function(){
-                            window.location.href = '{{ route('material') }}';
-                        //}, 1000);
+                        getMateriales();
+                        resetAddMaterial();
+                        $('#modal_crear_material .btn-close').trigger('click');
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -183,9 +214,7 @@
                         showConfirmButton: false,
                         timer: 2000
                     });
-                    //setTimeout(function(){
-                        window.location.href = '{{ route('material') }}';
-                    //}, 1000);
+                    getMateriales();
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -280,10 +309,16 @@
                 $(".mat_id_update").val(data_mat.id);
                 //$(".mat_cod_update").val(data_mat.mat_cod);
                 $(".mat_nombre_update").val(data_mat.mat_nombre);
+                $(".mat_nombre_update").css('border', data_mat.mat_nombre != null ? '2px solid #40CC6C' : '');
                 $(".mat_descripcion_update").text(data_mat.mat_descripcion);
+                $(".mat_descripcion_update").css('border', data_mat.mat_descripcion != null ? '2px solid #40CC6C' : '');
                 $(".mat_categoria_update").val(data_mat.cat_id);
+                $(".mat_categoria_update").css('border', data_mat.cat_id != null ? '2px solid #40CC6C' : '');
                 $(".mat_vida_util_update").val(data_mat.mat_vida_util);
+                $(".mat_vida_util_update").css('border', data_mat.mat_vida_util != null ? '2px solid #40CC6C' : '');
                 $(".mat_depreciacion_update").val(data_mat.mat_depreciacion);
+                $(".mat_depreciacion_update").css('border', data_mat.mat_depreciacion != null ? '2px solid #40CC6C' : '');
+                $(".mat_depreciacion_unidad").css('border', '2px solid #40CC6C');
                 if (data_mat.mat_imagen == null) {
                     $(".img_material_update").attr("src", '{{ asset('dist/img/default.png') }}');
                 }else{
@@ -308,19 +343,27 @@
                     cancelButtonText: 'Cambiar imagen'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        if ($("#mat_nombre_update").val() == '' || $("#mat_categoria_update").val() == '' || $("#mat_categoria").val() == null || $("#mat_vida_util_update").val() == "" || $("#mat_depreciacion_update").val() == "") {
-                            let vacio = '';
-                            if ($("#mat_nombre_update").val() == '') {
-                                vacio = 'NOMBRE';
-                            }else if ($("#mat_categoria_update").val() == '') {
-                                vacio = 'CATEGORIA';
-                            }else if ($("#mat_categoria_update").val() == null) {
-                                vacio = 'CATEGORIA';
-                            }else if ($("#mat_categoria_update").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_vida_util_update").val() == "") {
-                                vacio = 'VIDA UTIL';
-                            }else if ($("#mat_categoria_update").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_depreciacion_update").val() == "") {
-                                vacio = 'DEPRECIACION';
-                            }
+                        let vacio = '';
+                        if ($("#mat_nombre_update").val() == '') {
+                            vacio = 'NOMBRE';
+                            $("#mat_nombre_update").trigger('focus');
+                            $("#mat_nombre_update").css('border', '1px solid #E91C2B');
+                        }else if ($("#mat_categoria_update").val() == '') {
+                            vacio = 'CATEGORIA';
+                            $("#mat_categoria_update").trigger('focus');
+                            $("#mat_categoria_update").css('border', '1px solid #E91C2B');
+                        }else if ($("#mat_categoria_update").val() == null) {
+                            vacio = 'CATEGORIA';
+                        }else if ($("#mat_categoria_update").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_vida_util_update").val() == "") {
+                            vacio = 'VIDA UTIL';
+                            $("#mat_vida_util_update").trigger('focus');
+                            $("#mat_vida_util_update").css('border', '1px solid #E91C2B');
+                        }else if ($("#mat_categoria_update").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_depreciacion_update").val() == "") {
+                            vacio = 'DEPRECIACION';
+                            $("#mat_depreciacion_update").trigger('focus');
+                            $("#mat_depreciacion_update").css('border', '1px solid #E91C2B');
+                        }
+                        if (vacio != "") {
                             Swal.fire({
                                 title: 'Error!',
                                 text: 'El campo ' + vacio + ' es requerido',
@@ -328,7 +371,6 @@
                                 showConfirmButton: false,
                                 timer: 2000
                             });
-                            $("#mat_nombre_update").trigger('focus');
                         }else{
                             var datos = new FormData();
                             //datos.append('mat_cod', $(".mat_cod_update").val());
@@ -358,9 +400,8 @@
                                         showConfirmButton: false,
                                         timer: 2000
                                     });
-                                    //setTimeout(function(){
-                                        window.location.href = '{{ route('material') }}';
-                                    //}, 1000);
+                                    getMateriales();
+                                    $('#modal_actualizar_material .btn-close').trigger('click');
                                 },
                                 error: function (xhr, textStatus, errorThrown) {
                                     console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -377,19 +418,27 @@
                     }
                 });
             }else{
-                if ($("#mat_nombre_update").val() == '' || $("#mat_categoria_update").val() == '' || $("#mat_categoria").val() == null || $("#mat_vida_util_update").val() == "" || $("#mat_depreciacion_update").val() == "") {
-                    let vacio = '';
-                    if ($("#mat_nombre_update").val() == '') {
-                        vacio = 'NOMBRE';
-                    }else if ($("#mat_categoria_update").val() == '') {
-                        vacio = 'CATEGORIA';
-                    }else if ($("#mat_categoria_update").val() == null) {
-                        vacio = 'CATEGORIA';
-                    }else if ($("#mat_categoria_update").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_vida_util_update").val() == "") {
-                        vacio = 'VIDA UTIL';
-                    }else if ($("#mat_categoria_update").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_depreciacion_update").val() == "") {
-                        vacio = 'DEPRECIACION';
-                    }
+                let vacio = '';
+                if ($("#mat_nombre_update").val() == '') {
+                    vacio = 'NOMBRE';
+                    $("#mat_nombre_update").trigger('focus');
+                    $("#mat_nombre_update").css('border', '1px solid #E91C2B');
+                }else if ($("#mat_categoria_update").val() == '') {
+                    vacio = 'CATEGORIA';
+                    $("#mat_categoria_update").trigger('focus');
+                    $("#mat_categoria_update").css('border', '1px solid #E91C2B');
+                }else if ($("#mat_categoria_update").val() == null) {
+                    vacio = 'CATEGORIA';
+                }else if ($("#mat_categoria_update").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_vida_util_update").val() == "") {
+                    vacio = 'VIDA UTIL';
+                    $("#mat_vida_util_update").trigger('focus');
+                    $("#mat_vida_util_update").css('border', '1px solid #E91C2B');
+                }else if ($("#mat_categoria_update").find(":selected").text().toUpperCase().includes("EQUIPO") && $("#mat_depreciacion_update").val() == "") {
+                    vacio = 'DEPRECIACION';
+                    $("#mat_depreciacion_update").trigger('focus');
+                    $("#mat_depreciacion_update").css('border', '1px solid #E91C2B');
+                }
+                if (vacio != "") {
                     Swal.fire({
                         title: 'Error!',
                         text: 'El campo ' + vacio + ' es requerido',
@@ -397,7 +446,6 @@
                         showConfirmButton: false,
                         timer: 2000
                     });
-                    $("#mat_nombre_update").trigger('focus');
                 }else{
                     var datos = new FormData();
                     //datos.append('mat_cod', $(".mat_cod_update").val());
@@ -429,9 +477,8 @@
                                 showConfirmButton: false,
                                 timer: 2000
                             });
-                            //setTimeout(function(){
-                                window.location.href = '{{ route('material') }}';
-                            //}, 1000);
+                            getMateriales();
+                            $('#modal_actualizar_material .btn-close').trigger('click');
                         },
                         error: function (xhr, textStatus, errorThrown) {
                             console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -446,6 +493,49 @@
                     });
                 }
             }
+        });
+
+        $(document).on('click', '.btnDeleteMaterial', (event) => {
+            let id = $(event.currentTarget).closest("tr").find("td:eq(0)").text();
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¡No podrás revertir esto!',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, borrarlo!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route("material.destroy", ":id") }}'.replace(":id", id),
+                        type: 'DELETE',
+                        data: {
+                            "_token": "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: '¡Exito!',
+                                text: 'Material Eliminada',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 1000
+                            });
+                            getMateriales();
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                            Swal.fire({
+                                title: 'Oops...',
+                                text: 'Error en la solicitud: ' + textStatus + ', detalles: ' + errorThrown,
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                        }
+                    });
+                }
+            });
         });
 
         $("#btnCloseAddCompra").on('click', function() {
@@ -599,25 +689,25 @@
         $(document).on('click', '.btnRegistrarCompra', function(event) {
             event.preventDefault();
             if ($(".equipo").prop('hidden') === true) {
-                if ($(".mat_cod_compra_abastecer").val() == "" || $(".mat_unidad_abastecer").val() == "" || $(".mat_cantidad_abastecer").val() == "" || $(".mat_cantidad_abastecer").val() == 0 || $(".mat_precio_compra_abastecer").val() ==  "" || $(".mat_precio_compra_abastecer").val() == 0 || $(".mat_fecha_elab_abastecer").val() == "" || $(".mat_fecha_venc_abastecer").val() == "" || $(".mat_tipo_pago_abastecer").val() == "" || $(".mat_observacion_abastecer").val() == "") {
-                    let vacio = '';
-                    if ($("#mat_cod_compra_abastecer").val() == '') {
-                        vacio = 'CODIGO';
-                    }else if ($("#mat_unidad_abastecer").val() == '') {
-                        vacio = 'UNIDAD';
-                    }else if ($("#mat_cantidad_abastecer").val() == "" || $(".mat_cantidad_abastecer").val() == 0) {
-                        vacio = 'CANTIDAD';
-                    }else if ($("#mat_precio_compra_abastecer").val() == "" || $(".mat_precio_compra_abastecer").val() == 0) {
-                        vacio = 'PRECIO DE COMPRA';
-                    }else if ($("#mat_fecha_elab_abastecer").val() == "") {
-                        vacio = 'FECHA ELABORACION';
-                    }else if ($("#mat_fecha_venc_abastecer").val() == "") {
-                        vacio = 'FECHA VENCIMIENTO';
-                    }else if ($("#mat_tipo_pago_abastecer").val() == "") {
-                        vacio = 'TIPO PAGO';
-                    }else if ($("#mat_observacion_abastecer").val() == "") {
-                        vacio = 'OBSERVACION';
-                    }
+                let vacio = '';
+                if ($("#mat_cod_compra_abastecer").val() == '') {
+                    vacio = 'CODIGO';
+                }else if ($("#mat_unidad_abastecer").val() == '') {
+                    vacio = 'UNIDAD';
+                }else if ($("#mat_cantidad_abastecer").val() == "" || $(".mat_cantidad_abastecer").val() == 0) {
+                    vacio = 'CANTIDAD';
+                }else if ($("#mat_precio_compra_abastecer").val() == "" || $(".mat_precio_compra_abastecer").val() == 0) {
+                    vacio = 'PRECIO DE COMPRA';
+                }else if ($("#mat_fecha_elab_abastecer").val() == "") {
+                    vacio = 'FECHA ELABORACION';
+                }else if ($("#mat_fecha_venc_abastecer").val() == "") {
+                    vacio = 'FECHA VENCIMIENTO';
+                }else if ($("#mat_tipo_pago_abastecer").val() == "") {
+                    vacio = 'TIPO PAGO';
+                }else if ($("#mat_observacion_abastecer").val() == "") {
+                    vacio = 'OBSERVACION';
+                }
+                if (vacio != "") {
                     Swal.fire({
                         title: 'Error!',
                         text: 'El campo ' + vacio + ' es requerido',
@@ -646,17 +736,17 @@
                     registrarCompra(datos, mat_id);
                 }
             }else{
-                if ($(".mat_cod_compra_abastecer_equipo").val() == "" || $(".mat_precio_compra_abastecer_equipo").val() ==  "" || $(".mat_precio_compra_abastecer_equipo").val() == 0 || $(".mat_tipo_pago_abastecer").val() == "" || $(".mat_observacion_abastecer").val() == "") {
-                    let vacio = '';
-                    if ($("#mat_cod_compra_abastecer_equipo").val() == '') {
-                        vacio = 'CODIGO';
-                    }else if ($("#mat_precio_compra_abastece_equipo").val() == "" || $(".mat_precio_compra_abastecer_equipo").val() == 0) {
-                        vacio = 'PRECIO DE COMPRA';
-                    }else if ($("#mat_tipo_pago_abastecer").val() == "") {
-                        vacio = 'TIPO PAGO';
-                    }else if ($("#mat_observacion_abastecer").val() == "") {
-                        vacio = 'OBSERVACION';
-                    }
+                let vacio = '';
+                if ($("#mat_cod_compra_abastecer_equipo").val() == '') {
+                    vacio = 'CODIGO';
+                }else if ($("#mat_precio_compra_abastece_equipo").val() == "" || $(".mat_precio_compra_abastecer_equipo").val() == 0) {
+                    vacio = 'PRECIO DE COMPRA';
+                }else if ($("#mat_tipo_pago_abastecer").val() == "") {
+                    vacio = 'TIPO PAGO';
+                }else if ($("#mat_observacion_abastecer").val() == "") {
+                    vacio = 'OBSERVACION';
+                }
+                if (vacio != "") {
                     Swal.fire({
                         title: 'Error!',
                         text: 'El campo ' + vacio + ' es requerido',
@@ -798,25 +888,25 @@
             e.preventDefault();
             var comp_id = $('.comp_id_update').val();
             if ($(".mat_depreciacion_abastecer_equipo_update").val() == "") {
-                if ($(".mat_cod_compra_abastecer_update").val() == "" || $(".mat_unidad_abastecer_update").val() == "" || $(".mat_cantidad_abastecer_update").val() == 0 || $(".mat_fecha_elab_abastecer_update").val() == "" || $(".mat_fecha_venc_abastecer_update").val() == "" || $(".mat_precio_compra_abastecer_update").val() ==  "" || $(".mat_precio_compra_abastecer_update").val() == 0 || $(".mat_tipo_pago_abastecer_update").val() == "" || $(".mat_observacion_abastecer_update").val() == "") {
-                    let vacio = '';
-                    if ($(".mat_cod_compra_abastecer_update").val() == '') {
-                        vacio = 'CODIGO';
-                    }else if ($(".mat_unidad_abastecer_update").val() == "") {
-                        vacio = 'UNIDAD';
-                    }else if ($(".mat_cantidad_abastecer_update").val() == "") {
-                        vacio = 'CANTIDAD';
-                    }else if ($(".mat_fecha_elab_abastecer_update").val() == "") {
-                        vacio = 'FECHA ELABORACION';
-                    }else if ($("#mat_fecha_venc_abastecer_update").val() == "") {
-                        vacio = 'FECHA VENCIMIENTO';
-                    }else if ($(".mat_precio_compra_abastecer_update").val() == "" || $(".mat_precio_compra_abastecer_update").val() == 0) {
-                        vacio = 'PRECIO DE COMPRA';
-                    }else if ($(".mat_tipo_pago_abastecer_update").val() == "") {
-                        vacio = 'TIPO PAGO';
-                    }else if ($(".mat_observacion_abastecer_update").val() == "") {
-                        vacio = 'OBSERVACION';
-                    }
+                let vacio = '';
+                if ($(".mat_cod_compra_abastecer_update").val() == '') {
+                    vacio = 'CODIGO';
+                }else if ($(".mat_unidad_abastecer_update").val() == "") {
+                    vacio = 'UNIDAD';
+                }else if ($(".mat_cantidad_abastecer_update").val() == "") {
+                    vacio = 'CANTIDAD';
+                }else if ($(".mat_fecha_elab_abastecer_update").val() == "") {
+                    vacio = 'FECHA ELABORACION';
+                }else if ($("#mat_fecha_venc_abastecer_update").val() == "") {
+                    vacio = 'FECHA VENCIMIENTO';
+                }else if ($(".mat_precio_compra_abastecer_update").val() == "" || $(".mat_precio_compra_abastecer_update").val() == 0) {
+                    vacio = 'PRECIO DE COMPRA';
+                }else if ($(".mat_tipo_pago_abastecer_update").val() == "") {
+                    vacio = 'TIPO PAGO';
+                }else if ($(".mat_observacion_abastecer_update").val() == "") {
+                    vacio = 'OBSERVACION';
+                }
+                if (vacio != "") {
                     Swal.fire({
                         title: 'Error!',
                         text: 'El campo ' + vacio + ' es requerido',
@@ -842,17 +932,17 @@
                     updateCompra(datos, comp_id, mat_id);
                 }
             }else{
-                if ($(".mat_cod_compra_abastecer_update").val() == "" || $(".mat_precio_compra_abastecer_update").val() ==  "" || $(".mat_precio_compra_abastecer_update").val() == 0 || $(".mat_tipo_pago_abastecer_update").val() == "" || $(".mat_observacion_abastecer_update").val() == "") {
-                    let vacio = '';
-                    if ($(".mat_cod_compra_abastecer_update").val() == '') {
-                        vacio = 'CODIGO';
-                    }else if ($(".mat_precio_compra_abastecer_update").val() == "" || $(".mat_precio_compra_abastecer_update").val() == 0) {
-                        vacio = 'PRECIO DE COMPRA';
-                    }else if ($(".mat_tipo_pago_abastecer_update").val() == "") {
-                        vacio = 'TIPO PAGO';
-                    }else if ($(".mat_observacion_abastecer_update").val() == "") {
-                        vacio = 'OBSERVACION';
-                    }
+                let vacio = '';
+                if ($(".mat_cod_compra_abastecer_update").val() == '') {
+                    vacio = 'CODIGO';
+                }else if ($(".mat_precio_compra_abastecer_update").val() == "" || $(".mat_precio_compra_abastecer_update").val() == 0) {
+                    vacio = 'PRECIO DE COMPRA';
+                }else if ($(".mat_tipo_pago_abastecer_update").val() == "") {
+                    vacio = 'TIPO PAGO';
+                }else if ($(".mat_observacion_abastecer_update").val() == "") {
+                    vacio = 'OBSERVACION';
+                }
+                if (vacio != "") {
                     Swal.fire({
                         title: 'Error!',
                         text: 'El campo ' + vacio + ' es requerido',
@@ -1028,9 +1118,7 @@
                     updateVencimientoCompra(id);
                     getComprasMaterial(id);
                     setTimeout(function(){
-                        //setTimeout(function(){
-                            window.location.href = '{{ route('material') }}';
-                        //}, 1000);
+                        getMateriales();
                     }, 1000);
                 },
                 error: function (xhr, textStatus, errorThrown) {

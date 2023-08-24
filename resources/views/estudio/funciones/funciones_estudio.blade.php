@@ -1,4 +1,6 @@
 @include('muestra.funciones.funcion_muestra')
+@include('indication.funciones.funcion_indicacion')
+@include('recipiente.funciones.funcion_recipiente')
 
 <script type="text/javascript">
     //para ESTUDIOS---------------------------------------
@@ -51,11 +53,12 @@
                                     const tipo = estudio.tipo === 'HABILITADO' ? '<a href="javascript:void(0);" class="badge badge-success btn-tipo-individual" title="Tipo Estudio" style="font-size: 15px">Habilitado</a>' : '<a href="javascript:void(0);" class="badge badge-danger btn-tipo-estudio" title="Tipo Estudio" style="font-size: 15px">Deshabilitado</a>';
                                     const botonTipo = estudio.tipo === 'HABILITADO' ? '<button data-toggle="modal" data-target="#modal_configurar_estudio_individual" class="btn btn-sm btn-outline-info btn-detalle-indi-id" title="Configurar Estudio Individual"><i class="fas fa-cog"></i></button>' : '';
                                     const estudioRow = `<tr><td hidden>${estudio.id}</td><td class="text-right"><strong>${cont++}</strong></td><td>${estudio.est_cod}</td><td>${estudio.est_nombre}</td><td class="text-center">${tipo}</td><td><div class="btn-group">
-                                                                        <button data-toggle="modal" data-target="#modal_editar_estudio" class="btn btn-sm btn-outline-warning btnUpdateEstudio" title="Editar Estudio"><i class="fas fa-user-edit"></i></button>
+                                                                        <button data-toggle="modal" data-target="#modal_editar_estudio" class="btn btn-sm btn-outline-warning btnEditEstudio" title="Editar Estudio"><i class="fas fa-user-edit"></i></button>
                                                                         ${botonTipo}</div></td></tr>`;
                                     $("#tabla_estudios tbody").append(estudioRow);
                                 });
                             });
+                            $("#tabla_estudios tbody").append('<br>');
                         });
                     }else{
                         $("#tabla_estudios tbody").empty().append('<td colspan="5" class="text-center">No hay datos recepcionados</td>')
@@ -68,7 +71,7 @@
         getEstudios();
 
         $('#modal_crear_estudio').on('shown.bs.modal', function () {
-            $('#est_nombre').trigger('focus');
+            $('#est_nombre').trigger("focus");
         });
         $('#modal_crear_componente').on('shown.bs.modal', function () {
             $('#comp_nombre').trigger('focus');
@@ -79,6 +82,7 @@
         });
         $("#btnCloseAddEstudio").on('click', function() {
             $("#formulario_crear_estudio").trigger('reset');
+            limpiarEstudio();
         });
         $("#btnCloseAddProc").on('click', function() {
             $("#formulario_crear_procedimiento").trigger('reset');
@@ -104,6 +108,34 @@
         $("#btnCloseAddMuestra").on('click', function(){
             getMuestrasEstudio();
         });
+        $("#btnCloseAddIndicacion").on('click', function(){
+            getIndicacionesEstudio();
+        });
+        $("#btnCloseAddRecipiente").on('click', function(){
+            getRecipientesEstudio();
+        });
+
+        function limpiarEstudio() {
+            $("#est_cod").val("");
+            $("#est_cod").css('border', '');
+            $("#est_nombre").val("");
+            $("#est_nombre").css('border', '');
+            $("#est_descripcion").val("");
+            $("#est_descripcion").css('border', '');
+            $("#est_grupo").val("");
+            $("#est_grupo").css('border', '');
+            $("#est_subgrupo").val("");
+            $("#est_subgrupo").css('border', '');
+            $("#est_muestra").val("");
+            $("#est_muestra").css('border', '');
+            $("#est_recipiente").val("");
+            $("#est_recipiente").css('border', '');
+            $("#est_indicaciones").val();
+            $("#est_indicaciones").css('border', '');
+            $("#est_precio").val("0.00");
+            $("#est_precio").css('border', '');
+            
+        }
 
         function getGrupo() {
             mostrarCargando()
@@ -114,7 +146,7 @@
                 success: function(data){
                     if (data.length !== 0) {
                         $("#est_grupo").empty();
-                        var emptyOption = $("<option>").val("").text("Seleccionar...");
+                        const emptyOption = `<option value="" disabled selected>Seleccionar...</option>`;
                         $("#est_grupo").append(emptyOption);
                         $.each(data, function(index, grupo) {
                             var option = $("<option>").val(grupo.id).text(grupo.nombre);
@@ -135,7 +167,7 @@
                 success: function(data) {
                     if (data.length !== 0) {
                         $("#est_subgrupo").empty();
-                        var emptyOption = $("<option>").val("").text("Seleccionar...");
+                        const emptyOption = `<option value="" >Seleccionar...</option>`;
                         $("#est_subgrupo").append(emptyOption);
                         $.each(data, function(indez, subgrupo) {
                             var option = $("<option>").val(subgrupo.id).text(subgrupo.nombre);
@@ -156,7 +188,7 @@
                 success: (data) => {
                     if (data.length !== 0) {
                         $("#est_muestra").empty();
-                        const emptyOption = `<option value="">Seleccionar...</option>`;
+                        const emptyOption = `<option value="" disabled selected>Seleccionar...</option>`;
                         $('#est_muestra').append(emptyOption);
                         data.forEach((muestra) => {
                             const option = `<option value="${muestra.id}">${muestra.nombre}</option>`;
@@ -168,10 +200,55 @@
             });
         }
 
+        function getIndicacionesEstudio() {
+            $.ajax({
+                url: '{{ route("getIndications") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: (data) => {
+                    if (data.length !== 0) {
+                        $("#est_indicaciones").empty();
+                        const emptyOption = `<option value="" disabled selected>Seleccionar...</option>`;
+                        $("#est_indicaciones").append(emptyOption);
+                        data.forEach((indicacion) => {
+                            const option = `<option value="${indicacion.id}">${indicacion.descripcion}</option>`;
+                            $("#est_indicaciones").append(option);
+                        });
+                    }
+                    cerrarCargando();
+                }
+            });
+        }
+
+        function getRecipientesEstudio() {
+            mostrarCargando();
+            $.ajax({
+                url: '{{ route("getRecipientes") }}',
+                type: 'GET',
+                dataType: 'json',
+                success: (data) => {
+                    if (data.length !== 0) {
+                        $("#est_recipiente").empty();
+                        const emptyOption = `<option value="">Seleccionar...</option>`;
+                        $("#est_recipiente").append(emptyOption);
+                        data.forEach((recipiente) => {
+                            const option = `<option value="${recipiente.id}">${recipiente.descripcion}</option>`;
+                            $("#est_recipiente").append(option);
+                        });
+                    }
+                    cerrarCargando();
+                }
+            });
+        }
+
         $(document).on('click', '.btnAddEstudio', function() {
             getGrupo();
             getSubgrupo();
             getMuestrasEstudio();
+            getIndicacionesEstudio();
+            getRecipientesEstudio();
+            $("#est_moneda").val("Bs");
+            $("#est_moneda").css('border', '2px solid #40CC6C');
         });
 
         $(document).on('click', '#btnRegisterGrupo', function() {
@@ -264,6 +341,7 @@
                         });
                         $("#subgrupos_nombre").val('');
                         getSubgrupo();
+                        $('#modal_crear_subgrupo .btn-close').trigger('click');
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
@@ -289,59 +367,75 @@
                         clave += palabras[i].charAt(0);
                     }
                 }
-
-                let grupo = document.getElementById("est_grupo");
-                let subgrupo = document.getElementById("est_subgrupo");
-
+                
                 function extraerCaracteres(valor) {
                     let words = valor.split(" ");
                     let result = "";
-
+                    
                     if (words.length === 1) {
                         result = valor.substring(0, 2);
                     } else if (words.length >= 2) {
                         result = words[0].charAt(0) + words[1].charAt(0);
                     }
-
+                    
                     return result;
                 }
+                
+                let grupo = document.getElementById("est_grupo");
+                let subgrupo = document.getElementById("est_subgrupo");
+                let grupocod = "";
+                let subgrupocod = "";
 
-                let grupocod = extraerCaracteres(grupo.options[grupo.selectedIndex].text);
-                let subgrupocod = extraerCaracteres(subgrupo.options[subgrupo.selectedIndex].text);
+                if (subgrupo.value != "") {
+                    grupocod = extraerCaracteres(grupo.options[grupo.selectedIndex].text);
+                    subgrupocod = extraerCaracteres(subgrupo.options[subgrupo.selectedIndex].text);
+                }else{
+                    grupocod = extraerCaracteres(grupo.options[grupo.selectedIndex].text);
+                    subgrupocod = "";
+                }
 
                 clave = grupocod + subgrupocod + clave;
                 document.getElementById('est_cod').value = clave;
+                $("#est_cod").css('border', '2px solid #40CC6C');
             } else {
                 document.getElementById('est_cod').value = '';
+                $("#est_cod").css('border', '1px solid #E91C2B');
             }
-        });
+        }); 
 
-        
-
-        $('#btnRegisterEst').on('click', function(event) {
+        $(document).on('click', '#btnRegisterEst', function(event) {
             event.preventDefault();
             let vacio = "";
-            if ($("#est_cod").val() == "") {
-                vacio = "CODIGO";
-            }
             if ($("#est_nombre").val() == "") {
                 vacio = "NOMBRE ESTUDIO";
-            }
-            if ($("#est_grupos").val() == "" || $("#est_grupos").val() == null) {
+                $("#est_nombre").trigger("focus");
+                $("#est_nombre").css('border', '1px solid #E91C2B');
+            }else if ($("#est_grupo").val() == "" || $("#est_grupo").val() == null) {
                 vacio = "GRUPO";
-            }
-            if ($("#est_muestra").val() == "" || $("#est_muestra").val() == null) {
+                $("#est_grupo").trigger("focus");
+                $("#est_grupo").css('border', '1px solid #E91C2B');
+            }else if ($("#est_muestra").val() == "" || $("#est_muestra").val() == null) {
                 vacio = "MUESTRA";
-            }
-            if ($("#est_indicaciones").val() == "" || $("#est_indicaciones").val() == null) {
+                $("#est_muestra").trigger("focus");
+                $("#est_muestra").css('border', '1px solid #E91C2B');
+            }else if ($("#est_indicaciones").val() == "" || $("#est_indicaciones").val() == null) {
                 vacio = "INDICACIONES";
-            }
-            if ($("#est_precio").val() == "") {
+                $("#est_indicaciones").trigger("focus");
+                $("#est_indicaciones").css('border', '1px solid #E91C2B');
+            }else if ($("#est_precio").val() == "" || $("#est_precio").val() == "0.00") {
                 vacio = "PRECIO";
-            }
-            if ($("#est_moneda").val() == "") {
+                $("#est_precio").trigger("focus");
+                $("#est_precio").css('border', '1px solid #E91C2B');
+            }else if ($("#est_moneda").val() == "") {
                 vacio = "MONEDA";
+                $("#est_moneda").trigger("focus");
+                $("#est_moneda").css('border', '1px solid #E91C2B');
+            }else if ($("#est_cod").val() == "") {
+                vacio = "CODIGO";
+                $("#est_cod").trigger("focus");
+                $("#est_cod").css('border', '1px solid #E91C2B');
             }
+
             if (vacio != "") {
                 Swal.fire({
                     title: 'Error!',
@@ -487,7 +581,7 @@
             });
         });
 
-        $(document).on('click', '.btnUpdateEstudio', function() {
+        $(document).on('click', '.btnEditEstudio', function() {
             let det_id = $(this).closest("tr").find("td:eq(0)").text();
             mostrarCargando();
             $.ajax({
@@ -496,96 +590,65 @@
                 dataType: 'json',
                 success: function(data) {
                     $(".est_id_update").val(data[0].id);
-                    if (data[0].est_cod != null) {
-                        $(".est_cod_update").css('border', '2px solid #40CC6C');
-                        $(".est_cod_update").val(data[0].est_cod);
-                    }
-                    if (data[0].est_nombre != null) {
-                        $(".est_nombre_update").val(data[0].est_nombre);
-                        $(".est_nombre_update").css('border', '2px solid #40CC6C');
-                    }
-                    if (data[0].est_descripcion != null) {
-                        $(".est_descripcion_update").val(data[0].est_descripcion);
-                        $(".est_descripcion_update").css('border', '2px solid #40CC6C');
-                    }
-                    if (data[0].grupo_id != null) {
-                        $(".est_grupos_update").val(data[0].grupo_id);
-                        $(".est_grupos_update").css('border', '2px solid #40CC6C');
-                    }
+                    $(".est_cod_update").val(data[0].est_cod);
+                    $(".est_cod_update").css('border', data[0].id != null ? '2px solid #40CC6C' : '');
+                    $(".est_nombre_update").val(data[0].est_nombre);
+                    $(".est_nombre_update").css('border', data[0].est_nombre != null ? '2px solid #40CC6C' : '');
+                    $(".est_descripcion_update").val(data[0].est_descripcion);
+                    $(".est_descripcion_update").css('border', data[0].est_descripcion != null ? '2px solid #40CC6C' : '');
+                    $(".est_grupos_update").val(data[0].grupo_id);
+                    $(".est_grupos_update").css('border', data[0].grupo_id != null ? '2px solid #40CC6C' : '');
+                    $(".est_subgrupos_update").val(data[0].subgrupo_id);
+                    $(".est_subgrupos_update").css('border', data[0].subgrupo_id != null ? '2px solid #40CC6C' : '');
+                    $(".est_muestra_update").val(data[0].muestra_id);
+                    $(".est_muestra_update").css('border', data[0].muestra_id != null ? '2px solid #40CC6C' : '');
+                    $(".est_recipiente_update").val(data[0].recipiente_id);
+                    $(".est_recipiente_update").css('border', data[0].recipiente_id != null ? '2px solid #40CC6C' : '');
+                    $(".est_indicaciones_update").val(data[0].indicacion_id);
+                    $(".est_indicaciones_update").css('border', data[0].indicacion_id != null ? '2px solid #40CC6C' : '');
+                    $(".est_precio_update").val(data[0].est_precio);
+                    $(".est_precio_update").css('border', data[0].est_precio != null ? '2px solid #40CC6C' : '');
+                    $(".est_moneda_update").val(data[0].est_moneda);
+                    $(".est_moneda_update").css('border', data[0].est_moneda != null ? '2px solid #40CC6C' : '');
 
-                    if (data[0].subgrupo_id != null) {
-                        $(".est_subgrupos_update").val(data[0].subgrupo_id);
-                        $(".est_subgrupos_update").css('border', '2px solid #40CC6C');
-                    }else{
-                        $(".est_subgrupos_update").val("");
-                        $(".est_subgrupos_update").css('border', '');
-                    }
-
-                    if (data[0].muestra_id != null) {
-                        $(".est_muestra_update").val(data[0].muestra_id);
-                        $(".est_muestra_update").css('border', '2px solid #40CC6C');
-                    }else{
-                        $(".est_muestra_update").val("");
-                        $(".est_muestra_update").css('border', '');
-                    }
-
-                    if (data[0].recipiente_id != null) {
-                        $(".est_recipiente_update").val(data[0].recipiente_id);
-                        $(".est_recipiente_update").css('border', '2px solid #40CC6C');
-                    }else{
-                        $(".est_recipiente_update").val("");
-                        $(".est_recipiente_update").css('border', '');
-                    }
-
-                    if (data[0].indicacion_id != null) {
-                        $(".est_indicaciones_update").val(data[0].indicacion_id);
-                        $(".est_indicaciones_update").css('border', '2px solid #40CC6C');
-                    }else{
-                        $(".est_indicaciones_update").val("");
-                        $(".est_indicaciones_update").css('border', '');
-                    }
-
-                    if (data[0].est_precio != null) {
-                        $(".est_precio_update").val(data[0].est_precio);
-                        $(".est_precio_update").css('border', '2px solid #40CC6C');
-                    }
-                    if (data[0].est_moneda != null) {
-                        $(".est_moneda_update").val(data[0].est_moneda);
-                        $(".est_moneda_update").css('border', '2px solid #40CC6C');
-                    }
                     cerrarCargando();
                 }
             });
         });
 
-        $(document).on('click', '.btnEditEstudio', function() {
+        $(document).on('click', '.btnUpdateEstudio', function() {
             let det_id = $(".est_id_update").val();
-            if ($(".est_cod_update").val() == "" || $(".est_nombre_update").val() == "" || $(".est_grupos_update").val() == "" || $(".est_grupos_update").val() == null || $(".est_subgrupos_update").val() == "" || $(".est_subgrupos_update").val() == null || $(".est_muestra_update").val() == "" || $(".est_muestra_update").val() == null || $(".est_indicaciones_update").val() == "" || $(".est_indicaciones_update").val() == null || $(".est_precio_update").val() == "" || $(".est_moneda_update").val() == "") {
-                let vacio = "";
-                if ($(".est_cod_update").val() == "") {
-                    vacio = "CODIGO";
-                }
-                if ($(".est_nombre_update").val() == "") {
-                    vacio = "NOMBRE ESTUDIO";
-                }
-                if ($(".est_grupos_update").val() == "" || $(".est_grupos_update").val() == null) {
-                    vacio = "GRUPO";
-                }
-                if ($(".est_subgrupos_update").val() == "" || $(".est_subgrupos_update").val() == null) {
-                    vacio = "SUBGRUPO";
-                }
-                if ($(".est_muestra_update").val() == "" || $(".est_muestra_update").val() == null) {
-                    vacio = "MUESTRA";
-                }
-                if ($(".est_indicaciones_update").val() == "" || $(".est_indicaciones_update").val() == null) {
-                    vacio = "INDICACIONES";
-                }
-                if ($(".est_precio_update").val() == "") {
-                    vacio = "PRECIO";
-                }
-                if ($(".est_moneda_update").val() == "") {
-                    vacio = "MONEDA";
-                }
+            let vacio = "";
+            if ($("#est_nombre_update").val() == "") {
+                vacio = "NOMBRE ESTUDIO";
+                $("#est_nombre_update").trigger("focus");
+                $("#est_nombre_update").css('border', '1px solid #E91C2B');
+            }else if ($("#est_grupos_update").val() == "" || $("#est_grupos_update").val() == null) {
+                vacio = "GRUPO";
+                $("#est_grupos_update").trigger("focus");
+                $("#est_grupos_update").css('border', '1px solid #E91C2B');
+            }else if ($("#est_muestra_update").val() == "" || $("#est_muestra_update").val() == null) {
+                vacio = "MUESTRA";
+                $("#est_muestra_update").trigger("focus");
+                $("#est_muestra_update").css('border', '1px solid #E91C2B');
+            }else if ($("#est_indicaciones_update").val() == "" || $("#est_indicaciones_update").val() == null) {
+                vacio = "INDICACIONES";
+                $("#est_indicaciones_update").trigger("focus");
+                $("#est_indicaciones_update").css('border', '1px solid #E91C2B');
+            }else if ($("#est_precio_update").val() == "" || $("#est_precio_update").val() == "0.00") {
+                vacio = "PRECIO";
+                $("#est_precio_update").trigger("focus");
+                $("#est_precio_update").css('border', '1px solid #E91C2B');
+            }else if ($("#est_moneda_update").val() == "") {
+                vacio = "MONEDA";
+                $("#est_moneda_update").trigger("focus");
+                $("#est_moneda_update").css('border', '1px solid #E91C2B');
+            }else if ($("#est_cod_update").val() == "") {
+                vacio = "CODIGO";
+                $("#est_cod_update").trigger("focus");
+                $("#est_cod_update").css('border', '1px solid #E91C2B');
+            }
+            if  (vacio != "") {
                 Swal.fire({
                     title: 'Error!',
                     text: 'El campo ' + vacio + ' es requerido.',
@@ -593,7 +656,53 @@
                     showConfirmButton: false,
                     timer: 2000
                 });
+            }else{
+                $subgrupo = $("#est_subgrupos_update").val() == null ? '' : $("#est_subgrupos_update").val();
+                let datos = new FormData();
+                datos.append('est_cod_update', $("#est_cod_update").val());
+                datos.append('est_nombre_update', $("#est_nombre_update").val());
+                datos.append('est_descripcion_update', $("#est_descripcion_update").val());
+                datos.append('est_grupos_update', $("#est_grupos_update").val());
+                datos.append('est_subgrupos_update', $subgrupo);
+                datos.append('est_precio_update', $("#est_precio_update").val());
+                datos.append('est_moneda_update', $("#est_moneda_update").val());
+                datos.append('est_muestra_update', $("#est_muestra_update").val());
+                datos.append('est_recipiente_update', $("#est_recipiente_update").val());
+                datos.append('est_indicaciones_update', $("#est_indicaciones_update").val());
+
+                $.ajax({
+                    url: '{{ route("estudio.update", ":id") }}'.replace(":id", det_id),
+                    type: 'POST',
+                    data: datos,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(data) {
+                        Swal.fire({
+                            title: '¡Exito!',
+                            text: 'Estudio actualizado',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        getEstudios();
+                        $('#modal_editar_estudio .btn-close').trigger('click');
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error en la solicitud: ', textStatus, ', detalles: ', errorThrown);
+                        Swal.fire({
+                            title: 'Oops...',
+                            text: 'Se ha producido un error.',
+                            icon: 'error',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+                });
             }
+            
         })
 
         function getDetalle(valor, tipo_est) {

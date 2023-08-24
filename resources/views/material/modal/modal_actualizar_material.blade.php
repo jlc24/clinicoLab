@@ -29,20 +29,20 @@
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="mat_nombre_update">{{ __('Nombre') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
-                                <input type="text" id="mat_nombre_update" name="mat_nombre_update" class="form-control form-control-sm mat_nombre_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" required>
+                                <input type="text" id="mat_nombre_update" name="mat_nombre_update" class="form-control form-control-sm mat_nombre_update" autocomplete="off" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); obligado($(this))" required>
                                 <input type="hidden" name="mat_id_update" id="mat_id_update" class="mat_id_update">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="mat_descripcion_update">{{ __('Descripción') }}:</label>
                             <div class="col-md-9" style="display: inline-flex;">
-                                <textarea name="mat_descripcion_update" id="mat_descripcion_update" rows="3" class="form-control form-control-sm mat_descripcion_update"></textarea>
+                                <textarea name="mat_descripcion_update" id="mat_descripcion_update" rows="3" class="form-control form-control-sm mat_descripcion_update" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase(); opcional($(this))"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="mat_categoria_update">{{ __('Categoria') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
-                                <select id="mat_categoria_update" name="mat_categoria_update" class="custom-select custom-select-sm mat_categoria_update" >
+                                <select id="mat_categoria_update" name="mat_categoria_update" class="custom-select custom-select-sm mat_categoria_update" onchange="obligado($(this))">
                                     <option value="" selected>Seleccionar...</option>
                                     @foreach ($categorias as $categoria)
                                         <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -53,16 +53,16 @@
                         <div class="form-group row vidaUtil_update" id="vidaUtil_update" hidden>
                             <label class="col-md-3 col-form-label" for="mat_vida_util_update">{{ __('Vida Util') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-9" style="display: inline-flex;">
-                                <input type="number" placeholder="AÑOS" id="mat_vida_util_update" name="mat_vida_util_update" class="form-control form-control-sm mat_vida_util_update" autocomplete="off" required>
+                                <input type="number" placeholder="AÑOS" id="mat_vida_util_update" name="mat_vida_util_update" class="form-control form-control-sm mat_vida_util_update" autocomplete="off" onkeyup="obligado($(this))" onchange="obligado($(this))" required>
                             </div>
                         </div>
                         <div class="form-group row depreciacion_update" id="depreciacion_update" hidden>
                             <label class="col-md-3 col-form-label" for="mat_depreciacion_update">{{ __('Depreciacion') }}:<span class="dato_requerido">*</span></label>
                             <div class="col-md-5">
-                                <input type="number" min="0" step="0.01" id="mat_depreciacion_update" name="mat_depreciacion_update" class="form-control form-control-sm mat_depreciacion_update" autocomplete="off" required>
+                                <input type="number" min="0" step="0.01" id="mat_depreciacion_update" name="mat_depreciacion_update" class="form-control form-control-sm mat_depreciacion_update" autocomplete="off" onchange="obligado($(this))" required>
                             </div>
                             <div class="col-md-4">
-                                <select id="mat_categoria" name="mat_categoria" class="custom-select custom-select-sm mat_categoria" style="border-radius: 5px 0px 0px 5px;" disabled>
+                                <select id="mat_depreciacion_unidad" name="mat_depreciacion_unidad" class="custom-select custom-select-sm mat_depreciacion_unidad" style="border-radius: 5px 0px 0px 5px;" disabled>
                                     <option value="%" selected>%</option>
                                 </select>
                             </div>

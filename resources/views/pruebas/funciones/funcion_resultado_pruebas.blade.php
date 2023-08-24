@@ -174,7 +174,7 @@
                     if (data.length != 0) {
                         $('.tabla_pacientes_resultado tbody').empty();
                         $.each(data, function(index, value) {
-                            var umedid = value.umed_id;
+                            var umedid = value.caumed_id;
                             var optionList = '';
                             @foreach ($unidades as $unidad)
                                 var isSelected = {{ $unidad->id }} === umedid ? 'selected' : '' ;
@@ -213,10 +213,10 @@
                                     '<td width="130px">' + value.cli_genero + '</td>'+ //
                                     '<td width="70px">' + value.cli_edad + '</td>'+ //
                                     '<td >' + value.cli_tiempo + '</td>'+ //
-                                    '<td width="100px" class="res_parametro" hidden>' + (parametroId !== null ? parametroId : '') + '</td>'+ //id de results
+                                    '<td width="100px" class="res_parametro" hidden>' + (parametroId !== null ? parametroId : '') + '</td>'+ 
                                     '<td width="150px"><input type="text" value="' + (value.resultado == null ? '' : value.resultado) + '" class="form-control form-control-sm resultado-final" style="text-transform: uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();"></td>'+
                                     '<td width="100px">'+
-                                        '<select class="custom-select custom-select-sm res_aspecto_unidad" name="res_aspecto_unidad" id="res_aspecto_unidad">'+
+                                        '<select class="custom-select custom-select-sm res_aspecto_unidad" name="res_aspecto_unidad" id="res_aspecto_unidad" disabled>'+
                                             '<option value="" >Seleccionar...</option>'+
                                             optionList +
                                         '</select>'+
@@ -261,16 +261,16 @@
                                     '<tr>'+
                                         '<td width="30px" hidden><strong>' + value.id + '</strong></td>'+ //id de results
                                         '<td width="200px"><strong>' + value.referencia + '</strong></td>'+ 
-                                        '<td><strong>' + value.genero + '</strong></td>'+
-                                        '<td width="50px"><strong>' + value.edad_inicial + '</strong></td>'+
-                                        '<td width="50px"><strong>' + value.edad_final + '</strong></td>'+
-                                        '<td><strong>' + value.tiempo + '</strong></td>'+
+                                        '<td><strong>' + (value.genero != null ? value.genero : '') + '</strong></td>'+
+                                        '<td width="50px"><strong>' + (value.edad_inicial != null ? value.edad_inicial : '') + '</strong></td>'+
+                                        '<td width="50px"><strong>' + (value.edad_final != null ? value.edad_final : '') + '</strong></td>'+
+                                        '<td><strong>' + (value.tiempo != null ? value.tiempo : '') + '</strong></td>'+
                                     '</tr>'
                                 );
                             }
                         });
                     }else {
-                        $('.tabla_resultado_parametro tbody').empty().append('<td colspan="3" class="text-center">No hay datos recepcionados</td>');
+                        $('.tabla_resultado_parametro tbody').empty().append('<td colspan="6" class="text-center">No hay datos recepcionados</td>');
                     }
                 }
             });

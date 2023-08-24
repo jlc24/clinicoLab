@@ -34,66 +34,56 @@ class ReportController extends Controller
         $fechaIn = $request->input('i');
         $fechaFin = $request->input('f');
         if ($user->rol == 'admin') {
-            $recepcions = DB::table('recepcions as r')
-                            ->join('detalles as d', 'd.id', '=', 'r.det_id')
-                            ->join('estudios as e', 'd.estudio_id', '=', 'e.id')
-                            ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
-                            ->join('facturas as f', 'f.id', '=', 'r.fac_id')
-                            ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
-                            ->leftJoinSub(function ($query) use ($fechaIn, $fechaFin) {
-                                $query->select('d.estudio_id', DB::raw('SUM(rdm.cantidad) AS cantidad_material'), DB::raw('SUM(rdm.precio_total) AS total_material'))
-                                    ->from('detalles AS d')
-                                    ->join('results AS rs', 'rs.det_id', '=', 'd.id')
-                                    ->join('result_detallematerials AS rdm', 'rdm.result_id', '=', 'rs.id')
-                                    ->whereBetween(DB::raw('DATE(rdm.updated_at)'), [$fechaIn, $fechaFin])
-                                    ->where([['rs.param_id', '!=', null], ['rs.resultado', '!=', null]])
-                                    ->groupBy('d.estudio_id');
-                            }, 'rdm', 'rdm.estudio_id', '=', 'e.id')
+            $recepcions = DB::table('result_detallematerials as rdm')
+                            ->join('materials as m', 'm.id', '=', 'rdm.mat_id')
+                            ->join('categorias AS c', 'c.id', '=', 'm.cat_id')
+                            ->join('results AS res', 'res.id', '=', 'rdm.result_id')
+                            ->join('detalles AS d', 'd.id', '=', 'res.det_id')
+                            ->join('estudios AS e', 'e.id', '=', 'd.estudio_id')
+                            ->join('recepcions as rec', 'rec.id', '=', 'res.rec_id')
+                            ->where('rec.estado', 'RESULTADO')
+                            //->whereBetween(DB::raw('DATE(rdm.updated_at)'), ['2023-08-09', '2023-08-09'])
                             ->select(
-                                'g.nombre AS grupo',
-                                'sg.nombre AS subgrupo',
-                                'd.id AS estudio',
-                                'e.est_cod',
-                                'e.est_nombre',
-                                'e.est_precio',
-                                DB::raw('COUNT(*) AS cantidad'),
-                                DB::raw('(COUNT(*) * e.est_precio) AS total'),
-                                'e.est_moneda',
-                                'rdm.cantidad_material',
-                                'rdm.total_material'
+                                'e.est_cod', 'e.est_nombre',
+                                DB::raw('COUNT(*) as cantidad'),
+                                DB::raw('SUM(e.est_precio) as total'),
+                                DB::raw('SUM(CASE WHEN c.id = 1 THEN rdm.precio_total ELSE 0 END) AS total_equipo'),
+                                DB::raw('SUM(CASE WHEN c.id = 2 THEN rdm.precio_total ELSE 0 END) AS total_reactivo'),
+                                DB::raw('SUM(CASE WHEN m.cat_id NOT IN (1, 2) THEN rdm.precio_total ELSE 0 END) AS total_otro'),
+                                DB::raw('SUM(CASE WHEN c.id = 1 THEN rdm.precio_total ELSE 0 END) + SUM(CASE WHEN c.id = 2 THEN rdm.precio_total ELSE 0 END) + SUM(CASE WHEN m.cat_id NOT IN (1, 2) THEN rdm.precio_total ELSE 0 END) AS total_material')
                             )
-                            ->groupBy(
-                                'g.nombre',
-                                'sg.nombre',
-                                'e.est_cod',
-                                'e.est_nombre',
-                                'e.est_precio',
-                                'e.est_moneda',
-                                'rdm.cantidad_material',
-                                'rdm.total_material',
-                                'd.id'
-                            );
+                            ->groupBy('e.est_cod', 'e.est_nombre');
+                            //->get();
             if ($fechaIn !== null && $fechaFin !== null) {
-                $recepcions->whereBetween(DB::raw('DATE(f.created_at)'), [$fechaIn, $fechaFin]);
+                $recepcions->whereBetween(DB::raw('DATE(rdm.updated_at)'), [$fechaIn, $fechaFin]);
             }
 
             $recepcions = $recepcions->get();
         }else {
-            $recepcions = DB::table('recepcions as r')
-                            ->join('detalles as d', 'd.id', '=', 'r.det_id')
-                            ->join('estudios as e', 'd.estudio_id', '=', 'e.id')
-                            ->join('grupos as g', 'g.id', '=', 'e.grupo_id')
-                            ->leftJoin('subgrupos as sg', 'sg.id', '=', 'e.subgrupo_id')
-                            ->join('facturas as f', 'f.id', '=', 'r.fac_id')
-                            ->join('cajas as c', 'c.id', '=', 'r.caja_id')
-                            ->join('users as u', 'u.id', '=', 'c.user_id')
-                            ->select('g.nombre as grupo', 'sg.nombre as subgrupo', 'd.id as estudio', 'e.est_cod', 'e.est_nombre', 'e.est_precio', 
-                            DB::raw('COUNT(*) as cantidad'),
-                            DB::raw('(COUNT(*) * e.est_precio) as total'), 'e.est_moneda')
-                            ->where('u.id', '=', $user->id)
-                            ->groupBy('g.nombre', 'sg.nombre', 'e.est_cod', 'e.est_nombre', 'e.est_precio', 'e.est_moneda', 'd.id');
+            $recepcions = DB::table('result_detallematerials as rdm')
+                            ->join('materials as m', 'm.id', '=', 'rdm.mat_id')
+                            ->join('categorias AS c', 'c.id', '=', 'm.cat_id')
+                            ->join('results AS res', 'res.id', '=', 'rdm.result_id')
+                            ->join('detalles AS d', 'd.id', '=', 'res.det_id')
+                            ->join('estudios AS e', 'e.id', '=', 'd.estudio_id')
+                            ->join('recepcions as rec', 'rec.id', '=', 'res.rec_id')
+                            ->join('facturas as f', 'f.id', '=', 'rec.fac_id')
+                            ->join('users as u', 'u.id', '=', 'f.user_id')
+                            ->where([['rec.estado', 'RESULTADO'], ['u.id', '=', $user->id]])
+                            //->whereBetween(DB::raw('DATE(rdm.updated_at)'), ['2023-08-09', '2023-08-09'])
+                            ->select(
+                                'e.est_cod', 'e.est_nombre',
+                                DB::raw('COUNT(*) as cantidad'),
+                                DB::raw('SUM(e.est_precio) as total'),
+                                DB::raw('SUM(CASE WHEN c.id = 1 THEN rdm.precio_total ELSE 0 END) AS total_equipo'),
+                                DB::raw('SUM(CASE WHEN c.id = 2 THEN rdm.precio_total ELSE 0 END) AS total_reactivo'),
+                                DB::raw('SUM(CASE WHEN m.cat_id NOT IN (1, 2) THEN rdm.precio_total ELSE 0 END) AS total_otro'),
+                                DB::raw('SUM(CASE WHEN c.id = 1 THEN rdm.precio_total ELSE 0 END) + SUM(CASE WHEN c.id = 2 THEN rdm.precio_total ELSE 0 END) + SUM(CASE WHEN m.cat_id NOT IN (1, 2) THEN rdm.precio_total ELSE 0 END) AS total_material')
+                            )
+                            ->groupBy('e.est_cod', 'e.est_nombre');
+                            //->get();
             if ($fechaIn !== null && $fechaFin !== null) {
-                $recepcions->whereBetween(DB::raw('DATE(f.created_at)'), [$fechaIn, $fechaFin]);
+                $recepcions->whereBetween(DB::raw('DATE(rdm.updated_at)'), [$fechaIn, $fechaFin]);
             }
             $recepcions = $recepcions->get();
         }
